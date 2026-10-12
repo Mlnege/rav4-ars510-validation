@@ -1,0 +1,750 @@
+{
+  "generated_utc": "2026-10-12T13:54:16.734851+00:00",
+  "status": "actual_radar_data_to_disabled_host_memory_can_observed",
+  "counts": {
+    "host_ticks": 15407,
+    "host_initialized": 13535,
+    "host_enabled": 0,
+    "long_active": 0,
+    "c_controls_allowed": 0,
+    "c_long_allowed": 0,
+    "c_relay_malfunction": 15407,
+    "native_model_updates": 2759,
+    "models_with_radar_lead": 175,
+    "mpc_lead_source": 262,
+    "solver_nonzero": 0,
+    "can_count": 26302,
+    "accel_can_count": 4512,
+    "actual_c_accept_count": 0,
+    "actual_c_deny_count": 26302,
+    "actual_c_mismatch_count": 0,
+    "can_nonzero_accel_count": 0,
+    "timeline_remaining": 0,
+    "sensor_preservation_mismatches": 0,
+    "points": 369,
+    "records": 2433,
+    "crc_failures": 0,
+    "radar_leads": 175,
+    "model_updates": 2792,
+    "radarState_errors": 71
+  },
+  "per_file": [
+    {
+      "alias": "log_a",
+      "status": "actual_data_host_observed",
+      "points": 246,
+      "records": 481,
+      "dpath_leads": 175,
+      "radarState_error_models": 44,
+      "host_counts": {
+        "host_ticks": 3365,
+        "host_initialized": 2894,
+        "host_enabled": 0,
+        "long_active": 0,
+        "c_controls_allowed": 0,
+        "c_long_allowed": 0,
+        "c_relay_malfunction": 3365,
+        "native_model_updates": 623,
+        "models_with_radar_lead": 175,
+        "models_with_radar_lead_two": 0,
+        "mpc_lead_source": 179,
+        "solver_nonzero": 0
+      },
+      "generated_can": 5624,
+      "c_denied": 5624,
+      "original_checks_passed": 12
+    },
+    {
+      "alias": "log_b",
+      "status": "actual_data_host_observed",
+      "points": 117,
+      "records": 1021,
+      "dpath_leads": 0,
+      "radarState_error_models": 0,
+      "host_counts": {
+        "host_ticks": 6022,
+        "host_initialized": 5021,
+        "host_enabled": 0,
+        "long_active": 0,
+        "c_controls_allowed": 0,
+        "c_long_allowed": 0,
+        "c_relay_malfunction": 6022,
+        "native_model_updates": 986,
+        "models_with_radar_lead": 0,
+        "models_with_radar_lead_two": 0,
+        "mpc_lead_source": 19,
+        "solver_nonzero": 0
+      },
+      "generated_can": 9757,
+      "c_denied": 9757,
+      "original_checks_passed": 12
+    },
+    {
+      "alias": "log_c",
+      "status": "insufficient_recorded_carParams",
+      "points": 0,
+      "records": 0,
+      "dpath_leads": 0,
+      "radarState_error_models": 0,
+      "host_counts": {},
+      "generated_can": 0,
+      "c_denied": 0,
+      "original_checks_passed": 0
+    },
+    {
+      "alias": "log_d",
+      "status": "actual_data_host_observed",
+      "points": 6,
+      "records": 931,
+      "dpath_leads": 0,
+      "radarState_error_models": 27,
+      "host_counts": {
+        "host_ticks": 6020,
+        "host_initialized": 5620,
+        "host_enabled": 0,
+        "long_active": 0,
+        "c_controls_allowed": 0,
+        "c_long_allowed": 0,
+        "c_relay_malfunction": 6020,
+        "native_model_updates": 1150,
+        "models_with_radar_lead": 0,
+        "models_with_radar_lead_two": 0,
+        "mpc_lead_source": 64,
+        "solver_nonzero": 0
+      },
+      "generated_can": 10921,
+      "c_denied": 10921,
+      "original_checks_passed": 12
+    }
+  ],
+  "offline_comparison": [
+    {
+      "alias": "log_a",
+      "point_count_equal": true,
+      "record_count_equal": true,
+      "dpath_model_count_equal": true,
+      "dpath_lead_count_equal": true,
+      "host_model_conflation_count": 0
+    },
+    {
+      "alias": "log_b",
+      "point_count_equal": true,
+      "record_count_equal": true,
+      "dpath_model_count_equal": true,
+      "dpath_lead_count_equal": true,
+      "host_model_conflation_count": 33
+    },
+    {
+      "alias": "log_d",
+      "point_count_equal": true,
+      "record_count_equal": true,
+      "dpath_model_count_equal": true,
+      "dpath_lead_count_equal": true,
+      "host_model_conflation_count": 0
+    }
+  ],
+  "checks": {
+    "three_actual_data_runs_complete": true,
+    "cp_missing_log_remains_unexecuted": true,
+    "counts_match_369_2433_175": true,
+    "offline_comparison_counts_equal": true,
+    "all_crc_valid": true,
+    "all_timeline_delivered": true,
+    "recorded_checked_sensor_fields_preserved": true,
+    "all_source_initial_disabled_checks_pass": true,
+    "recorded_off_conditions_remain_off": true,
+    "actual_c_expectations_match": true,
+    "actual_c_all_generated_denied_in_this_configuration": true,
+    "native_solver_status_zero": true,
+    "no_forced_permission_or_physical_init": true,
+    "recorded_source_checks_and_current_hashes_match": true,
+    "replay_version_is_current_error_propagation_version": true,
+    "namespace_method_globals_resolved": true,
+    "namespace_source_constants_equal": true,
+    "native_and_safety_build_unchanged_from_previous_evidence": true,
+    "current_release_patched_files_equal": true,
+    "separate_factory_card_sample_matches_c_arguments": true
+  },
+  "failures": [],
+  "source_at_execution_checks": [
+    {
+      "alias": "log_a",
+      "path": "tools/ars510_offline/replay.py",
+      "sha256_at_execution": "c5d91ef5c12dd3ca537d0de65e1b338fe25fcac31478e7059e299fb41cb9f1a6",
+      "current_sha256": "c5d91ef5c12dd3ca537d0de65e1b338fe25fcac31478e7059e299fb41cb9f1a6",
+      "same_now": true
+    },
+    {
+      "alias": "log_a",
+      "path": "openpilot/cereal/messaging/__init__.py",
+      "sha256_at_execution": "bee560dadd985b82aac55039581851d37bdeadf39aed0845d50c3ad3103d691b",
+      "current_sha256": "bee560dadd985b82aac55039581851d37bdeadf39aed0845d50c3ad3103d691b",
+      "same_now": true
+    },
+    {
+      "alias": "log_a",
+      "path": "openpilot/selfdrive/selfdrived/selfdrived.py",
+      "sha256_at_execution": "800640fea14be35cfbba710e800028e097ffc27d9cb3742361426e8354117728",
+      "current_sha256": "800640fea14be35cfbba710e800028e097ffc27d9cb3742361426e8354117728",
+      "same_now": true
+    },
+    {
+      "alias": "log_a",
+      "path": "openpilot/selfdrive/controls/controlsd.py",
+      "sha256_at_execution": "695609a1088d70b9a0cb07f8a68bf6fdd5a2a88b078c0d4d39a29cdbdd8f92cc",
+      "current_sha256": "695609a1088d70b9a0cb07f8a68bf6fdd5a2a88b078c0d4d39a29cdbdd8f92cc",
+      "same_now": true
+    },
+    {
+      "alias": "log_a",
+      "path": "openpilot/selfdrive/car/card.py",
+      "sha256_at_execution": "de239706c6194073d5758c7314d060146e4404b55648cdba90d183a59883b1a2",
+      "current_sha256": "de239706c6194073d5758c7314d060146e4404b55648cdba90d183a59883b1a2",
+      "same_now": true
+    },
+    {
+      "alias": "log_b",
+      "path": "tools/ars510_offline/replay.py",
+      "sha256_at_execution": "c5d91ef5c12dd3ca537d0de65e1b338fe25fcac31478e7059e299fb41cb9f1a6",
+      "current_sha256": "c5d91ef5c12dd3ca537d0de65e1b338fe25fcac31478e7059e299fb41cb9f1a6",
+      "same_now": true
+    },
+    {
+      "alias": "log_b",
+      "path": "openpilot/cereal/messaging/__init__.py",
+      "sha256_at_execution": "bee560dadd985b82aac55039581851d37bdeadf39aed0845d50c3ad3103d691b",
+      "current_sha256": "bee560dadd985b82aac55039581851d37bdeadf39aed0845d50c3ad3103d691b",
+      "same_now": true
+    },
+    {
+      "alias": "log_b",
+      "path": "openpilot/selfdrive/selfdrived/selfdrived.py",
+      "sha256_at_execution": "800640fea14be35cfbba710e800028e097ffc27d9cb3742361426e8354117728",
+      "current_sha256": "800640fea14be35cfbba710e800028e097ffc27d9cb3742361426e8354117728",
+      "same_now": true
+    },
+    {
+      "alias": "log_b",
+      "path": "openpilot/selfdrive/controls/controlsd.py",
+      "sha256_at_execution": "695609a1088d70b9a0cb07f8a68bf6fdd5a2a88b078c0d4d39a29cdbdd8f92cc",
+      "current_sha256": "695609a1088d70b9a0cb07f8a68bf6fdd5a2a88b078c0d4d39a29cdbdd8f92cc",
+      "same_now": true
+    },
+    {
+      "alias": "log_b",
+      "path": "openpilot/selfdrive/car/card.py",
+      "sha256_at_execution": "de239706c6194073d5758c7314d060146e4404b55648cdba90d183a59883b1a2",
+      "current_sha256": "de239706c6194073d5758c7314d060146e4404b55648cdba90d183a59883b1a2",
+      "same_now": true
+    },
+    {
+      "alias": "log_d",
+      "path": "tools/ars510_offline/replay.py",
+      "sha256_at_execution": "c5d91ef5c12dd3ca537d0de65e1b338fe25fcac31478e7059e299fb41cb9f1a6",
+      "current_sha256": "c5d91ef5c12dd3ca537d0de65e1b338fe25fcac31478e7059e299fb41cb9f1a6",
+      "same_now": true
+    },
+    {
+      "alias": "log_d",
+      "path": "openpilot/cereal/messaging/__init__.py",
+      "sha256_at_execution": "bee560dadd985b82aac55039581851d37bdeadf39aed0845d50c3ad3103d691b",
+      "current_sha256": "bee560dadd985b82aac55039581851d37bdeadf39aed0845d50c3ad3103d691b",
+      "same_now": true
+    },
+    {
+      "alias": "log_d",
+      "path": "openpilot/selfdrive/selfdrived/selfdrived.py",
+      "sha256_at_execution": "800640fea14be35cfbba710e800028e097ffc27d9cb3742361426e8354117728",
+      "current_sha256": "800640fea14be35cfbba710e800028e097ffc27d9cb3742361426e8354117728",
+      "same_now": true
+    },
+    {
+      "alias": "log_d",
+      "path": "openpilot/selfdrive/controls/controlsd.py",
+      "sha256_at_execution": "695609a1088d70b9a0cb07f8a68bf6fdd5a2a88b078c0d4d39a29cdbdd8f92cc",
+      "current_sha256": "695609a1088d70b9a0cb07f8a68bf6fdd5a2a88b078c0d4d39a29cdbdd8f92cc",
+      "same_now": true
+    },
+    {
+      "alias": "log_d",
+      "path": "openpilot/selfdrive/car/card.py",
+      "sha256_at_execution": "de239706c6194073d5758c7314d060146e4404b55648cdba90d183a59883b1a2",
+      "current_sha256": "de239706c6194073d5758c7314d060146e4404b55648cdba90d183a59883b1a2",
+      "same_now": true
+    }
+  ],
+  "current_release_patched_file_checks": [
+    {
+      "path": "docs/ars510_offline_20261012.md",
+      "expected_sha256_lf": "9b540c75395280e9be02f63c6c1685bfc983ea90d7f2d2e903d118bf6010497a",
+      "current_sha256_lf": "9b540c75395280e9be02f63c6c1685bfc983ea90d7f2d2e903d118bf6010497a",
+      "same_now": true
+    },
+    {
+      "path": "docs/rav4_pcm_mode0_20261012.md",
+      "expected_sha256_lf": "a7d32041cbfe8e1a05effef317d5389d80d3e6d4a0d722f1f15f1392a71beb4f",
+      "current_sha256_lf": "a7d32041cbfe8e1a05effef317d5389d80d3e6d4a0d722f1f15f1392a71beb4f",
+      "same_now": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/ars510/LICENSE",
+      "expected_sha256_lf": "56b07f3b4fd5f231ee865512b6345985d83f61cff58da92dcdedfe665b903a0e",
+      "current_sha256_lf": "56b07f3b4fd5f231ee865512b6345985d83f61cff58da92dcdedfe665b903a0e",
+      "same_now": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/ars510/__init__.py",
+      "expected_sha256_lf": "2b90c995ed9915b3bb83a399524387d3863f4f7db23c6a2c2daeb3be23f8a62c",
+      "current_sha256_lf": "2b90c995ed9915b3bb83a399524387d3863f4f7db23c6a2c2daeb3be23f8a62c",
+      "same_now": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/ars510/constants.py",
+      "expected_sha256_lf": "4c130c12107d895b361663716e7eeea2729458cc0dce4c20284f4f1b575df63a",
+      "current_sha256_lf": "4c130c12107d895b361663716e7eeea2729458cc0dce4c20284f4f1b575df63a",
+      "same_now": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/ars510/interface.py",
+      "expected_sha256_lf": "fb04d359df44df0bea7c49ed8a8caa93de15d6efa8c1351b786e6fdc465cb6be",
+      "current_sha256_lf": "fb04d359df44df0bea7c49ed8a8caa93de15d6efa8c1351b786e6fdc465cb6be",
+      "same_now": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/ars510/objects.py",
+      "expected_sha256_lf": "026ee8ddd038430f4b3e8a4987fd8d94622746b236ea20d24e368988500e0973",
+      "current_sha256_lf": "026ee8ddd038430f4b3e8a4987fd8d94622746b236ea20d24e368988500e0973",
+      "same_now": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/ars510/record.py",
+      "expected_sha256_lf": "6f893898eda96d442b70c3b248b943f1c56adc255c0d4768c4c0efdf4945c19b",
+      "current_sha256_lf": "6f893898eda96d442b70c3b248b943f1c56adc255c0d4768c4c0efdf4945c19b",
+      "same_now": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/ars510/shell85.py",
+      "expected_sha256_lf": "726af1543211830e1eda3d609b4962cdc07d54ea3022a6c46a1b5280520137b5",
+      "current_sha256_lf": "726af1543211830e1eda3d609b4962cdc07d54ea3022a6c46a1b5280520137b5",
+      "same_now": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/ars510/support.py",
+      "expected_sha256_lf": "8c0a1677612d0c18da272f08f3ec5a61af00f6cf1a13343335ef5311ed59153d",
+      "current_sha256_lf": "8c0a1677612d0c18da272f08f3ec5a61af00f6cf1a13343335ef5311ed59153d",
+      "same_now": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/ars510/tracks.py",
+      "expected_sha256_lf": "0c59bd460d9191a030e65b6267d3ed98cc14f0b0e3ac04ea006a6d21da5e4561",
+      "current_sha256_lf": "0c59bd460d9191a030e65b6267d3ed98cc14f0b0e3ac04ea006a6d21da5e4561",
+      "same_now": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/ars510/transport.py",
+      "expected_sha256_lf": "33dd639634a956759a06f36b3c3d826df8e9af3d9985e014ad129a452430704d",
+      "current_sha256_lf": "33dd639634a956759a06f36b3c3d826df8e9af3d9985e014ad129a452430704d",
+      "same_now": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/ars510_offline.py",
+      "expected_sha256_lf": "8b471914b92466fb9589c298b976fe377eea18e7c111e81f89258cab45d12a50",
+      "current_sha256_lf": "8b471914b92466fb9589c298b976fe377eea18e7c111e81f89258cab45d12a50",
+      "same_now": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/carcontroller.py",
+      "expected_sha256_lf": "074bc65aabcc13471a907e6bfd9421972c8061c9c3ff17e694dc3f168d2dec29",
+      "current_sha256_lf": "074bc65aabcc13471a907e6bfd9421972c8061c9c3ff17e694dc3f168d2dec29",
+      "same_now": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/tests/test_ars510_offline.py",
+      "expected_sha256_lf": "f8b96f52f415bccf619ada99afcbda0744910a7804660f075f9c9c5be2e3e621",
+      "current_sha256_lf": "f8b96f52f415bccf619ada99afcbda0744910a7804660f075f9c9c5be2e3e621",
+      "same_now": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/tests/test_stopping_command.py",
+      "expected_sha256_lf": "103639fdde17dfd3af4578837b1978ce27fb776ef3ba3938b027a5119637a2a0",
+      "current_sha256_lf": "103639fdde17dfd3af4578837b1978ce27fb776ef3ba3938b027a5119637a2a0",
+      "same_now": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/safety/safety.h",
+      "expected_sha256_lf": "26d93aedb6d26dc6071c9d85564ab29100e0bf7265a0e72af543d033ae9d4169",
+      "current_sha256_lf": "26d93aedb6d26dc6071c9d85564ab29100e0bf7265a0e72af543d033ae9d4169",
+      "same_now": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/safety/safety/safety_honda.h",
+      "expected_sha256_lf": "49980b50de36e42537ebfaf7156e8d2000ac89d91a65167655af117b142ecf93",
+      "current_sha256_lf": "49980b50de36e42537ebfaf7156e8d2000ac89d91a65167655af117b142ecf93",
+      "same_now": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/safety/safety/safety_hyundai.h",
+      "expected_sha256_lf": "062a2a16f13a84c2c0a7122e10a0091ddab1fd71b7d2716f90cf7a9e2c1671b1",
+      "current_sha256_lf": "062a2a16f13a84c2c0a7122e10a0091ddab1fd71b7d2716f90cf7a9e2c1671b1",
+      "same_now": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/safety/safety/safety_hyundai_canfd.h",
+      "expected_sha256_lf": "c404148637d0b8a152d2cfce2b67fda4c417daacef47c5ea666abdaff89deabf",
+      "current_sha256_lf": "c404148637d0b8a152d2cfce2b67fda4c417daacef47c5ea666abdaff89deabf",
+      "same_now": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/safety/tests/common.py",
+      "expected_sha256_lf": "116b4d6dd06d1a86860bca0ed67f6826f788892dc65f365981f6858abbf022a9",
+      "current_sha256_lf": "116b4d6dd06d1a86860bca0ed67f6826f788892dc65f365981f6858abbf022a9",
+      "same_now": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/safety/tests/libsafety/libsafety_py.py",
+      "expected_sha256_lf": "c4f10fe54c03052d28473a42c54de80768ec7a3d55e82b0c0c207e6b72e16aa2",
+      "current_sha256_lf": "c4f10fe54c03052d28473a42c54de80768ec7a3d55e82b0c0c207e6b72e16aa2",
+      "same_now": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/safety/tests/test_tesla.py",
+      "expected_sha256_lf": "33e3b203de70ea05fc3502720313fe07856e020a9a51d7fd47888ce9568c27d4",
+      "current_sha256_lf": "33e3b203de70ea05fc3502720313fe07856e020a9a51d7fd47888ce9568c27d4",
+      "same_now": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/safety/tests/test_volkswagen_pq.py",
+      "expected_sha256_lf": "4b06fd8ac907607f51df8f0a366c8f93734f570a2054836ff9725ccc9abf2b12",
+      "current_sha256_lf": "4b06fd8ac907607f51df8f0a366c8f93734f570a2054836ff9725ccc9abf2b12",
+      "same_now": true
+    },
+    {
+      "path": "openpilot/selfdrive/car/cruise.py",
+      "expected_sha256_lf": "7130a2a597689730e31ac7cb99f62632f33b04230610dd7a0367e8740b9263f9",
+      "current_sha256_lf": "7130a2a597689730e31ac7cb99f62632f33b04230610dd7a0367e8740b9263f9",
+      "same_now": true
+    },
+    {
+      "path": "openpilot/selfdrive/car/tests/test_toyota_pcm_mode0.py",
+      "expected_sha256_lf": "596df03b1643403595d8b4b43eeb49207524531fcdd0106180931cf9a622a1bb",
+      "current_sha256_lf": "596df03b1643403595d8b4b43eeb49207524531fcdd0106180931cf9a622a1bb",
+      "same_now": true
+    },
+    {
+      "path": "openpilot/selfdrive/car/toyota_pcm_speed.py",
+      "expected_sha256_lf": "af70ee4f1c5bb2eb9dfde021c70491af6d1d13a644afe2fbad66ca6871fb2683",
+      "current_sha256_lf": "af70ee4f1c5bb2eb9dfde021c70491af6d1d13a644afe2fbad66ca6871fb2683",
+      "same_now": true
+    },
+    {
+      "path": "openpilot/selfdrive/carrot/radar/radard_dpath.py",
+      "expected_sha256_lf": "74022911b373935db739622535ca7808c7eb5a61ac44fa3abda33e7a17cc3401",
+      "current_sha256_lf": "74022911b373935db739622535ca7808c7eb5a61ac44fa3abda33e7a17cc3401",
+      "same_now": true
+    },
+    {
+      "path": "openpilot/selfdrive/carrot/radar_motion/controller.py",
+      "expected_sha256_lf": "c9583f7b31adb844009a7db6d15dd5511740d9cc442b855ce63f778ba4d5fee5",
+      "current_sha256_lf": "c9583f7b31adb844009a7db6d15dd5511740d9cc442b855ce63f778ba4d5fee5",
+      "same_now": true
+    },
+    {
+      "path": "openpilot/selfdrive/carrot/signal_stop_prepare.py",
+      "expected_sha256_lf": "5334c66535e22c434ea98321c076a2a9035d8a9bc5034dd0c385dc0ecf199d02",
+      "current_sha256_lf": "5334c66535e22c434ea98321c076a2a9035d8a9bc5034dd0c385dc0ecf199d02",
+      "same_now": true
+    },
+    {
+      "path": "openpilot/selfdrive/carrot/signal_stop_prepare_runtime.py",
+      "expected_sha256_lf": "5ede16e0d25311c9ac6a47284591567a9c9eb80e02a433bc68c8a374f6fdf11e",
+      "current_sha256_lf": "5ede16e0d25311c9ac6a47284591567a9c9eb80e02a433bc68c8a374f6fdf11e",
+      "same_now": true
+    },
+    {
+      "path": "openpilot/selfdrive/carrot/tests/test_signal_start_guard.py",
+      "expected_sha256_lf": "f5a54da372f6bea6f611bcd8b157313adbed1f90cbc38bff44bff3b863d5e965",
+      "current_sha256_lf": "f5a54da372f6bea6f611bcd8b157313adbed1f90cbc38bff44bff3b863d5e965",
+      "same_now": true
+    },
+    {
+      "path": "openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py",
+      "expected_sha256_lf": "7f647b9a63762b9c808bddf418aae6dbbd55d15af6aa9cf0939606e05f9e50c1",
+      "current_sha256_lf": "7f647b9a63762b9c808bddf418aae6dbbd55d15af6aa9cf0939606e05f9e50c1",
+      "same_now": true
+    },
+    {
+      "path": "openpilot/selfdrive/controls/lib/longitudinal_planner.py",
+      "expected_sha256_lf": "781b78157fe272e4cdcb79c985602695fa14ccbddd38a9e8544a614b8ab2e8b0",
+      "current_sha256_lf": "781b78157fe272e4cdcb79c985602695fa14ccbddd38a9e8544a614b8ab2e8b0",
+      "same_now": true
+    },
+    {
+      "path": "openpilot/selfdrive/modeld/signal_tracking_shadow.py",
+      "expected_sha256_lf": "2d54cb0385c1c0a288fbb73376d0fbb56e65796fa9c020d89d702fd2382e9331",
+      "current_sha256_lf": "2d54cb0385c1c0a288fbb73376d0fbb56e65796fa9c020d89d702fd2382e9331",
+      "same_now": true
+    },
+    {
+      "path": "openpilot/selfdrive/modeld/tests/test_signal_tracking_shadow.py",
+      "expected_sha256_lf": "9df3ce190211d915334200f86c01109dfbd0ce26efcfbb10091d89160adb8a3e",
+      "current_sha256_lf": "9df3ce190211d915334200f86c01109dfbd0ce26efcfbb10091d89160adb8a3e",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_offline/LICENSE.ars510",
+      "expected_sha256_lf": "56b07f3b4fd5f231ee865512b6345985d83f61cff58da92dcdedfe665b903a0e",
+      "current_sha256_lf": "56b07f3b4fd5f231ee865512b6345985d83f61cff58da92dcdedfe665b903a0e",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_offline/__init__.py",
+      "expected_sha256_lf": "a177f08cb7ef19824f95e5b4a9383e8f59c6d43b428e4e07cde34c09fd262a35",
+      "current_sha256_lf": "a177f08cb7ef19824f95e5b4a9383e8f59c6d43b428e4e07cde34c09fd262a35",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_offline/bootstrap.py",
+      "expected_sha256_lf": "57af6f78706e62cecc9b4ab5a0d4b055b1d3398c23f261c983b162f9c633c8a6",
+      "current_sha256_lf": "57af6f78706e62cecc9b4ab5a0d4b055b1d3398c23f261c983b162f9c633c8a6",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_offline/control_context.py",
+      "expected_sha256_lf": "661ba4ceef4586a2624b1d4ad2fbc46cb64a479cf2a6b7c9771cf4f0ce5f48a5",
+      "current_sha256_lf": "661ba4ceef4586a2624b1d4ad2fbc46cb64a479cf2a6b7c9771cf4f0ce5f48a5",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_offline/dbc/ars510_objects_vbus.dbc",
+      "expected_sha256_lf": "d34249fb011323e31cddfbb4936b9d430252bfffd9225a46fb59cb6eaa3bd1fc",
+      "current_sha256_lf": "d34249fb011323e31cddfbb4936b9d430252bfffd9225a46fb59cb6eaa3bd1fc",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_offline/dbc/ars510_radar_bus.dbc",
+      "expected_sha256_lf": "c63db6c7f40453660951825429dcdebe50206fcab6a729bc775dab6bde217fdf",
+      "current_sha256_lf": "c63db6c7f40453660951825429dcdebe50206fcab6a729bc775dab6bde217fdf",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_offline/dbc/toyota_tss2_ars510.dbc",
+      "expected_sha256_lf": "0e53f66115d1a5acca842141b3334278bb4265c1271481257006107885cf40f6",
+      "current_sha256_lf": "0e53f66115d1a5acca842141b3334278bb4265c1271481257006107885cf40f6",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_offline/diagnose.py",
+      "expected_sha256_lf": "8a8864948ef4db7574ceb4ea286f72e4872004bd3ebbba8b806f403a0b89b312",
+      "current_sha256_lf": "8a8864948ef4db7574ceb4ea286f72e4872004bd3ebbba8b806f403a0b89b312",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_offline/fixtures/public_id80_record.csv",
+      "expected_sha256_lf": "dbbbaebcab2a6c972b2ae74dc3a197ca3f6890109f69605f7417cd23f803215c",
+      "current_sha256_lf": "dbbbaebcab2a6c972b2ae74dc3a197ca3f6890109f69605f7417cd23f803215c",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_offline/pytest.ini",
+      "expected_sha256_lf": "e426e9d19abc292755ba0193e87e40a93f26b61e87db8e131fe90288610e9aa7",
+      "current_sha256_lf": "e426e9d19abc292755ba0193e87e40a93f26b61e87db8e131fe90288610e9aa7",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_offline/replay.py",
+      "expected_sha256_lf": "c5d91ef5c12dd3ca537d0de65e1b338fe25fcac31478e7059e299fb41cb9f1a6",
+      "current_sha256_lf": "c5d91ef5c12dd3ca537d0de65e1b338fe25fcac31478e7059e299fb41cb9f1a6",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_offline/requirements.txt",
+      "expected_sha256_lf": "293b2efcb98c0b3f1721000f2f33bb931869eb0c26e75279b42f8aef13e5107c",
+      "current_sha256_lf": "293b2efcb98c0b3f1721000f2f33bb931869eb0c26e75279b42f8aef13e5107c",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_offline/test_legacy_regression.py",
+      "expected_sha256_lf": "1adac712e8ccb6d6d217ff2b148db81ceafce170dc24ab98f0819da38fd7270e",
+      "current_sha256_lf": "1adac712e8ccb6d6d217ff2b148db81ceafce170dc24ab98f0819da38fd7270e",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_validation/native/test_acc_witness_encoding.py",
+      "expected_sha256_lf": "d3cb81258c570efff59a9c47167bde444f903c0bf2991835a1dd362cf211a8b3",
+      "current_sha256_lf": "d3cb81258c570efff59a9c47167bde444f903c0bf2991835a1dd362cf211a8b3",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_validation/native/test_actuator_bounds.py",
+      "expected_sha256_lf": "70354cf5e521982a79e7a221f05c332dba951f38ddeee9ebec07ce9e485a736d",
+      "current_sha256_lf": "70354cf5e521982a79e7a221f05c332dba951f38ddeee9ebec07ce9e485a736d",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_validation/native/test_near_front_retention.py",
+      "expected_sha256_lf": "3e824584e8d915859e833086ddd19e8d3a053115b6694d7d63347e05fff26bdc",
+      "current_sha256_lf": "3e824584e8d915859e833086ddd19e8d3a053115b6694d7d63347e05fff26bdc",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_validation/regen_probe.py",
+      "expected_sha256_lf": "7903dd63eaeb4b5658910a934ae84c92648f9b790c65d28c1fc83ebe96afd202",
+      "current_sha256_lf": "7903dd63eaeb4b5658910a934ae84c92648f9b790c65d28c1fc83ebe96afd202",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_validation/signal/camera_audit.py",
+      "expected_sha256_lf": "d6fa0227988d984ad58ed1a873321493b201e7bce857c82c0f827febdbf2ff03",
+      "current_sha256_lf": "d6fa0227988d984ad58ed1a873321493b201e7bce857c82c0f827febdbf2ff03",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_validation/signal/core.py",
+      "expected_sha256_lf": "2244f41f2af5eb0ee9773d455b23cb74c7ebb3b90857f35765c78d0e38b2f1f5",
+      "current_sha256_lf": "2244f41f2af5eb0ee9773d455b23cb74c7ebb3b90857f35765c78d0e38b2f1f5",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_validation/signal/native_signal.py",
+      "expected_sha256_lf": "794eabd81940d04835036bdc37ba900d51981e6f5685f18af1ba18c3630d0ac3",
+      "current_sha256_lf": "794eabd81940d04835036bdc37ba900d51981e6f5685f18af1ba18c3630d0ac3",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_validation/signal/native_signal_can.py",
+      "expected_sha256_lf": "bc227394d7a7d83fa21a0e8eccba72246e907f34b2dccd91970dcda079badd5b",
+      "current_sha256_lf": "bc227394d7a7d83fa21a0e8eccba72246e907f34b2dccd91970dcda079badd5b",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_validation/signal/native_signal_can_paced.py",
+      "expected_sha256_lf": "e98ffc3937c6c4e0ae4bff824a3e4539fe3f3b013724c64ec76048b9c8758851",
+      "current_sha256_lf": "e98ffc3937c6c4e0ae4bff824a3e4539fe3f3b013724c64ec76048b9c8758851",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_validation/signal/realtime_signal.py",
+      "expected_sha256_lf": "c810544cdf9291a14f5a06f173042c2eba4c23f501776225e3db9ae9c547b1f0",
+      "current_sha256_lf": "c810544cdf9291a14f5a06f173042c2eba4c23f501776225e3db9ae9c547b1f0",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_validation/signal/summarize_can_comparison.py",
+      "expected_sha256_lf": "aed5d50f25900a9134f1ad63cbf90bb26e8f05a80cfeeacbc751fd4d8b7e687a",
+      "current_sha256_lf": "aed5d50f25900a9134f1ad63cbf90bb26e8f05a80cfeeacbc751fd4d8b7e687a",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_validation/signal/summarize_trace.py",
+      "expected_sha256_lf": "2f808828f39c5ab0065dd82736aa9f2d38729f4f15824c5ea775ec75843cff7f",
+      "current_sha256_lf": "2f808828f39c5ab0065dd82736aa9f2d38729f4f15824c5ea775ec75843cff7f",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_validation/signal/test_camera_profiles.py",
+      "expected_sha256_lf": "fc32f0323a443d2eb5316d9df3d3440dcc2aab8c37062dc4d0fd09a925cdce4c",
+      "current_sha256_lf": "fc32f0323a443d2eb5316d9df3d3440dcc2aab8c37062dc4d0fd09a925cdce4c",
+      "same_now": true
+    },
+    {
+      "path": "tools/ars510_validation/signal/test_native_signal.py",
+      "expected_sha256_lf": "035b65ac995f84cf0a0900a3ea56846411d3862a652b7cc919ba1e27d9c62f97",
+      "current_sha256_lf": "035b65ac995f84cf0a0900a3ea56846411d3862a652b7cc919ba1e27d9c62f97",
+      "same_now": true
+    }
+  ],
+  "native_build_hashes": [
+    {
+      "name": "acados_ocp_solver_pyx.cpython-312-x86_64-linux-gnu.so",
+      "historical_sha256": "2533733258b4f2ceec5ce79a023b1c2992266a7d2a9637fd8f689e58a9ee2efb",
+      "current_sha256": "2533733258b4f2ceec5ce79a023b1c2992266a7d2a9637fd8f689e58a9ee2efb",
+      "same_as_previous_frozen_build": true
+    },
+    {
+      "name": "libacados.so",
+      "historical_sha256": "b5496cea328d9a239b1c1cb69b1327753e54eeebe331ef29ca91b97a85544228",
+      "current_sha256": "b5496cea328d9a239b1c1cb69b1327753e54eeebe331ef29ca91b97a85544228",
+      "same_as_previous_frozen_build": true
+    },
+    {
+      "name": "libacados_ocp_solver_long.so",
+      "historical_sha256": "2cf19053e5712920719b54ba8f970fcfd178ffe4acd5c77e3170a423b030eb71",
+      "current_sha256": "2cf19053e5712920719b54ba8f970fcfd178ffe4acd5c77e3170a423b030eb71",
+      "same_as_previous_frozen_build": true
+    },
+    {
+      "name": "libblasfeo.so",
+      "historical_sha256": "4804a491b10ca1065010c84d1e7fb9cc005acd2cfed504f0655ba94bd77ac01b",
+      "current_sha256": "4804a491b10ca1065010c84d1e7fb9cc005acd2cfed504f0655ba94bd77ac01b",
+      "same_as_previous_frozen_build": true
+    },
+    {
+      "name": "libhpipm.so",
+      "historical_sha256": "1eac1f3673d6f99876104f86ef8b80f884f860ce77ba9ff135af5b2e355616c6",
+      "current_sha256": "1eac1f3673d6f99876104f86ef8b80f884f860ce77ba9ff135af5b2e355616c6",
+      "same_as_previous_frozen_build": true
+    },
+    {
+      "name": "libqpOASES_e.so.3.1",
+      "historical_sha256": "48444b891f694cb720146a2ce2a83a42086d8a911064e5b14df5f6d08486f47b",
+      "current_sha256": "48444b891f694cb720146a2ce2a83a42086d8a911064e5b14df5f6d08486f47b",
+      "same_as_previous_frozen_build": true
+    }
+  ],
+  "safety_build_hash": {
+    "historical_sha256": "0da233bf51bc8375f969bc60101ae011638a0a05c69aa4f9abec3a87df678570",
+    "current_sha256": "0da233bf51bc8375f969bc60101ae011638a0a05c69aa4f9abec3a87df678570",
+    "same_as_previous_frozen_build": true
+  },
+  "separate_factory_card_config_sample": {
+    "generated_utc": "2026-10-12T13:51:18.396930+00:00",
+    "sample_scope_ko": "별도 원형 factory CP와 Card 생성자를 거친 기존 메모리 C 초기 설정 표본. 이전 3개 재생을 다시 실행한 결과가 아니다. get_params 단독 alternativeExperience0 표본은 별도 보존했다.",
+    "cp": {
+      "carFingerprint": "TOYOTA_RAV4_TSS2_2022",
+      "safetyConfigs": [
+        {
+          "safetyModel": "toyota",
+          "safetyModel_raw": 2,
+          "safetyParam": 73
+        }
+      ],
+      "alternativeExperience": 1,
+      "flags": 1372,
+      "pcmCruise": true,
+      "directLong": true,
+      "radarUnavailable": true,
+      "longitudinalActuatorDelay": 0.15000000596046448
+    },
+    "c_set_safety_hooks_arguments": {
+      "safetyModel": 2,
+      "safetyParam": 73
+    },
+    "c_set_alternative_experience_argument": 1,
+    "initial_controlsAllowed": false,
+    "initial_longitudinalAllowed": false,
+    "raw_rx_frames": 0,
+    "synthetic_permission_update_calls": 0,
+    "actual_ci_init_executed": false,
+    "physical_tx_executed": false,
+    "init_io_sink_calls": 0,
+    "operating_params_changed": false
+  },
+  "separately_executed_panda_reference": {
+    "path": "work/panda_policy_probe/run01/results.json",
+    "sha256": "34a8df132938b9842f5704db5e659820bfcc46f8c491902cd06bc496ef056d6e",
+    "provenance_ko": "주 에이전트가 직접 실행한 원본 설정 집계를 읽은 근거. 이 하네스의 직접 실행으로 세지 않는다."
+  },
+  "scope_ko": "실제 CAN 객체의 자료 연결 관측. 원본 OFF 조건을 보존했다. 활성 제어·실물 릴레이·실차 안전·ECU 반응은 증명하지 않는다.",
+  "corrections_to_preserved_result_metadata_ko": [
+    "기존 결과의 collector_clock_assumption 중 수신시각 없음은 부정확한 문구다. 원본 radarInput 메타는 존재하지만 이번 direct-adapter 경로는 이를 소비하지 않는다.",
+    "기존 결과의 actual_gvc_assumed=0.0은 이전 하네스의 남은 설명 필드다. 실제 GVC/PCM/HUD 피드백은 원본 CAN의 기존 DBC 파서로 해독했고 세 실행의 미수신 집계는 모두 비어 있다.",
+    "c_relay_malfunction은 선언 factoryCP/현재 C에 실제 기록 CAN을 넣어 관측한 메모리 값이다. 실물 Panda 릴레이 고장 확정이 아니다.",
+    "sensor_fields_preserved는 명시한 15개 필드의 직접 대조다. Card가 갱신한 radarInput/VCruise/UI 필드는 원본 동일성 주장에 포함하지 않는다."
+  ],
+  "unexecuted_scope_ko": [
+    "생산 radarcan/RadarCanBatches의 원본 CS 배치 메타 및 100ms 수신나이 경계",
+    "전체 Toyota CI.update, 실제 CAN 수집기와 소켓, 실제 CI.init·UDS",
+    "실물 Panda 설정 일치·MCU heartbeat·릴레이 상태·차량 ECU 응답",
+    "ARS live 등록, PCS/AEB 보존, 회생제동, 신호 Mode2 통합과 실물 카메라 인식"
+  ]
+}

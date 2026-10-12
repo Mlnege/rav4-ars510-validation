@@ -1,0 +1,421 @@
+{
+  "started_utc": "2026-10-12T14:34:53.477804+00:00",
+  "finished_utc": "2026-10-12T14:34:57.107533+00:00",
+  "wall_seconds": 3.6295634000052814,
+  "files": [
+    {
+      "alias": "log_b",
+      "status": "offline_adapters_executed",
+      "input_counts": {
+        "can_packets": 6166,
+        "can_frames": 341266,
+        "carState": 6022,
+        "metadata_wire_missing": 0
+      },
+      "source_file_stat_unchanged": true,
+      "original_cp_unchanged": true,
+      "original_radarUnavailable": true,
+      "direct": {
+        "counts": {
+          "adapter_calls": 6166,
+          "paired_can_packets": 6166,
+          "paired_can_frames": 341266,
+          "calls_with_new_records": 1021,
+          "calls_with_multiple_new_records": 0,
+          "returned_radarData": 1026,
+          "returned_points": 117,
+          "returned_error_results": 5,
+          "points_before_first_recorded_cs": 0,
+          "records_before_first_recorded_cs": 24,
+          "no_result_calls": 5140,
+          "nonfinite_required_points": 0
+        },
+        "radar_error_counts": {
+          "canError": 0,
+          "radarFault": 0,
+          "wrongConfig": 0,
+          "radarUnavailableTemporary": 5
+        },
+        "adapter_diagnostics": {
+          "received_id80_frames": 108337,
+          "no_record_updates": 305,
+          "published_records": 1021,
+          "published_points": 117,
+          "records": 1021,
+          "crc_failures": 0,
+          "settling_suppressed": 455,
+          "unresolved_suppressed": 0,
+          "path_gated": 46,
+          "orphan_continuations": 111,
+          "starts": 1021,
+          "completed_records": 1021,
+          "sequence_errors": 0,
+          "bad_frame_length": 0,
+          "bad_frame_type": 0,
+          "assembly_timeout": 0,
+          "nonfinite_time": 0,
+          "reversed_time": 0,
+          "interrupted_records": 0,
+          "timeouts": 0,
+          "history_resets": 0,
+          "invalid_points": 0,
+          "invalid_native_record": 0,
+          "invalid_packet_time": 0,
+          "nonfinite_input": 0,
+          "reversed_receive_time": 0,
+          "support_frame_length": 0,
+          "ambiguous_batch_time": 0,
+          "invalid_track_id": 0
+        },
+        "relative_time_distributions": {
+          "call_minus_first_packet": {
+            "count": 6166,
+            "min_ms": 0.0,
+            "max_ms": 0.0,
+            "negative_count": 0,
+            "over_100ms_count": 0
+          },
+          "call_minus_last_packet": {
+            "count": 6166,
+            "min_ms": 0.0,
+            "max_ms": 0.0,
+            "negative_count": 0,
+            "over_100ms_count": 0
+          },
+          "call_minus_last_record_start": {
+            "count": 1021,
+            "min_ms": 27.015777999991997,
+            "max_ms": 47.104892000007226,
+            "negative_count": 0,
+            "over_100ms_count": 0
+          },
+          "completion_minus_last_record_start": {
+            "count": 1021,
+            "min_ms": 27.015777999991997,
+            "max_ms": 47.104892000007226,
+            "negative_count": 0,
+            "over_100ms_count": 0
+          },
+          "call_minus_last_completion": {
+            "count": 1021,
+            "min_ms": 0.0,
+            "max_ms": 0.0,
+            "negative_count": 0,
+            "over_100ms_count": 0
+          }
+        },
+        "first_record_call_minus_first_call_s": 0.041531353999999965,
+        "sample_receive_span_s": 61.64170220800001,
+        "last_record_time_measurement_ko": "record 시각 통계는 각호출 마지막완성record 기준. 원본절대시각/ID/좌표는저장하지않음.",
+        "clock_assumption_ko": "기존직접경로: 저장CAN Event마다원본CANheader/latestCS를사용. 첫CS전ego초기값0인기존정책을별도명시."
+      },
+      "paired": {
+        "input_max": {
+          "counts": {
+            "adapter_calls": 6002,
+            "paired_can_packets": 6010,
+            "paired_can_frames": 332789,
+            "calls_with_new_records": 991,
+            "calls_with_multiple_new_records": 0,
+            "returned_radarData": 1022,
+            "returned_points": 115,
+            "returned_error_results": 31,
+            "no_result_calls": 4980,
+            "batch_error_adapter_restarts": 4,
+            "nonfinite_required_points": 0
+          },
+          "radar_error_counts": {
+            "canError": 0,
+            "radarFault": 0,
+            "wrongConfig": 0,
+            "radarUnavailableTemporary": 31
+          },
+          "adapter_diagnostics": {
+            "no_record_updates": 2357,
+            "received_id80_frames": 105679,
+            "published_records": 991,
+            "published_points": 115,
+            "records": 991,
+            "crc_failures": 0,
+            "settling_suppressed": 441,
+            "unresolved_suppressed": 0,
+            "path_gated": 26,
+            "orphan_continuations": 453,
+            "starts": 994,
+            "completed_records": 991,
+            "sequence_errors": 0,
+            "bad_frame_length": 0,
+            "bad_frame_type": 0,
+            "assembly_timeout": 0,
+            "nonfinite_time": 0,
+            "reversed_time": 0,
+            "interrupted_records": 0,
+            "timeouts": 0,
+            "history_resets": 0,
+            "invalid_points": 0,
+            "invalid_native_record": 0,
+            "invalid_packet_time": 0,
+            "nonfinite_input": 0,
+            "reversed_receive_time": 0,
+            "support_frame_length": 0,
+            "ambiguous_batch_time": 0,
+            "invalid_track_id": 0
+          },
+          "relative_time_distributions": {
+            "call_minus_first_packet": {
+              "count": 6002,
+              "min_ms": 0.04363899999759724,
+              "max_ms": 81.90375000000216,
+              "negative_count": 0,
+              "over_100ms_count": 0
+            },
+            "call_minus_last_packet": {
+              "count": 6002,
+              "min_ms": 0.04363899999759724,
+              "max_ms": 7.467063000007101,
+              "negative_count": 0,
+              "over_100ms_count": 0
+            },
+            "call_minus_last_record_start": {
+              "count": 991,
+              "min_ms": 27.10425699999064,
+              "max_ms": 47.18157800000711,
+              "negative_count": 0,
+              "over_100ms_count": 0
+            },
+            "completion_minus_last_record_start": {
+              "count": 991,
+              "min_ms": 27.015777999991997,
+              "max_ms": 47.104892000007226,
+              "negative_count": 0,
+              "over_100ms_count": 0
+            },
+            "call_minus_last_completion": {
+              "count": 991,
+              "min_ms": 0.06276399999194382,
+              "max_ms": 1.9506249999992065,
+              "negative_count": 0,
+              "over_100ms_count": 0
+            }
+          },
+          "first_record_call_minus_first_call_s": 0.007309166999995398,
+          "sample_receive_span_s": 60.206534229,
+          "last_record_time_measurement_ko": "record 시각 통계는 각호출 마지막완성record 기준. 원본절대시각/ID/좌표는저장하지않음.",
+          "batch_counts": {
+            "can_packets_received": 6166,
+            "bounded_can_drops": 0,
+            "source_cs_received": 6022,
+            "can_discarded_outside_metadata_bounds": 156,
+            "accepted_batches": 6002,
+            "empty_batches": 0,
+            "pending_take_attempts": 194,
+            "pending_states_at_end": 0,
+            "unpaired_can_packets_at_end": 0
+          },
+          "batch_error_counts": {
+            "staleEgoState": 20
+          },
+          "gate_now_minus_receive_distribution": {
+            "count": 6022,
+            "min_ms": 1.481875,
+            "max_ms": 189.163281,
+            "negative_count": 0,
+            "over_100ms_count": 20
+          },
+          "clock_basis": "input_max",
+          "clock_assumption_ko": "독립CAN/CS 저장순서의최대header를gate now로사용. 그외서비스header는clock에반영하지않음.",
+          "adapter_receive_clock_ko": "decoder의외부calltime은정확해당원본CS.receiveMonoTime. 내부CAN packetheader는원본을그대로유지.",
+          "full_radarcan_process_executed": false,
+          "socket_and_global_timeout_ko": "소켓/main20ms poll·processingTimeout·state/CAN전체inputTimeout은미실행. 원형batchgate와adapter의원형timeout만실행."
+        },
+        "storage_max": {
+          "counts": {
+            "adapter_calls": 5997,
+            "paired_can_packets": 6005,
+            "paired_can_frames": 332529,
+            "calls_with_new_records": 990,
+            "calls_with_multiple_new_records": 0,
+            "returned_radarData": 1038,
+            "returned_points": 115,
+            "returned_error_results": 48,
+            "no_result_calls": 4959,
+            "batch_error_adapter_restarts": 8,
+            "nonfinite_required_points": 0
+          },
+          "radar_error_counts": {
+            "canError": 0,
+            "radarFault": 0,
+            "wrongConfig": 0,
+            "radarUnavailableTemporary": 48
+          },
+          "adapter_diagnostics": {
+            "no_record_updates": 3480,
+            "received_id80_frames": 105627,
+            "published_records": 990,
+            "published_points": 115,
+            "records": 990,
+            "crc_failures": 0,
+            "settling_suppressed": 441,
+            "unresolved_suppressed": 0,
+            "path_gated": 26,
+            "orphan_continuations": 438,
+            "starts": 994,
+            "completed_records": 990,
+            "sequence_errors": 0,
+            "bad_frame_length": 0,
+            "bad_frame_type": 0,
+            "assembly_timeout": 0,
+            "nonfinite_time": 0,
+            "reversed_time": 0,
+            "interrupted_records": 0,
+            "timeouts": 0,
+            "history_resets": 0,
+            "invalid_points": 0,
+            "invalid_native_record": 0,
+            "invalid_packet_time": 0,
+            "nonfinite_input": 0,
+            "reversed_receive_time": 0,
+            "support_frame_length": 0,
+            "ambiguous_batch_time": 0,
+            "invalid_track_id": 0
+          },
+          "relative_time_distributions": {
+            "call_minus_first_packet": {
+              "count": 5997,
+              "min_ms": 0.04363899999759724,
+              "max_ms": 81.90375000000216,
+              "negative_count": 0,
+              "over_100ms_count": 0
+            },
+            "call_minus_last_packet": {
+              "count": 5997,
+              "min_ms": 0.04363899999759724,
+              "max_ms": 7.467063000007101,
+              "negative_count": 0,
+              "over_100ms_count": 0
+            },
+            "call_minus_last_record_start": {
+              "count": 990,
+              "min_ms": 27.10425699999064,
+              "max_ms": 47.18157800000711,
+              "negative_count": 0,
+              "over_100ms_count": 0
+            },
+            "completion_minus_last_record_start": {
+              "count": 990,
+              "min_ms": 27.015777999991997,
+              "max_ms": 47.104892000007226,
+              "negative_count": 0,
+              "over_100ms_count": 0
+            },
+            "call_minus_last_completion": {
+              "count": 990,
+              "min_ms": 0.06276399999194382,
+              "max_ms": 1.9506249999992065,
+              "negative_count": 0,
+              "over_100ms_count": 0
+            }
+          },
+          "first_record_call_minus_first_call_s": 0.007309166999995398,
+          "sample_receive_span_s": 60.206534229,
+          "last_record_time_measurement_ko": "record 시각 통계는 각호출 마지막완성record 기준. 원본절대시각/ID/좌표는저장하지않음.",
+          "batch_counts": {
+            "can_packets_received": 6166,
+            "bounded_can_drops": 0,
+            "source_cs_received": 6022,
+            "can_discarded_outside_metadata_bounds": 161,
+            "accepted_batches": 5997,
+            "empty_batches": 0,
+            "pending_take_attempts": 194,
+            "pending_states_at_end": 0,
+            "unpaired_can_packets_at_end": 0
+          },
+          "batch_error_counts": {
+            "staleEgoState": 25
+          },
+          "gate_now_minus_receive_distribution": {
+            "count": 6022,
+            "min_ms": 1.481875,
+            "max_ms": 189.53286500000002,
+            "negative_count": 0,
+            "over_100ms_count": 25
+          },
+          "clock_basis": "storage_max",
+          "clock_assumption_ko": "모든저장Event의최대header를gate now로사용하는별도인과배달가정.",
+          "adapter_receive_clock_ko": "decoder의외부calltime은정확해당원본CS.receiveMonoTime. 내부CAN packetheader는원본을그대로유지.",
+          "full_radarcan_process_executed": false,
+          "socket_and_global_timeout_ko": "소켓/main20ms poll·processingTimeout·state/CAN전체inputTimeout은미실행. 원형batchgate와adapter의원형timeout만실행."
+        }
+      },
+      "comparisons": {
+        "input_max": {
+          "returned_points_delta": -2,
+          "records_delta": -30,
+          "crc_failures_delta": 0
+        },
+        "storage_max": {
+          "returned_points_delta": -2,
+          "records_delta": -31,
+          "crc_failures_delta": 0
+        }
+      },
+      "point_record_count_comparisons": {
+        "input_max": {
+          "shared_completed_record_count": 991,
+          "shared_record_point_count_mismatches": 0,
+          "absolute_point_count_delta_sum": 0,
+          "signed_point_count_delta_on_shared_completed_records": 0,
+          "direct_points_on_records_absent_from_paired": 2,
+          "paired_points_on_records_absent_from_direct": 0,
+          "point_count_delta_on_shared_records": 0,
+          "direct_points_on_records_decoded_but_withheld_in_paired": 0,
+          "direct_points_on_records_not_decoded_in_paired": 2,
+          "direct_points_with_completion_in_rejected_batch_ranges": 1,
+          "missing_direct_points_whose_record_spans_overlap_rejected_batch_ranges": 2,
+          "record_keys_saved": false
+        },
+        "storage_max": {
+          "shared_completed_record_count": 990,
+          "shared_record_point_count_mismatches": 0,
+          "absolute_point_count_delta_sum": 0,
+          "signed_point_count_delta_on_shared_completed_records": 0,
+          "direct_points_on_records_absent_from_paired": 2,
+          "paired_points_on_records_absent_from_direct": 0,
+          "point_count_delta_on_shared_records": 0,
+          "direct_points_on_records_decoded_but_withheld_in_paired": 0,
+          "direct_points_on_records_not_decoded_in_paired": 2,
+          "direct_points_with_completion_in_rejected_batch_ranges": 1,
+          "missing_direct_points_whose_record_spans_overlap_rejected_batch_ranges": 2,
+          "record_keys_saved": false
+        }
+      }
+    }
+  ],
+  "preparation_errors": [],
+  "params_backend": "process-local-access-forbidden",
+  "source_hashes": {
+    "probe.py": "4763cf7a6e9878d792c626a7179fff0e3627bcb1c474b079367ce28c2b069537",
+    "canonical_batch_replay.py": "2c7432d20ee8200e3290b18849223047d2c4d5b2e6bade69da40311fbee3c4e4",
+    "can_batch.py": "73d72c3c45ef500886af90224cf3f64fbb3f2ca6c638bdc65b9986f0b83ec040",
+    "paired_adapter_replay_quality.py": "ef23a7eb51506f780fa4c86b8e9459428c56568f547ab612030c65b5ee737388",
+    "frozen_paired_adapter_replay.py": "7565826f714ddc91076fa1e5bfda21393a4f48b458210b1cc3f290ee35f95b7d",
+    "ars510_offline.py": "8b471914b92466fb9589c298b976fe377eea18e7c111e81f89258cab45d12a50",
+    "ars510/interface.py": "5275348cebbc3605d0ae3b9ba482142605f8e0df031fafb7ce56f5c6cec3c05a",
+    "ars510/transport.py": "2e08804252f3aa85bb3dfca71ccc9f4f9e6d602d9a281c18b5e54124bb1351b0",
+    "ars510/record.py": "7fe407611ebcb1acf5bc5add9612a3d1ced5af784eecc102055cc840c0fc1309",
+    "ars510/objects.py": "94e1f6f922f34d21589a9188a704dcdfd6f4361cb8f24b6cb0ceadfcfdc9099b",
+    "ars510/support.py": "037617df3ae7908a2614416354172917e10a4c385ce2affe3580cd60ed1d5456",
+    "ars510/tracks.py": "719322772275e0a1be94e785b53ab388e4e5193699ccfebf71977c009f776736",
+    "ars510/constants.py": "f2f3422eeac18af36878504aed2bedf6a1b4e763e93acde49bf27cb921d046de",
+    "interfaces.py": "ce85b17a447ce59a21518b6358c0709da80730efeb3d70252b66909cca7bbb13",
+    "radar_tracks.py": "9c44d96e25cc3f540a650302276bc35a027d47c179b8774e243e0b3cb2d4f27b"
+  },
+  "source_unchanged": true,
+  "dpath_executed": false,
+  "host_executed": false,
+  "can_transmitted": false,
+  "new_metadata_generated": false,
+  "mode_or_cp_flags_changed": false,
+  "actual_collector_clock_available": false,
+  "scope_ko": "원본CAN/CS배치의원형stream매칭과offlineadapter만직접실행. DPath/175선택/host/실차검증아님. rawpayload/ID/좌표/원본절대시각은메모리뿐이며익명count/상대분포만저장."
+}

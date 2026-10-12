@@ -1,0 +1,13 @@
+{
+  "alias": "log_a",
+  "independent_execution_exit_code": 0,
+  "compared_groups": 23,
+  "mismatches": [],
+  "points": 246,
+  "mpc_radar_lead_inputs": 175,
+  "generated_can": 5624,
+  "c_deny": 5624,
+  "host_enabled": 0,
+  "actual_vehicle_tx": false,
+  "scope_ko": "독립 복사본의 실제자료 메모리 실행, 실제 제어 활성화나 물리 안전 검증은 아님"
+}

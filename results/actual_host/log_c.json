@@ -1,0 +1,11 @@
+{
+  "alias": "log_c",
+  "status": "insufficient_recorded_carParams",
+  "radar": {
+    "status": "insufficient_carParams",
+    "points": 0,
+    "records": 0
+  },
+  "whole_host_executed": false,
+  "scope_ko": "원본CP/차량상태/모델자료가없어도구가추측으로채우지않음."
+}

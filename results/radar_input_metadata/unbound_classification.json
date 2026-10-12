@@ -1,0 +1,112 @@
+{
+  "recorded_utc": "2026-10-12T13:46:50.442337+00:00",
+  "wall_seconds": 1.1136964999968768,
+  "files": [
+    {
+      "alias": "log_a",
+      "counts": {
+        "can_header_reversal": 0,
+        "carState": 3362,
+        "metadata_range_overlap": 0,
+        "can_events": 3507,
+        "nonempty_metadata_ranges": 3362,
+        "covered_can_events": 3370,
+        "unbound_can_events": 137
+      },
+      "unbound_location_counts": {
+        "before_first_cs_metadata_range": 134,
+        "between_cs_metadata_ranges": 3
+      },
+      "location_counts_sum_matches_unbound": true,
+      "source_file_stat_unchanged": true,
+      "raw_timestamps_saved": false,
+      "can_payload_read_or_saved": false,
+      "classification_ko": "처음·마지막의유효한원본CS metadata 범위를 기준으로 분류. 실제socket 유실 원인 판정이 아님."
+    },
+    {
+      "alias": "log_b",
+      "counts": {
+        "can_header_reversal": 0,
+        "carState": 6022,
+        "metadata_range_overlap": 0,
+        "can_events": 6166,
+        "nonempty_metadata_ranges": 6022,
+        "covered_can_events": 6030,
+        "unbound_can_events": 136
+      },
+      "unbound_location_counts": {
+        "before_first_cs_metadata_range": 136
+      },
+      "location_counts_sum_matches_unbound": true,
+      "source_file_stat_unchanged": true,
+      "raw_timestamps_saved": false,
+      "can_payload_read_or_saved": false,
+      "classification_ko": "처음·마지막의유효한원본CS metadata 범위를 기준으로 분류. 실제socket 유실 원인 판정이 아님."
+    },
+    {
+      "alias": "log_c",
+      "counts": {
+        "can_events": 0,
+        "nonempty_metadata_ranges": 0,
+        "covered_can_events": 0,
+        "unbound_can_events": 0
+      },
+      "unbound_location_counts": {
+        "unclassifiable_without_ordered_cs_ranges": 0
+      },
+      "location_counts_sum_matches_unbound": true,
+      "source_file_stat_unchanged": true,
+      "raw_timestamps_saved": false,
+      "can_payload_read_or_saved": false,
+      "classification_ko": "처음·마지막의유효한원본CS metadata 범위를 기준으로 분류. 실제socket 유실 원인 판정이 아님."
+    },
+    {
+      "alias": "log_d",
+      "counts": {
+        "can_header_reversal": 0,
+        "carState": 6017,
+        "metadata_range_overlap": 0,
+        "can_events": 6161,
+        "nonempty_metadata_ranges": 6017,
+        "covered_can_events": 6032,
+        "unbound_can_events": 129
+      },
+      "unbound_location_counts": {
+        "before_first_cs_metadata_range": 126,
+        "between_cs_metadata_ranges": 3
+      },
+      "location_counts_sum_matches_unbound": true,
+      "source_file_stat_unchanged": true,
+      "raw_timestamps_saved": false,
+      "can_payload_read_or_saved": false,
+      "classification_ko": "처음·마지막의유효한원본CS metadata 범위를 기준으로 분류. 실제socket 유실 원인 판정이 아님."
+    }
+  ],
+  "read_design_ko": {
+    "status": "읽기 설계만, adapter 새 경로 미실행",
+    "direct_reference": "저장순서 CAN Event마다 원본header/latestCS를 offline adapter에 전달한 기존369점 경로를 그대로 비교기준으로 보존",
+    "paired_candidate": "원본 CS.radarInput으로 RadarEgoSample을 만들고 원형 RadarCanBatches에서 실제 CAN 묶음을 얻은 뒤 vEgo/aEgo와 receiveMonoTime으로 offline=True adapter를 호출",
+    "consumer_clock": "메타 gate의 now는 원본 CS 발행header를 기준으로 하는 독립가정. 실제collector수신시각이 아니며 코드·보고서에 별도 기록",
+    "can_clock": "각 CAN Event의 원본header·src/DLC/payload/순서 유지. receive시각을 모든 packetheader에 복사하거나 같은시각 복수record에 가짜 주기를 주지 않음",
+    "original_cp": "원본CP 직렬화 불변, radarUnavailable=True 보존. CP 부족은 부족으로 종료. 운영 RadarInterface/live hook 및 CAN TX 없음",
+    "missing_policy": "원형 batch의 missing/stale/overflow/invalid 오류와 pending을 보존. 임의 metadata 또는 CAN 범위를 만들지 않음",
+    "history_policy": "canonical decoder 초기화·오류 후 재시작을 별도 기록. 묶이지 않은 CAN을 warmup으로 몰래 입력해 개수를 맞추지 않음",
+    "comparison": "record/CRC/points/timeout/sequence/orphan/historyreset/published결과와 처리CAN수·ego association·수신시각·초기화범위를 비교. 369점/175선택을 강제 목표로 사용하지 않음",
+    "dpath_followup": "175선택 비교를 할 경우 두 decoder출력을 같은 원본model/pose/EOF·정의된수신시각 및 독립mode1 DPath에 연결하되 invalid/error를 버리지 않음. 현재 이분류 도구는DPath미실행",
+    "unbound_policy": "최초CS앞/최종CS뒤/범위사이 CAN은 계약에묶이지 않은 기록이다. 실제socket 유실 또는불필요 데이터라고 확정하지 않고 비교원인으로 분리"
+  },
+  "source_hashes": {
+    "probe.py": "4763cf7a6e9878d792c626a7179fff0e3627bcb1c474b079367ce28c2b069537",
+    "can_batch.py": "73d72c3c45ef500886af90224cf3f64fbb3f2ca6c638bdc65b9986f0b83ec040",
+    "radarcan.py": "3f2da75508194aa86179056574fa87fb0259c7aa65c45fd318b26325ef1c500b",
+    "card.py": "de239706c6194073d5758c7314d060146e4404b55648cdba90d183a59883b1a2",
+    "canonical_batch_replay.py": "2c7432d20ee8200e3290b18849223047d2c4d5b2e6bade69da40311fbee3c4e4"
+  },
+  "source_unchanged": true,
+  "adapter_new_path_executed": false,
+  "dpath_executed": false,
+  "host_executed": false,
+  "can_transmitted": false,
+  "new_metadata_generated": false,
+  "scope_ko": "원본header/CS메타경계의익명분류만직접실행. adaptercanonical경로는읽기설계만이며점·record·lead를생성하지않음."
+}

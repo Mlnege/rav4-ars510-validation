@@ -1,0 +1,9 @@
+{
+  "alias": "log_b",
+  "semantic_result_equal": true,
+  "root_exit_code": 0,
+  "direct_points": 117,
+  "paired_points": 115,
+  "source_unchanged": true,
+  "actual_vehicle_tx": false
+}

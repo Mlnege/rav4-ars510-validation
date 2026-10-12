@@ -1,0 +1,32 @@
+{
+  "generated_utc": "2026-10-12T13:50:07.103628+00:00",
+  "sample_scope_ko": "별도 원형 factory CP와 기존 메모리 C 초기 설정 표본. 이전 3개 재생을 다시 실행한 결과가 아니다.",
+  "cp": {
+    "carFingerprint": "TOYOTA_RAV4_TSS2_2022",
+    "safetyConfigs": [
+      {
+        "safetyModel": "toyota",
+        "safetyModel_raw": 2,
+        "safetyParam": 73
+      }
+    ],
+    "alternativeExperience": 0,
+    "flags": 1372,
+    "pcmCruise": true,
+    "directLong": true,
+    "radarUnavailable": true,
+    "longitudinalActuatorDelay": 0.15000000596046448
+  },
+  "c_set_safety_hooks_arguments": {
+    "safetyModel": 2,
+    "safetyParam": 73
+  },
+  "c_set_alternative_experience_argument": 0,
+  "initial_controlsAllowed": false,
+  "initial_longitudinalAllowed": false,
+  "raw_rx_frames": 0,
+  "synthetic_permission_update_calls": 0,
+  "actual_ci_init_executed": false,
+  "physical_tx_executed": false,
+  "operating_params_changed": false
+}

@@ -1,0 +1,73 @@
+{
+  "files": [
+    {
+      "alias": "log_a",
+      "carParams_snapshots": [
+        {
+          "openpilotLongitudinalControl": true,
+          "pcmCruise": true,
+          "radarUnavailable": true,
+          "flags": 1372,
+          "alternativeExperience": 1,
+          "safetyConfigs": [
+            {
+              "safetyModel": "toyota",
+              "safetyParam": 73,
+              "stock_longitudinal_bit_512": false
+            }
+          ],
+          "samples": 1
+        }
+      ]
+    },
+    {
+      "alias": "log_b",
+      "carParams_snapshots": [
+        {
+          "openpilotLongitudinalControl": false,
+          "pcmCruise": true,
+          "radarUnavailable": true,
+          "flags": 1368,
+          "alternativeExperience": 1,
+          "safetyConfigs": [
+            {
+              "safetyModel": "toyota",
+              "safetyParam": 585,
+              "stock_longitudinal_bit_512": true
+            }
+          ],
+          "samples": 2
+        }
+      ]
+    },
+    {
+      "alias": "log_c",
+      "carParams_snapshots": []
+    },
+    {
+      "alias": "log_d",
+      "carParams_snapshots": [
+        {
+          "openpilotLongitudinalControl": true,
+          "pcmCruise": true,
+          "radarUnavailable": true,
+          "flags": 1372,
+          "alternativeExperience": 1,
+          "safetyConfigs": [
+            {
+              "safetyModel": "toyota",
+              "safetyParam": 73,
+              "stock_longitudinal_bit_512": false
+            }
+          ],
+          "samples": 2
+        }
+      ]
+    }
+  ],
+  "probe_sha256": "7c2f6385dc8fc95839a521dec3681f4c643adbc654066ad8a4a3d942233736d8",
+  "bit_meaning_source": "현재 ToyotaSafetyFlags.STOCK_LONGITUDINAL=(2 << 8)",
+  "scope_ko": "원본 CP 설정 표본이다. actual longActive나 설치 펌웨어 코드 실행을 뜻하지 않는다",
+  "settings_modified": false,
+  "vehicle_tx": false
+}

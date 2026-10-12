@@ -1,0 +1,129 @@
+{
+  "files": [
+    {
+      "alias": "log_a",
+      "first_toyota_observed": true,
+      "stock_command_observations": [
+        {
+          "address": "0x2e4",
+          "bus": 0,
+          "frames": 297,
+          "latest_panda_mode_by_storage_order_counts": {
+            "elm327": 297
+          },
+          "before_first_recorded_toyota_header": 297,
+          "at_or_after_first_recorded_toyota_header": 0,
+          "relative_to_first_toyota_min_ms": -6046.912266,
+          "relative_to_first_toyota_max_ms": -125.08248
+        },
+        {
+          "address": "0x343",
+          "bus": 0,
+          "frames": 213,
+          "latest_panda_mode_by_storage_order_counts": {
+            "unseen": 12,
+            "elm327": 201
+          },
+          "before_first_recorded_toyota_header": 213,
+          "at_or_after_first_recorded_toyota_header": 0,
+          "relative_to_first_toyota_min_ms": -6526.366442,
+          "relative_to_first_toyota_max_ms": -166.226143
+        }
+      ]
+    },
+    {
+      "alias": "log_b",
+      "first_toyota_observed": true,
+      "stock_command_observations": [
+        {
+          "address": "0x2e4",
+          "bus": 0,
+          "frames": 376,
+          "latest_panda_mode_by_storage_order_counts": {
+            "unseen": 46,
+            "elm327": 330
+          },
+          "before_first_recorded_toyota_header": 376,
+          "at_or_after_first_recorded_toyota_header": 0,
+          "relative_to_first_toyota_min_ms": -7612.669788,
+          "relative_to_first_toyota_max_ms": -121.198072
+        },
+        {
+          "address": "0x343",
+          "bus": 0,
+          "frames": 2055,
+          "latest_panda_mode_by_storage_order_counts": {
+            "unseen": 31,
+            "elm327": 224,
+            "toyota": 1800
+          },
+          "before_first_recorded_toyota_header": 254,
+          "at_or_after_first_recorded_toyota_header": 1801,
+          "relative_to_first_toyota_min_ms": -7612.669788,
+          "relative_to_first_toyota_max_ms": 54029.03242
+        }
+      ]
+    },
+    {
+      "alias": "log_c",
+      "first_toyota_observed": false,
+      "stock_command_observations": [
+        {
+          "address": "0x2e4",
+          "bus": 0,
+          "frames": 0,
+          "latest_panda_mode_by_storage_order_counts": {},
+          "before_first_recorded_toyota_header": 0,
+          "at_or_after_first_recorded_toyota_header": 0,
+          "relative_to_first_toyota_min_ms": null,
+          "relative_to_first_toyota_max_ms": null
+        },
+        {
+          "address": "0x343",
+          "bus": 0,
+          "frames": 0,
+          "latest_panda_mode_by_storage_order_counts": {},
+          "before_first_recorded_toyota_header": 0,
+          "at_or_after_first_recorded_toyota_header": 0,
+          "relative_to_first_toyota_min_ms": null,
+          "relative_to_first_toyota_max_ms": null
+        }
+      ]
+    },
+    {
+      "alias": "log_d",
+      "first_toyota_observed": true,
+      "stock_command_observations": [
+        {
+          "address": "0x2e4",
+          "bus": 0,
+          "frames": 334,
+          "latest_panda_mode_by_storage_order_counts": {
+            "unseen": 28,
+            "elm327": 306
+          },
+          "before_first_recorded_toyota_header": 334,
+          "at_or_after_first_recorded_toyota_header": 0,
+          "relative_to_first_toyota_min_ms": -6797.185823,
+          "relative_to_first_toyota_max_ms": -136.468009
+        },
+        {
+          "address": "0x343",
+          "bus": 0,
+          "frames": 223,
+          "latest_panda_mode_by_storage_order_counts": {
+            "unseen": 20,
+            "elm327": 203
+          },
+          "before_first_recorded_toyota_header": 223,
+          "at_or_after_first_recorded_toyota_header": 0,
+          "relative_to_first_toyota_min_ms": -6846.816383,
+          "relative_to_first_toyota_max_ms": -186.974787
+        }
+      ]
+    }
+  ],
+  "probe_sha256": "6644022d99d0432671ac94480ff39062fed397509d178bd0aaf2e2b6e8928f5c",
+  "vehicle_tx": false,
+  "scope_ko": "기록된 최초 Toyota 상태 헤더와 CAN 헤더의 상대관찰. 실제 모드전환 순간/MCU clock/릴레이 상태 증명이 아님"
+}

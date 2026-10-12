@@ -1,0 +1,8 @@
+{
+  "phase": "source_fingerprints_before_bootstrap",
+  "error_type": "FileNotFoundError",
+  "reason_ko": "신규 도구가 존재하지 않는 ars510/decoder.py를 보호 source 목록에 적었다. 실제 decoder 관련 source는 record.py/objects.py/interface.py다. 어댑터 실행 전 준비 오류이며 원형 source나 CAN 데이터 오류가 아니다.",
+  "initial_script_sha256": "548e05132dd6b00bda8fd40d6a87e62fe7d3b13a73c049412e7ca58914d701d8",
+  "raw_payload_or_original_timestamps_saved": false,
+  "adapter_executed": false
+}

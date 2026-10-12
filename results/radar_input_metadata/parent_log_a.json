@@ -1,0 +1,122 @@
+{
+  "recorded_utc": "2026-10-12T13:41:29.062253+00:00",
+  "wall_seconds": 0.30173110000032466,
+  "files": [
+    {
+      "alias": "log_a",
+      "counts": {
+        "can_events": 3507,
+        "can_event_invalid": 0,
+        "carState_events": 3362,
+        "carState_event_invalid": 0,
+        "carState_can_valid": 3362
+      },
+      "presence": {
+        "schema_field_present": 3362,
+        "wire_struct_present": 3362,
+        "all_four_zero": 0,
+        "present_but_all_four_zero": 0
+      },
+      "radar_input_subfields": {
+        "firstCanMonoTime": true,
+        "lastCanMonoTime": true,
+        "canPacketCount": true,
+        "receiveMonoTime": true
+      },
+      "zero_counts": {
+        "firstCanMonoTime": 0,
+        "lastCanMonoTime": 0,
+        "canPacketCount": 0,
+        "receiveMonoTime": 0
+      },
+      "positive_counts": {
+        "firstCanMonoTime": 3362,
+        "lastCanMonoTime": 3362,
+        "canPacketCount": 3362,
+        "receiveMonoTime": 3362
+      },
+      "intrinsic_counts": {
+        "receive_missing_zero": 0,
+        "empty_count_nonzero_boundary": 0,
+        "nonempty_count_first_zero": 0,
+        "nonempty_count_last_before_first": 0,
+        "packet_count_over_source_max": 0,
+        "receive_after_cs_publication": 0,
+        "last_can_after_receive": 0,
+        "receive_time_reversal": 0,
+        "receive_time_repeat": 0,
+        "nonempty_batch_overlap_previous": 0
+      },
+      "can_packet_count_frequency": {
+        "1": 3361,
+        "9": 1
+      },
+      "relative_delta_summaries": {
+        "cs_header_minus_receive": {
+          "count": 3362,
+          "min_ms": 1.433412,
+          "max_ms": 7.38128,
+          "negative_count": 0,
+          "over_100ms_count": 0
+        },
+        "receive_minus_first_can": {
+          "count": 3362,
+          "min_ms": 0.051459,
+          "max_ms": 87.25622,
+          "negative_count": 0,
+          "over_100ms_count": 0
+        },
+        "receive_minus_last_can": {
+          "count": 3362,
+          "min_ms": 0.051459,
+          "max_ms": 8.866567,
+          "negative_count": 0,
+          "over_100ms_count": 0
+        },
+        "last_minus_first_can": {
+          "count": 3362,
+          "min_ms": 0.0,
+          "max_ms": 78.389653,
+          "negative_count": 0,
+          "over_100ms_count": 0
+        }
+      },
+      "recorded_can_header_join_counts": {
+        "covered_header_reuse_occurrences": 0,
+        "nonempty_metadata_evaluated": 3362,
+        "first_boundary_found": 3362,
+        "last_boundary_found": 3362,
+        "packet_count_matches_range": 3362,
+        "exact_endpoints_and_count": 3362,
+        "source_gate_accepted": 3362,
+        "recorded_can_headers_covered_by_metadata": 3370,
+        "recorded_can_headers_not_bound_to_cs_metadata": 137
+      },
+      "source_file_stat_unchanged": true,
+      "source_gate_clock_assumption_ko": "원형 take(now)는 기록 CS 발행 header를 now로 사용. 실제 collector/처리 시각이 아님.",
+      "wire_absence_default_ko": "wire 포인터 부재 시 읽은0은 스키마 기본값이며 기록 producer가 쓴 메타가 아님.",
+      "can_payload_examined": false,
+      "can_transmitted": false
+    }
+  ],
+  "failures": [],
+  "max_input_age_ns_from_source": 100000000,
+  "max_can_packets_from_source": 512,
+  "source_hashes": {
+    "can_batch.py": "73d72c3c45ef500886af90224cf3f64fbb3f2ca6c638bdc65b9986f0b83ec040",
+    "radarcan.py": "3f2da75508194aa86179056574fa87fb0259c7aa65c45fd318b26325ef1c500b",
+    "card.py": "de239706c6194073d5758c7314d060146e4404b55648cdba90d183a59883b1a2",
+    "reader_log.capnp": "48fe892e247d907844dbc973fdb3bc5a4cb4127a0e9bd5b86a6bdbbae979fb74",
+    "reader_car.capnp": "3042bfa92e6b42532145815a6a23fc5d9b775f2762b136384d1d2191cc7f1465",
+    "probe.py": "4763cf7a6e9878d792c626a7179fff0e3627bcb1c474b079367ce28c2b069537"
+  },
+  "source_unchanged": true,
+  "operating_params_access": false,
+  "carparams_modified": false,
+  "can_transmitted": false,
+  "radarcan_process_executed": false,
+  "new_card_metadata_generated": false,
+  "actual_collector_receive_clock_available": false,
+  "original_batch_class_executed": true,
+  "scope_ko": "기록 schema와 원본 CS/CAN header의 익명집계. 실제 payload/절대원본시각/식별자 출력 없음. 원형 metadata gate를 CS 발행 header 가정에서 실행하며 실제 radarcan/host/차량 활성검증이 아님."
+}

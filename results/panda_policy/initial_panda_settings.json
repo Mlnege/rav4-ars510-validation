@@ -1,0 +1,159 @@
+{
+  "files": [
+    {
+      "alias": "log_a",
+      "record_counts": {
+        "pandaStates_events": 329,
+        "pandaState_entries": 329,
+        "carParams": 1
+      },
+      "available_allowed_fields": [
+        "alternativeExperience",
+        "controlsAllowed",
+        "faults",
+        "safetyModel",
+        "safetyParam",
+        "safetyRxChecksInvalid"
+      ],
+      "recorded_cp_configs": [
+        {
+          "safetyConfigs": [
+            {
+              "safetyModel": "toyota",
+              "safetyParam": 73
+            }
+          ],
+          "alternativeExperience": 1,
+          "samples": 1
+        }
+      ],
+      "recorded_panda_configs": [
+        {
+          "safetyModel": "elm327",
+          "safetyParam": 1,
+          "alternativeExperience": 1,
+          "samples": 65
+        },
+        {
+          "safetyModel": "toyota",
+          "safetyParam": 73,
+          "alternativeExperience": 1,
+          "samples": 264
+        }
+      ],
+      "permission_and_rx_counts": {
+        "controlsAllowed_true": 0,
+        "safetyRxChecksInvalid_true": 0
+      },
+      "fault_sample_counts": {}
+    },
+    {
+      "alias": "log_b",
+      "record_counts": {
+        "pandaStates_events": 577,
+        "pandaState_entries": 577,
+        "carParams": 2
+      },
+      "available_allowed_fields": [
+        "alternativeExperience",
+        "controlsAllowed",
+        "faults",
+        "safetyModel",
+        "safetyParam",
+        "safetyRxChecksInvalid"
+      ],
+      "recorded_cp_configs": [
+        {
+          "safetyConfigs": [
+            {
+              "safetyModel": "toyota",
+              "safetyParam": 585
+            }
+          ],
+          "alternativeExperience": 1,
+          "samples": 2
+        }
+      ],
+      "recorded_panda_configs": [
+        {
+          "safetyModel": "elm327",
+          "safetyParam": 1,
+          "alternativeExperience": 0,
+          "samples": 72
+        },
+        {
+          "safetyModel": "toyota",
+          "safetyParam": 585,
+          "alternativeExperience": 1,
+          "samples": 505
+        }
+      ],
+      "permission_and_rx_counts": {
+        "controlsAllowed_true": 0,
+        "safetyRxChecksInvalid_true": 0
+      },
+      "fault_sample_counts": {}
+    },
+    {
+      "alias": "log_c",
+      "record_counts": {},
+      "available_allowed_fields": [],
+      "recorded_cp_configs": [],
+      "recorded_panda_configs": [],
+      "permission_and_rx_counts": {},
+      "fault_sample_counts": {}
+    },
+    {
+      "alias": "log_d",
+      "record_counts": {
+        "pandaStates_events": 578,
+        "pandaState_entries": 578,
+        "carParams": 2
+      },
+      "available_allowed_fields": [
+        "alternativeExperience",
+        "controlsAllowed",
+        "faults",
+        "safetyModel",
+        "safetyParam",
+        "safetyRxChecksInvalid"
+      ],
+      "recorded_cp_configs": [
+        {
+          "safetyConfigs": [
+            {
+              "safetyModel": "toyota",
+              "safetyParam": 73
+            }
+          ],
+          "alternativeExperience": 1,
+          "samples": 2
+        }
+      ],
+      "recorded_panda_configs": [
+        {
+          "safetyModel": "elm327",
+          "safetyParam": 1,
+          "alternativeExperience": 1,
+          "samples": 65
+        },
+        {
+          "safetyModel": "toyota",
+          "safetyParam": 73,
+          "alternativeExperience": 1,
+          "samples": 513
+        }
+      ],
+      "permission_and_rx_counts": {
+        "controlsAllowed_true": 0,
+        "safetyRxChecksInvalid_true": 0
+      },
+      "fault_sample_counts": {}
+    }
+  ],
+  "probe_sha256": "92b86a47cb48da03cac7d86dc8f60b5f688ff59cffa41e92d91e1595aece7041",
+  "vehicle_tx": false,
+  "settings_modified": false,
+  "firmware_identity_read": false,
+  "scope_ko": "기록된 설정·오류 표본 집계이며 설치 펌웨어 코드나 실물 릴레이 동작 검증은 아님"
+}

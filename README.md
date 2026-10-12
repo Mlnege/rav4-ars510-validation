@@ -20,7 +20,7 @@
 Linux, Git, SHA256 도구와 Python 3.12.3 이상·3.13 미만이 필요합니다. 기존 `/data/openpilot`에 쓰지 않습니다. 아래 명령은 고정 버전 clone, 패치 적용 검사, 변경 파일 해시 검사, CPU·Python·기존 소스 비교와 격리된 가상환경 다운로드만 실행합니다.
 
 ```sh
-git clone --branch lab-20261012-r7 --depth 1 https://github.com/Mlnege/rav4-ars510-validation.git rav4-ars510-validation
+git clone --branch lab-20261012-r8 --depth 1 https://github.com/Mlnege/rav4-ars510-validation.git rav4-ars510-validation
 cd rav4-ars510-validation
 bash tools/remote_download.sh --destination /data/rav4-validation-lab --install-deps
 ```
@@ -56,3 +56,5 @@ ARS510 원형 소스·DBC는 MIT 라이선스와 저작권 표시를 유지했�
 추가 연결과 정정: `reports/연결검증_갱신_r6.md`에서 Mode0→ToyotaCAN/C 검사와 신호 재개 반례의 서로 다른 범위를 확인하세요. r6까지 유지한 계산 소스 63개와 패치 8개 중, r7에서는 오프라인 재생기의 오류 전파만 수정했습니다.
 
 통합 신호 갱신: `reports/통합신호_검증갱신_r7.md`에서 가속 입력 시점·정지 기억의 복구·오래된 모델 출처와 최초 기대 오류를 확인하세요. 주행 제어 코드는 그대로이며, 오프라인 오류 전파 수정만 patch01에 추가했습니다. 실차 배포 허용은 여전히 False입니다.
+
+r8에는 실제 CAN의 비활성 호스트·MPC 연결, 정확한 CAN 묶음과 시간 가정, 기록 Panda 모드 전환 및 수신/송신 통지 분류 검증을 추가했습니다. `reports/연결과_초기화_검증갱신_r8.md`에 완료 범위와 최초 실패·정정을 정리했습니다. 소스 63개·패치 8개·manifest는 r7과 바이트가 같습니다. 직접 롱컨 설정은 원본 CP 5개 중 True3/False2였으며, 실제 활성화는 모두 꺼져 있었습니다. 검사 수치가 실차 제어 성공이나 PCS·회생 보증을 뜻하지 않습니다.
