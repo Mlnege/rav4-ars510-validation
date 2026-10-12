@@ -1,0 +1,1423 @@
+{
+  "classes": [
+    {
+      "class": "SelfdriveD",
+      "source": "openpilot/selfdrive/selfdrived/selfdrived.py",
+      "source_sha256": "800640fea14be35cfbba710e800028e097ffc27d9cb3742361426e8354117728",
+      "constants": [
+        {
+          "name": "REPLAY",
+          "source_expression": "'REPLAY' in os.environ",
+          "same_value": true,
+          "value": "False"
+        },
+        {
+          "name": "SIMULATION",
+          "source_expression": "'SIMULATION' in os.environ",
+          "same_value": true,
+          "value": "False"
+        },
+        {
+          "name": "TESTING_CLOSET",
+          "source_expression": "'TESTING_CLOSET' in os.environ",
+          "same_value": true,
+          "value": "False"
+        },
+        {
+          "name": "LONGITUDINAL_PERSONALITY_MAP",
+          "source_expression": "{v: k for k, v in log.LongitudinalPersonality.schema.enumerants.items()}",
+          "same_value": true,
+          "value": {
+            "0": "aggressive",
+            "1": "standard",
+            "2": "relaxed",
+            "3": "moreRelaxed"
+          }
+        },
+        {
+          "name": "ThermalStatus",
+          "source_expression": "log.DeviceState.ThermalStatus",
+          "same_value": true,
+          "value": "<capnp.lib.capnp._EnumModule object at 0x752120a3ec60>"
+        },
+        {
+          "name": "State",
+          "source_expression": "log.SelfdriveState.OpenpilotState",
+          "same_value": true,
+          "value": "<capnp.lib.capnp._EnumModule object at 0x752120a58200>"
+        },
+        {
+          "name": "PandaType",
+          "source_expression": "log.PandaState.PandaType",
+          "same_value": true,
+          "value": "<capnp.lib.capnp._EnumModule object at 0x752120a3f590>"
+        },
+        {
+          "name": "LaneChangeState",
+          "source_expression": "log.LaneChangeState",
+          "same_value": true,
+          "value": "<capnp.lib.capnp._EnumModule object at 0x752120a3e690>"
+        },
+        {
+          "name": "LaneChangeDirection",
+          "source_expression": "log.LaneChangeDirection",
+          "same_value": true,
+          "value": "<capnp.lib.capnp._EnumModule object at 0x752120a3e720>"
+        },
+        {
+          "name": "EventName",
+          "source_expression": "log.OnroadEvent.EventName",
+          "same_value": true,
+          "value": "<capnp.lib.capnp._EnumModule object at 0x752120a3d0a0>"
+        },
+        {
+          "name": "ButtonType",
+          "source_expression": "car.CarState.ButtonEvent.Type",
+          "same_value": true,
+          "value": "<capnp.lib.capnp._EnumModule object at 0x752120a063f0>"
+        },
+        {
+          "name": "SafetyModel",
+          "source_expression": "car.CarParams.SafetyModel",
+          "same_value": true,
+          "value": "<capnp.lib.capnp._EnumModule object at 0x752120a3c0b0>"
+        },
+        {
+          "name": "AlertLevel",
+          "source_expression": "log.DriverMonitoringState.AlertLevel",
+          "same_value": true,
+          "value": "<capnp.lib.capnp._EnumModule object at 0x752120a82c00>"
+        },
+        {
+          "name": "MonitoringPolicy",
+          "source_expression": "log.DriverMonitoringState.MonitoringPolicy",
+          "same_value": true,
+          "value": "<capnp.lib.capnp._EnumModule object at 0x752120a82cf0>"
+        },
+        {
+          "name": "IGNORED_SAFETY_MODES",
+          "source_expression": "(SafetyModel.silent, SafetyModel.noOutput)",
+          "same_value": true,
+          "value": "(0, 19)"
+        }
+      ],
+      "methods": [
+        {
+          "method": "__init__",
+          "globals": [
+            {
+              "name": "AlertManager",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.selfdrived.alertmanager"
+            },
+            {
+              "name": "CarSpecificEvents",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.car.car_specific"
+            },
+            {
+              "name": "CutinAlertTracker",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.controls.lib.cutin_alert"
+            },
+            {
+              "name": "DT_CTRL",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "EventName",
+              "resolved": true,
+              "binding_module": "capnp.lib.capnp"
+            },
+            {
+              "name": "Events",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.selfdrived.events"
+            },
+            {
+              "name": "ExcessiveActuationCheck",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.selfdrived.helpers"
+            },
+            {
+              "name": "HARDWARE",
+              "resolved": true,
+              "binding_module": "openpilot.system.hardware.pc.hardware"
+            },
+            {
+              "name": "ImpactDashcam",
+              "resolved": true,
+              "binding_module": "openpilot.common.impact_dashcam"
+            },
+            {
+              "name": "ImpactDetector",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.selfdrived.impact_detector"
+            },
+            {
+              "name": "Params",
+              "resolved": true,
+              "binding_module": "whole_io"
+            },
+            {
+              "name": "PoseCalibrator",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.locationd.helpers"
+            },
+            {
+              "name": "REPLAY",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "Ratekeeper",
+              "resolved": true,
+              "binding_module": "openpilot.common.realtime"
+            },
+            {
+              "name": "SIMULATION",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "StateMachine",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.selfdrived.state"
+            },
+            {
+              "name": "bool",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "car",
+              "resolved": true,
+              "binding_module": "/car.capnp"
+            },
+            {
+              "name": "cloudlog",
+              "resolved": true,
+              "binding_module": "offline_io"
+            },
+            {
+              "name": "get_build_metadata",
+              "resolved": true,
+              "binding_module": "openpilot.system.version"
+            },
+            {
+              "name": "get_camera_packets",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.selfdrived.camera_config"
+            },
+            {
+              "name": "get_gps_location_service",
+              "resolved": true,
+              "binding_module": "openpilot.common.gps"
+            },
+            {
+              "name": "int",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "messaging",
+              "resolved": true,
+              "binding_module": "typing"
+            },
+            {
+              "name": "os",
+              "resolved": true,
+              "binding_module": "os"
+            },
+            {
+              "name": "set",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "set_offroad_alert",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.selfdrived.alertmanager"
+            }
+          ],
+          "missing": []
+        },
+        {
+          "method": "data_sample",
+          "globals": [
+            {
+              "name": "DT_CTRL",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "IGNORED_SAFETY_MODES",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "REPLAY",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "SIMULATION",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "State",
+              "resolved": true,
+              "binding_module": "capnp.lib.capnp"
+            },
+            {
+              "name": "VisionIpcClient",
+              "resolved": true,
+              "binding_module": "whole_objects"
+            },
+            {
+              "name": "VisionStreamType",
+              "resolved": true,
+              "binding_module": "types"
+            },
+            {
+              "name": "any",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "cloudlog",
+              "resolved": true,
+              "binding_module": "offline_io"
+            },
+            {
+              "name": "messaging",
+              "resolved": true,
+              "binding_module": "typing"
+            }
+          ],
+          "missing": []
+        },
+        {
+          "method": "update_events",
+          "globals": [
+            {
+              "name": "AlertLevel",
+              "resolved": true,
+              "binding_module": "capnp.lib.capnp"
+            },
+            {
+              "name": "ButtonType",
+              "resolved": true,
+              "binding_module": "capnp.lib.capnp"
+            },
+            {
+              "name": "CutinAlertCandidate",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.controls.lib.cutin_alert"
+            },
+            {
+              "name": "DT_CTRL",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "ET",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.selfdrived.events"
+            },
+            {
+              "name": "EventName",
+              "resolved": true,
+              "binding_module": "capnp.lib.capnp"
+            },
+            {
+              "name": "IGNORED_SAFETY_MODES",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "LaneChangeDirection",
+              "resolved": true,
+              "binding_module": "capnp.lib.capnp"
+            },
+            {
+              "name": "LaneChangeState",
+              "resolved": true,
+              "binding_module": "capnp.lib.capnp"
+            },
+            {
+              "name": "MonitoringPolicy",
+              "resolved": true,
+              "binding_module": "capnp.lib.capnp"
+            },
+            {
+              "name": "Params",
+              "resolved": true,
+              "binding_module": "whole_io"
+            },
+            {
+              "name": "Pose",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.locationd.helpers"
+            },
+            {
+              "name": "REPLAY",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "SIMULATION",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "TESTING_CLOSET",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "ThermalStatus",
+              "resolved": true,
+              "binding_module": "capnp.lib.capnp"
+            },
+            {
+              "name": "abs",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "any",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "cloudlog",
+              "resolved": true,
+              "binding_module": "offline_io"
+            },
+            {
+              "name": "communication_snapshot",
+              "resolved": true,
+              "binding_module": "openpilot.common.runtime_diagnostics"
+            },
+            {
+              "name": "dict",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "enumerate",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "float",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "getattr",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "int",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "len",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "list",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "log",
+              "resolved": true,
+              "binding_module": "/log.capnp"
+            },
+            {
+              "name": "max",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "promoted_cutin_candidates",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.controls.lib.cutin_alert"
+            },
+            {
+              "name": "set",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "set_offroad_alert",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.selfdrived.alertmanager"
+            },
+            {
+              "name": "str",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "tuple",
+              "resolved": true,
+              "binding_module": "builtins"
+            }
+          ],
+          "missing": []
+        },
+        {
+          "method": "_big_model_settling",
+          "globals": [
+            {
+              "name": "time",
+              "resolved": true,
+              "binding_module": "time"
+            }
+          ],
+          "missing": []
+        },
+        {
+          "method": "update_reboot_alert",
+          "globals": [
+            {
+              "name": "DT_CTRL",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "EventName",
+              "resolved": true,
+              "binding_module": "capnp.lib.capnp"
+            },
+            {
+              "name": "REPLAY",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "SIMULATION",
+              "resolved": true,
+              "binding_module": "builtins"
+            }
+          ],
+          "missing": []
+        },
+        {
+          "method": "step",
+          "globals": [
+            {
+              "name": "EventName",
+              "resolved": true,
+              "binding_module": "capnp.lib.capnp"
+            }
+          ],
+          "missing": []
+        },
+        {
+          "method": "update_impact_dashcam",
+          "globals": [
+            {
+              "name": "OSError",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "REPLAY",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "SIMULATION",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "cloudlog",
+              "resolved": true,
+              "binding_module": "offline_io"
+            },
+            {
+              "name": "list",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "log",
+              "resolved": true,
+              "binding_module": "/log.capnp"
+            },
+            {
+              "name": "time",
+              "resolved": true,
+              "binding_module": "time"
+            }
+          ],
+          "missing": []
+        },
+        {
+          "method": "update_alerts",
+          "globals": [
+            {
+              "name": "ET",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.selfdrived.events"
+            },
+            {
+              "name": "EventName",
+              "resolved": true,
+              "binding_module": "capnp.lib.capnp"
+            },
+            {
+              "name": "LONGITUDINAL_PERSONALITY_MAP",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "set",
+              "resolved": true,
+              "binding_module": "builtins"
+            }
+          ],
+          "missing": []
+        },
+        {
+          "method": "update_system_ready_alert",
+          "globals": [
+            {
+              "name": "DT_CTRL",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "ET",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.selfdrived.events"
+            },
+            {
+              "name": "EmptyAlert",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.selfdrived.events"
+            },
+            {
+              "name": "EventName",
+              "resolved": true,
+              "binding_module": "capnp.lib.capnp"
+            },
+            {
+              "name": "REPLAY",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "SIMULATION",
+              "resolved": true,
+              "binding_module": "builtins"
+            }
+          ],
+          "missing": []
+        },
+        {
+          "method": "publish_selfdriveState",
+          "globals": [
+            {
+              "name": "DT_CTRL",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "ET",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.selfdrived.events"
+            },
+            {
+              "name": "float",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "int",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "len",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "messaging",
+              "resolved": true,
+              "binding_module": "typing"
+            }
+          ],
+          "missing": []
+        }
+      ]
+    },
+    {
+      "class": "Controls",
+      "source": "openpilot/selfdrive/controls/controlsd.py",
+      "source_sha256": "695609a1088d70b9a0cb07f8a68bf6fdd5a2a88b078c0d4d39a29cdbdd8f92cc",
+      "constants": [
+        {
+          "name": "State",
+          "source_expression": "log.SelfdriveState.OpenpilotState",
+          "same_value": true,
+          "value": "<capnp.lib.capnp._EnumModule object at 0x752120a58200>"
+        },
+        {
+          "name": "LaneChangeState",
+          "source_expression": "log.LaneChangeState",
+          "same_value": true,
+          "value": "<capnp.lib.capnp._EnumModule object at 0x752120a3e690>"
+        },
+        {
+          "name": "LaneChangeDirection",
+          "source_expression": "log.LaneChangeDirection",
+          "same_value": true,
+          "value": "<capnp.lib.capnp._EnumModule object at 0x752120a3e720>"
+        },
+        {
+          "name": "LAT_CURVATURE_SATURATION_ACCEL",
+          "source_expression": "0.1",
+          "same_value": true,
+          "value": "0.1"
+        },
+        {
+          "name": "ACTUATOR_FIELDS",
+          "source_expression": "tuple(car.CarControl.Actuators.schema.fields.keys())",
+          "same_value": true,
+          "value": [
+            "gas",
+            "brake",
+            "torque",
+            "steeringAngleDeg",
+            "accel",
+            "longControlState",
+            "speed",
+            "curvature",
+            "torqueOutputCan",
+            "jerk",
+            "aTarget"
+          ]
+        }
+      ],
+      "methods": [
+        {
+          "method": "__init__",
+          "globals": [
+            {
+              "name": "CarrotControls",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.carrot.carrot_controls"
+            },
+            {
+              "name": "LatControlAngle",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.controls.lib.latcontrol_angle"
+            },
+            {
+              "name": "LatControlPID",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.controls.lib.latcontrol_pid"
+            },
+            {
+              "name": "LatControlTorque",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.controls.lib.latcontrol_torque"
+            },
+            {
+              "name": "LateralStartupGate",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.controls.lib.lateral_readiness"
+            },
+            {
+              "name": "LongControl",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.controls.lib.longcontrol"
+            },
+            {
+              "name": "MEB_CURVATURE_MAX",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "MEB_CURVATURE_PID_KF",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "MEB_CURVATURE_PID_KI",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "MEB_CURVATURE_PID_KP",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "MultiplicativeUnwindPID",
+              "resolved": true,
+              "binding_module": "openpilot.common.pid"
+            },
+            {
+              "name": "Params",
+              "resolved": true,
+              "binding_module": "whole_io"
+            },
+            {
+              "name": "PoseCalibrator",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.locationd.helpers"
+            },
+            {
+              "name": "VehicleModel",
+              "resolved": true,
+              "binding_module": "opendbc.car.vehicle_model"
+            },
+            {
+              "name": "car",
+              "resolved": true,
+              "binding_module": "/car.capnp"
+            },
+            {
+              "name": "cloudlog",
+              "resolved": true,
+              "binding_module": "offline_io"
+            },
+            {
+              "name": "interfaces",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "is_volkswagen_meb",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.controls.lib.drive_helpers"
+            },
+            {
+              "name": "messaging",
+              "resolved": true,
+              "binding_module": "typing"
+            }
+          ],
+          "missing": []
+        },
+        {
+          "method": "update",
+          "globals": [
+            {
+              "name": "Pose",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.locationd.helpers"
+            }
+          ],
+          "missing": []
+        },
+        {
+          "method": "state_control",
+          "globals": [
+            {
+              "name": "ACTUATOR_FIELDS",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "CV",
+              "resolved": true,
+              "binding_module": "openpilot.common.constants"
+            },
+            {
+              "name": "DT_CTRL",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "LaneChangeDirection",
+              "resolved": true,
+              "binding_module": "capnp.lib.capnp"
+            },
+            {
+              "name": "LaneChangeState",
+              "resolved": true,
+              "binding_module": "capnp.lib.capnp"
+            },
+            {
+              "name": "MIN_LATERAL_CONTROL_SPEED",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "Number",
+              "resolved": true,
+              "binding_module": "numbers"
+            },
+            {
+              "name": "abs",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "any",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "car",
+              "resolved": true,
+              "binding_module": "/car.capnp"
+            },
+            {
+              "name": "clip_curvature",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.controls.lib.drive_helpers"
+            },
+            {
+              "name": "cloudlog",
+              "resolved": true,
+              "binding_module": "offline_io"
+            },
+            {
+              "name": "float",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "get_lag_adjusted_curvature",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.controls.lib.drive_helpers"
+            },
+            {
+              "name": "getattr",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "isinstance",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "lateral_control_allowed",
+              "resolved": true,
+              "binding_module": "whole_objects"
+            },
+            {
+              "name": "lateral_vehicle_parameters",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.controls.lib.lateral_readiness"
+            },
+            {
+              "name": "len",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "math",
+              "resolved": true,
+              "binding_module": "math"
+            },
+            {
+              "name": "max",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "np",
+              "resolved": true,
+              "binding_module": "numpy"
+            },
+            {
+              "name": "resolve_vehicle_model_steer_ratio",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.controls.lib.steer_ratio"
+            },
+            {
+              "name": "setattr",
+              "resolved": true,
+              "binding_module": "builtins"
+            }
+          ],
+          "missing": []
+        },
+        {
+          "method": "publish",
+          "globals": [
+            {
+              "name": "CV",
+              "resolved": true,
+              "binding_module": "openpilot.common.constants"
+            },
+            {
+              "name": "LAT_CURVATURE_SATURATION_ACCEL",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "STEER_ANGLE_SATURATION_THRESHOLD",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "State",
+              "resolved": true,
+              "binding_module": "capnp.lib.capnp"
+            },
+            {
+              "name": "abs",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "bool",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "car",
+              "resolved": true,
+              "binding_module": "/car.capnp"
+            },
+            {
+              "name": "driver_monitoring_hud_alert",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.monitoring.dm_alerts"
+            },
+            {
+              "name": "float",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "get_carrot_man",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.carrot.carrot_man_input"
+            },
+            {
+              "name": "int",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "len",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "log",
+              "resolved": true,
+              "binding_module": "/log.capnp"
+            },
+            {
+              "name": "max",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "messaging",
+              "resolved": true,
+              "binding_module": "typing"
+            },
+            {
+              "name": "min",
+              "resolved": true,
+              "binding_module": "builtins"
+            }
+          ],
+          "missing": []
+        }
+      ]
+    },
+    {
+      "class": "Car",
+      "source": "openpilot/selfdrive/car/card.py",
+      "source_sha256": "de239706c6194073d5758c7314d060146e4404b55648cdba90d183a59883b1a2",
+      "constants": [
+        {
+          "name": "REPLAY",
+          "source_expression": "'REPLAY' in os.environ",
+          "same_value": true,
+          "value": "False"
+        },
+        {
+          "name": "XIAOGE_LANE_ERROR_LOG_INTERVAL_NS",
+          "source_expression": "5000000000",
+          "same_value": true,
+          "value": "5000000000"
+        },
+        {
+          "name": "XIAOGE_SOURCE_HEARTBEAT_NS",
+          "source_expression": "1000000000",
+          "same_value": true,
+          "value": "1000000000"
+        },
+        {
+          "name": "EventName",
+          "source_expression": "log.OnroadEvent.EventName",
+          "same_value": true,
+          "value": "<capnp.lib.capnp._EnumModule object at 0x752120a3d0a0>"
+        },
+        {
+          "name": "ButtonType",
+          "source_expression": "car.CarState.ButtonEvent.Type",
+          "same_value": true,
+          "value": "<capnp.lib.capnp._EnumModule object at 0x752120a063f0>"
+        }
+      ],
+      "methods": [
+        {
+          "method": "__init__",
+          "globals": [
+            {
+              "name": "ButtonType",
+              "resolved": true,
+              "binding_module": "capnp.lib.capnp"
+            },
+            {
+              "name": "CruiseMainOpenpilotToggle",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.car.openpilot_toggle"
+            },
+            {
+              "name": "Exception",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "LateralStartupGate",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.controls.lib.lateral_readiness"
+            },
+            {
+              "name": "MockCarState",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.car.car_specific"
+            },
+            {
+              "name": "Params",
+              "resolved": true,
+              "binding_module": "whole_io"
+            },
+            {
+              "name": "Ratekeeper",
+              "resolved": true,
+              "binding_module": "openpilot.common.realtime"
+            },
+            {
+              "name": "RuntimeDiagnostics",
+              "resolved": true,
+              "binding_module": "openpilot.common.runtime_diagnostics"
+            },
+            {
+              "name": "VCruiseCarrot",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.car.cruise"
+            },
+            {
+              "name": "bytes",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "can_comm_callbacks",
+              "resolved": true,
+              "binding_module": "whole_objects"
+            },
+            {
+              "name": "car",
+              "resolved": true,
+              "binding_module": "/car.capnp"
+            },
+            {
+              "name": "cloudlog",
+              "resolved": true,
+              "binding_module": "offline_io"
+            },
+            {
+              "name": "dict",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "get_alternative_experience",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.car.alternative_experience"
+            },
+            {
+              "name": "get_car",
+              "resolved": true,
+              "binding_module": "opendbc.car.car_helpers"
+            },
+            {
+              "name": "len",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "messaging",
+              "resolved": true,
+              "binding_module": "typing"
+            },
+            {
+              "name": "obd_callback",
+              "resolved": true,
+              "binding_module": "whole_objects"
+            },
+            {
+              "name": "open",
+              "resolved": true,
+              "binding_module": "_io"
+            },
+            {
+              "name": "print",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "structs",
+              "resolved": true,
+              "binding_module": "opendbc.car.structs"
+            }
+          ],
+          "missing": []
+        },
+        {
+          "method": "state_update",
+          "globals": [
+            {
+              "name": "REPLAY",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "TypeError",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "UnicodeDecodeError",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "ValueError",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "XIAOGE_LANE_ERROR_LOG_INTERVAL_NS",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "apply_xiaoge_vision_result",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.carrot.xiaoge.xiaoge_vision"
+            },
+            {
+              "name": "bool",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "bytes",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "can_capnp_to_list",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.pandad.pandad_api_impl"
+            },
+            {
+              "name": "cloudlog",
+              "resolved": true,
+              "binding_module": "offline_io"
+            },
+            {
+              "name": "float",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "len",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "max",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "messaging",
+              "resolved": true,
+              "binding_module": "typing"
+            },
+            {
+              "name": "parse_xiaoge_vision_payload",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.carrot.xiaoge.xiaoge_vision"
+            },
+            {
+              "name": "time",
+              "resolved": true,
+              "binding_module": "time"
+            },
+            {
+              "name": "xiaoge_blindspot_vision",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.carrot.xiaoge.xiaoge_vision"
+            }
+          ],
+          "missing": []
+        },
+        {
+          "method": "state_publish",
+          "globals": [
+            {
+              "name": "DT_CTRL",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "XIAOGE_SOURCE_HEARTBEAT_NS",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "int",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "json",
+              "resolved": true,
+              "binding_module": "json"
+            },
+            {
+              "name": "len",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "messaging",
+              "resolved": true,
+              "binding_module": "typing"
+            },
+            {
+              "name": "time",
+              "resolved": true,
+              "binding_module": "time"
+            }
+          ],
+          "missing": []
+        },
+        {
+          "method": "controls_update",
+          "globals": [
+            {
+              "name": "REPLAY",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "can_list_to_can_capnp",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.pandad.pandad_api_impl"
+            },
+            {
+              "name": "car",
+              "resolved": true,
+              "binding_module": "/car.capnp"
+            },
+            {
+              "name": "dict",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "int",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "max",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "print",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "should_log_card_diagnostics",
+              "resolved": true,
+              "binding_module": "openpilot.selfdrive.car.card_diagnostics"
+            },
+            {
+              "name": "time",
+              "resolved": true,
+              "binding_module": "time"
+            }
+          ],
+          "missing": []
+        },
+        {
+          "method": "step",
+          "globals": [
+            {
+              "name": "CAN_BACKEND",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "EventName",
+              "resolved": true,
+              "binding_module": "capnp.lib.capnp"
+            },
+            {
+              "name": "any",
+              "resolved": true,
+              "binding_module": "builtins"
+            },
+            {
+              "name": "cloudlog",
+              "resolved": true,
+              "binding_module": "offline_io"
+            },
+            {
+              "name": "time",
+              "resolved": true,
+              "binding_module": "time"
+            }
+          ],
+          "missing": []
+        }
+      ]
+    }
+  ],
+  "all_tested_method_globals_resolved": true,
+  "all_source_constants_equal": true,
+  "io_bindings": [
+    "Params: MemoryConfiguration",
+    "messaging: source definitions + memory sockets",
+    "VisionIpcClient: declared camera inventory IO",
+    "CI.init/apply: PhysicalInterfaceSink",
+    "CI.update: synthetic CarState IO; CAN parser not executed",
+    "CAN raw drain: memory socket IO"
+  ],
+  "module_import_scope_ko": "GPU/modeld runtime 전체 import 대신 해당 상수 원형 할당을 실행. 판정 source 전체 class/method 본문은 수정하지 않음. 다른 미실행 메서드의 의존성까지 실행했다고 주장하지 않음."
+}

@@ -4,7 +4,7 @@
 
 기준 CarrotPilot은 `carrot-wip`의 `0e4ee1bdbef3ad7284b136fddf31592e3f8a785f`, ARS510 분석 기준은 `673eb8e609e303feff2c15dd250592c383962156`입니다. 변경 파일의 정확한 목록·해시는 `validation_manifest.json`에 있습니다.
 
-검증 표현 정정: CANParser/CANPacker와 레이더 처리에서는 프로젝트의 원형 Python 처리 경로를 사용했습니다. 실제 C/Cython으로 빌드한 MPC, 별도로 빌드한 안전 검사 C와 구분합니다. 최초 태그의 일부 문서에 있던 'native CANParser' 표현은 부정확하며 CAN C++ 빌드·장치 처리 성능의 증거가 아닙니다. 최신 정정 태그는 `lab-20261012-r5`입니다. 배포 파일은 LF 줄끝으로 생성하며 Git의 자동 줄끝 변환도 끕니다. Windows에서 clone한 파일을 Linux로 옮겨도 원바이트가 바뀌지 않아야 합니다.
+검증 표현 정정: CANParser/CANPacker와 레이더 처리에서는 프로젝트의 원형 Python 처리 경로를 사용했습니다. 실제 C/Cython으로 빌드한 MPC, 별도로 빌드한 안전 검사 C와 구분합니다. 최초 태그의 일부 문서에 있던 'native CANParser' 표현은 부정확하며 CAN C++ 빌드·장치 처리 성능의 증거가 아닙니다. 최신 정정 태그는 `lab-20261012-r6`입니다. 배포 파일은 LF 줄끝으로 생성하며 Git의 자동 줄끝 변환도 끕니다. Windows에서 clone한 파일을 Linux로 옮겨도 원바이트가 바뀌지 않아야 합니다.
 
 제공한 실제 로그에서 ARS 객체 CRC와 거리·속도 디코딩, 기존 레이더 처리 코어 전달을 검증했습니다. 실물 ECU 제조사·모델·펌웨어는 확인되지 않았습니다. 공유 대화의 부품번호 후보와 저장소의 지원 펌웨어 문자열은 실제 ECU 조회 응답으로 취급하지 않았습니다.
 
@@ -20,7 +20,7 @@
 Linux, Git, SHA256 도구와 Python 3.12.3 이상·3.13 미만이 필요합니다. 기존 `/data/openpilot`에 쓰지 않습니다. 아래 명령은 고정 버전 clone, 패치 적용 검사, 변경 파일 해시 검사, CPU·Python·기존 소스 비교와 격리된 가상환경 다운로드만 실행합니다.
 
 ```sh
-git clone --branch lab-20261012-r5 --depth 1 https://github.com/Mlnege/rav4-ars510-validation.git rav4-ars510-validation
+git clone --branch lab-20261012-r6 --depth 1 https://github.com/Mlnege/rav4-ars510-validation.git rav4-ars510-validation
 cd rav4-ars510-validation
 bash tools/remote_download.sh --destination /data/rav4-validation-lab --install-deps
 ```
@@ -52,3 +52,5 @@ native MPC와 안전 C 검사의 재현은 `validation/native/VALIDATION_KO.md`,
 - `SHA256SUMS`: 배포 파일 무결성 확인
 
 ARS510 원형 소스·DBC는 MIT 라이선스와 저작권 표시를 유지했습니다. CarrotPilot의 라이선스도 포함합니다. 실차 호환성이 확인될 때까지 검증용 배포 상태를 유지합니다.
+
+추가 연결과 정정: `reports/연결검증_갱신_r6.md`에서 Mode0→ToyotaCAN/C 검사와 신호 재개 반례의 서로 다른 범위를 확인하세요. 계산 소스63파일과 패치8개는 앞선 태그와 같습니다.
