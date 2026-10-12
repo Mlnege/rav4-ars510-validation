@@ -1,0 +1,242 @@
+[
+  {
+    "path": "reports/근본원인_분리검증.md",
+    "original_sha256": "951353c595c4cd739184e292525711736a065d2129ecf98a964c87815ec1dd30",
+    "published_sha256": "951353c595c4cd739184e292525711736a065d2129ecf98a964c87815ec1dd30",
+    "transform": "개인 경로 제거·LF 문서 저장"
+  },
+  {
+    "path": "reports/수정파일목록_현재63개.csv",
+    "original_sha256": "aa735053d7464a0c85708aa6c56e9602681ef52ae6e14362fb1a4b5572f341cb",
+    "published_sha256": "fc65d1878bc88db16cee55f5c1e565fdf1c9d0271ea23af532a32e81e49ee7bd",
+    "transform": "개인 경로 제거·LF 문서 저장"
+  },
+  {
+    "path": "reports/레이더_차량속도_기준대조.md",
+    "original_sha256": "9966a2525df7bde1dc9b28e10b0709e46d068ab8fb6cdb50cf4f199abe388488",
+    "published_sha256": "9966a2525df7bde1dc9b28e10b0709e46d068ab8fb6cdb50cf4f199abe388488",
+    "transform": "개인 경로 제거·LF 문서 저장"
+  },
+  {
+    "path": "results/log_timing/원본로그_초기지연_분리.png",
+    "original_sha256": "a9c04460c41130371910c19fbecbce9f63f6c9b438be685ef8b825fd0c12a353",
+    "published_sha256": "a9c04460c41130371910c19fbecbce9f63f6c9b438be685ef8b825fd0c12a353",
+    "transform": "개인 경로 제거·LF 문서 저장"
+  },
+  {
+    "path": "analysis/speed_reference/speed_reference_probe.py",
+    "original_sha256": "f6a363d9b75a1319c6f5efd53e980280c9c10ab162dd2681e50cd6eb714ae890",
+    "published_sha256": "f6a363d9b75a1319c6f5efd53e980280c9c10ab162dd2681e50cd6eb714ae890",
+    "transform": "실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/speed_reference/observations.json",
+    "original_sha256": "a5b9ad111a4174ace37c2b6ffe17945af1f35bfee578ba1eb0fb1433f23bce00",
+    "published_sha256": "a5b9ad111a4174ace37c2b6ffe17945af1f35bfee578ba1eb0fb1433f23bce00",
+    "transform": "개인 경로 제거·LF 문서 저장"
+  },
+  {
+    "path": "analysis/speed_reference/REPORT_KO.md",
+    "original_sha256": "9966a2525df7bde1dc9b28e10b0709e46d068ab8fb6cdb50cf4f199abe388488",
+    "published_sha256": "9966a2525df7bde1dc9b28e10b0709e46d068ab8fb6cdb50cf4f199abe388488",
+    "transform": "개인 경로 제거·LF 문서 저장"
+  },
+  {
+    "path": "analysis/speed_reference/REVIEW_KO.md",
+    "original_sha256": "85409b6b1b3bc417115c044c8560c4861cbbfe89948147f4495dc4da820440c4",
+    "published_sha256": "85409b6b1b3bc417115c044c8560c4861cbbfe89948147f4495dc4da820440c4",
+    "transform": "개인 경로 제거·LF 문서 저장"
+  },
+  {
+    "path": "analysis/log_timing/observe_timing.py",
+    "original_sha256": "84003691b0afaff8e2ec746c063873d8f1adab21c384f02b7b73b7c842476bb0",
+    "published_sha256": "84003691b0afaff8e2ec746c063873d8f1adab21c384f02b7b73b7c842476bb0",
+    "transform": "실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/log_timing/observations.json",
+    "original_sha256": "4e83aa447298b92eb7ebfdf474634a6bc60ddeab0cdc792ae6c6718a7baef3b3",
+    "published_sha256": "dd6cbb3e4091825dc994947b87d29d0a9cac00dc52fb9a13124a686c944af248",
+    "transform": "개인 경로 제거·LF 문서 저장"
+  },
+  {
+    "path": "analysis/log_timing/REPORT_KO.md",
+    "original_sha256": "a2d75936c065d28bd9a8cd0a54bc30c295a8e813c6e07fb268481ac9be64d3df",
+    "published_sha256": "bb8dc7fc80924dd192debdd06179b123103e811b9d1072876751d593b2524204",
+    "transform": "개인 경로 제거·LF 문서 저장"
+  },
+  {
+    "path": "validation/native/fusion_contract_grid.py",
+    "original_sha256": "b17c9980794cb91f9d22577aef0603d7e3316b808fa1979e4b798decf00a4dde",
+    "published_sha256": "b17c9980794cb91f9d22577aef0603d7e3316b808fa1979e4b798decf00a4dde",
+    "transform": "실행 코드 바이트 보존"
+  },
+  {
+    "path": "results/fusion_contract_grid/summary.json",
+    "original_sha256": "c579dafe4704d8d3647a7ac2db5d34989d0a477baf8cad1494de44d83cab2e5a",
+    "published_sha256": "53d82157b4931f1f8a9a3f5b5ba66319dd82df283d2fcb272274f5fd6bf7e353",
+    "transform": "개인 경로 제거·LF 문서 저장"
+  },
+  {
+    "path": "results/fusion_contract_grid/common_step_observations.json",
+    "original_sha256": "99b0dca784b47bf1f0dd59da7eb59b852e5e560ea7112e56b1f886e75240cbc7",
+    "published_sha256": "088a94c82ad30311a43c2627a5874013a4df3605ef91a145aafdd387cef63ec2",
+    "transform": "개인 경로 제거·LF 문서 저장"
+  },
+  {
+    "path": "reports/fused_거리_관측_공개시각_반례.md",
+    "original_sha256": "316fb5f3555eab6a30e790f4853fb2dcb5fbe50a2bcf65cfece5c762cac4a0c7",
+    "published_sha256": "316fb5f3555eab6a30e790f4853fb2dcb5fbe50a2bcf65cfece5c762cac4a0c7",
+    "transform": "개인 경로 제거·LF 문서 저장"
+  },
+  {
+    "path": "validation/signal/diagnostic_timing_run06.py",
+    "original_sha256": "5d1fb3fd57022d690fa5428ac7f62410e0572f2167617c82631d81e68fca8f0c",
+    "published_sha256": "5d1fb3fd57022d690fa5428ac7f62410e0572f2167617c82631d81e68fca8f0c",
+    "transform": "실행 코드 바이트 보존"
+  },
+  {
+    "path": "reports/시간_부하_기록비용_분리.md",
+    "original_sha256": "d72ab165a4f5138ecb38925fa4cdea1e5d7dfec31b6e5a1bd531ddab252f9748",
+    "published_sha256": "d72ab165a4f5138ecb38925fa4cdea1e5d7dfec31b6e5a1bd531ddab252f9748",
+    "transform": "개인 경로 제거·LF 문서 저장"
+  },
+  {
+    "path": "results/timing_diagnostic_run06/diagnostic_results.json",
+    "original_sha256": "ad11f3eb8f378d59a7e3c9fc5a87c094dba1fd6c0c32ad00826bc663da5a4e6a",
+    "published_sha256": "ad11f3eb8f378d59a7e3c9fc5a87c094dba1fd6c0c32ad00826bc663da5a4e6a",
+    "transform": "개인 경로 제거·LF 문서 저장"
+  },
+  {
+    "path": "results/timing_diagnostic_run06/gap_analysis.json",
+    "original_sha256": "78bee00a201dc188201513f4192e88add6097173e4f99bd24d5f477a515eb42c",
+    "published_sha256": "54475466025bd18c0c854519101dfc0e796787633f5944aa345bd29a00ce0430",
+    "transform": "개인 경로 제거·LF 문서 저장"
+  },
+  {
+    "path": "results/host_chain/baseline_root.json",
+    "original_sha256": "0529de3904cfed3cc488cbcecf14a20239ccb6386d74b281846195e14eb0a11d",
+    "published_sha256": "0529de3904cfed3cc488cbcecf14a20239ccb6386d74b281846195e14eb0a11d",
+    "transform": "개인 경로 제거·LF 문서 저장"
+  },
+  {
+    "path": "results/host_chain/baseline_fixture_hashes.json",
+    "original_sha256": "fb04399509ae64822b8346eeb8a6f780047e4df4e3f3d8e6cf4666d37121d62e",
+    "published_sha256": "fb04399509ae64822b8346eeb8a6f780047e4df4e3f3d8e6cf4666d37121d62e",
+    "transform": "개인 경로 제거·LF 문서 저장"
+  },
+  {
+    "path": "results/host_chain/root_old_acquisition_4s.json",
+    "original_sha256": "2e7c33eaf30aa8b69c88e10a4ef9e8f50b5a96614b99e6d03868f4c1b5bae447",
+    "published_sha256": "2e7c33eaf30aa8b69c88e10a4ef9e8f50b5a96614b99e6d03868f4c1b5bae447",
+    "transform": "개인 경로 제거·LF 문서 저장"
+  },
+  {
+    "path": "results/host_chain/root_old_producer_header_4s.json",
+    "original_sha256": "7047f2e33dfc30156ed3cc5fc09795db49847dee82f554f73b5db1d406ca53d2",
+    "published_sha256": "7047f2e33dfc30156ed3cc5fc09795db49847dee82f554f73b5db1d406ca53d2",
+    "transform": "개인 경로 제거·LF 문서 저장"
+  },
+  {
+    "path": "results/host_chain/root_model_publisher_freeze_4s.json",
+    "original_sha256": "cecdc7ef2e23e58dccc1aaa2d7edc92b77faeffd187038a58dd549f6dc264b60",
+    "published_sha256": "cecdc7ef2e23e58dccc1aaa2d7edc92b77faeffd187038a58dd549f6dc264b60",
+    "transform": "개인 경로 제거·LF 문서 저장"
+  },
+  {
+    "path": "reports/호스트_권한_시간조건_39관측.md",
+    "original_sha256": "412452dd6ae524fa296e738c4d948bef6cf6133a9f75ba399fa546cb3b587270",
+    "published_sha256": "412452dd6ae524fa296e738c4d948bef6cf6133a9f75ba399fa546cb3b587270",
+    "transform": "개인 경로 제거·LF 문서 저장"
+  },
+  {
+    "path": "results/host_chain/whole_authority_frozen.json",
+    "original_sha256": "3414b9f8ad1fafb0a90b3200e39ad7db06d0494933774978722b3e831d733745",
+    "published_sha256": "3414b9f8ad1fafb0a90b3200e39ad7db06d0494933774978722b3e831d733745",
+    "transform": "개인 경로 제거·LF 문서 저장"
+  },
+  {
+    "path": "results/host_chain/namespace_audit.json",
+    "original_sha256": "cc36589168e9bc357d5943a5a6c3ac4854f56f56c3845da46a71711d058b6989",
+    "published_sha256": "cc36589168e9bc357d5943a5a6c3ac4854f56f56c3845da46a71711d058b6989",
+    "transform": "개인 경로 제거·LF 문서 저장"
+  },
+  {
+    "path": "analysis/host_authority/REVIEW_KO.md",
+    "original_sha256": "7d7723c289807f21d7c6a8c0fc121ca1bf1f297c4f294ad4541de483b58aba3d",
+    "published_sha256": "7d7723c289807f21d7c6a8c0fc121ca1bf1f297c4f294ad4541de483b58aba3d",
+    "transform": "개인 경로 제거·LF 문서 저장"
+  },
+  {
+    "path": "analysis/host_authority/whole_baseline.py",
+    "original_sha256": "1da388f3665f11e4aff99064da75d268ad77b2ca97c78c63134c01f04b5b4e19",
+    "published_sha256": "1da388f3665f11e4aff99064da75d268ad77b2ca97c78c63134c01f04b5b4e19",
+    "transform": "실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/host_authority/whole_chain.py",
+    "original_sha256": "ffc5902a62704da7420012cdcf569f9f6f629a9bf9b5abb6cb09378d7a88b6de",
+    "published_sha256": "ffc5902a62704da7420012cdcf569f9f6f629a9bf9b5abb6cb09378d7a88b6de",
+    "transform": "실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/host_authority/whole_fault_one.py",
+    "original_sha256": "e2bd39b1a03e20f994fbe7a47015e1bf62fc5adb847024bc9d250a64a9844a93",
+    "published_sha256": "e2bd39b1a03e20f994fbe7a47015e1bf62fc5adb847024bc9d250a64a9844a93",
+    "transform": "실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/host_authority/whole_inputs.py",
+    "original_sha256": "6874242b2e0f38db7689e2dd765aa9385941f945f83af10b11808a35950207e4",
+    "published_sha256": "6874242b2e0f38db7689e2dd765aa9385941f945f83af10b11808a35950207e4",
+    "transform": "실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/host_authority/whole_objects.py",
+    "original_sha256": "46fbf6d2b42c5f7ab631334c017fda84b4174988b03002737f9b0c09cab5241f",
+    "published_sha256": "46fbf6d2b42c5f7ab631334c017fda84b4174988b03002737f9b0c09cab5241f",
+    "transform": "실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/host_authority/whole_io.py",
+    "original_sha256": "d933e679aa29e5686af9a91c13d25c6c96e4375e63a11e5b29e30ddbea26922e",
+    "published_sha256": "d933e679aa29e5686af9a91c13d25c6c96e4375e63a11e5b29e30ddbea26922e",
+    "transform": "실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/host_authority/audit_namespace.py",
+    "original_sha256": "24dd8b3d4f8eb3ffe210843b8c4c1835105653fe10de92812abb0980defe7860",
+    "published_sha256": "24dd8b3d4f8eb3ffe210843b8c4c1835105653fe10de92812abb0980defe7860",
+    "transform": "실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/host_authority/run_whole_cases.py",
+    "original_sha256": "6608d3a58fcd56203fdb58a4527a9fe4004fea1824de36b2a9de0d531038effd",
+    "published_sha256": "6608d3a58fcd56203fdb58a4527a9fe4004fea1824de36b2a9de0d531038effd",
+    "transform": "실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/host_authority/run_user_profile.py",
+    "original_sha256": "49eadeaf8254f026765f65301f96c7b6d273d16e7bf841c7d6cb8291d1aefbf7",
+    "published_sha256": "49eadeaf8254f026765f65301f96c7b6d273d16e7bf841c7d6cb8291d1aefbf7",
+    "transform": "실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/host_authority/freeze_whole_results.py",
+    "original_sha256": "35aa4401c07135ac43e754bd8a62b600faf475d2fc54f71057f967be59a23c41",
+    "published_sha256": "35aa4401c07135ac43e754bd8a62b600faf475d2fc54f71057f967be59a23c41",
+    "transform": "실행 코드 바이트 보존"
+  },
+  {
+    "path": "results/timing_diagnostic_run06/stage_trace.jsonl.gz",
+    "original_sha256": "973e37cf6c7364a97553b7561ef98cf6a3db07c5546fc2c9c89f686aa0791232",
+    "published_sha256": "dd2ef8b38d62f099dba19279ed6b310e6c03a2ee4d551d26cc7e3947c1b364ec",
+    "transform": "합성 계측 JSONL 무손실 gzip, 원본 차량 로그 아님"
+  },
+  {
+    "path": "results/host_chain/case_details.json.gz",
+    "original_sha256": "f157e552ff9cdf095f029521b7f9ac2b97a31fc1172d0ea3bdafc26922e71072",
+    "published_sha256": "a996d15b10ed61b204cea22ba866433c49ffa075c97616c1a964a772cd28f5b2",
+    "transform": "합성39관측의 개인 경로 제거 JSON 무손실 gzip, 원본 차량 로그 아님"
+  }
+]

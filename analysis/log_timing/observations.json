@@ -1,0 +1,2591 @@
+{
+  "purpose": "실제 제어 비활성 원본 로그에서 시각 관계만 익명 집계한다.",
+  "scope": "실물 제어 활성 성능·재생 주입 성능·CPU 실행 시간·CAN 전달 시간을 입증하는 검사가 아니다.",
+  "parser": "전체 Cap’n Proto 스키마와 pycapnp를 사용하며 CAN 파서는 호출하지 않는다.",
+  "CAN_backend_reference": "python",
+  "clock_interpretation": {
+    "camera_content": "현재 소스의 커널 SOF BOOT_TS와 센서 읽기 시간 보정 EOF",
+    "camera_header": "현재 C++ 소스의 CLOCK_BOOTTIME",
+    "python_header": "현재 Python 소스의 time.monotonic; Linux CLOCK_MONOTONIC 계열",
+    "model_content": "주 카메라 VIPC의 EOF를 복사하며 주 카메라는 road 또는 wide일 수 있다.",
+    "plan_reference": "modelV2의 헤더를 복사하며 촬영 시각을 직접 참조하지 않는다.",
+    "pose_content": "카메라 EOF에서 100ms를 뺀 관측 또는 센서 timestamp로 갱신한 필터 시각",
+    "cause_limit": "현재 소스의 시간 기원 설명이며 원본 장치의 실제 시계 오프셋·절전·센서 소실 원인을 확정하지 않는다."
+  },
+  "source_sha256": {
+    "openpilot/cereal/log.capnp": "596a759e0083ed3a554af271a9a583bf994ad9af160d3e23d6b1bdb544e40cea",
+    "opendbc_repo/opendbc/car/car.capnp": "539a7a39b1c296f396ebc1103ffe48dc2fd4b900b96e4328b22adf83b2a3f875",
+    "openpilot/cereal/messaging/__init__.py": "bee560dadd985b82aac55039581851d37bdeadf39aed0845d50c3ad3103d691b",
+    "openpilot/cereal/messaging/messaging.h": "37ec2abc3d57918e8af70b26ba31014c48c29e4b60b9b5d7e63a7d57e76d8c8c",
+    "openpilot/common/timing.h": "74b285e09aa06372399411f26481097f0ba72ae1dd131f7dab669ecc750be954",
+    "openpilot/system/camerad/cameras/spectra.cc": "3005ff573a81b48d6de53734d969b8db9a05d87471eaf720ae1a971973cf50e5",
+    "openpilot/system/camerad/cameras/camera_qcom2.cc": "9376fa98fdaa584d7e95479cd733ca3b28bdf6f8058f40f089a167d9c9d60126",
+    "openpilot/selfdrive/modeld/modeld.py": "0bc9440f57ca2e896b92e6a4932681eddd7db28100fb07758482bc3cfef22e44",
+    "openpilot/selfdrive/modeld/fill_model_msg.py": "5d19df893780ba3d4f012bada7d69886ef002e6fa11c2f4bcf1a825b14c2edcd",
+    "openpilot/selfdrive/locationd/locationd.py": "4e3b5f9f7bca86bd1fdf9ae36d84c614d51d46fe368ef61816a5cb58846b5629",
+    "openpilot/selfdrive/controls/lib/longitudinal_planner.py": "01ead57b64c3bde5ae56bebefb015986e877014cc0d63885e77833e08f9b886f",
+    "openpilot/selfdrive/controls/controlsd.py": "695609a1088d70b9a0cb07f8a68bf6fdd5a2a88b078c0d4d39a29cdbdd8f92cc"
+  },
+  "logs": [
+    {
+      "anonymous_log": "log_1",
+      "total_event_count": 47455,
+      "service_counts": {
+        "modelV2": 623,
+        "roadCameraState": 671,
+        "wideRoadCameraState": 671,
+        "livePose": 623,
+        "longitudinalPlan": 623,
+        "carControl": 3354,
+        "controlsState": 3354,
+        "selfdriveState": 3355
+      },
+      "carControl_plan_reference_field_present_in_current_schema": false,
+      "controlsState_exact_modelMonoTime_field_present_in_current_schema": false,
+      "controlsState_lateralPlanMonoTime_field_present_in_current_schema": true,
+      "services": {
+        "modelV2": {
+          "count": 623,
+          "invalid_event_count": 0,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 622,
+            "finite_count": 622,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 622,
+            "p50_ms": 50.027497,
+            "p95_ms": 63.292963,
+            "p99_ms": 64.935159,
+            "max_ms": 123.344271
+          },
+          "zero_content_timestamp_count": 0,
+          "header_minus_content_timestamp": {
+            "count": 623,
+            "finite_count": 623,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 623,
+            "p50_ms": 34.758846,
+            "p95_ms": 46.938911,
+            "p99_ms": 47.512419,
+            "max_ms": 757.519993
+          },
+          "content_timestamp_after_header_count": 0,
+          "future_content_ahead_of_header": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "frame_id_forward_gap_pair_count": 1,
+          "frame_id_unobserved_numbers_between_records_count": 16,
+          "frame_id_nonincreasing_pair_count": 0,
+          "frame_age_zero_count": 623,
+          "frame_age_positive_count": 0,
+          "first_model_header_minus_exposure_eof": {
+            "count": 1,
+            "finite_count": 1,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1,
+            "p50_ms": 757.519993,
+            "p95_ms": 757.519993,
+            "p99_ms": 757.519993,
+            "max_ms": 757.519993
+          },
+          "remaining_models_header_minus_exposure_eof": {
+            "count": 622,
+            "finite_count": 622,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 622,
+            "p50_ms": 34.749758,
+            "p95_ms": 46.923791,
+            "p99_ms": 47.479186,
+            "max_ms": 51.547693
+          },
+          "first_ten_models_header_minus_exposure_eof": {
+            "count": 10,
+            "finite_count": 10,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 10,
+            "p50_ms": 31.195839,
+            "p95_ms": 431.632957,
+            "p99_ms": 692.342586,
+            "max_ms": 757.519993
+          },
+          "after_first_ten_models_header_minus_exposure_eof": {
+            "count": 613,
+            "finite_count": 613,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 613,
+            "p50_ms": 34.84166,
+            "p95_ms": 46.931359,
+            "p99_ms": 47.479987,
+            "max_ms": 51.547693
+          },
+          "model_exposure_to_header_over_100ms_count": 1,
+          "recorded_model_execution_duration": {
+            "count": 623,
+            "finite_count": 623,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 623,
+            "p50_ms": 25.595153,
+            "p95_ms": 29.880319,
+            "p99_ms": 30.52954,
+            "max_ms": 752.810419
+          },
+          "first_model_recorded_execution_duration": {
+            "count": 1,
+            "finite_count": 1,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1,
+            "p50_ms": 752.810419,
+            "p95_ms": 752.810419,
+            "p99_ms": 752.810419,
+            "max_ms": 752.810419
+          },
+          "header_minus_exposure_minus_recorded_execution": {
+            "count": 623,
+            "finite_count": 623,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 623,
+            "p50_ms": 9.422499,
+            "p95_ms": 17.74236,
+            "p99_ms": 18.221082,
+            "max_ms": 18.612719
+          }
+        },
+        "roadCameraState": {
+          "count": 671,
+          "invalid_event_count": 0,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 670,
+            "finite_count": 670,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 670,
+            "p50_ms": 50.004345,
+            "p95_ms": 54.592496,
+            "p99_ms": 54.935058,
+            "max_ms": 62.173056
+          },
+          "zero_content_timestamp_count": 0,
+          "header_minus_content_timestamp": {
+            "count": 671,
+            "finite_count": 671,
+            "nonfinite_count": 0,
+            "negative_count": 48,
+            "zero_count": 0,
+            "positive_count": 623,
+            "p50_ms": 3.856098,
+            "p95_ms": 5.487195,
+            "p99_ms": 5.980647,
+            "max_ms": 15.103021
+          },
+          "content_timestamp_after_header_count": 48,
+          "future_content_ahead_of_header": {
+            "count": 48,
+            "finite_count": 48,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 48,
+            "p50_ms": 1.312877,
+            "p95_ms": 2.772633,
+            "p99_ms": 8.516548,
+            "max_ms": 13.471197
+          },
+          "frame_id_forward_gap_pair_count": 0,
+          "frame_id_unobserved_numbers_between_records_count": 0,
+          "frame_id_nonincreasing_pair_count": 0
+        },
+        "wideRoadCameraState": {
+          "count": 671,
+          "invalid_event_count": 0,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 670,
+            "finite_count": 670,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 670,
+            "p50_ms": 49.980075,
+            "p95_ms": 58.512487,
+            "p99_ms": 59.108143,
+            "max_ms": 62.74713
+          },
+          "zero_content_timestamp_count": 0,
+          "header_minus_content_timestamp": {
+            "count": 671,
+            "finite_count": 671,
+            "nonfinite_count": 0,
+            "negative_count": 11,
+            "zero_count": 0,
+            "positive_count": 660,
+            "p50_ms": 8.256438,
+            "p95_ms": 16.564062,
+            "p99_ms": 17.035608,
+            "max_ms": 17.418062
+          },
+          "content_timestamp_after_header_count": 11,
+          "future_content_ahead_of_header": {
+            "count": 11,
+            "finite_count": 11,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 11,
+            "p50_ms": 1.514417,
+            "p95_ms": 2.257321,
+            "p99_ms": 2.315635,
+            "max_ms": 2.330213
+          },
+          "frame_id_forward_gap_pair_count": 0,
+          "frame_id_unobserved_numbers_between_records_count": 0,
+          "frame_id_nonincreasing_pair_count": 0
+        },
+        "livePose": {
+          "count": 623,
+          "invalid_event_count": 17,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 622,
+            "finite_count": 622,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 622,
+            "p50_ms": 50.102603,
+            "p95_ms": 65.484676,
+            "p99_ms": 68.035339,
+            "max_ms": 110.450704
+          },
+          "zero_content_timestamp_count": 18,
+          "header_minus_content_timestamp": {
+            "count": 605,
+            "finite_count": 605,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 605,
+            "p50_ms": 22.676663,
+            "p95_ms": 27.074294,
+            "p99_ms": 27.898935,
+            "max_ms": 31.462342
+          },
+          "content_timestamp_after_header_count": 0,
+          "future_content_ahead_of_header": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "sensors_ok_true_count": 623,
+          "inputs_ok_true_count": 608,
+          "posenet_ok_true_count": 623,
+          "valid_event_with_zero_timestamp_count": 1,
+          "invalid_event_with_zero_timestamp_count": 17
+        },
+        "longitudinalPlan": {
+          "count": 623,
+          "invalid_event_count": 16,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 622,
+            "finite_count": 622,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 622,
+            "p50_ms": 50.029346,
+            "p95_ms": 62.788075,
+            "p99_ms": 64.505616,
+            "max_ms": 77.916623
+          }
+        },
+        "carControl": {
+          "count": 3354,
+          "invalid_event_count": 2,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 3353,
+            "finite_count": 3353,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 3353,
+            "p50_ms": 9.993775,
+            "p95_ms": 12.521238,
+            "p99_ms": 13.579447,
+            "max_ms": 17.573392
+          },
+          "enabled_true_count": 0,
+          "long_active_true_count": 0,
+          "lat_active_true_count": 0
+        },
+        "controlsState": {
+          "count": 3354,
+          "invalid_event_count": 2,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 3353,
+            "finite_count": 3353,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 3353,
+            "p50_ms": 9.999869,
+            "p95_ms": 12.505748,
+            "p99_ms": 13.572322,
+            "max_ms": 17.560735
+          },
+          "long_control_off_count": 3354
+        },
+        "selfdriveState": {
+          "count": 3355,
+          "invalid_event_count": 0,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 3354,
+            "finite_count": 3354,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 3354,
+            "p50_ms": 9.996979,
+            "p95_ms": 12.198638,
+            "p99_ms": 13.292416,
+            "max_ms": 24.579144
+          },
+          "enabled_true_count": 0,
+          "active_true_count": 0
+        }
+      },
+      "exact_camera_model_linkage": {
+        "counts": {
+          "roadCameraState_exact_fid_eof_match_model_count": 623,
+          "wideRoadCameraState_fid_present_but_no_exact_eof_model_count": 623,
+          "candidate_pair_count": 623,
+          "unique_exact_pair_model_count": 623
+        },
+        "relative_ms": {
+          "roadCameraState_model_header_minus_camera_header": {
+            "count": 623,
+            "finite_count": 623,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 623,
+            "p50_ms": 30.82457,
+            "p95_ms": 46.436119,
+            "p99_ms": 46.85331,
+            "max_ms": 756.877965
+          },
+          "roadCameraState_model_header_minus_exposure_eof": {
+            "count": 623,
+            "finite_count": 623,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 623,
+            "p50_ms": 34.758846,
+            "p95_ms": 46.938911,
+            "p99_ms": 47.512419,
+            "max_ms": 757.519993
+          }
+        }
+      },
+      "exact_model_plan_linkage": {
+        "counts": {
+          "unique_exact_model_header_match_count": 623,
+          "unique_camera_model_plan_chain_count": 623
+        },
+        "relative_ms": {
+          "stored_processing_delay_ms": {
+            "count": 623,
+            "finite_count": 623,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 623,
+            "p50_ms": 7.930248,
+            "p95_ms": 8.572427,
+            "p99_ms": 8.798214,
+            "max_ms": 53.642955
+          },
+          "plan_header_minus_model_reference": {
+            "count": 623,
+            "finite_count": 623,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 623,
+            "p50_ms": 7.930248,
+            "p95_ms": 8.572427,
+            "p99_ms": 8.798214,
+            "max_ms": 53.642953
+          },
+          "stored_minus_header_computed_processing_delay": {
+            "count": 623,
+            "finite_count": 623,
+            "nonfinite_count": 0,
+            "negative_count": 301,
+            "zero_count": 0,
+            "positive_count": 322,
+            "p50_ms": 0.0,
+            "p95_ms": 0.0,
+            "p99_ms": 0.0,
+            "max_ms": 2e-06
+          },
+          "absolute_stored_minus_header_computed_processing_delay": {
+            "count": 623,
+            "finite_count": 623,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 623,
+            "p50_ms": 0.0,
+            "p95_ms": 0.0,
+            "p99_ms": 0.0,
+            "max_ms": 2e-06
+          },
+          "linked_plan_header_minus_model_header": {
+            "count": 623,
+            "finite_count": 623,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 623,
+            "p50_ms": 7.930248,
+            "p95_ms": 8.572427,
+            "p99_ms": 8.798214,
+            "max_ms": 53.642953
+          },
+          "linked_plan_header_minus_model_exposure_eof": {
+            "count": 623,
+            "finite_count": 623,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 623,
+            "p50_ms": 42.767689,
+            "p95_ms": 54.622545,
+            "p99_ms": 55.23392,
+            "max_ms": 811.162946
+          },
+          "roadCameraState_linked_plan_header_minus_camera_header": {
+            "count": 623,
+            "finite_count": 623,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 623,
+            "p50_ms": 38.845914,
+            "p95_ms": 54.041112,
+            "p99_ms": 54.653032,
+            "max_ms": 810.520918
+          },
+          "roadCameraState_linked_plan_header_minus_exposure_eof": {
+            "count": 623,
+            "finite_count": 623,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 623,
+            "p50_ms": 42.767689,
+            "p95_ms": 54.622545,
+            "p99_ms": 55.23392,
+            "max_ms": 811.162946
+          }
+        }
+      },
+      "relative_model_start_windows": {
+        "origin": "세그먼트의 첫 modelV2 헤더를 0초로 삼는다. 촬영 시각이나 장치 절대 시각을 출력하지 않는다.",
+        "first_5s_includes_first_1s": true,
+        "values": {
+          "first_1s": {
+            "frame_drop_percent": {
+              "count": 19,
+              "nonfinite_count": 0,
+              "p99_percent": 0.0,
+              "max_percent": 0.0
+            },
+            "recorded_model_execution_duration_ms": {
+              "count": 19,
+              "nonfinite_count": 0,
+              "p99_ms": 622.556429,
+              "max_ms": 752.810419
+            },
+            "model_header_minus_exposure_eof_ms": {
+              "count": 19,
+              "nonfinite_count": 0,
+              "p99_ms": 628.15605,
+              "max_ms": 757.519993
+            },
+            "plan_header_minus_model_header_ms": {
+              "count": 19,
+              "nonfinite_count": 0,
+              "p99_ms": 45.465976,
+              "max_ms": 53.642953
+            },
+            "plan_header_minus_exposure_eof_ms": {
+              "count": 19,
+              "nonfinite_count": 0,
+              "p99_ms": 673.514896,
+              "max_ms": 811.162946
+            }
+          },
+          "first_5s": {
+            "frame_drop_percent": {
+              "count": 99,
+              "nonfinite_count": 0,
+              "p99_percent": 0.0,
+              "max_percent": 0.0
+            },
+            "recorded_model_execution_duration_ms": {
+              "count": 99,
+              "nonfinite_count": 0,
+              "p99_ms": 44.433518,
+              "max_ms": 752.810419
+            },
+            "model_header_minus_exposure_eof_ms": {
+              "count": 99,
+              "nonfinite_count": 0,
+              "p99_ms": 61.436218,
+              "max_ms": 757.519993
+            },
+            "plan_header_minus_model_header_ms": {
+              "count": 99,
+              "nonfinite_count": 0,
+              "p99_ms": 9.373457,
+              "max_ms": 53.642953
+            },
+            "plan_header_minus_exposure_eof_ms": {
+              "count": 99,
+              "nonfinite_count": 0,
+              "p99_ms": 70.219979,
+              "max_ms": 811.162946
+            }
+          },
+          "between_1s_and_5s": {
+            "frame_drop_percent": {
+              "count": 80,
+              "nonfinite_count": 0,
+              "p99_percent": 0.0,
+              "max_percent": 0.0
+            },
+            "recorded_model_execution_duration_ms": {
+              "count": 80,
+              "nonfinite_count": 0,
+              "p99_ms": 29.736798,
+              "max_ms": 29.976847
+            },
+            "model_header_minus_exposure_eof_ms": {
+              "count": 80,
+              "nonfinite_count": 0,
+              "p99_ms": 47.193807,
+              "max_ms": 47.230427
+            },
+            "plan_header_minus_model_header_ms": {
+              "count": 80,
+              "nonfinite_count": 0,
+              "p99_ms": 8.28204,
+              "max_ms": 8.469998
+            },
+            "plan_header_minus_exposure_eof_ms": {
+              "count": 80,
+              "nonfinite_count": 0,
+              "p99_ms": 54.708131,
+              "max_ms": 55.098694
+            }
+          },
+          "after_5s": {
+            "frame_drop_percent": {
+              "count": 524,
+              "nonfinite_count": 0,
+              "p99_percent": 0.0,
+              "max_percent": 0.0
+            },
+            "recorded_model_execution_duration_ms": {
+              "count": 524,
+              "nonfinite_count": 0,
+              "p99_ms": 30.528454,
+              "max_ms": 35.050169
+            },
+            "model_header_minus_exposure_eof_ms": {
+              "count": 524,
+              "nonfinite_count": 0,
+              "p99_ms": 47.512017,
+              "max_ms": 51.547693
+            },
+            "plan_header_minus_model_header_ms": {
+              "count": 524,
+              "nonfinite_count": 0,
+              "p99_ms": 8.798116,
+              "max_ms": 9.080321
+            },
+            "plan_header_minus_exposure_eof_ms": {
+              "count": 524,
+              "nonfinite_count": 0,
+              "p99_ms": 55.23362,
+              "max_ms": 59.058714
+            }
+          }
+        }
+      },
+      "controlsState_plan_reference_linkage": {
+        "counts": {
+          "zero_plan_reference_count": 241,
+          "unique_exact_plan_header_match_count": 3113,
+          "controls_model_reference_same_as_plan_model_count": 2884,
+          "unique_controls_plan_model_chain_count": 3113,
+          "unique_controls_plan_model_camera_chain_count": 3113,
+          "unique_controls_lateral_reference_model_match_count": 3113,
+          "controls_model_reference_differs_from_plan_model_count": 229,
+          "controls_lateral_model_reference_newer_than_plan_model_count": 229
+        },
+        "relative_ms": {
+          "controls_header_minus_plan_reference": {
+            "count": 3113,
+            "finite_count": 3113,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 3113,
+            "p50_ms": 25.090612,
+            "p95_ms": 53.139257,
+            "p99_ms": 62.511,
+            "max_ms": 78.325277
+          },
+          "linked_controls_header_minus_plan_header": {
+            "count": 3113,
+            "finite_count": 3113,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 3113,
+            "p50_ms": 25.090612,
+            "p95_ms": 53.139257,
+            "p99_ms": 62.511,
+            "max_ms": 78.325277
+          },
+          "linked_controls_header_minus_plan_model_header": {
+            "count": 3113,
+            "finite_count": 3113,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 3113,
+            "p50_ms": 33.211853,
+            "p95_ms": 61.336427,
+            "p99_ms": 70.976383,
+            "max_ms": 131.96823
+          },
+          "linked_controls_header_minus_plan_model_exposure_eof": {
+            "count": 3113,
+            "finite_count": 3113,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 3113,
+            "p50_ms": 73.578718,
+            "p95_ms": 95.878289,
+            "p99_ms": 104.96608,
+            "max_ms": 889.488223
+          },
+          "controls_header_minus_lateral_model_header": {
+            "count": 3113,
+            "finite_count": 3113,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 3113,
+            "p50_ms": 31.256869,
+            "p95_ms": 52.644279,
+            "p99_ms": 62.550032,
+            "max_ms": 120.381561
+          },
+          "different_lateral_reference_minus_plan_model_header": {
+            "count": 229,
+            "finite_count": 229,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 229,
+            "p50_ms": 51.912401,
+            "p95_ms": 64.508286,
+            "p99_ms": 66.790694,
+            "max_ms": 123.344271
+          }
+        }
+      }
+    },
+    {
+      "anonymous_log": "log_2",
+      "total_event_count": 85115,
+      "service_counts": {
+        "modelV2": 1019,
+        "roadCameraState": 1203,
+        "wideRoadCameraState": 1203,
+        "livePose": 1019,
+        "longitudinalPlan": 1019,
+        "carControl": 5997,
+        "controlsState": 5997,
+        "selfdriveState": 6023
+      },
+      "carControl_plan_reference_field_present_in_current_schema": false,
+      "controlsState_exact_modelMonoTime_field_present_in_current_schema": false,
+      "controlsState_lateralPlanMonoTime_field_present_in_current_schema": true,
+      "services": {
+        "modelV2": {
+          "count": 1019,
+          "invalid_event_count": 0,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 1018,
+            "finite_count": 1018,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1018,
+            "p50_ms": 49.892324,
+            "p95_ms": 58.83853,
+            "p99_ms": 61.245519,
+            "max_ms": 123.607656
+          },
+          "zero_content_timestamp_count": 0,
+          "header_minus_content_timestamp": {
+            "count": 1019,
+            "finite_count": 1019,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1019,
+            "p50_ms": 44.707583,
+            "p95_ms": 53.016972,
+            "p99_ms": 54.801099,
+            "max_ms": 820.725031
+          },
+          "content_timestamp_after_header_count": 0,
+          "future_content_ahead_of_header": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "frame_id_forward_gap_pair_count": 1,
+          "frame_id_unobserved_numbers_between_records_count": 17,
+          "frame_id_nonincreasing_pair_count": 0,
+          "frame_age_zero_count": 1019,
+          "frame_age_positive_count": 0,
+          "first_model_header_minus_exposure_eof": {
+            "count": 1,
+            "finite_count": 1,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1,
+            "p50_ms": 820.725031,
+            "p95_ms": 820.725031,
+            "p99_ms": 820.725031,
+            "max_ms": 820.725031
+          },
+          "remaining_models_header_minus_exposure_eof": {
+            "count": 1018,
+            "finite_count": 1018,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1018,
+            "p50_ms": 44.705682,
+            "p95_ms": 52.981345,
+            "p99_ms": 54.731304,
+            "max_ms": 59.390638
+          },
+          "first_ten_models_header_minus_exposure_eof": {
+            "count": 10,
+            "finite_count": 10,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 10,
+            "p50_ms": 50.964927,
+            "p95_ms": 476.910125,
+            "p99_ms": 751.96205,
+            "max_ms": 820.725031
+          },
+          "after_first_ten_models_header_minus_exposure_eof": {
+            "count": 1009,
+            "finite_count": 1009,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1009,
+            "p50_ms": 44.67337,
+            "p95_ms": 52.910654,
+            "p99_ms": 54.560935,
+            "max_ms": 59.390638
+          },
+          "model_exposure_to_header_over_100ms_count": 1,
+          "recorded_model_execution_duration": {
+            "count": 1019,
+            "finite_count": 1019,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1019,
+            "p50_ms": 24.620723,
+            "p95_ms": 28.212311,
+            "p99_ms": 30.730593,
+            "max_ms": 801.012576
+          },
+          "first_model_recorded_execution_duration": {
+            "count": 1,
+            "finite_count": 1,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1,
+            "p50_ms": 801.012576,
+            "p95_ms": 801.012576,
+            "p99_ms": 801.012576,
+            "max_ms": 801.012576
+          },
+          "header_minus_exposure_minus_recorded_execution": {
+            "count": 1019,
+            "finite_count": 1019,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1019,
+            "p50_ms": 19.402687,
+            "p95_ms": 26.923732,
+            "p99_ms": 28.010308,
+            "max_ms": 35.263114
+          }
+        },
+        "roadCameraState": {
+          "count": 1203,
+          "invalid_event_count": 0,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 1202,
+            "finite_count": 1202,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1202,
+            "p50_ms": 49.980805,
+            "p95_ms": 57.982759,
+            "p99_ms": 60.738827,
+            "max_ms": 66.954756
+          },
+          "zero_content_timestamp_count": 0,
+          "header_minus_content_timestamp": {
+            "count": 1203,
+            "finite_count": 1203,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1203,
+            "p50_ms": 15.659771,
+            "p95_ms": 23.692583,
+            "p99_ms": 25.521094,
+            "max_ms": 27.153104
+          },
+          "content_timestamp_after_header_count": 0,
+          "future_content_ahead_of_header": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "frame_id_forward_gap_pair_count": 0,
+          "frame_id_unobserved_numbers_between_records_count": 0,
+          "frame_id_nonincreasing_pair_count": 0
+        },
+        "wideRoadCameraState": {
+          "count": 1203,
+          "invalid_event_count": 0,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 1202,
+            "finite_count": 1202,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1202,
+            "p50_ms": 49.92385,
+            "p95_ms": 58.785702,
+            "p99_ms": 62.438656,
+            "max_ms": 66.738541
+          },
+          "zero_content_timestamp_count": 0,
+          "header_minus_content_timestamp": {
+            "count": 1203,
+            "finite_count": 1203,
+            "nonfinite_count": 0,
+            "negative_count": 1,
+            "zero_count": 0,
+            "positive_count": 1202,
+            "p50_ms": 16.270864,
+            "p95_ms": 25.31239,
+            "p99_ms": 26.341593,
+            "max_ms": 33.349097
+          },
+          "content_timestamp_after_header_count": 1,
+          "future_content_ahead_of_header": {
+            "count": 1,
+            "finite_count": 1,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1,
+            "p50_ms": 1.405542,
+            "p95_ms": 1.405542,
+            "p99_ms": 1.405542,
+            "max_ms": 1.405542
+          },
+          "frame_id_forward_gap_pair_count": 0,
+          "frame_id_unobserved_numbers_between_records_count": 0,
+          "frame_id_nonincreasing_pair_count": 0
+        },
+        "livePose": {
+          "count": 1019,
+          "invalid_event_count": 20,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 1018,
+            "finite_count": 1018,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1018,
+            "p50_ms": 49.848404,
+            "p95_ms": 61.084652,
+            "p99_ms": 64.39508,
+            "max_ms": 91.420313
+          },
+          "zero_content_timestamp_count": 21,
+          "header_minus_content_timestamp": {
+            "count": 998,
+            "finite_count": 998,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 998,
+            "p50_ms": 24.489338,
+            "p95_ms": 28.608463,
+            "p99_ms": 30.226565,
+            "max_ms": 31.345937
+          },
+          "content_timestamp_after_header_count": 0,
+          "future_content_ahead_of_header": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "sensors_ok_true_count": 1019,
+          "inputs_ok_true_count": 999,
+          "posenet_ok_true_count": 1019,
+          "valid_event_with_zero_timestamp_count": 1,
+          "invalid_event_with_zero_timestamp_count": 20
+        },
+        "longitudinalPlan": {
+          "count": 1019,
+          "invalid_event_count": 15,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 1018,
+            "finite_count": 1018,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1018,
+            "p50_ms": 49.893532,
+            "p95_ms": 58.71943,
+            "p99_ms": 61.092747,
+            "max_ms": 67.062481
+          }
+        },
+        "carControl": {
+          "count": 5997,
+          "invalid_event_count": 2,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 5996,
+            "finite_count": 5996,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 5996,
+            "p50_ms": 9.965847,
+            "p95_ms": 12.476018,
+            "p99_ms": 13.615061,
+            "max_ms": 30.159847
+          },
+          "enabled_true_count": 0,
+          "long_active_true_count": 0,
+          "lat_active_true_count": 0
+        },
+        "controlsState": {
+          "count": 5997,
+          "invalid_event_count": 2,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 5996,
+            "finite_count": 5996,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 5996,
+            "p50_ms": 9.969974,
+            "p95_ms": 12.451237,
+            "p99_ms": 13.610038,
+            "max_ms": 30.197776
+          },
+          "long_control_off_count": 5997
+        },
+        "selfdriveState": {
+          "count": 6023,
+          "invalid_event_count": 0,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 6022,
+            "finite_count": 6022,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 6022,
+            "p50_ms": 9.976133,
+            "p95_ms": 12.15442,
+            "p99_ms": 13.294951,
+            "max_ms": 26.736579
+          },
+          "enabled_true_count": 0,
+          "active_true_count": 0
+        }
+      },
+      "exact_camera_model_linkage": {
+        "counts": {
+          "roadCameraState_exact_fid_eof_match_model_count": 1019,
+          "wideRoadCameraState_fid_present_but_no_exact_eof_model_count": 1019,
+          "candidate_pair_count": 1019,
+          "unique_exact_pair_model_count": 1019
+        },
+        "relative_ms": {
+          "roadCameraState_model_header_minus_camera_header": {
+            "count": 1019,
+            "finite_count": 1019,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1019,
+            "p50_ms": 28.476617,
+            "p95_ms": 36.902651,
+            "p99_ms": 37.991325,
+            "max_ms": 804.943073
+          },
+          "roadCameraState_model_header_minus_exposure_eof": {
+            "count": 1019,
+            "finite_count": 1019,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1019,
+            "p50_ms": 44.707583,
+            "p95_ms": 53.016972,
+            "p99_ms": 54.801099,
+            "max_ms": 820.725031
+          }
+        }
+      },
+      "exact_model_plan_linkage": {
+        "counts": {
+          "unique_exact_model_header_match_count": 1019,
+          "unique_camera_model_plan_chain_count": 1019
+        },
+        "relative_ms": {
+          "stored_processing_delay_ms": {
+            "count": 1019,
+            "finite_count": 1019,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1019,
+            "p50_ms": 8.487397,
+            "p95_ms": 9.166955,
+            "p99_ms": 9.513341,
+            "max_ms": 78.530572
+          },
+          "plan_header_minus_model_reference": {
+            "count": 1019,
+            "finite_count": 1019,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1019,
+            "p50_ms": 8.487397,
+            "p95_ms": 9.166956,
+            "p99_ms": 9.513341,
+            "max_ms": 78.530573
+          },
+          "stored_minus_header_computed_processing_delay": {
+            "count": 1019,
+            "finite_count": 1019,
+            "nonfinite_count": 0,
+            "negative_count": 498,
+            "zero_count": 0,
+            "positive_count": 521,
+            "p50_ms": 0.0,
+            "p95_ms": 0.0,
+            "p99_ms": 0.0,
+            "max_ms": 0.0
+          },
+          "absolute_stored_minus_header_computed_processing_delay": {
+            "count": 1019,
+            "finite_count": 1019,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1019,
+            "p50_ms": 0.0,
+            "p95_ms": 0.0,
+            "p99_ms": 0.0,
+            "max_ms": 1e-06
+          },
+          "linked_plan_header_minus_model_header": {
+            "count": 1019,
+            "finite_count": 1019,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1019,
+            "p50_ms": 8.487397,
+            "p95_ms": 9.166956,
+            "p99_ms": 9.513341,
+            "max_ms": 78.530573
+          },
+          "linked_plan_header_minus_model_exposure_eof": {
+            "count": 1019,
+            "finite_count": 1019,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1019,
+            "p50_ms": 53.259302,
+            "p95_ms": 61.329292,
+            "p99_ms": 63.36452,
+            "max_ms": 899.255604
+          },
+          "roadCameraState_linked_plan_header_minus_camera_header": {
+            "count": 1019,
+            "finite_count": 1019,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1019,
+            "p50_ms": 37.097508,
+            "p95_ms": 45.357971,
+            "p99_ms": 46.442444,
+            "max_ms": 883.473646
+          },
+          "roadCameraState_linked_plan_header_minus_exposure_eof": {
+            "count": 1019,
+            "finite_count": 1019,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1019,
+            "p50_ms": 53.259302,
+            "p95_ms": 61.329292,
+            "p99_ms": 63.36452,
+            "max_ms": 899.255604
+          }
+        }
+      },
+      "relative_model_start_windows": {
+        "origin": "세그먼트의 첫 modelV2 헤더를 0초로 삼는다. 촬영 시각이나 장치 절대 시각을 출력하지 않는다.",
+        "first_5s_includes_first_1s": true,
+        "values": {
+          "first_1s": {
+            "frame_drop_percent": {
+              "count": 19,
+              "nonfinite_count": 0,
+              "p99_percent": 0.0,
+              "max_percent": 0.0
+            },
+            "recorded_model_execution_duration_ms": {
+              "count": 19,
+              "nonfinite_count": 0,
+              "p99_ms": 662.249709,
+              "max_ms": 801.012576
+            },
+            "model_header_minus_exposure_eof_ms": {
+              "count": 19,
+              "nonfinite_count": 0,
+              "p99_ms": 683.205669,
+              "max_ms": 820.725031
+            },
+            "plan_header_minus_model_header_ms": {
+              "count": 19,
+              "nonfinite_count": 0,
+              "p99_ms": 66.079214,
+              "max_ms": 78.530573
+            },
+            "plan_header_minus_exposure_eof_ms": {
+              "count": 19,
+              "nonfinite_count": 0,
+              "p99_ms": 749.057295,
+              "max_ms": 899.255604
+            }
+          },
+          "first_5s": {
+            "frame_drop_percent": {
+              "count": 99,
+              "nonfinite_count": 0,
+              "p99_percent": 0.0,
+              "max_percent": 0.0
+            },
+            "recorded_model_execution_duration_ms": {
+              "count": 99,
+              "nonfinite_count": 0,
+              "p99_ms": 50.642017,
+              "max_ms": 801.012576
+            },
+            "model_header_minus_exposure_eof_ms": {
+              "count": 99,
+              "nonfinite_count": 0,
+              "p99_ms": 72.008502,
+              "max_ms": 820.725031
+            },
+            "plan_header_minus_model_header_ms": {
+              "count": 99,
+              "nonfinite_count": 0,
+              "p99_ms": 10.930684,
+              "max_ms": 78.530573
+            },
+            "plan_header_minus_exposure_eof_ms": {
+              "count": 99,
+              "nonfinite_count": 0,
+              "p99_ms": 81.509253,
+              "max_ms": 899.255604
+            }
+          },
+          "between_1s_and_5s": {
+            "frame_drop_percent": {
+              "count": 80,
+              "nonfinite_count": 0,
+              "p99_percent": 0.0,
+              "max_percent": 0.0
+            },
+            "recorded_model_execution_duration_ms": {
+              "count": 80,
+              "nonfinite_count": 0,
+              "p99_ms": 35.035047,
+              "max_ms": 35.328332
+            },
+            "model_header_minus_exposure_eof_ms": {
+              "count": 80,
+              "nonfinite_count": 0,
+              "p99_ms": 55.056622,
+              "max_ms": 55.381385
+            },
+            "plan_header_minus_model_header_ms": {
+              "count": 80,
+              "nonfinite_count": 0,
+              "p99_ms": 9.24534,
+              "max_ms": 9.551094
+            },
+            "plan_header_minus_exposure_eof_ms": {
+              "count": 80,
+              "nonfinite_count": 0,
+              "p99_ms": 63.317083,
+              "max_ms": 63.524457
+            }
+          },
+          "after_5s": {
+            "frame_drop_percent": {
+              "count": 920,
+              "nonfinite_count": 0,
+              "p99_percent": 0.0,
+              "max_percent": 0.0
+            },
+            "recorded_model_execution_duration_ms": {
+              "count": 920,
+              "nonfinite_count": 0,
+              "p99_ms": 30.641255,
+              "max_ms": 33.045225
+            },
+            "model_header_minus_exposure_eof_ms": {
+              "count": 920,
+              "nonfinite_count": 0,
+              "p99_ms": 54.241404,
+              "max_ms": 59.390638
+            },
+            "plan_header_minus_model_header_ms": {
+              "count": 920,
+              "nonfinite_count": 0,
+              "p99_ms": 9.503723,
+              "max_ms": 25.761093
+            },
+            "plan_header_minus_exposure_eof_ms": {
+              "count": 920,
+              "nonfinite_count": 0,
+              "p99_ms": 62.829512,
+              "max_ms": 67.721175
+            }
+          }
+        }
+      },
+      "controlsState_plan_reference_linkage": {
+        "counts": {
+          "zero_plan_reference_count": 902,
+          "unique_exact_plan_header_match_count": 5095,
+          "controls_model_reference_same_as_plan_model_count": 4614,
+          "unique_controls_plan_model_chain_count": 5095,
+          "unique_controls_plan_model_camera_chain_count": 5095,
+          "unique_controls_lateral_reference_model_match_count": 5095,
+          "controls_model_reference_differs_from_plan_model_count": 481,
+          "controls_lateral_model_reference_newer_than_plan_model_count": 481
+        },
+        "relative_ms": {
+          "controls_header_minus_plan_reference": {
+            "count": 5095,
+            "finite_count": 5095,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 5095,
+            "p50_ms": 27.009011,
+            "p95_ms": 50.895729,
+            "p99_ms": 55.515689,
+            "max_ms": 63.986927
+          },
+          "linked_controls_header_minus_plan_header": {
+            "count": 5095,
+            "finite_count": 5095,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 5095,
+            "p50_ms": 27.009011,
+            "p95_ms": 50.895729,
+            "p99_ms": 55.515689,
+            "max_ms": 63.986927
+          },
+          "linked_controls_header_minus_plan_model_header": {
+            "count": 5095,
+            "finite_count": 5095,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 5095,
+            "p50_ms": 35.414485,
+            "p95_ms": 59.544675,
+            "p99_ms": 65.145781,
+            "max_ms": 134.159166
+          },
+          "linked_controls_header_minus_plan_model_exposure_eof": {
+            "count": 5095,
+            "finite_count": 5095,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 5095,
+            "p50_ms": 82.739002,
+            "p95_ms": 103.915994,
+            "p99_ms": 110.518135,
+            "max_ms": 954.884197
+          },
+          "controls_header_minus_lateral_model_header": {
+            "count": 5095,
+            "finite_count": 5095,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 5095,
+            "p50_ms": 31.375624,
+            "p95_ms": 53.582361,
+            "p99_ms": 60.86878,
+            "max_ms": 124.075625
+          },
+          "different_lateral_reference_minus_plan_model_header": {
+            "count": 481,
+            "finite_count": 481,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 481,
+            "p50_ms": 49.642809,
+            "p95_ms": 59.307517,
+            "p99_ms": 61.57825,
+            "max_ms": 123.607656
+          }
+        }
+      }
+    },
+    {
+      "anonymous_log": "log_3",
+      "total_event_count": 3,
+      "service_counts": {
+        "modelV2": 0,
+        "roadCameraState": 0,
+        "wideRoadCameraState": 0,
+        "livePose": 0,
+        "longitudinalPlan": 0,
+        "carControl": 0,
+        "controlsState": 0,
+        "selfdriveState": 0
+      },
+      "carControl_plan_reference_field_present_in_current_schema": false,
+      "controlsState_exact_modelMonoTime_field_present_in_current_schema": false,
+      "controlsState_lateralPlanMonoTime_field_present_in_current_schema": true,
+      "services": {
+        "modelV2": {
+          "count": 0,
+          "invalid_event_count": 0,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "zero_content_timestamp_count": 0,
+          "header_minus_content_timestamp": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "content_timestamp_after_header_count": 0,
+          "future_content_ahead_of_header": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "frame_id_forward_gap_pair_count": 0,
+          "frame_id_unobserved_numbers_between_records_count": 0,
+          "frame_id_nonincreasing_pair_count": 0,
+          "frame_age_zero_count": 0,
+          "frame_age_positive_count": 0,
+          "first_model_header_minus_exposure_eof": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "remaining_models_header_minus_exposure_eof": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "first_ten_models_header_minus_exposure_eof": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "after_first_ten_models_header_minus_exposure_eof": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "model_exposure_to_header_over_100ms_count": 0,
+          "recorded_model_execution_duration": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "first_model_recorded_execution_duration": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "header_minus_exposure_minus_recorded_execution": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          }
+        },
+        "roadCameraState": {
+          "count": 0,
+          "invalid_event_count": 0,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "zero_content_timestamp_count": 0,
+          "header_minus_content_timestamp": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "content_timestamp_after_header_count": 0,
+          "future_content_ahead_of_header": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "frame_id_forward_gap_pair_count": 0,
+          "frame_id_unobserved_numbers_between_records_count": 0,
+          "frame_id_nonincreasing_pair_count": 0
+        },
+        "wideRoadCameraState": {
+          "count": 0,
+          "invalid_event_count": 0,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "zero_content_timestamp_count": 0,
+          "header_minus_content_timestamp": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "content_timestamp_after_header_count": 0,
+          "future_content_ahead_of_header": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "frame_id_forward_gap_pair_count": 0,
+          "frame_id_unobserved_numbers_between_records_count": 0,
+          "frame_id_nonincreasing_pair_count": 0
+        },
+        "livePose": {
+          "count": 0,
+          "invalid_event_count": 0,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "zero_content_timestamp_count": 0,
+          "header_minus_content_timestamp": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "content_timestamp_after_header_count": 0,
+          "future_content_ahead_of_header": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "sensors_ok_true_count": 0,
+          "inputs_ok_true_count": 0,
+          "posenet_ok_true_count": 0,
+          "valid_event_with_zero_timestamp_count": 0,
+          "invalid_event_with_zero_timestamp_count": 0
+        },
+        "longitudinalPlan": {
+          "count": 0,
+          "invalid_event_count": 0,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          }
+        },
+        "carControl": {
+          "count": 0,
+          "invalid_event_count": 0,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "enabled_true_count": 0,
+          "long_active_true_count": 0,
+          "lat_active_true_count": 0
+        },
+        "controlsState": {
+          "count": 0,
+          "invalid_event_count": 0,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "long_control_off_count": 0
+        },
+        "selfdriveState": {
+          "count": 0,
+          "invalid_event_count": 0,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "enabled_true_count": 0,
+          "active_true_count": 0
+        }
+      },
+      "exact_camera_model_linkage": {
+        "counts": {},
+        "relative_ms": {}
+      },
+      "exact_model_plan_linkage": {
+        "counts": {},
+        "relative_ms": {}
+      },
+      "relative_model_start_windows": {
+        "origin": "세그먼트의 첫 modelV2 헤더를 0초로 삼는다. 촬영 시각이나 장치 절대 시각을 출력하지 않는다.",
+        "first_5s_includes_first_1s": true,
+        "values": {
+          "first_1s": {},
+          "first_5s": {},
+          "between_1s_and_5s": {},
+          "after_5s": {}
+        }
+      },
+      "controlsState_plan_reference_linkage": {
+        "counts": {},
+        "relative_ms": {}
+      }
+    },
+    {
+      "anonymous_log": "log_4",
+      "total_event_count": 85039,
+      "service_counts": {
+        "modelV2": 1150,
+        "roadCameraState": 1203,
+        "wideRoadCameraState": 1203,
+        "livePose": 1149,
+        "longitudinalPlan": 1150,
+        "carControl": 6007,
+        "controlsState": 6007,
+        "selfdriveState": 6020
+      },
+      "carControl_plan_reference_field_present_in_current_schema": false,
+      "controlsState_exact_modelMonoTime_field_present_in_current_schema": false,
+      "controlsState_lateralPlanMonoTime_field_present_in_current_schema": true,
+      "services": {
+        "modelV2": {
+          "count": 1150,
+          "invalid_event_count": 0,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 1149,
+            "finite_count": 1149,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1149,
+            "p50_ms": 50.021454,
+            "p95_ms": 57.504938,
+            "p99_ms": 60.819557,
+            "max_ms": 122.486128
+          },
+          "zero_content_timestamp_count": 0,
+          "header_minus_content_timestamp": {
+            "count": 1150,
+            "finite_count": 1150,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1150,
+            "p50_ms": 29.738493,
+            "p95_ms": 38.13643,
+            "p99_ms": 40.790351,
+            "max_ms": 761.713268
+          },
+          "content_timestamp_after_header_count": 0,
+          "future_content_ahead_of_header": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "frame_id_forward_gap_pair_count": 1,
+          "frame_id_unobserved_numbers_between_records_count": 16,
+          "frame_id_nonincreasing_pair_count": 0,
+          "frame_age_zero_count": 1150,
+          "frame_age_positive_count": 0,
+          "first_model_header_minus_exposure_eof": {
+            "count": 1,
+            "finite_count": 1,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1,
+            "p50_ms": 761.713268,
+            "p95_ms": 761.713268,
+            "p99_ms": 761.713268,
+            "max_ms": 761.713268
+          },
+          "remaining_models_header_minus_exposure_eof": {
+            "count": 1149,
+            "finite_count": 1149,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1149,
+            "p50_ms": 29.736305,
+            "p95_ms": 38.123653,
+            "p99_ms": 40.680495,
+            "max_ms": 50.263909
+          },
+          "first_ten_models_header_minus_exposure_eof": {
+            "count": 10,
+            "finite_count": 10,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 10,
+            "p50_ms": 39.498794,
+            "p95_ms": 438.243707,
+            "p99_ms": 697.019356,
+            "max_ms": 761.713268
+          },
+          "after_first_ten_models_header_minus_exposure_eof": {
+            "count": 1140,
+            "finite_count": 1140,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1140,
+            "p50_ms": 29.707998,
+            "p95_ms": 37.975209,
+            "p99_ms": 40.561,
+            "max_ms": 50.263909
+          },
+          "model_exposure_to_header_over_100ms_count": 1,
+          "recorded_model_execution_duration": {
+            "count": 1150,
+            "finite_count": 1150,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1150,
+            "p50_ms": 23.828304,
+            "p95_ms": 27.253228,
+            "p99_ms": 28.80634,
+            "max_ms": 753.813744
+          },
+          "first_model_recorded_execution_duration": {
+            "count": 1,
+            "finite_count": 1,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1,
+            "p50_ms": 753.813744,
+            "p95_ms": 753.813744,
+            "p99_ms": 753.813744,
+            "max_ms": 753.813744
+          },
+          "header_minus_exposure_minus_recorded_execution": {
+            "count": 1150,
+            "finite_count": 1150,
+            "nonfinite_count": 0,
+            "negative_count": 4,
+            "zero_count": 0,
+            "positive_count": 1146,
+            "p50_ms": 5.589921,
+            "p95_ms": 13.888948,
+            "p99_ms": 15.924767,
+            "max_ms": 23.568352
+          }
+        },
+        "roadCameraState": {
+          "count": 1203,
+          "invalid_event_count": 0,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 1202,
+            "finite_count": 1202,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1202,
+            "p50_ms": 50.002912,
+            "p95_ms": 51.782346,
+            "p99_ms": 53.021249,
+            "max_ms": 61.32291
+          },
+          "zero_content_timestamp_count": 0,
+          "header_minus_content_timestamp": {
+            "count": 1203,
+            "finite_count": 1203,
+            "nonfinite_count": 0,
+            "negative_count": 172,
+            "zero_count": 0,
+            "positive_count": 1031,
+            "p50_ms": 0.9482,
+            "p95_ms": 3.487883,
+            "p99_ms": 5.113391,
+            "max_ms": 13.716044
+          },
+          "content_timestamp_after_header_count": 172,
+          "future_content_ahead_of_header": {
+            "count": 172,
+            "finite_count": 172,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 172,
+            "p50_ms": 3.268485,
+            "p95_ms": 4.173913,
+            "p99_ms": 4.443518,
+            "max_ms": 10.40435
+          },
+          "frame_id_forward_gap_pair_count": 0,
+          "frame_id_unobserved_numbers_between_records_count": 0,
+          "frame_id_nonincreasing_pair_count": 0
+        },
+        "wideRoadCameraState": {
+          "count": 1203,
+          "invalid_event_count": 0,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 1202,
+            "finite_count": 1202,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1202,
+            "p50_ms": 49.993407,
+            "p95_ms": 57.048642,
+            "p99_ms": 59.591861,
+            "max_ms": 67.129449
+          },
+          "zero_content_timestamp_count": 0,
+          "header_minus_content_timestamp": {
+            "count": 1203,
+            "finite_count": 1203,
+            "nonfinite_count": 0,
+            "negative_count": 122,
+            "zero_count": 0,
+            "positive_count": 1081,
+            "p50_ms": 4.343799,
+            "p95_ms": 12.488371,
+            "p99_ms": 14.685822,
+            "max_ms": 22.550777
+          },
+          "content_timestamp_after_header_count": 122,
+          "future_content_ahead_of_header": {
+            "count": 122,
+            "finite_count": 122,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 122,
+            "p50_ms": 0.594152,
+            "p95_ms": 1.203356,
+            "p99_ms": 1.478583,
+            "max_ms": 13.765937
+          },
+          "frame_id_forward_gap_pair_count": 0,
+          "frame_id_unobserved_numbers_between_records_count": 0,
+          "frame_id_nonincreasing_pair_count": 0
+        },
+        "livePose": {
+          "count": 1149,
+          "invalid_event_count": 19,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 1148,
+            "finite_count": 1148,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1148,
+            "p50_ms": 50.010359,
+            "p95_ms": 59.504444,
+            "p99_ms": 63.206456,
+            "max_ms": 91.513494
+          },
+          "zero_content_timestamp_count": 20,
+          "header_minus_content_timestamp": {
+            "count": 1129,
+            "finite_count": 1129,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1129,
+            "p50_ms": 22.708851,
+            "p95_ms": 26.705869,
+            "p99_ms": 27.939018,
+            "max_ms": 32.088076
+          },
+          "content_timestamp_after_header_count": 0,
+          "future_content_ahead_of_header": {
+            "count": 0,
+            "finite_count": 0,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 0,
+            "p50_ms": null,
+            "p95_ms": null,
+            "p99_ms": null,
+            "max_ms": null
+          },
+          "sensors_ok_true_count": 1149,
+          "inputs_ok_true_count": 1130,
+          "posenet_ok_true_count": 1149,
+          "valid_event_with_zero_timestamp_count": 1,
+          "invalid_event_with_zero_timestamp_count": 19
+        },
+        "longitudinalPlan": {
+          "count": 1150,
+          "invalid_event_count": 16,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 1149,
+            "finite_count": 1149,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1149,
+            "p50_ms": 49.99812,
+            "p95_ms": 57.536771,
+            "p99_ms": 60.572071,
+            "max_ms": 70.352074
+          }
+        },
+        "carControl": {
+          "count": 6007,
+          "invalid_event_count": 2,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 6006,
+            "finite_count": 6006,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 6006,
+            "p50_ms": 10.001375,
+            "p95_ms": 12.498032,
+            "p99_ms": 13.43613,
+            "max_ms": 22.263425
+          },
+          "enabled_true_count": 0,
+          "long_active_true_count": 0,
+          "lat_active_true_count": 0
+        },
+        "controlsState": {
+          "count": 6007,
+          "invalid_event_count": 2,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 6006,
+            "finite_count": 6006,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 6006,
+            "p50_ms": 10.001036,
+            "p95_ms": 12.485324,
+            "p99_ms": 13.433609,
+            "max_ms": 22.279623
+          },
+          "long_control_off_count": 6007
+        },
+        "selfdriveState": {
+          "count": 6020,
+          "invalid_event_count": 0,
+          "zero_header_count": 0,
+          "header_interval": {
+            "count": 6019,
+            "finite_count": 6019,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 6019,
+            "p50_ms": 9.967519,
+            "p95_ms": 12.121032,
+            "p99_ms": 13.238023,
+            "max_ms": 26.70936
+          },
+          "enabled_true_count": 0,
+          "active_true_count": 0
+        }
+      },
+      "exact_camera_model_linkage": {
+        "counts": {
+          "roadCameraState_exact_fid_eof_match_model_count": 1150,
+          "wideRoadCameraState_fid_present_but_no_exact_eof_model_count": 1150,
+          "candidate_pair_count": 1150,
+          "unique_exact_pair_model_count": 1150
+        },
+        "relative_ms": {
+          "roadCameraState_model_header_minus_camera_header": {
+            "count": 1150,
+            "finite_count": 1150,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1150,
+            "p50_ms": 28.284005,
+            "p95_ms": 36.15869,
+            "p99_ms": 38.448704,
+            "max_ms": 760.89856
+          },
+          "roadCameraState_model_header_minus_exposure_eof": {
+            "count": 1150,
+            "finite_count": 1150,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1150,
+            "p50_ms": 29.738493,
+            "p95_ms": 38.13643,
+            "p99_ms": 40.790351,
+            "max_ms": 761.713268
+          }
+        }
+      },
+      "exact_model_plan_linkage": {
+        "counts": {
+          "unique_exact_model_header_match_count": 1150,
+          "unique_camera_model_plan_chain_count": 1150
+        },
+        "relative_ms": {
+          "stored_processing_delay_ms": {
+            "count": 1150,
+            "finite_count": 1150,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1150,
+            "p50_ms": 7.760985,
+            "p95_ms": 8.208222,
+            "p99_ms": 8.537423,
+            "max_ms": 83.435863
+          },
+          "plan_header_minus_model_reference": {
+            "count": 1150,
+            "finite_count": 1150,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1150,
+            "p50_ms": 7.760984,
+            "p95_ms": 8.208221,
+            "p99_ms": 8.537423,
+            "max_ms": 83.435862
+          },
+          "stored_minus_header_computed_processing_delay": {
+            "count": 1150,
+            "finite_count": 1150,
+            "nonfinite_count": 0,
+            "negative_count": 569,
+            "zero_count": 0,
+            "positive_count": 581,
+            "p50_ms": 0.0,
+            "p95_ms": 0.0,
+            "p99_ms": 0.0,
+            "max_ms": 1e-06
+          },
+          "absolute_stored_minus_header_computed_processing_delay": {
+            "count": 1150,
+            "finite_count": 1150,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1150,
+            "p50_ms": 0.0,
+            "p95_ms": 0.0,
+            "p99_ms": 0.0,
+            "max_ms": 1e-06
+          },
+          "linked_plan_header_minus_model_header": {
+            "count": 1150,
+            "finite_count": 1150,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1150,
+            "p50_ms": 7.760984,
+            "p95_ms": 8.208221,
+            "p99_ms": 8.537423,
+            "max_ms": 83.435862
+          },
+          "linked_plan_header_minus_model_exposure_eof": {
+            "count": 1150,
+            "finite_count": 1150,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1150,
+            "p50_ms": 37.595652,
+            "p95_ms": 46.048904,
+            "p99_ms": 48.845611,
+            "max_ms": 845.14913
+          },
+          "roadCameraState_linked_plan_header_minus_camera_header": {
+            "count": 1150,
+            "finite_count": 1150,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1150,
+            "p50_ms": 36.22343,
+            "p95_ms": 43.870296,
+            "p99_ms": 46.107755,
+            "max_ms": 844.334422
+          },
+          "roadCameraState_linked_plan_header_minus_exposure_eof": {
+            "count": 1150,
+            "finite_count": 1150,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 1150,
+            "p50_ms": 37.595652,
+            "p95_ms": 46.048904,
+            "p99_ms": 48.845611,
+            "max_ms": 845.14913
+          }
+        }
+      },
+      "relative_model_start_windows": {
+        "origin": "세그먼트의 첫 modelV2 헤더를 0초로 삼는다. 촬영 시각이나 장치 절대 시각을 출력하지 않는다.",
+        "first_5s_includes_first_1s": true,
+        "values": {
+          "first_1s": {
+            "frame_drop_percent": {
+              "count": 19,
+              "nonfinite_count": 0,
+              "p99_percent": 0.0,
+              "max_percent": 0.0
+            },
+            "recorded_model_execution_duration_ms": {
+              "count": 19,
+              "nonfinite_count": 0,
+              "p99_ms": 623.38594,
+              "max_ms": 753.813744
+            },
+            "model_header_minus_exposure_eof_ms": {
+              "count": 19,
+              "nonfinite_count": 0,
+              "p99_ms": 632.325444,
+              "max_ms": 761.713268
+            },
+            "plan_header_minus_model_header_ms": {
+              "count": 19,
+              "nonfinite_count": 0,
+              "p99_ms": 70.050925,
+              "max_ms": 83.435862
+            },
+            "plan_header_minus_exposure_eof_ms": {
+              "count": 19,
+              "nonfinite_count": 0,
+              "p99_ms": 702.076353,
+              "max_ms": 845.14913
+            }
+          },
+          "first_5s": {
+            "frame_drop_percent": {
+              "count": 99,
+              "nonfinite_count": 0,
+              "p99_percent": 0.0,
+              "max_percent": 0.0
+            },
+            "recorded_model_execution_duration_ms": {
+              "count": 99,
+              "nonfinite_count": 0,
+              "p99_ms": 43.706811,
+              "max_ms": 753.813744
+            },
+            "model_header_minus_exposure_eof_ms": {
+              "count": 99,
+              "nonfinite_count": 0,
+              "p99_ms": 57.268447,
+              "max_ms": 761.713268
+            },
+            "plan_header_minus_model_header_ms": {
+              "count": 99,
+              "nonfinite_count": 0,
+              "p99_ms": 10.562318,
+              "max_ms": 83.435862
+            },
+            "plan_header_minus_exposure_eof_ms": {
+              "count": 99,
+              "nonfinite_count": 0,
+              "p99_ms": 66.234809,
+              "max_ms": 845.14913
+            }
+          },
+          "between_1s_and_5s": {
+            "frame_drop_percent": {
+              "count": 80,
+              "nonfinite_count": 0,
+              "p99_percent": 0.0,
+              "max_percent": 0.0
+            },
+            "recorded_model_execution_duration_ms": {
+              "count": 80,
+              "nonfinite_count": 0,
+              "p99_ms": 26.408087,
+              "max_ms": 26.924521
+            },
+            "model_header_minus_exposure_eof_ms": {
+              "count": 80,
+              "nonfinite_count": 0,
+              "p99_ms": 41.930251,
+              "max_ms": 42.712904
+            },
+            "plan_header_minus_model_header_ms": {
+              "count": 80,
+              "nonfinite_count": 0,
+              "p99_ms": 8.330293,
+              "max_ms": 8.36066
+            },
+            "plan_header_minus_exposure_eof_ms": {
+              "count": 80,
+              "nonfinite_count": 0,
+              "p99_ms": 49.619681,
+              "max_ms": 50.338598
+            }
+          },
+          "after_5s": {
+            "frame_drop_percent": {
+              "count": 1051,
+              "nonfinite_count": 0,
+              "p99_percent": 0.0,
+              "max_percent": 0.0
+            },
+            "recorded_model_execution_duration_ms": {
+              "count": 1051,
+              "nonfinite_count": 0,
+              "p99_ms": 27.654069,
+              "max_ms": 31.094616
+            },
+            "model_header_minus_exposure_eof_ms": {
+              "count": 1051,
+              "nonfinite_count": 0,
+              "p99_ms": 40.365637,
+              "max_ms": 50.263909
+            },
+            "plan_header_minus_model_header_ms": {
+              "count": 1051,
+              "nonfinite_count": 0,
+              "p99_ms": 8.512798,
+              "max_ms": 9.01755
+            },
+            "plan_header_minus_exposure_eof_ms": {
+              "count": 1051,
+              "nonfinite_count": 0,
+              "p99_ms": 48.119017,
+              "max_ms": 58.256591
+            }
+          }
+        }
+      },
+      "controlsState_plan_reference_linkage": {
+        "counts": {
+          "zero_plan_reference_count": 264,
+          "unique_exact_plan_header_match_count": 5743,
+          "controls_model_reference_same_as_plan_model_count": 5458,
+          "unique_controls_plan_model_chain_count": 5743,
+          "unique_controls_plan_model_camera_chain_count": 5743,
+          "unique_controls_lateral_reference_model_match_count": 5743,
+          "controls_model_reference_differs_from_plan_model_count": 285,
+          "controls_lateral_model_reference_newer_than_plan_model_count": 285
+        },
+        "relative_ms": {
+          "controls_header_minus_plan_reference": {
+            "count": 5743,
+            "finite_count": 5743,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 5743,
+            "p50_ms": 24.599832,
+            "p95_ms": 49.51766,
+            "p99_ms": 53.857864,
+            "max_ms": 71.844712
+          },
+          "linked_controls_header_minus_plan_header": {
+            "count": 5743,
+            "finite_count": 5743,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 5743,
+            "p50_ms": 24.599832,
+            "p95_ms": 49.51766,
+            "p99_ms": 53.857864,
+            "max_ms": 71.844712
+          },
+          "linked_controls_header_minus_plan_model_header": {
+            "count": 5743,
+            "finite_count": 5743,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 5743,
+            "p50_ms": 32.422979,
+            "p95_ms": 57.237649,
+            "p99_ms": 61.718577,
+            "max_ms": 132.293852
+          },
+          "linked_controls_header_minus_plan_model_exposure_eof": {
+            "count": 5743,
+            "finite_count": 5743,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 5743,
+            "p50_ms": 62.485802,
+            "p95_ms": 89.842895,
+            "p99_ms": 92.646509,
+            "max_ms": 894.00712
+          },
+          "controls_header_minus_lateral_model_header": {
+            "count": 5743,
+            "finite_count": 5743,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 5743,
+            "p50_ms": 31.345611,
+            "p95_ms": 51.532905,
+            "p99_ms": 60.406454,
+            "max_ms": 121.991638
+          },
+          "different_lateral_reference_minus_plan_model_header": {
+            "count": 285,
+            "finite_count": 285,
+            "nonfinite_count": 0,
+            "negative_count": 0,
+            "zero_count": 0,
+            "positive_count": 285,
+            "p50_ms": 50.606623,
+            "p95_ms": 58.023178,
+            "p99_ms": 64.392756,
+            "max_ms": 122.486128
+          }
+        }
+      }
+    }
+  ]
+}

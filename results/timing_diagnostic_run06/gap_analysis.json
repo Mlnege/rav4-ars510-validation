@@ -1,0 +1,68 @@
+{
+  "cost_profile:real_elapsed:False:recreate_0": {
+    "max_intercall_ms": 13.846774,
+    "before_step": 438,
+    "after_step": 439,
+    "phases_in_gap": {
+      "paced_cost": 13.745172
+    },
+    "top_setup_calls": [],
+    "scope_ko": "각 phase 첫/마지막 호출 범위이며 중첩 단계 비용의 합계가 아니다. warmup은 준비 조건을 맞추기 위한 추가 검사 부하다."
+  },
+  "cost_profile:real_elapsed:True:recreate_0": {
+    "max_intercall_ms": 16.270991,
+    "before_step": 1078,
+    "after_step": 1079,
+    "phases_in_gap": {
+      "paced_cost": 16.142277
+    },
+    "top_setup_calls": [],
+    "scope_ko": "각 phase 첫/마지막 호출 범위이며 중첩 단계 비용의 합계가 아니다. warmup은 준비 조건을 맞추기 위한 추가 검사 부하다."
+  },
+  "cost_profile:real_elapsed:False:recreate_240": {
+    "max_intercall_ms": 158.57311099999998,
+    "before_step": 959,
+    "after_step": 960,
+    "phases_in_gap": {
+      "paced_cost": 158.38392299999998,
+      "setup_recreate": 147.401605,
+      "warmup": 142.804675
+    },
+    "top_setup_calls": [
+      {
+        "stage": "setup_recreate",
+        "wall_ms": 3.3121289999999997,
+        "cpu_ms": 1.195241
+      },
+      {
+        "stage": "can_setup_recreate",
+        "wall_ms": 0.055866,
+        "cpu_ms": 0.055875999999999995
+      }
+    ],
+    "scope_ko": "각 phase 첫/마지막 호출 범위이며 중첩 단계 비용의 합계가 아니다. warmup은 준비 조건을 맞추기 위한 추가 검사 부하다."
+  },
+  "cost_profile:real_elapsed:True:recreate_240": {
+    "max_intercall_ms": 156.962117,
+    "before_step": 479,
+    "after_step": 480,
+    "phases_in_gap": {
+      "paced_cost": 156.813516,
+      "setup_recreate": 145.827036,
+      "warmup": 143.17145399999998
+    },
+    "top_setup_calls": [
+      {
+        "stage": "setup_recreate",
+        "wall_ms": 1.098063,
+        "cpu_ms": 0.862663
+      },
+      {
+        "stage": "can_setup_recreate",
+        "wall_ms": 0.050606,
+        "cpu_ms": 0.050556
+      }
+    ],
+    "scope_ko": "각 phase 첫/마지막 호출 범위이며 중첩 단계 비용의 합계가 아니다. warmup은 준비 조건을 맞추기 위한 추가 검사 부하다."
+  }
+}

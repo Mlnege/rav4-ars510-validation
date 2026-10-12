@@ -1,0 +1,452 @@
+{
+  "probe_sha256": "f6a363d9b75a1319c6f5efd53e980280c9c10ab162dd2681e50cd6eb714ae890",
+  "source_fingerprints": {
+    "opendbc_repo/opendbc/car/toyota/ars510_offline.py": "8b471914b92466fb9589c298b976fe377eea18e7c111e81f89258cab45d12a50",
+    "opendbc_repo/opendbc/car/toyota/ars510/interface.py": "5275348cebbc3605d0ae3b9ba482142605f8e0df031fafb7ce56f5c6cec3c05a",
+    "opendbc_repo/opendbc/car/toyota/carstate.py": "057cc10985e792fd6c75e873a4bc5c272b3fded140cae6c1474dd6c1c7a873c1",
+    "opendbc_repo/opendbc/car/radar_tracks.py": "9c44d96e25cc3f540a650302276bc35a027d47c179b8774e243e0b3cb2d4f27b",
+    "openpilot/selfdrive/carrot/radar_motion/primary.py": "2bd599d239d5383485dc52f8bdd60bde47e97642e2144736bd7c8c34ed83d218"
+  },
+  "source_unchanged": true,
+  "actual_vehicle_transmissions": 0,
+  "vehicle_deployment_allowed": false,
+  "B4_checksum_validation": "원형 helper는 길이·디코딩만 검사; 독립 체크섬 검증을 이 결과에서 주장하지 않음",
+  "model_snapshot_scope": "원형 measured snapshot 입력의 속도 계산; 최종 L1 선택·실물 속도 정답 검증 아님",
+  "replay_order_scope": "원래 로그 저장 순서의 기존 재생 경로. 음수 시각 차이는 과거 헤더와 이미 읽은 최신 상태의 차이며 실제 각 프로세스 수신 순서를 입증하지 않음",
+  "logs": [
+    {
+      "anonymous_log": "log_1",
+      "status": "오프라인 원형 속도 기준 관찰",
+      "counts": {
+        "out_of_order_event_header": 10225,
+        "points_without_reference": 0,
+        "b4_received": 1461,
+        "b4_length_valid_decoded": 1461,
+        "real_longActive_true": 0,
+        "real_controls": 3354,
+        "points": 246,
+        "measured_points_at_model": 277,
+        "abs03_speed_classification_disagreement": 3,
+        "near_retention_geometry_candidates": 0
+      },
+      "carParams_unchanged": true,
+      "max_event_header_inversion_ms": 705.9840719998647,
+      "time_joined_cs_minus_b4": {
+        "all": {
+          "count": 3362,
+          "unit": "m/s",
+          "min": -0.07069315380520291,
+          "p50": 0.0,
+          "p95": 0.1088529095053648,
+          "p99": 0.3390459534525869,
+          "max": 0.3755315840244293,
+          "max_abs": 0.3755315840244293,
+          "negative_count": 465
+        },
+        "first5s": {
+          "count": 502,
+          "unit": "m/s",
+          "min": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0,
+          "max_abs": 0.0,
+          "negative_count": 0
+        },
+        "after5s": {
+          "count": 2860,
+          "unit": "m/s",
+          "min": -0.07069315380520291,
+          "p50": 0.0,
+          "p95": 0.2381306409835813,
+          "p99": 0.3438619804382322,
+          "max": 0.3755315840244293,
+          "max_abs": 0.3755315840244293,
+          "negative_count": 465
+        }
+      },
+      "statistics": {
+        "cs_minus_b4": {
+          "count": 3215,
+          "unit": "m/s",
+          "min": -0.07069315380520291,
+          "p50": 0.0,
+          "p95": 0.13523861169814771,
+          "p99": 0.3397029000520708,
+          "max": 0.3755315840244293,
+          "max_abs": 0.3755315840244293,
+          "negative_count": 440
+        },
+        "cs_raw_minus_b4": {
+          "count": 3215,
+          "unit": "m/s",
+          "min": -0.0666666719648572,
+          "p50": 0.0,
+          "p95": 0.14062499999998768,
+          "p99": 0.3387916600704194,
+          "max": 0.37291666865348816,
+          "max_abs": 0.37291666865348816,
+          "negative_count": 429
+        },
+        "cs_age": {
+          "count": 246,
+          "unit": "ms",
+          "min": 5.426609000096505,
+          "p50": 7.595918999868445,
+          "p95": 18.276322000019718,
+          "p99": 31.789308649877135,
+          "max": 38.76976600031412,
+          "max_abs": 38.76976600031412,
+          "negative_count": 0
+        },
+        "b4_age": {
+          "count": 246,
+          "unit": "ms",
+          "min": 0.0,
+          "p50": 9.609080999780417,
+          "p95": 20.326918249907067,
+          "p99": 20.56320889980725,
+          "max": 21.872115999940434,
+          "max_abs": 21.872115999940434,
+          "negative_count": 0
+        },
+        "inferred_point_ego_minus_latest_b4": {
+          "count": 246,
+          "unit": "m/s",
+          "min": -6.622738313311061e-08,
+          "p50": 0.0,
+          "p95": 1.2935035736960643e-08,
+          "p99": 2.2252400672107003e-08,
+          "max": 0.002777770492765619,
+          "max_abs": 0.002777770492765619,
+          "negative_count": 31
+        },
+        "publication_ground_delta": {
+          "count": 246,
+          "unit": "m/s",
+          "min": -0.04942372441291809,
+          "p50": 0.0,
+          "p95": 0.2960261255502701,
+          "p99": 0.3572347164154053,
+          "max": 0.3679211735725403,
+          "max_abs": 0.3679211735725403,
+          "negative_count": 39
+        },
+        "model_ground_delta": {
+          "count": 277,
+          "unit": "m/s",
+          "min": -0.0391681045293808,
+          "p50": 0.0,
+          "p95": 0.29548838734626764,
+          "p99": 0.36078980565071106,
+          "max": 0.3699510395526886,
+          "max_abs": 0.3699510395526886,
+          "negative_count": 19
+        },
+        "model_cs_age": {
+          "count": 277,
+          "unit": "ms",
+          "min": -34.15931800009275,
+          "p50": 3.39271800021379,
+          "p95": 6.731111999670247,
+          "p99": 6.932825440089801,
+          "max": 7.185130999914691,
+          "max_abs": 34.15931800009275,
+          "negative_count": 58
+        }
+      }
+    },
+    {
+      "anonymous_log": "log_2",
+      "status": "오프라인 원형 속도 기준 관찰",
+      "counts": {
+        "out_of_order_event_header": 24250,
+        "b4_received": 2568,
+        "b4_length_valid_decoded": 2568,
+        "points_without_reference": 0,
+        "real_longActive_true": 0,
+        "real_controls": 5997,
+        "points": 117,
+        "measured_points_at_model": 125,
+        "abs03_speed_classification_disagreement": 0,
+        "near_retention_geometry_candidates": 0
+      },
+      "carParams_unchanged": true,
+      "max_event_header_inversion_ms": 894.1764059999997,
+      "time_joined_cs_minus_b4": {
+        "all": {
+          "count": 6022,
+          "unit": "m/s",
+          "min": -3.261111111111111,
+          "p50": 0.047535154554578796,
+          "p95": 0.11710659133063472,
+          "p99": 0.15117167992062033,
+          "max": 0.30294611189100484,
+          "max_abs": 3.261111111111111,
+          "negative_count": 1161
+        },
+        "first5s": {
+          "count": 501,
+          "unit": "m/s",
+          "min": -3.261111111111111,
+          "p50": 0.047163984510633306,
+          "p95": 0.06928306155734631,
+          "p99": 0.07648537953694667,
+          "max": 0.081506082746718,
+          "max_abs": 3.261111111111111,
+          "negative_count": 4
+        },
+        "after5s": {
+          "count": 5521,
+          "unit": "m/s",
+          "min": -0.29259409904480016,
+          "p50": 0.04765088823106556,
+          "p95": 0.11838547388712595,
+          "p99": 0.1528370009528264,
+          "max": 0.30294611189100484,
+          "max_abs": 0.30294611189100484,
+          "negative_count": 1157
+        }
+      },
+      "statistics": {
+        "cs_minus_b4": {
+          "count": 4966,
+          "unit": "m/s",
+          "min": -3.261111111111111,
+          "p50": 0.04769012928009042,
+          "p95": 0.11501416100396034,
+          "p99": 0.14519639968872122,
+          "max": 0.30294611189100484,
+          "max_abs": 3.261111111111111,
+          "negative_count": 942
+        },
+        "cs_raw_minus_b4": {
+          "count": 4966,
+          "unit": "m/s",
+          "min": -3.261111111111111,
+          "p50": 0.04583332008785668,
+          "p95": 0.11319451861911345,
+          "p99": 0.1502429585986666,
+          "max": 0.34652772479587135,
+          "max_abs": 3.261111111111111,
+          "negative_count": 879
+        },
+        "cs_age": {
+          "count": 117,
+          "unit": "ms",
+          "min": 5.701442000002999,
+          "p50": 8.152937000005522,
+          "p95": 59.90816579999308,
+          "p99": 86.31725043999555,
+          "max": 145.91645800000208,
+          "max_abs": 145.91645800000208,
+          "negative_count": 0
+        },
+        "b4_age": {
+          "count": 117,
+          "unit": "ms",
+          "min": 0.0,
+          "p50": 9.562292000012462,
+          "p95": 20.262653000003183,
+          "p99": 20.674623919999817,
+          "max": 20.985773999996127,
+          "max_abs": 20.985773999996127,
+          "negative_count": 0
+        },
+        "inferred_point_ego_minus_latest_b4": {
+          "count": 117,
+          "unit": "m/s",
+          "min": -0.0333333200878565,
+          "p50": 1.3245480268153642e-09,
+          "p95": 0.006666790644327606,
+          "p99": 0.034888850212096985,
+          "max": 0.03888891537984218,
+          "max_abs": 0.03888891537984218,
+          "negative_count": 55
+        },
+        "publication_ground_delta": {
+          "count": 116,
+          "unit": "m/s",
+          "min": -0.12666666507720947,
+          "p50": 0.02197381854057312,
+          "p95": 0.06805413961410522,
+          "p99": 0.08230537027120584,
+          "max": 0.08716011047363281,
+          "max_abs": 0.12666666507720947,
+          "negative_count": 21
+        },
+        "model_ground_delta": {
+          "count": 125,
+          "unit": "m/s",
+          "min": -0.09046077728271484,
+          "p50": 0.03357720375061035,
+          "p95": 0.08536761999130249,
+          "p99": 0.09359158039093021,
+          "max": 0.09545648097991943,
+          "max_abs": 0.09545648097991943,
+          "negative_count": 22
+        },
+        "model_cs_age": {
+          "count": 125,
+          "unit": "ms",
+          "min": -95.53292900000088,
+          "p50": 0.6194280000073604,
+          "p95": 42.7227916000021,
+          "p99": 82.81287143999542,
+          "max": 100.34133199999928,
+          "max_abs": 100.34133199999928,
+          "negative_count": 58
+        }
+      }
+    },
+    {
+      "anonymous_log": "log_3",
+      "status": "carParams 없음",
+      "points": 0
+    },
+    {
+      "anonymous_log": "log_4",
+      "status": "오프라인 원형 속도 기준 관찰",
+      "counts": {
+        "out_of_order_event_header": 18686,
+        "points_without_reference": 0,
+        "b4_received": 2565,
+        "b4_length_valid_decoded": 2565,
+        "real_longActive_true": 0,
+        "real_controls": 6007,
+        "points": 6,
+        "measured_points_at_model": 3,
+        "abs03_speed_classification_disagreement": 0,
+        "near_retention_geometry_candidates": 0
+      },
+      "carParams_unchanged": true,
+      "max_event_header_inversion_ms": 598.0290620000233,
+      "time_joined_cs_minus_b4": {
+        "all": {
+          "count": 6017,
+          "unit": "m/s",
+          "min": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0,
+          "max_abs": 0.0,
+          "negative_count": 0
+        },
+        "first5s": {
+          "count": 501,
+          "unit": "m/s",
+          "min": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0,
+          "max_abs": 0.0,
+          "negative_count": 0
+        },
+        "after5s": {
+          "count": 5516,
+          "unit": "m/s",
+          "min": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0,
+          "max_abs": 0.0,
+          "negative_count": 0
+        }
+      },
+      "statistics": {
+        "cs_minus_b4": {
+          "count": 5696,
+          "unit": "m/s",
+          "min": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0,
+          "max_abs": 0.0,
+          "negative_count": 0
+        },
+        "cs_raw_minus_b4": {
+          "count": 5696,
+          "unit": "m/s",
+          "min": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0,
+          "max_abs": 0.0,
+          "negative_count": 0
+        },
+        "cs_age": {
+          "count": 6,
+          "unit": "ms",
+          "min": 6.694163999782177,
+          "p50": 7.144355500031452,
+          "p95": 8.20241399992483,
+          "p99": 8.236383599933106,
+          "max": 8.244875999935175,
+          "max_abs": 8.244875999935175,
+          "negative_count": 0
+        },
+        "b4_age": {
+          "count": 6,
+          "unit": "ms",
+          "min": 0.0,
+          "p50": 9.475866999991922,
+          "p95": 10.47730899972521,
+          "p99": 10.531528999672446,
+          "max": 10.545083999659255,
+          "max_abs": 10.545083999659255,
+          "negative_count": 0
+        },
+        "inferred_point_ego_minus_latest_b4": {
+          "count": 6,
+          "unit": "m/s",
+          "min": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0,
+          "max_abs": 0.0,
+          "negative_count": 0
+        },
+        "publication_ground_delta": {
+          "count": 6,
+          "unit": "m/s",
+          "min": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0,
+          "max_abs": 0.0,
+          "negative_count": 0
+        },
+        "model_ground_delta": {
+          "count": 3,
+          "unit": "m/s",
+          "min": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0,
+          "max_abs": 0.0,
+          "negative_count": 0
+        },
+        "model_cs_age": {
+          "count": 3,
+          "unit": "ms",
+          "min": 3.121061000001646,
+          "p50": 3.51976799993281,
+          "p95": 4.6070579999195616,
+          "p99": 4.703705999918384,
+          "max": 4.7278679999180895,
+          "max_abs": 4.7278679999180895,
+          "negative_count": 0
+        }
+      }
+    }
+  ]
+}
