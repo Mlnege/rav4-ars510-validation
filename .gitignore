@@ -5,3 +5,4 @@ __pycache__/
 .env*
 rlog*.zst
 *.onnx
+validation/signal/diagnostic_timing.py
