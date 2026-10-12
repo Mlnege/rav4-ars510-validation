@@ -1,0 +1,72 @@
+{
+  "cases": [
+    {
+      "kind": "recover_before_disable",
+      "ticks": 280,
+      "checks": {
+        "normal_initial_enable": true,
+        "cp_unavailable_preserved": true,
+        "deceleration_during_fault": true,
+        "no_permission_shortcut": true,
+        "native_solution_success": true,
+        "no_physical_init_or_tx": true,
+        "healthy_recovers_without_disabling": true,
+        "force_decel_clears": true,
+        "normal_cruise_plan_returns": true
+      },
+      "failures": [],
+      "cp_unavailable": true,
+      "first_disabled_s": null,
+      "final_longActive": true,
+      "final_plan_aTarget": 0.8037066459655762
+    },
+    {
+      "kind": "recover_after_disable_pcm_restart",
+      "ticks": 500,
+      "checks": {
+        "normal_initial_enable": true,
+        "cp_unavailable_preserved": true,
+        "deceleration_during_fault": true,
+        "no_permission_shortcut": true,
+        "native_solution_success": true,
+        "no_physical_init_or_tx": true,
+        "healthy_alone_does_not_reengage": true,
+        "normal_pcm_off_on_reengages": true,
+        "force_decel_clears": true
+      },
+      "failures": [],
+      "cp_unavailable": true,
+      "first_disabled_s": 3.0,
+      "final_longActive": true,
+      "final_plan_aTarget": 0.45341750979423523
+    }
+  ],
+  "source_and_native_before": {
+    "long_mpc.py": "2fa824f243a7438150adedcfebc3d3cf03bccb3447d368f54ee89824fb0c8f5e",
+    "longitudinal_planner.py": "ccbbb7a1c2dc0dda3de7c2d2d39890d2a5e77b8ff9d0faca0a2261a9747f2f2e",
+    "acados_ocp_solver_pyx.cpython-312-x86_64-linux-gnu.so": "2533733258b4f2ceec5ce79a023b1c2992266a7d2a9637fd8f689e58a9ee2efb",
+    "libacados.so": "b5496cea328d9a239b1c1cb69b1327753e54eeebe331ef29ca91b97a85544228",
+    "libacados_ocp_solver_long.so": "2cf19053e5712920719b54ba8f970fcfd178ffe4acd5c77e3170a423b030eb71",
+    "libblasfeo.so": "4804a491b10ca1065010c84d1e7fb9cc005acd2cfed504f0655ba94bd77ac01b",
+    "libhpipm.so": "1eac1f3673d6f99876104f86ef8b80f884f860ce77ba9ff135af5b2e355616c6",
+    "libqpOASES_e.so.3.1": "48444b891f694cb720146a2ce2a83a42086d8a911064e5b14df5f6d08486f47b",
+    "libsafety_download_native.so": "0da233bf51bc8375f969bc60101ae011638a0a05c69aa4f9abec3a87df678570"
+  },
+  "source_and_native_after": {
+    "long_mpc.py": "2fa824f243a7438150adedcfebc3d3cf03bccb3447d368f54ee89824fb0c8f5e",
+    "longitudinal_planner.py": "ccbbb7a1c2dc0dda3de7c2d2d39890d2a5e77b8ff9d0faca0a2261a9747f2f2e",
+    "acados_ocp_solver_pyx.cpython-312-x86_64-linux-gnu.so": "2533733258b4f2ceec5ce79a023b1c2992266a7d2a9637fd8f689e58a9ee2efb",
+    "libacados.so": "b5496cea328d9a239b1c1cb69b1327753e54eeebe331ef29ca91b97a85544228",
+    "libacados_ocp_solver_long.so": "2cf19053e5712920719b54ba8f970fcfd178ffe4acd5c77e3170a423b030eb71",
+    "libblasfeo.so": "4804a491b10ca1065010c84d1e7fb9cc005acd2cfed504f0655ba94bd77ac01b",
+    "libhpipm.so": "1eac1f3673d6f99876104f86ef8b80f884f860ce77ba9ff135af5b2e355616c6",
+    "libqpOASES_e.so.3.1": "48444b891f694cb720146a2ce2a83a42086d8a911064e5b14df5f6d08486f47b",
+    "libsafety_download_native.so": "0da233bf51bc8375f969bc60101ae011638a0a05c69aa4f9abec3a87df678570"
+  },
+  "files_unchanged": true,
+  "actual_vehicle_tx": false,
+  "virtual_time": true,
+  "fixed_ego_mps": 15.0,
+  "native_rebuilt": false,
+  "scope_ko": "건강 합성 빈 lead·고정 ego의 오류 회복/정상 PCM 상태 전이. 실제 차량 정지·재출발·PCS/회생은 미검증."
+}

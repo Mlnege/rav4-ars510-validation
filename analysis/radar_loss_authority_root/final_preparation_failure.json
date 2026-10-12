@@ -1,0 +1,9 @@
+{
+  "stage": "before_case_execution",
+  "error": "AssertionError",
+  "check": "planner.__file__ equals current primary source",
+  "actual_binding": "work/download_e2e/work/carrotpilot/openpilot/selfdrive/controls/lib/longitudinal_planner.py",
+  "expected_binding": "work/carrotpilot/openpilot/selfdrive/controls/lib/longitudinal_planner.py",
+  "cases_executed": 0,
+  "native_rebuilt": false
+}

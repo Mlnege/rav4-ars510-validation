@@ -1,0 +1,106 @@
+{
+  "python_candidate_overlays": [
+    {
+      "module": "openpilot.selfdrive.controls.lib.longitudinal_mpc_lib.long_mpc",
+      "sha256": "8d493b65acc3f5a4273bb436009d9ab99fdc573063e5f0581d23c45147b33b00"
+    },
+    {
+      "module": "openpilot.selfdrive.controls.lib.longitudinal_planner",
+      "sha256": "63ac8ab4d0b00284808f6100d812795e9b7eae0de90c230e9ce97dde33f58617"
+    }
+  ],
+  "source_on_disk_modified": false,
+  "new_native_build": false,
+  "actual_vehicle_tx": false,
+  "cases": [
+    {
+      "kind": "healthy_empty",
+      "force_decel_active_ticks": 0,
+      "positive_control_ticks_during_force_decel": 0,
+      "negative_control_ticks_during_force_decel": 0,
+      "first_negative_control_s": null,
+      "first_not_longActive_s": null,
+      "negative_accel_can": 0,
+      "positive_accel_can": 133,
+      "deceleration_missing": false
+    },
+    {
+      "kind": "error_with_valid_true",
+      "force_decel_active_ticks": 0,
+      "positive_control_ticks_during_force_decel": 0,
+      "negative_control_ticks_during_force_decel": 0,
+      "first_negative_control_s": null,
+      "first_not_longActive_s": null,
+      "negative_accel_can": 0,
+      "positive_accel_can": 133,
+      "deceleration_missing": false
+    },
+    {
+      "kind": "can_error",
+      "force_decel_active_ticks": 0,
+      "positive_control_ticks_during_force_decel": 0,
+      "negative_control_ticks_during_force_decel": 0,
+      "first_negative_control_s": null,
+      "first_not_longActive_s": 0.0,
+      "negative_accel_can": 0,
+      "positive_accel_can": 0,
+      "deceleration_missing": false
+    },
+    {
+      "kind": "temporary",
+      "force_decel_active_ticks": 300,
+      "positive_control_ticks_during_force_decel": 5,
+      "negative_control_ticks_during_force_decel": 295,
+      "first_negative_control_s": 0.05,
+      "first_not_longActive_s": 3.0,
+      "negative_accel_can": 89,
+      "positive_accel_can": 11,
+      "deceleration_missing": false
+    },
+    {
+      "kind": "radar_fault",
+      "force_decel_active_ticks": 300,
+      "positive_control_ticks_during_force_decel": 5,
+      "negative_control_ticks_during_force_decel": 295,
+      "first_negative_control_s": 0.05,
+      "first_not_longActive_s": 3.0,
+      "negative_accel_can": 89,
+      "positive_accel_can": 11,
+      "deceleration_missing": false
+    },
+    {
+      "kind": "wrong_config",
+      "force_decel_active_ticks": 300,
+      "positive_control_ticks_during_force_decel": 5,
+      "negative_control_ticks_during_force_decel": 295,
+      "first_negative_control_s": 0.05,
+      "first_not_longActive_s": 3.0,
+      "negative_accel_can": 89,
+      "positive_accel_can": 11,
+      "deceleration_missing": false
+    },
+    {
+      "kind": "invalid_without_error",
+      "force_decel_active_ticks": 300,
+      "positive_control_ticks_during_force_decel": 5,
+      "negative_control_ticks_during_force_decel": 295,
+      "first_negative_control_s": 0.05,
+      "first_not_longActive_s": 3.0,
+      "negative_accel_can": 89,
+      "positive_accel_can": 11,
+      "deceleration_missing": false
+    },
+    {
+      "kind": "producer_stopped",
+      "force_decel_active_ticks": 300,
+      "positive_control_ticks_during_force_decel": 5,
+      "negative_control_ticks_during_force_decel": 295,
+      "first_negative_control_s": 0.5,
+      "first_not_longActive_s": 3.45,
+      "negative_accel_can": 87,
+      "positive_accel_can": 28,
+      "deceleration_missing": false
+    }
+  ],
+  "deceleration_missing_cases": 0
+}

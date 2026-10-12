@@ -1,0 +1,6 @@
+{
+  "error_type": "KeyError",
+  "phase_ko": "현재 source 지문 목록에서 CarController 경로 누락. 목록 보강 뒤 읽기 추출을 완료했다.",
+  "native_or_simulation_executed": false,
+  "existing_input_modified": false
+}

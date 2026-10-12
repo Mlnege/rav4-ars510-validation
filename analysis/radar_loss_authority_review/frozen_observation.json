@@ -1,0 +1,136 @@
+{
+  "generated_utc": "2026-10-12T16:27:49.801710+00:00",
+  "new_dynamic_execution": false,
+  "first_run_structural_checks": 80,
+  "observation_structural_checks": 40,
+  "checks": {
+    "first_8_cases_preserved": true,
+    "observation_4_cases_preserved": true,
+    "recorded_source_8_before_after_equal": true,
+    "compiled_c_unchanged_during_runs": true,
+    "old_source_lf_body_matches_recorded_crlf": true,
+    "original_run_code_matches_recorded_sha": true,
+    "observation_code_matches_recorded_sha": true
+  },
+  "failures": [],
+  "source_body_archive": [
+    {
+      "source": "openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py",
+      "archive": "original_source_archive/long_mpc_original_lf.py",
+      "sha256_lf": "7f647b9a63762b9c808bddf418aae6dbbd55d15af6aa9cf0939606e05f9e50c1",
+      "execution_main_sha256_raw": "b0a5c630260ad76b58033b8d44719992c4e008399b2c520e3692b556ce12e274",
+      "lf_to_crlf_sha256": "b0a5c630260ad76b58033b8d44719992c4e008399b2c520e3692b556ce12e274",
+      "same_body_as_execution_main": true
+    },
+    {
+      "source": "openpilot/selfdrive/controls/lib/longitudinal_planner.py",
+      "archive": "original_source_archive/longitudinal_planner_original_lf.py",
+      "sha256_lf": "781b78157fe272e4cdcb79c985602695fa14ccbddd38a9e8544a614b8ab2e8b0",
+      "execution_main_sha256_raw": "01ead57b64c3bde5ae56bebefb015986e877014cc0d63885e77833e08f9b886f",
+      "lf_to_crlf_sha256": "01ead57b64c3bde5ae56bebefb015986e877014cc0d63885e77833e08f9b886f",
+      "same_body_as_execution_main": true
+    }
+  ],
+  "unique_planner_observations": [
+    {
+      "kind": "healthy_empty",
+      "unique_phase_plan_calls": 80,
+      "force_zero_input_plan_calls": 0,
+      "effective_zero_goal_lost_plan_calls": 0,
+      "witness": null
+    },
+    {
+      "kind": "can_error",
+      "unique_phase_plan_calls": 80,
+      "force_zero_input_plan_calls": 0,
+      "effective_zero_goal_lost_plan_calls": 0,
+      "witness": null
+    },
+    {
+      "kind": "temporary",
+      "unique_phase_plan_calls": 80,
+      "force_zero_input_plan_calls": 60,
+      "effective_zero_goal_lost_plan_calls": 60,
+      "witness": {
+        "relative_s": 0.06999999999999318,
+        "state": "softDisabling",
+        "enabled": true,
+        "longActive": true,
+        "forceDecel": true,
+        "plan_shouldStop": false,
+        "plan_aTarget": 0.9664126038551331,
+        "mpc_input": {
+          "input_v_cruise_ms": 0.0,
+          "carrot_v_cruise_ms": 21.38888888888889,
+          "input_mode": "acc",
+          "forceDecel_at_planner": true,
+          "reset_state": false,
+          "planner_call_time": 103.55,
+          "effective_v_cruise_ms": 21.38888888888889,
+          "effective_mode": "acc",
+          "stop_x": 1000.0,
+          "mpc_source": "cruise"
+        },
+        "generated343": [
+          {
+            "accel_mps2": 1.143,
+            "c_tx": 1,
+            "c_controls_before": true,
+            "c_long_before": true,
+            "cc_longActive": true
+          }
+        ]
+      }
+    },
+    {
+      "kind": "producer_stopped",
+      "unique_phase_plan_calls": 80,
+      "force_zero_input_plan_calls": 60,
+      "effective_zero_goal_lost_plan_calls": 60,
+      "witness": {
+        "relative_s": 0.519999999999996,
+        "state": "softDisabling",
+        "enabled": true,
+        "longActive": true,
+        "forceDecel": true,
+        "plan_shouldStop": false,
+        "plan_aTarget": 1.081298828125,
+        "mpc_input": {
+          "input_v_cruise_ms": 0.0,
+          "carrot_v_cruise_ms": 21.38888888888889,
+          "input_mode": "acc",
+          "forceDecel_at_planner": true,
+          "reset_state": false,
+          "planner_call_time": 104.0,
+          "effective_v_cruise_ms": 21.38888888888889,
+          "effective_mode": "acc",
+          "stop_x": 1000.0,
+          "mpc_source": "cruise"
+        },
+        "generated343": [
+          {
+            "accel_mps2": 1.36,
+            "c_tx": 1,
+            "c_controls_before": true,
+            "c_long_before": true,
+            "cc_longActive": true
+          }
+        ]
+      }
+    }
+  ],
+  "behavioral_failures_observed": [
+    "temporary",
+    "producer_stopped"
+  ],
+  "behavioral_scope_ko": "구조 검사 통과와 soft 감속 목표 전달 실패는 별도다. 현재 parent 수정 source를 과거 실행에 소급하지 않는다.",
+  "original_result_hashes": {
+    "run01": "5fbcfd7eafbc34dde834fefab7d36ed1bbccb3b50cef3883547752bfe03bbfb4",
+    "run02_observation": "abaf5fc3ba11c2733c865f32f7bde367ba872cb6ac7202b3d3046284a5f75d67"
+  },
+  "recorded_radar_reference": {
+    "path": "work/radar_loss_root_review/recorded_radar_contract.json",
+    "sha256": "af24ec71d3dae32378567108342258608f91be1161bb9c77ce349c00b8e58fbc",
+    "scope_ko": "부모의 별도 원본 OFF 로그 집계를 읽은 근거다. 이 에이전트의 동적 검사 건수에 합하지 않는다."
+  }
+}

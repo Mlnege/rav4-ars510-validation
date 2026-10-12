@@ -1,0 +1,8 @@
+{
+  "stage": "pytest_before_collection",
+  "error": "ModuleNotFoundError: openpilot.common.params_pyx",
+  "cases_executed": 0,
+  "cause": "full project conftest needs unbuilt device/runtime extension",
+  "repair": "isolated pytest.ini and confcutdir for offline native suite",
+  "whole_project_build_verified": false
+}

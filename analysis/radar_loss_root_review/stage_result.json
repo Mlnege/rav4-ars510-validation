@@ -1,0 +1,16 @@
+{
+  "source_files": 64,
+  "patches": 9,
+  "original_eight_patch_fingerprints": {
+    "01_radar_offline.patch": "1a6b9823922373d5d7b7850257dfd7123e1ce5602f5418b01d1a1c4a0dabd812",
+    "02_pcm_mode0.patch": "b45e1371f6be54ac094e5240b613c26530f4558ef3a4d4c8f180e66400f7f2aa",
+    "03_longitudinal_bounds.patch": "0fd52c87583d295766a7a05b66f787563aa8e20d70ed41ade8f15984a7835128",
+    "04_near_front_retention.patch": "d7c311b8975b7a3eecf3178813d1e8ffe72c8b3d86acdece6123b3a7ed3d4b7c",
+    "05_safety_authority.patch": "9bf92cacf059d194a45fa50ff48e27c11501fc359a36e8e89b7de6fbe1ecf409",
+    "06_camera_profile.patch": "04f34600376c75bc10d84e18e2f2c165f6ee32d343ef9929a587bd147d970308",
+    "07_validation_tools.patch": "c90a8a348bea1332d88614e1717354efd17cbf0c5189ffdafadb9c7089d7fc24",
+    "08_stopping_command.patch": "7de241558f5abead6a0bb364f1038a301d9bb254849691c4aa821c036ba76d4c"
+  },
+  "added_provenance": 109,
+  "vehicle_deployment_allowed": false
+}

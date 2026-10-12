@@ -1354,5 +1354,689 @@
     "original_sha256": "204232871186e5237cc05b43435aba14fcb34b7bf2902e10575a72ca57b5693d",
     "published_sha256": "204232871186e5237cc05b43435aba14fcb34b7bf2902e10575a72ca57b5693d",
     "transform": "개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/evidence_manifest.json",
+    "original_sha256": "ade67a5f08667e9ca2346db0b211d132aa19e79fd72e1ad8e53feee75b3f4da9",
+    "published_sha256": "ade67a5f08667e9ca2346db0b211d132aa19e79fd72e1ad8e53feee75b3f4da9",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/freeze.py",
+    "original_sha256": "43798c7e5ec98ea4930c376c0a3d60e348b3868af33ad2e5a09c94097131344b",
+    "published_sha256": "43798c7e5ec98ea4930c376c0a3d60e348b3868af33ad2e5a09c94097131344b",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/frozen_observation.json",
+    "original_sha256": "f8c5c9d01fffffaecb9fb7a620da4af39bf0d877fcbd103565f93898f4ecb0ee",
+    "published_sha256": "f8c5c9d01fffffaecb9fb7a620da4af39bf0d877fcbd103565f93898f4ecb0ee",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/IO_SCOPE_PLAN_KO.md",
+    "original_sha256": "3a52ee05e89404ee971a76a95b614a57f141b2052188cea1c40c1120ed699ac0",
+    "published_sha256": "3a52ee05e89404ee971a76a95b614a57f141b2052188cea1c40c1120ed699ac0",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/original_source_archive/long_mpc_original_lf.py",
+    "original_sha256": "7f647b9a63762b9c808bddf418aae6dbbd55d15af6aa9cf0939606e05f9e50c1",
+    "published_sha256": "7f647b9a63762b9c808bddf418aae6dbbd55d15af6aa9cf0939606e05f9e50c1",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/original_source_archive/longitudinal_planner_original_lf.py",
+    "original_sha256": "781b78157fe272e4cdcb79c985602695fa14ccbddd38a9e8544a614b8ab2e8b0",
+    "published_sha256": "781b78157fe272e4cdcb79c985602695fa14ccbddd38a9e8544a614b8ab2e8b0",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/RESULTS_KO.md",
+    "original_sha256": "c47cd629e38caf7223e33414659be9e20a16a30c0b06ed2daa653e20a58b4c6c",
+    "published_sha256": "c47cd629e38caf7223e33414659be9e20a16a30c0b06ed2daa653e20a58b4c6c",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/run.py",
+    "original_sha256": "d42b31e81ce5540e9b06952f3558a85c45c4719b6590c7c002d7596558042993",
+    "published_sha256": "d42b31e81ce5540e9b06952f3558a85c45c4719b6590c7c002d7596558042993",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/run01/can_error_rows.json.gz",
+    "original_sha256": "34b0cd29a49f27a82e5ba1dc0e654213d5477f5998e0ef16e52b573692a17a33",
+    "published_sha256": "dc318f18c11bc7bab0b4d7bd5e796e33ad6a963f29ae3b96b142b5a7560653ec",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/run01/error_with_valid_true_rows.json.gz",
+    "original_sha256": "c430626ae7c4f2b6b9587ce7cb00aed904dd4c465a59df6cea07eb2018b9294c",
+    "published_sha256": "accfdcb16c63853351fe7beb4b55cf081187a8e339d73156a41e5d1e8d610bbf",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/run01/executed_run.py",
+    "original_sha256": "d42b31e81ce5540e9b06952f3558a85c45c4719b6590c7c002d7596558042993",
+    "published_sha256": "d42b31e81ce5540e9b06952f3558a85c45c4719b6590c7c002d7596558042993",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/run01/executed_whole_chain.py",
+    "original_sha256": "4bda5e45297634630ddcbddc557c0e021de437b49f0596e824ab505f0a06085e",
+    "published_sha256": "4bda5e45297634630ddcbddc557c0e021de437b49f0596e824ab505f0a06085e",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/run01/healthy_empty_rows.json.gz",
+    "original_sha256": "408480196c0574872d114c16d31bb569c5da33c6c8a8362284507ee3622504f5",
+    "published_sha256": "89c17ae3ffa85fb2344ba82fe37ec1288648da9cf2fe8cb1d1980f2e917f2591",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/run01/invalid_without_error_rows.json.gz",
+    "original_sha256": "8b01996533078d3c0268ba56eef1c0be2cdd1ad2519d191a71e9e8ff6f7b913f",
+    "published_sha256": "ac221964aa02b11c2b29c429026808a207b5fef51a658469cd077837b0638dda",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/run01/producer_stopped_rows.json.gz",
+    "original_sha256": "712b8e0bd878d00ccd966fc72ec8c6d5c21bbfd002302a95d6de417c22159095",
+    "published_sha256": "1ea7915bf4b6bc8ee55a134f85e89b77bc07b7ca5c13304ef6d89111d87d77d9",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/run01/radar_fault_rows.json.gz",
+    "original_sha256": "fbaf3b49d3a171cd4bd8c701352c60037fbe80b10f24e4bb1515fbdb1d0db37b",
+    "published_sha256": "fb45112395566e1f7181536807d7802117daa7872fc738992f2a07289f25fd79",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/run01/results.json",
+    "original_sha256": "5fbcfd7eafbc34dde834fefab7d36ed1bbccb3b50cef3883547752bfe03bbfb4",
+    "published_sha256": "5fbcfd7eafbc34dde834fefab7d36ed1bbccb3b50cef3883547752bfe03bbfb4",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/run01/temporary_rows.json.gz",
+    "original_sha256": "50d9811f654f2b35cb1b3b605215c9d211ec96d61e3fdd04ff1abc48fde74db6",
+    "published_sha256": "a29f3b81cb84bf385fcb8559e97d4e1fae365d3ef68ed416fc65cc0d158f6da1",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/run01/wrong_config_rows.json.gz",
+    "original_sha256": "5c4537aef45808b57a94cd1658e821f36b55d444a1737dd911ca8de1d061de38",
+    "published_sha256": "ab640f8060707b6812bd3c0f720786cca2b88ecf752e8c867723cd6c39618b7d",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/run02_observation/can_error_rows.json.gz",
+    "original_sha256": "5899b1fa8dfaf4c5b28aa725a4a56d63abafafc2ce0377220fc8d60eed3220f3",
+    "published_sha256": "bd714365220f8dbd61e5c1b2f6ff60c278f8acea4e42e0aa73885c78e2a47fc4",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/run02_observation/executed_run_observation.py",
+    "original_sha256": "48e730f84d73eface7f354445409250ca1c48debc1275faa2ef9afbc15ce920f",
+    "published_sha256": "48e730f84d73eface7f354445409250ca1c48debc1275faa2ef9afbc15ce920f",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/run02_observation/executed_whole_chain.py",
+    "original_sha256": "12c716f40332b9c81cad241f666ce3600e1c8780f18299a6e4072773e018254f",
+    "published_sha256": "12c716f40332b9c81cad241f666ce3600e1c8780f18299a6e4072773e018254f",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/run02_observation/healthy_empty_rows.json.gz",
+    "original_sha256": "adde14cea0aa987f0c1d5c747d109fb7d94a651acfb1b296a62d24dcf0bc558e",
+    "published_sha256": "751912a054078e139eb72449283171a35c324a9e071353093a8988670770dacf",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/run02_observation/producer_stopped_rows.json.gz",
+    "original_sha256": "8385c9f49cc9167c2320924ffd289e73679532e553d5b10d9eec48b3b7ed7ff4",
+    "published_sha256": "48898d9c5b783655a6e07e0297f2daeba6f750aa396607fcbc06cfbf1fae060a",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/run02_observation/results.json",
+    "original_sha256": "abaf5fc3ba11c2733c865f32f7bde367ba872cb6ac7202b3d3046284a5f75d67",
+    "published_sha256": "abaf5fc3ba11c2733c865f32f7bde367ba872cb6ac7202b3d3046284a5f75d67",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/run02_observation/temporary_rows.json.gz",
+    "original_sha256": "987e4438476321284d9f12c272cd9f22f4650033524652a953477c2b90505c1d",
+    "published_sha256": "c1d743910862c0479040a202884c2439631cda06b0899605f1ac2be475d27fa9",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/run_observation.py",
+    "original_sha256": "48e730f84d73eface7f354445409250ca1c48debc1275faa2ef9afbc15ce920f",
+    "published_sha256": "48e730f84d73eface7f354445409250ca1c48debc1275faa2ef9afbc15ce920f",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/verify.py",
+    "original_sha256": "fc67e31d228a454ee45eaf59c7c2181107ac69c5684b5cf22c2c1ddcae78266e",
+    "published_sha256": "fc67e31d228a454ee45eaf59c7c2181107ac69c5684b5cf22c2c1ddcae78266e",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/whole_chain.py",
+    "original_sha256": "12c716f40332b9c81cad241f666ce3600e1c8780f18299a6e4072773e018254f",
+    "published_sha256": "12c716f40332b9c81cad241f666ce3600e1c8780f18299a6e4072773e018254f",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/whole_inputs.py",
+    "original_sha256": "690e7fe014c0a620f4c3590e78b7db6a6faff968ba594771587b4dc0e58c7023",
+    "published_sha256": "690e7fe014c0a620f4c3590e78b7db6a6faff968ba594771587b4dc0e58c7023",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/whole_io.py",
+    "original_sha256": "5dd434ff3fce1406b2782c7f1237157308ad84ce13584855931c46b148ac4f9d",
+    "published_sha256": "5dd434ff3fce1406b2782c7f1237157308ad84ce13584855931c46b148ac4f9d",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_review/whole_objects.py",
+    "original_sha256": "4f102e3a9b0358b771e2bca31a6a487008050695ae8f2fb655d0a86f1c15045b",
+    "published_sha256": "4f102e3a9b0358b771e2bca31a6a487008050695ae8f2fb655d0a86f1c15045b",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/candidate/candidate_observation.json",
+    "original_sha256": "cf75495fcde827069944300c15309d9152f4b1de6031f113f82830b9bd93c04e",
+    "published_sha256": "376150e8d8932f20017ba49e55cf8f89d74d588136aa566291f27f0b96b16f4f",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/candidate/run01/can_error_rows.json.gz",
+    "original_sha256": "34b0cd29a49f27a82e5ba1dc0e654213d5477f5998e0ef16e52b573692a17a33",
+    "published_sha256": "dc318f18c11bc7bab0b4d7bd5e796e33ad6a963f29ae3b96b142b5a7560653ec",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/candidate/run01/error_with_valid_true_rows.json.gz",
+    "original_sha256": "c430626ae7c4f2b6b9587ce7cb00aed904dd4c465a59df6cea07eb2018b9294c",
+    "published_sha256": "accfdcb16c63853351fe7beb4b55cf081187a8e339d73156a41e5d1e8d610bbf",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/candidate/run01/healthy_empty_rows.json.gz",
+    "original_sha256": "408480196c0574872d114c16d31bb569c5da33c6c8a8362284507ee3622504f5",
+    "published_sha256": "89c17ae3ffa85fb2344ba82fe37ec1288648da9cf2fe8cb1d1980f2e917f2591",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/candidate/run01/invalid_without_error_rows.json.gz",
+    "original_sha256": "5c6afc30e9e8bf4e3130f9c940630f39e9ecf7c3b5911f7af6d35a29a8d4efad",
+    "published_sha256": "8e76f76531b3c27c970d8363716e9f0a11ee1023b874ee932f5b9b6b3eb6fc88",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/candidate/run01/producer_stopped_rows.json.gz",
+    "original_sha256": "3df3a591b2fb51c6066dc89274a68e5e889962770db4f2229ca7fff2dd163c22",
+    "published_sha256": "97bf062083dd2232fa41efac96683b5895c6eb55823c880a55ad7e8b9522b363",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/candidate/run01/radar_fault_rows.json.gz",
+    "original_sha256": "53ab8af87cbf30d6d53dcf4311044d50d6833528105686c8b33a13ac4752a628",
+    "published_sha256": "a0b2b4566ade285121652cf6ced1609685013afedfd014190d2c37f3d1b5da1f",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/candidate/run01/results.json",
+    "original_sha256": "7ad4dad0524e5d83c521d3df300b2a4c218034cc448a3337cddd21442a316ccb",
+    "published_sha256": "7ad4dad0524e5d83c521d3df300b2a4c218034cc448a3337cddd21442a316ccb",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/candidate/run01/temporary_rows.json.gz",
+    "original_sha256": "254a1729ac544af86abb5817532088a00bd9aed3cb0b95c98a9e6f48d4f13316",
+    "published_sha256": "85a73ed3b94979cb5ba6be1a44e0a3cde7695899197d7195f070b3b4f091fb2d",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/candidate/run01/wrong_config_rows.json.gz",
+    "original_sha256": "1e19194016c4e5b338f880dc306e2ab492220d4821e257226e293879ba667ba4",
+    "published_sha256": "17863e676fbe1ada8b58ed570232f7cc228651e465db1328bcf3e2c452f0632d",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/candidate_sources/long_mpc.py",
+    "original_sha256": "8d493b65acc3f5a4273bb436009d9ab99fdc573063e5f0581d23c45147b33b00",
+    "published_sha256": "8d493b65acc3f5a4273bb436009d9ab99fdc573063e5f0581d23c45147b33b00",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/candidate_sources/longitudinal_planner.py",
+    "original_sha256": "63ac8ab4d0b00284808f6100d812795e9b7eae0de90c230e9ce97dde33f58617",
+    "published_sha256": "63ac8ab4d0b00284808f6100d812795e9b7eae0de90c230e9ce97dde33f58617",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/candidate_sources/manifest.json",
+    "original_sha256": "84d7587663a94f2128aea1ac3661c6aaa0d5509e9b5cee97149233062cf97617",
+    "published_sha256": "3d63c36de22dee5547768317674625581186ceab6e39f11279f49ef48c6a0b6e",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/copied_helpers.json",
+    "original_sha256": "8913284328032ab49f443fb87856b117cdf6a3d5d8777cc28aa2c965d92b092c",
+    "published_sha256": "a89b78614fd3f88ed5f9974aca3087a373c232691ca22f88f982ad01991cba65",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/final/run01/can_error_rows.json.gz",
+    "original_sha256": "34b0cd29a49f27a82e5ba1dc0e654213d5477f5998e0ef16e52b573692a17a33",
+    "published_sha256": "dc318f18c11bc7bab0b4d7bd5e796e33ad6a963f29ae3b96b142b5a7560653ec",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/final/run01/error_with_valid_true_rows.json.gz",
+    "original_sha256": "c430626ae7c4f2b6b9587ce7cb00aed904dd4c465a59df6cea07eb2018b9294c",
+    "published_sha256": "accfdcb16c63853351fe7beb4b55cf081187a8e339d73156a41e5d1e8d610bbf",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/final/run01/healthy_empty_rows.json.gz",
+    "original_sha256": "408480196c0574872d114c16d31bb569c5da33c6c8a8362284507ee3622504f5",
+    "published_sha256": "89c17ae3ffa85fb2344ba82fe37ec1288648da9cf2fe8cb1d1980f2e917f2591",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/final/run01/invalid_without_error_rows.json.gz",
+    "original_sha256": "5c6afc30e9e8bf4e3130f9c940630f39e9ecf7c3b5911f7af6d35a29a8d4efad",
+    "published_sha256": "8e76f76531b3c27c970d8363716e9f0a11ee1023b874ee932f5b9b6b3eb6fc88",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/final/run01/producer_stopped_rows.json.gz",
+    "original_sha256": "3df3a591b2fb51c6066dc89274a68e5e889962770db4f2229ca7fff2dd163c22",
+    "published_sha256": "97bf062083dd2232fa41efac96683b5895c6eb55823c880a55ad7e8b9522b363",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/final/run01/radar_fault_rows.json.gz",
+    "original_sha256": "53ab8af87cbf30d6d53dcf4311044d50d6833528105686c8b33a13ac4752a628",
+    "published_sha256": "a0b2b4566ade285121652cf6ced1609685013afedfd014190d2c37f3d1b5da1f",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/final/run01/results.json",
+    "original_sha256": "734fc23743aa61bb272d1b4bf7a2355986ae012365a93443bac239dd6156f662",
+    "published_sha256": "734fc23743aa61bb272d1b4bf7a2355986ae012365a93443bac239dd6156f662",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/final/run01/temporary_rows.json.gz",
+    "original_sha256": "254a1729ac544af86abb5817532088a00bd9aed3cb0b95c98a9e6f48d4f13316",
+    "published_sha256": "85a73ed3b94979cb5ba6be1a44e0a3cde7695899197d7195f070b3b4f091fb2d",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/final/run01/wrong_config_rows.json.gz",
+    "original_sha256": "1e19194016c4e5b338f880dc306e2ab492220d4821e257226e293879ba667ba4",
+    "published_sha256": "17863e676fbe1ada8b58ed570232f7cc228651e465db1328bcf3e2c452f0632d",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/final/runtime_and_behavior.json",
+    "original_sha256": "467f4a33658fcb29284e99331f2a104938539fd773d7a50112cd0f3dc4b794a1",
+    "published_sha256": "979e8dc7eb2dcdb07e11e568f31ca66d3fb4caa55019cb4b7cbe17cea6b358bc",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/final_preparation_failure.json",
+    "original_sha256": "a4fbe57b8d53d97d817a57a552f2eec8a2c5902863ddb9266abae6e93fb58fec",
+    "published_sha256": "d425ba499190a3afd115e1de760b69c8cd778a7da9856e2da67f200c10fa856c",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/freeze_runtime.py",
+    "original_sha256": "c25d2a283f2c80d320970049ef061025c879cd42dc14750c4199cac389ecd3b9",
+    "published_sha256": "c25d2a283f2c80d320970049ef061025c879cd42dc14750c4199cac389ecd3b9",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/native_force_regression.xml",
+    "original_sha256": "6bb4563b2850d020c317383d862b82d83bd246a94aa83f986ec4c7da3d655af1",
+    "published_sha256": "bc0e748606d04dc4b587c568823d7b90f05116b007d4ad30e39c4a7657ca3d41",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip; 공개 XML hostname을 offline으로 정규화"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/native_force_setup_failure.json",
+    "original_sha256": "10d11fb89a494e34fdc618c4e7e624359f9bd03e983155eee67f7b2e9b2b8b9e",
+    "published_sha256": "c0780e35836c220f2644295a896cf9280ea3dc20597aa7faa3ddc483b0bea713",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/prepare_candidate.py",
+    "original_sha256": "ddce2cd47259eaeeeb99ad4e863864cecdee2f6d3347cc7944230129326a8753",
+    "published_sha256": "ddce2cd47259eaeeeb99ad4e863864cecdee2f6d3347cc7944230129326a8753",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/recovery/recover_after_disable_pcm_restart_rows.json.gz",
+    "original_sha256": "a0727dba148ffa2106bad034defad3aaf0691e8d2134235144497c43db982cef",
+    "published_sha256": "c5a6f1fb9592834d6f6b3687e676709635625bf282af961be5dec25b595c29da",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/recovery/recover_before_disable_rows.json.gz",
+    "original_sha256": "70975abbab8bbdb025cf8448f4c6e248692894d759a2ee5232f202996d39effb",
+    "published_sha256": "e3ad0aeb064e37849362ba53daa9490ef8194998f599b28fe014ae3ae0695a31",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/recovery/results.json",
+    "original_sha256": "fcf88acb8b77b84561534aa43f054eda2af237cd4a673ff6179661cbc24cd1d3",
+    "published_sha256": "e6384bc57a89ee7fb6c33ba4aabb447aae8824ccd62db9d4d8526cd23d9c796c",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/run.py",
+    "original_sha256": "d42b31e81ce5540e9b06952f3558a85c45c4719b6590c7c002d7596558042993",
+    "published_sha256": "d42b31e81ce5540e9b06952f3558a85c45c4719b6590c7c002d7596558042993",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/run01/can_error_rows.json.gz",
+    "original_sha256": "34b0cd29a49f27a82e5ba1dc0e654213d5477f5998e0ef16e52b573692a17a33",
+    "published_sha256": "dc318f18c11bc7bab0b4d7bd5e796e33ad6a963f29ae3b96b142b5a7560653ec",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/run01/force_decel_observation.json",
+    "original_sha256": "e289f98dbb7e16845c9d4cdb13e58c3275f18f114dfee039ec5339cffce1db22",
+    "published_sha256": "7852c4d5750958af3041b224cf39b3c1054a8db93a18c69d7e7078957476aa52",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/run01/healthy_empty_rows.json.gz",
+    "original_sha256": "408480196c0574872d114c16d31bb569c5da33c6c8a8362284507ee3622504f5",
+    "published_sha256": "89c17ae3ffa85fb2344ba82fe37ec1288648da9cf2fe8cb1d1980f2e917f2591",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/run01/producer_stopped_rows.json.gz",
+    "original_sha256": "712b8e0bd878d00ccd966fc72ec8c6d5c21bbfd002302a95d6de417c22159095",
+    "published_sha256": "1ea7915bf4b6bc8ee55a134f85e89b77bc07b7ca5c13304ef6d89111d87d77d9",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/run01/results.json",
+    "original_sha256": "0cf4b52984849e5d0e1ba82eb32971f6cad6e7e709514d3f16f100592d7b4e62",
+    "published_sha256": "0cf4b52984849e5d0e1ba82eb32971f6cad6e7e709514d3f16f100592d7b4e62",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/run01/temporary_rows.json.gz",
+    "original_sha256": "50d9811f654f2b35cb1b3b605215c9d211ec96d61e3fdd04ff1abc48fde74db6",
+    "published_sha256": "a29f3b81cb84bf385fcb8559e97d4e1fae365d3ef68ed416fc65cc0d158f6da1",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/run_candidate.py",
+    "original_sha256": "18fddfd88e62125907b91901f6b917d0b7d6fc05cb50c943766413d8fb096f7d",
+    "published_sha256": "18fddfd88e62125907b91901f6b917d0b7d6fc05cb50c943766413d8fb096f7d",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/run_final.py",
+    "original_sha256": "74d8552bc07a6d8e32cdfd745c67e1389d71dc94331c4c7ae5db6af35b057d4b",
+    "published_sha256": "74d8552bc07a6d8e32cdfd745c67e1389d71dc94331c4c7ae5db6af35b057d4b",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/run_final_initial.py",
+    "original_sha256": "b0d4edb5f91cd2eb4877b8bf06d7de5a71fbfaffcf459cc9b9e28c6c85785798",
+    "published_sha256": "b0d4edb5f91cd2eb4877b8bf06d7de5a71fbfaffcf459cc9b9e28c6c85785798",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/run_recovery.py",
+    "original_sha256": "58082d96cf459003ae7dbf0369d93f628b1db00feb53d15f043db679a7d92460",
+    "published_sha256": "58082d96cf459003ae7dbf0369d93f628b1db00feb53d15f043db679a7d92460",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/run_selected.py",
+    "original_sha256": "edd8156b176978149515f0505b4d6d421c31ac18baa267560ae2974de8d570f1",
+    "published_sha256": "edd8156b176978149515f0505b4d6d421c31ac18baa267560ae2974de8d570f1",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/run_tx_transition.py",
+    "original_sha256": "ff28074edbb42fd71632b21eef73d3f4fbe9358cd212cdc8573293aeca49f41e",
+    "published_sha256": "ff28074edbb42fd71632b21eef73d3f4fbe9358cd212cdc8573293aeca49f41e",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/signal_force_regression.xml",
+    "original_sha256": "fd0bf93764fc6304736e810da5ceca541eb4c4468fd8696ed15ab713f66e0da5",
+    "published_sha256": "0230db669d0035ecaae76622aba5c2198fa7e44de237e1bdff6f0121b119a447",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip; 공개 XML hostname을 offline으로 정규화"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/tx_transition/generated_can_rows.json.gz",
+    "original_sha256": "087b906b43cc647fd2f78c1d2684d391c8a6b3dd8f015387f74c1bceef9cf862",
+    "published_sha256": "ced6f7e59371df0c0529371329bea05b14e7eb5d4b3160bb3c5630b87d0ad52a",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/tx_transition/results.json",
+    "original_sha256": "cd84ebab6aefeee1167a4087018aa783e779a82f61bf8acc200e3cd36f1e0ccb",
+    "published_sha256": "3f58e91fabca9a5d3b2867eedf5b25187bc42edb09d4c6d6aebad4a22f281b80",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/whole_chain.py",
+    "original_sha256": "4bda5e45297634630ddcbddc557c0e021de437b49f0596e824ab505f0a06085e",
+    "published_sha256": "4bda5e45297634630ddcbddc557c0e021de437b49f0596e824ab505f0a06085e",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/whole_inputs.py",
+    "original_sha256": "690e7fe014c0a620f4c3590e78b7db6a6faff968ba594771587b4dc0e58c7023",
+    "published_sha256": "690e7fe014c0a620f4c3590e78b7db6a6faff968ba594771587b4dc0e58c7023",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/whole_io.py",
+    "original_sha256": "5dd434ff3fce1406b2782c7f1237157308ad84ce13584855931c46b148ac4f9d",
+    "published_sha256": "5dd434ff3fce1406b2782c7f1237157308ad84ce13584855931c46b148ac4f9d",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_authority_root/whole_objects.py",
+    "original_sha256": "4f102e3a9b0358b771e2bca31a6a487008050695ae8f2fb655d0a86f1c15045b",
+    "published_sha256": "4f102e3a9b0358b771e2bca31a6a487008050695ae8f2fb655d0a86f1c15045b",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_planning_review/extract_preserved.py",
+    "original_sha256": "a1181a7d0697854ace8b87cef75779ee5c352b1e56c750f86e2a3af66c665956",
+    "published_sha256": "a1181a7d0697854ace8b87cef75779ee5c352b1e56c750f86e2a3af66c665956",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_planning_review/FORCE_DECEL_REVIEW_KO.md",
+    "original_sha256": "9382a98dd787098aa14e36111f90743ea8636ff92a20cde0fd63de1d61f4f379",
+    "published_sha256": "9382a98dd787098aa14e36111f90743ea8636ff92a20cde0fd63de1d61f4f379",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_planning_review/initial_extraction_failure.json",
+    "original_sha256": "a4e396aa8212ffc264f66d13ab8b616dcb6fc580cbef2c14758a64054d325ab1",
+    "published_sha256": "d25ff73fc12774f59d9eb5a877bc40ed2c93368fd30848a962acc17ed0dc1ca5",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_planning_review/input_manifest.json",
+    "original_sha256": "0f3b2572032e654a737b7fd7ebb14e855e31418d98c16be0c4a8e8303e25b6fd",
+    "published_sha256": "8bed9e7af847020f30456122f5f39eacd1fd463cdded921c42755d9e87725278",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_planning_review/observations.json",
+    "original_sha256": "ae5597de841e8ff196be85d06cd166c540fd844ac2efd2eeee59373d2fdc909d",
+    "published_sha256": "e33b41d9a3e5a9902d21c2711d267672ea95f793ae0579912d80bb2529506bb8",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_planning_review/REPORT_KO.md",
+    "original_sha256": "477ef94113ec3dfafbbd815b151ad0f92dedd70f34094ba1858ee72f48b359d4",
+    "published_sha256": "477ef94113ec3dfafbbd815b151ad0f92dedd70f34094ba1858ee72f48b359d4",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_stop_transition/collect_evidence.py",
+    "original_sha256": "401547bcff7551ebb8d8298c4961e435bf579e763c141b4de6053ecccf5a9734",
+    "published_sha256": "401547bcff7551ebb8d8298c4961e435bf579e763c141b4de6053ecccf5a9734",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_stop_transition/FREEZE_MANIFEST.json",
+    "original_sha256": "df4011a31550e56a598a8fd81256b8caf495cf17ce189ef92948847e06d74c1a",
+    "published_sha256": "479191a993d61691027255b99f59fb3ca0805b5e60fd5a3edd160e3824735ede",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_stop_transition/frozen_read02/current_source_excerpt.json",
+    "original_sha256": "04389d18b856ff89456115952d04e23a647c953a4e9ac5ed055f88589963890c",
+    "published_sha256": "705d35f76acec96cd93850a8cae7008ee7cc0a916bf89d0753b456eb313091c4",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_stop_transition/frozen_read02/evidence.json",
+    "original_sha256": "b7e3c4cbf04b5edd4b66e77b50b35b941f11df8bad4a5636bd7aa8fbe70e5b45",
+    "published_sha256": "3ee2bc89bb7f31f6d08d23c6ada0d0732346ad06083b389d79221e8a5521a62d",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_stop_transition/frozen_read02/fingerprints.json",
+    "original_sha256": "fe09170f9d391d0dd92daf26fc973a05bba8c46d19255584a82f1d4771030544",
+    "published_sha256": "3088cf0fe3b5ea7314becf366872f0ed8d0f0e47d3491efe357e4c694324ebde",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_stop_transition/frozen_read03/current_source_excerpt.json",
+    "original_sha256": "034269a2f1b61248ca3abb79a79e26d9ac90cd5bc7874ce10690d8be95194c89",
+    "published_sha256": "a52cc540d686cb5dc9e347b792f3e13d574006e67bcc503790c528579b8faafe",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_stop_transition/frozen_read03/evidence.json",
+    "original_sha256": "b7e3c4cbf04b5edd4b66e77b50b35b941f11df8bad4a5636bd7aa8fbe70e5b45",
+    "published_sha256": "3ee2bc89bb7f31f6d08d23c6ada0d0732346ad06083b389d79221e8a5521a62d",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_stop_transition/frozen_read03/fingerprints.json",
+    "original_sha256": "28e4b5e89656af9a829766b6b0dd5debf8931050bb2d9c75301ec9635ac60daf",
+    "published_sha256": "4a1f303a9fe679bd34a71034ccab358bcbf7dc3bada7e8688d613d2993bcef1b",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_stop_transition/PREPARATION_NOTES_KO.md",
+    "original_sha256": "b8856aaa030a332ee82c2953f66af7f7967684ab267992b3e3e9e3a6689e7073",
+    "published_sha256": "b8856aaa030a332ee82c2953f66af7f7967684ab267992b3e3e9e3a6689e7073",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_stop_transition/REPORT_KO.md",
+    "original_sha256": "a492c467eb84a7e938c663e8f841f679b855afda1793eb57c84f4273c83ba6dc",
+    "published_sha256": "e4d214c05c92151e1402c75bfe9f0951bdd7dead57617a7405522c2068dbd208",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_force_scope_review/candidate_diff.patch",
+    "original_sha256": "964870e644b2619a441d230a0d470ff2b82e8a9c078ef9863043f34544e205d4",
+    "published_sha256": "4092d9e4c0d255950287d0ce2139ba87484391f682df82af1a0ab3010c056246",
+    "transform": "r10 후보diff 개인경로제거 및 LF 정규화"
+  },
+  {
+    "path": "analysis/radar_loss_force_scope_review/fingerprints.json",
+    "original_sha256": "014b33b700df75af193d507efb6708af9544ff81242cdbd9ed3f4a981ce5af73",
+    "published_sha256": "ab173a81df078582486801a4476319d89a5cb8d1438359cd93c32b8e2c0d431f",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_force_scope_review/FREEZE_MANIFEST.json",
+    "original_sha256": "9db57550763a4670b6d6c08a778343a156e1da56583808b4b84950563df434eb",
+    "published_sha256": "e448cb243dcf5e47ccb629e34d54ed1e8d9b682e393cefa5d9aa1112d31f1f4a",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_force_scope_review/REVIEW_KO.md",
+    "original_sha256": "db245fc5df0be12cc2244efa88510ed6fc79b4a2f30485258e6ebbce804625c2",
+    "published_sha256": "37b18b383518beb38020224c01794c50e87db25870d2588e2c5e73c5b4840227",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_final_runtime_review/REVIEW_KO.md",
+    "original_sha256": "e2db9f4b67fd2aa89f395e866d50ce6dc8cae5a89f5954ba8e0212290a2fd365",
+    "published_sha256": "e2db9f4b67fd2aa89f395e866d50ce6dc8cae5a89f5954ba8e0212290a2fd365",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_root_review/recorded_radar_contract.json",
+    "original_sha256": "af24ec71d3dae32378567108342258608f91be1161bb9c77ce349c00b8e58fbc",
+    "published_sha256": "d425ff12a3cd55add2170b029d1912a62c067e82aa5d2b9ba34264cdf4f39023",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_root_review/recorded_radar_contract.py",
+    "original_sha256": "f040f17bb14775102c5aaf9bdc287d9adeae678312035c44fe3063da8f78be25",
+    "published_sha256": "f040f17bb14775102c5aaf9bdc287d9adeae678312035c44fe3063da8f78be25",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_root_review/source_contract_review.json",
+    "original_sha256": "f6f3420bcfdfe1c68d8d14f995e2488a5f828c3103c8d2ca4753ed272894bd4d",
+    "published_sha256": "f52886e333e11b19cb15d2c5d5240c756b2a928f56df064fae6d805ca181095a",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "analysis/radar_loss_root_review/source_contract_review.py",
+    "original_sha256": "379e83616819058c1cf63995304c794ada8d57b42e032bfc41957c3ffa303b4f",
+    "published_sha256": "379e83616819058c1cf63995304c794ada8d57b42e032bfc41957c3ffa303b4f",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip"
+  },
+  {
+    "path": "results/radar_loss/감속요청_전달_수정_모의결과.png",
+    "original_sha256": "f2e50f03418ea8a8192b5c89ba95bbe82927773cf5cee5685b6aa181adc01397",
+    "published_sha256": "f2e50f03418ea8a8192b5c89ba95bbe82927773cf5cee5685b6aa181adc01397",
+    "transform": "r10 익명 비교·그림·현재 목록; 개인 경로 제거·LF"
+  },
+  {
+    "path": "reports/수정파일목록_현재64개.csv",
+    "original_sha256": "af64fecae2e0ae7b572e13edcb8ec6daaabf90636d43c818740d8e2fb0bf05fd",
+    "published_sha256": "17e3729195d1fea6ba893bea3eceeaad408a4ed49b5dc9a8486ab65935dee478",
+    "transform": "r10 익명 비교·그림·현재 목록; 개인 경로 제거·LF"
+  },
+  {
+    "path": "analysis/radar_loss_root_review/final_comparison.json",
+    "original_sha256": "57a117b04f12f7da76f17c1c32189650546a679f716cddf9902f1f6ad9165746",
+    "published_sha256": "c45872a7eb3f4d05516bfdda3ea6901280081356f162bcdae0a86fb0b259267a",
+    "transform": "r10 익명 비교·그림·현재 목록; 개인 경로 제거·LF"
+  },
+  {
+    "path": "analysis/radar_loss_root_review/render_and_compare.py",
+    "original_sha256": "bde797fd2e692f69a6721564e124a97b6cc529cd63107caa282d1840d25f87fc",
+    "published_sha256": "bde797fd2e692f69a6721564e124a97b6cc529cd63107caa282d1840d25f87fc",
+    "transform": "r10 익명 비교·그림·현재 목록; 개인 경로 제거·LF"
+  },
+  {
+    "path": "analysis/radar_loss_root_review/stage_result.json",
+    "original_sha256": "78a6f4dfe8b8e785b1fb337bffd14044364af75acd13183836cf59e5719399e2",
+    "published_sha256": "beea5956c79c8915b9da1578e095e908adebcd4c73a43bec25d22c14dc3fd4f4",
+    "transform": "r10 익명 비교·그림·현재 목록; 개인 경로 제거·LF"
   }
 ]

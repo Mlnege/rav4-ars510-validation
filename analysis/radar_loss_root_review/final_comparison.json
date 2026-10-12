@@ -1,0 +1,62 @@
+{
+  "unchanged_cases": [
+    {
+      "kind": "healthy_empty",
+      "full_rows_same": true,
+      "rows": 400
+    },
+    {
+      "kind": "error_with_valid_true",
+      "full_rows_same": true,
+      "rows": 400
+    },
+    {
+      "kind": "can_error",
+      "full_rows_same": true,
+      "rows": 400
+    }
+  ],
+  "authority_event_comparison": [
+    {
+      "kind": "healthy_empty",
+      "rows": 400,
+      "authority_or_event_different_rows": 0
+    },
+    {
+      "kind": "error_with_valid_true",
+      "rows": 400,
+      "authority_or_event_different_rows": 0
+    },
+    {
+      "kind": "can_error",
+      "rows": 400,
+      "authority_or_event_different_rows": 0
+    },
+    {
+      "kind": "temporary",
+      "rows": 400,
+      "authority_or_event_different_rows": 0
+    },
+    {
+      "kind": "radar_fault",
+      "rows": 400,
+      "authority_or_event_different_rows": 0
+    },
+    {
+      "kind": "wrong_config",
+      "rows": 400,
+      "authority_or_event_different_rows": 0
+    },
+    {
+      "kind": "invalid_without_error",
+      "rows": 400,
+      "authority_or_event_different_rows": 0
+    },
+    {
+      "kind": "producer_stopped",
+      "rows": 400,
+      "authority_or_event_different_rows": 0
+    }
+  ],
+  "scope_ko": "같은 합성 입력의 행 대조. 실제 차량 로그·수신 시간이나 영상 정확도 대조가 아니다."
+}

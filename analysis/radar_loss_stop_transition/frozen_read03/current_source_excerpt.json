@@ -1,0 +1,2428 @@
+{
+  "work/carrotpilot/opendbc_repo/opendbc/car/toyota/carcontroller.py": [
+    {
+      "line": 81,
+      "text": "    stopping = actuators.longControlState == LongCtrlState.stopping"
+    },
+    {
+      "line": 176,
+      "text": ""
+    },
+    {
+      "line": 177,
+      "text": "    # on entering standstill, send standstill request"
+    },
+    {
+      "line": 178,
+      "text": "    if CS.out.standstill and not self.last_standstill and (self.CP.carFingerprint not in NO_STOP_TIMER_CAR):"
+    },
+    {
+      "line": 179,
+      "text": "      self.standstill_req = True"
+    },
+    {
+      "line": 180,
+      "text": "    if CS.pcm_acc_status != 8:"
+    },
+    {
+      "line": 181,
+      "text": "      # pcm entered standstill or it's disabled"
+    },
+    {
+      "line": 182,
+      "text": "      self.standstill_req = False"
+    },
+    {
+      "line": 183,
+      "text": ""
+    },
+    {
+      "line": 184,
+      "text": "    self.last_standstill = CS.out.standstill"
+    },
+    {
+      "line": 185,
+      "text": ""
+    },
+    {
+      "line": 186,
+      "text": "    # handle UI messages"
+    },
+    {
+      "line": 187,
+      "text": "    fcw_alert = hud_control.visualAlert == VisualAlert.fcw"
+    },
+    {
+      "line": 188,
+      "text": "    steer_alert = hud_control.visualAlert in (VisualAlert.steerRequired, VisualAlert.ldw)"
+    },
+    {
+      "line": 189,
+      "text": "    lead = hud_control.leadVisible or CS.out.vEgo < 12.  # at low speed we always assume the lead is present so ACC can be engaged"
+    },
+    {
+      "line": 190,
+      "text": ""
+    },
+    {
+      "line": 191,
+      "text": "    if self.CP.openpilotLongitudinalControl:"
+    },
+    {
+      "line": 192,
+      "text": "      if self.frame % 3 == 0:"
+    },
+    {
+      "line": 193,
+      "text": "        # Press distance button until we are at the correct bar length. Only change while enabled to avoid skipping startup popup"
+    },
+    {
+      "line": 201,
+      "text": "        # internal PCM gas command can get stuck unwinding from negative accel so we apply a generous rate limit"
+    },
+    {
+      "line": 202,
+      "text": "        pcm_accel_cmd = actuators.accel"
+    },
+    {
+      "line": 203,
+      "text": "        stopping_nonpositive = (self.CP.carFingerprint == CAR.TOYOTA_RAV4_TSS2_2022 and CC.longActive"
+    },
+    {
+      "line": 204,
+      "text": "                                and stopping and actuators.accel <= 0.0)"
+    },
+    {
+      "line": 205,
+      "text": "        if stopping_nonpositive:"
+    },
+    {
+      "line": 206,
+      "text": "          # 명시한 정지 요청에서 이전 양수 가속·적분이 새 가속 명령으로 남지 않게 한다."
+    },
+    {
+      "line": 207,
+      "text": "          self.prev_accel = min(self.prev_accel, 0.0)"
+    },
+    {
+      "line": 208,
+      "text": "          self.long_pid.i = min(self.long_pid.i, 0.0)"
+    },
+    {
+      "line": 209,
+      "text": "        if CC.longActive:"
+    },
+    {
+      "line": 210,
+      "text": "          pcm_accel_cmd = rate_limit(pcm_accel_cmd, self.prev_accel, ACCEL_WINDDOWN_LIMIT, ACCEL_WINDUP_LIMIT)"
+    },
+    {
+      "line": 211,
+      "text": "        self.prev_accel = pcm_accel_cmd"
+    },
+    {
+      "line": 233,
+      "text": "        if CC.longActive:"
+    },
+    {
+      "line": 234,
+      "text": "          # constantly slowly unwind integral to recover from large temporary errors"
+    },
+    {
+      "line": 235,
+      "text": "          self.long_pid.i -= ACCEL_PID_UNWIND * float(np.sign(self.long_pid.i))"
+    },
+    {
+      "line": 236,
+      "text": "          if stopping_nonpositive:"
+    },
+    {
+      "line": 237,
+      "text": "            # 작은 음수 적분을 풀다가 0 위로 넘기는 경우도 정지 중에는 막는다."
+    },
+    {
+      "line": 238,
+      "text": "            self.long_pid.i = min(self.long_pid.i, 0.0)"
+    },
+    {
+      "line": 239,
+      "text": ""
+    },
+    {
+      "line": 240,
+      "text": "          error_future = pcm_accel_cmd - a_ego_future"
+    },
+    {
+      "line": 241,
+      "text": "          pcm_accel_cmd = self.long_pid.update(error_future,"
+    },
+    {
+      "line": 242,
+      "text": "                                               speed=CS.out.vEgo,"
+    },
+    {
+      "line": 243,
+      "text": "                                               feedforward=pcm_accel_cmd,"
+    },
+    {
+      "line": 244,
+      "text": "                                               freeze_integrator=actuators.longControlState != LongCtrlState.pid)"
+    },
+    {
+      "line": 245,
+      "text": "          if stopping_nonpositive:"
+    },
+    {
+      "line": 246,
+      "text": "            # P/D 보정도 정지 중 양수 CAN을 만들 수 있으므로 실제 명령값과 동기화한다."
+    },
+    {
+      "line": 247,
+      "text": "            pcm_accel_cmd = min(pcm_accel_cmd, 0.0)"
+    },
+    {
+      "line": 248,
+      "text": "            self.long_pid.control = pcm_accel_cmd"
+    },
+    {
+      "line": 249,
+      "text": "        else:"
+    },
+    {
+      "line": 250,
+      "text": "          self.long_pid.reset()"
+    },
+    {
+      "line": 251,
+      "text": ""
+    },
+    {
+      "line": 252,
+      "text": "        # Along with rate limiting positive jerk above, this greatly improves gas response time"
+    },
+    {
+      "line": 253,
+      "text": "        # Consider the net acceleration request that the PCM should be applying (pitch included)"
+    },
+    {
+      "line": 254,
+      "text": "        net_acceleration_request_min = min(actuators.accel + accel_due_to_pitch, net_acceleration_request)"
+    },
+    {
+      "line": 255,
+      "text": "        if net_acceleration_request_min < 0.2 or stopping or not CC.longActive:"
+    },
+    {
+      "line": 256,
+      "text": "          self.permit_braking = True"
+    },
+    {
+      "line": 257,
+      "text": "        elif net_acceleration_request_min > 0.3:"
+    },
+    {
+      "line": 258,
+      "text": "          self.permit_braking = False"
+    },
+    {
+      "line": 259,
+      "text": ""
+    },
+    {
+      "line": 260,
+      "text": "        pcm_accel_cmd = float(np.clip(pcm_accel_cmd, self.params.ACCEL_MIN, self.params.ACCEL_MAX))"
+    },
+    {
+      "line": 261,
+      "text": ""
+    },
+    {
+      "line": 262,
+      "text": "        can_sends.append(toyotacan.create_accel_command(self.packer, pcm_accel_cmd, pcm_cancel_cmd, self.permit_braking, self.standstill_req, lead,"
+    },
+    {
+      "line": 263,
+      "text": "                                                        CS.acc_type, fcw_alert, self.distance_button))"
+    }
+  ],
+  "work/carrotpilot/opendbc_repo/opendbc/car/toyota/carstate.py": [
+    {
+      "line": 93,
+      "text": "    ret.vEgo, ret.aEgo = self.update_speed_kf(ret.vEgoRaw)"
+    },
+    {
+      "line": 94,
+      "text": "    ret.vEgoCluster = ret.vEgo * 1.015  # minimum of all the cars"
+    },
+    {
+      "line": 95,
+      "text": ""
+    },
+    {
+      "line": 96,
+      "text": "    ret.standstill = abs(ret.vEgoRaw) < 1e-3"
+    },
+    {
+      "line": 97,
+      "text": ""
+    },
+    {
+      "line": 166,
+      "text": "    self.pcm_acc_status = cp.vl[\"PCM_CRUISE\"][\"CRUISE_STATE\"]"
+    },
+    {
+      "line": 167,
+      "text": "    if self.CP.carFingerprint not in (NO_STOP_TIMER_CAR - TSS2_CAR):"
+    },
+    {
+      "line": 168,
+      "text": "      # ignore standstill state in certain vehicles, since pcm allows to restart with just an acceleration request"
+    },
+    {
+      "line": 169,
+      "text": "      ret.cruiseState.standstill = self.pcm_acc_status == 7"
+    },
+    {
+      "line": 170,
+      "text": "    ret.cruiseState.enabled = bool(cp.vl[\"PCM_CRUISE\"][\"CRUISE_ACTIVE\"])"
+    },
+    {
+      "line": 171,
+      "text": "    ret.cruiseState.nonAdaptive = self.pcm_acc_status in (1, 2, 3, 4, 5, 6)"
+    }
+  ],
+  "work/carrotpilot/opendbc_repo/opendbc/car/toyota/interface.py": [
+    {
+      "line": 133,
+      "text": "    ret.autoResumeSng = ret.openpilotLongitudinalControl and candidate in NO_STOP_TIMER_CAR"
+    },
+    {
+      "line": 134,
+      "text": ""
+    },
+    {
+      "line": 135,
+      "text": "    if not ret.openpilotLongitudinalControl:"
+    },
+    {
+      "line": 136,
+      "text": "      ret.safetyConfigs[0].safetyParam |= ToyotaSafetyFlags.STOCK_LONGITUDINAL.value"
+    },
+    {
+      "line": 137,
+      "text": ""
+    },
+    {
+      "line": 138,
+      "text": "    # min speed to enable ACC. if car can do stop and go, then set enabling speed"
+    },
+    {
+      "line": 139,
+      "text": "    # to a negative value, so it won't matter."
+    },
+    {
+      "line": 140,
+      "text": "    ret.minEnableSpeed = -1. if stop_and_go else MIN_ACC_SPEED"
+    },
+    {
+      "line": 141,
+      "text": ""
+    },
+    {
+      "line": 142,
+      "text": "    if candidate in TSS2_CAR:"
+    },
+    {
+      "line": 143,
+      "text": "      ret.flags |= ToyotaFlags.RAISED_ACCEL_LIMIT.value"
+    },
+    {
+      "line": 144,
+      "text": ""
+    },
+    {
+      "line": 145,
+      "text": "      ret.vEgoStopping = 0.25"
+    },
+    {
+      "line": 146,
+      "text": "      ret.vEgoStarting = 0.25"
+    },
+    {
+      "line": 147,
+      "text": "      ret.stoppingDecelRate = 0.3  # reach stopping target smoothly"
+    }
+  ],
+  "work/carrotpilot/opendbc_repo/opendbc/car/toyota/values.py": [
+    {
+      "line": 264,
+      "text": "  TOYOTA_RAV4_TSS2_2022 = ToyotaTSS2PlatformConfig("
+    },
+    {
+      "line": 265,
+      "text": "    ["
+    },
+    {
+      "line": 266,
+      "text": "      ToyotaCarDocs(\"Toyota RAV4 2022\"),"
+    },
+    {
+      "line": 267,
+      "text": "      ToyotaCarDocs(\"Toyota RAV4 Hybrid 2022\", video=\"https://youtu.be/U0nH9cnrFB0\"),"
+    },
+    {
+      "line": 268,
+      "text": "    ],"
+    },
+    {
+      "line": 269,
+      "text": "    TOYOTA_RAV4_TSS2.specs,"
+    },
+    {
+      "line": 270,
+      "text": "    flags=ToyotaFlags.RADAR_ACC,"
+    }
+  ],
+  "work/carrotpilot/openpilot/selfdrive/controls/lib/longcontrol.py": [
+    {
+      "line": 25,
+      "text": "def long_control_state_trans(CP, active, long_control_state, v_ego,"
+    },
+    {
+      "line": 26,
+      "text": "                             should_stop, brake_pressed, cruise_standstill, a_ego, stopping_accel, radarState):"
+    },
+    {
+      "line": 27,
+      "text": "  stopping_condition = should_stop"
+    },
+    {
+      "line": 28,
+      "text": "  stopping_accel = stopping_accel if stopping_accel < 0.0 else -0.5"
+    },
+    {
+      "line": 29,
+      "text": "  starting_condition = (not should_stop and"
+    },
+    {
+      "line": 30,
+      "text": "                        not cruise_standstill and"
+    },
+    {
+      "line": 31,
+      "text": "                        not brake_pressed)"
+    },
+    {
+      "line": 32,
+      "text": "  started_condition = v_ego > CP.vEgoStarting"
+    },
+    {
+      "line": 33,
+      "text": ""
+    },
+    {
+      "line": 34,
+      "text": "  if not active:"
+    },
+    {
+      "line": 35,
+      "text": "    long_control_state = LongCtrlState.off"
+    },
+    {
+      "line": 36,
+      "text": ""
+    },
+    {
+      "line": 37,
+      "text": "  else:"
+    },
+    {
+      "line": 38,
+      "text": "    if long_control_state == LongCtrlState.off:"
+    },
+    {
+      "line": 39,
+      "text": "      if not starting_condition:"
+    },
+    {
+      "line": 40,
+      "text": "        long_control_state = LongCtrlState.stopping"
+    },
+    {
+      "line": 41,
+      "text": "      else:"
+    },
+    {
+      "line": 42,
+      "text": "        if starting_condition and CP.startingState:"
+    },
+    {
+      "line": 43,
+      "text": "          long_control_state = LongCtrlState.starting"
+    },
+    {
+      "line": 44,
+      "text": "        else:"
+    },
+    {
+      "line": 45,
+      "text": "          long_control_state = LongCtrlState.pid"
+    },
+    {
+      "line": 46,
+      "text": ""
+    },
+    {
+      "line": 47,
+      "text": "    elif long_control_state == LongCtrlState.stopping:"
+    },
+    {
+      "line": 48,
+      "text": "      if starting_condition and CP.startingState:"
+    },
+    {
+      "line": 49,
+      "text": "        long_control_state = LongCtrlState.starting"
+    },
+    {
+      "line": 50,
+      "text": "      elif starting_condition:"
+    },
+    {
+      "line": 51,
+      "text": "        long_control_state = LongCtrlState.pid"
+    },
+    {
+      "line": 52,
+      "text": ""
+    },
+    {
+      "line": 53,
+      "text": "    elif long_control_state in [LongCtrlState.starting, LongCtrlState.pid]:"
+    },
+    {
+      "line": 54,
+      "text": "      if stopping_condition:"
+    },
+    {
+      "line": 55,
+      "text": "        leadOne = radarState.leadOne"
+    },
+    {
+      "line": 56,
+      "text": "        fcw_stop = leadOne.status and leadOne.dRel < 4.0"
+    },
+    {
+      "line": 57,
+      "text": "        if a_ego > stopping_accel or fcw_stop:"
+    },
+    {
+      "line": 58,
+      "text": "          long_control_state = LongCtrlState.stopping"
+    },
+    {
+      "line": 59,
+      "text": "        elif long_control_state == LongCtrlState.starting:"
+    },
+    {
+      "line": 60,
+      "text": "          long_control_state = LongCtrlState.stopping"
+    },
+    {
+      "line": 61,
+      "text": "      elif started_condition:"
+    },
+    {
+      "line": 62,
+      "text": "        long_control_state = LongCtrlState.pid"
+    },
+    {
+      "line": 63,
+      "text": "  return long_control_state"
+    },
+    {
+      "line": 153,
+      "text": "    self.long_control_state = long_control_state_trans(self.CP, active, self.long_control_state, CS.vEgo,"
+    },
+    {
+      "line": 154,
+      "text": "                                                       should_stop, CS.brakePressed,"
+    },
+    {
+      "line": 155,
+      "text": "                                                       CS.cruiseState.standstill, CS.aEgo, self.stopping_accel, radarState)"
+    },
+    {
+      "line": 156,
+      "text": "    if active and soft_hold_active:"
+    },
+    {
+      "line": 157,
+      "text": "      self.long_control_state = LongCtrlState.stopping"
+    },
+    {
+      "line": 158,
+      "text": ""
+    },
+    {
+      "line": 159,
+      "text": "    if self.long_control_state == LongCtrlState.off:"
+    },
+    {
+      "line": 160,
+      "text": "      self.reset()"
+    },
+    {
+      "line": 161,
+      "text": "      output_accel = 0."
+    },
+    {
+      "line": 162,
+      "text": ""
+    },
+    {
+      "line": 163,
+      "text": "    elif self.long_control_state == LongCtrlState.stopping:"
+    },
+    {
+      "line": 164,
+      "text": "      output_accel = self.last_output_accel"
+    },
+    {
+      "line": 165,
+      "text": ""
+    },
+    {
+      "line": 166,
+      "text": "      if soft_hold_active:"
+    },
+    {
+      "line": 167,
+      "text": "        output_accel = self.CP.stopAccel"
+    },
+    {
+      "line": 168,
+      "text": "      # Restore the original one-way ramp. Do not unwind stronger braking."
+    },
+    {
+      "line": 169,
+      "text": "      if output_accel > self.stopping_accel:"
+    },
+    {
+      "line": 170,
+      "text": "        output_accel = min(output_accel, 0.0)"
+    },
+    {
+      "line": 171,
+      "text": "        output_accel -= self.CP.stoppingDecelRate * DT_CTRL"
+    },
+    {
+      "line": 172,
+      "text": "      self.reset()"
+    },
+    {
+      "line": 173,
+      "text": ""
+    },
+    {
+      "line": 174,
+      "text": "    elif self.long_control_state == LongCtrlState.starting:"
+    },
+    {
+      "line": 175,
+      "text": "      output_accel = self.CP.startAccel"
+    }
+  ],
+  "work/carrotpilot/openpilot/selfdrive/carrot/carrot_functions.py": [
+    {
+      "line": 508,
+      "text": "    lead_detected = radarstate.leadOne.status # & radarstate.leadOne.radar"
+    },
+    {
+      "line": 572,
+      "text": "    if signal_hold or start_hold:"
+    },
+    {
+      "line": 573,
+      "text": "      # Keep the stop even if a lead appears/moves. Radar obstacles remain in MPC."
+    },
+    {
+      "line": 574,
+      "text": "      # Green only removes this override; it never manufactures a go request."
+    },
+    {
+      "line": 575,
+      "text": "      self.xState = XState.e2eStopped"
+    },
+    {
+      "line": 576,
+      "text": "      self.actual_stop_distance = 0.0"
+    },
+    {
+      "line": 577,
+      "text": "      stop_model_x = 0.0"
+    },
+    {
+      "line": 578,
+      "text": "      self.stopping_count = max(self.stopping_count, 0.5 / DT_MDL)"
+    },
+    {
+      "line": 579,
+      "text": "      v_cruise = 0.0"
+    },
+    {
+      "line": 580,
+      "text": "      if start_hold:"
+    },
+    {
+      "line": 581,
+      "text": "        self.trafficState = TrafficState.red"
+    },
+    {
+      "line": 582,
+      "text": "    elif self.soft_hold_active > 0:"
+    },
+    {
+      "line": 583,
+      "text": "      self.xState = XState.e2eStopped"
+    },
+    {
+      "line": 584,
+      "text": "      if trafficState_last in [TrafficState.off, TrafficState.red] and self.trafficState == TrafficState.green:"
+    },
+    {
+      "line": 585,
+      "text": "        self.add_event(EventName.trafficSignChanged)"
+    },
+    {
+      "line": 586,
+      "text": "    elif self.xState == XState.e2eStopped:"
+    },
+    {
+      "line": 587,
+      "text": "      if carstate.gasPressed:"
+    },
+    {
+      "line": 588,
+      "text": "        self.xState = XState.e2eCruise #XState.e2ePrepare"
+    },
+    {
+      "line": 589,
+      "text": "      elif lead_detected and (radarstate.leadOne.dRel - stop_model_x_raw) < 2.0:"
+    },
+    {
+      "line": 590,
+      "text": "        self.xState = XState.lead"
+    },
+    {
+      "line": 591,
+      "text": "      elif self.stopping_count == 0:"
+    },
+    {
+      "line": 592,
+      "text": "        if self.trafficState == TrafficState.green and not self.carrot_stay_stop and not carstate.leftBlinker and self.trafficLightDetectMode != 1:"
+    },
+    {
+      "line": 593,
+      "text": "          #self.xState = XState.e2ePrepare"
+    },
+    {
+      "line": 594,
+      "text": "          self.xState = XState.e2eCruise  # 실험모드를 거치지 않고 바로 출발."
+    },
+    {
+      "line": 595,
+      "text": "          self.add_event(EventName.trafficSignGreen)"
+    },
+    {
+      "line": 596,
+      "text": "      self.stopping_count = max(0, self.stopping_count - 1)"
+    },
+    {
+      "line": 597,
+      "text": "      v_cruise = 0"
+    },
+    {
+      "line": 598,
+      "text": "    elif self.xState == XState.e2eStop:"
+    },
+    {
+      "line": 599,
+      "text": "      self.stopping_count = 0"
+    },
+    {
+      "line": 600,
+      "text": "      if carstate.gasPressed:  # Stop detecting traffic signal for 10 seconds"
+    },
+    {
+      "line": 601,
+      "text": "        #self.xState = XState.e2ePrepare"
+    },
+    {
+      "line": 602,
+      "text": "        self.xState = XState.e2eCruise"
+    },
+    {
+      "line": 603,
+      "text": "        self.traffic_starting_count = 10.0 / DT_MDL"
+    },
+    {
+      "line": 604,
+      "text": "      elif lead_detected and (radarstate.leadOne.dRel - stop_model_x_raw) < 2.0:"
+    },
+    {
+      "line": 605,
+      "text": "        self.xState = XState.lead"
+    },
+    {
+      "line": 606,
+      "text": "      else:"
+    },
+    {
+      "line": 607,
+      "text": "        if self.trafficState == TrafficState.green:"
+    },
+    {
+      "line": 608,
+      "text": "          self.add_event(EventName.trafficSignGreen)"
+    },
+    {
+      "line": 609,
+      "text": "          self.xState = XState.e2eCruise"
+    },
+    {
+      "line": 610,
+      "text": "        else:"
+    },
+    {
+      "line": 611,
+      "text": "          self.comfort_brake = min(mode_comfort_brake, self.comfortBrake * 0.9)"
+    },
+    {
+      "line": 612,
+      "text": "          #self.comfort_brake = COMFORT_BRAKE"
+    },
+    {
+      "line": 613,
+      "text": "          self.trafficStopAdjustRatio = np.interp(v_ego_kph, [0, 100], [1.0, 0.7])"
+    },
+    {
+      "line": 614,
+      "text": "          # 속도가 높을수록 먼 정지거리 추정값을 줄여 보정함."
+    },
+    {
+      "line": 615,
+      "text": "          stop_dist = stop_model_x_rl * np.interp(stop_model_x_rl, [0, 50], [1.0, self.trafficStopAdjustRatio])"
+    },
+    {
+      "line": 616,
+      "text": "          if stop_dist > 10.0:  # 10m 이상일 때만 실제 정지거리를 갱신함."
+    },
+    {
+      "line": 617,
+      "text": "            self.actual_stop_distance = stop_dist"
+    },
+    {
+      "line": 618,
+      "text": "          stop_model_x = 0"
+    },
+    {
+      "line": 619,
+      "text": "          self.fakeCruiseDistance = 0 if self.actual_stop_distance > 10.0 else 10.0"
+    },
+    {
+      "line": 620,
+      "text": "          if v_ego < 0.3:"
+    },
+    {
+      "line": 621,
+      "text": "            self.stopping_count = 0.5 / DT_MDL"
+    },
+    {
+      "line": 622,
+      "text": "            self.xState = XState.e2eStopped"
+    },
+    {
+      "line": 623,
+      "text": "    elif self.xState == XState.e2ePrepare:"
+    },
+    {
+      "line": 624,
+      "text": "      if lead_detected:"
+    },
+    {
+      "line": 625,
+      "text": "        self.xState = XState.lead"
+    },
+    {
+      "line": 626,
+      "text": "      elif self.atc_active:"
+    },
+    {
+      "line": 627,
+      "text": "        if carstate.gasPressed:"
+    },
+    {
+      "line": 628,
+      "text": "          self.xState = XState.e2eCruise"
+    },
+    {
+      "line": 629,
+      "text": "      elif v_ego_kph < 5.0 and self.trafficState != TrafficState.green:"
+    },
+    {
+      "line": 630,
+      "text": "        self.xState = XState.e2eStop"
+    },
+    {
+      "line": 631,
+      "text": "        self.actual_stop_distance = 5.0 #2.0"
+    },
+    {
+      "line": 632,
+      "text": "      elif v_ego_kph > 5.0: # and stop_model_x > 30.0:"
+    },
+    {
+      "line": 633,
+      "text": "        self.xState = XState.e2eCruise"
+    },
+    {
+      "line": 634,
+      "text": "    else: #XState.lead, XState.cruise, XState.e2eCruise"
+    },
+    {
+      "line": 635,
+      "text": "      self.traffic_starting_count = max(0, self.traffic_starting_count - 1)"
+    },
+    {
+      "line": 636,
+      "text": "      if lead_detected:"
+    },
+    {
+      "line": 637,
+      "text": "        self.xState = XState.lead"
+    },
+    {
+      "line": 638,
+      "text": "      elif self.trafficState == TrafficState.red and is_traffic_stop_entry_allowed(carstate.steeringAngleDeg) and self.traffic_starting_count == 0:"
+    },
+    {
+      "line": 639,
+      "text": "        self.add_event(EventName.trafficStopping)"
+    },
+    {
+      "line": 640,
+      "text": "        self.xState = XState.e2eStop"
+    },
+    {
+      "line": 641,
+      "text": "        self.actual_stop_distance = stop_model_x_rl"
+    },
+    {
+      "line": 642,
+      "text": "      else:"
+    },
+    {
+      "line": 643,
+      "text": "        self.xState = XState.e2eCruise"
+    },
+    {
+      "line": 644,
+      "text": ""
+    },
+    {
+      "line": 645,
+      "text": "    if self.trafficState in [TrafficState.off, TrafficState.green] or self.xState not in [XState.e2eStop, XState.e2eStopped]:"
+    },
+    {
+      "line": 646,
+      "text": "      stop_model_x = 1000.0"
+    },
+    {
+      "line": 647,
+      "text": ""
+    }
+  ],
+  "work/carrotpilot/openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py": [
+    {
+      "line": 384,
+      "text": "  def process_lead(self, lead):"
+    },
+    {
+      "line": 385,
+      "text": "    v_ego = self.x0[1]"
+    },
+    {
+      "line": 386,
+      "text": "    if lead is not None and lead.status:"
+    },
+    {
+      "line": 387,
+      "text": "      x_lead = lead.dRel"
+    },
+    {
+      "line": 388,
+      "text": "      v_lead = lead.vLead"
+    },
+    {
+      "line": 389,
+      "text": "      a_lead = lead.aLeadK"
+    },
+    {
+      "line": 390,
+      "text": "      a_lead_tau = lead.aLeadTau"
+    },
+    {
+      "line": 391,
+      "text": "    else:"
+    },
+    {
+      "line": 392,
+      "text": "      # Fake a fast lead car, so mpc can keep running in the same mode"
+    },
+    {
+      "line": 393,
+      "text": "      x_lead = 50.0"
+    },
+    {
+      "line": 394,
+      "text": "      v_lead = v_ego + 10.0"
+    },
+    {
+      "line": 395,
+      "text": "      a_lead = 0.0"
+    },
+    {
+      "line": 396,
+      "text": "      a_lead_tau = LEAD_ACCEL_TAU"
+    },
+    {
+      "line": 397,
+      "text": ""
+    },
+    {
+      "line": 398,
+      "text": "    # MPC will not converge if immediate crash is expected"
+    },
+    {
+      "line": 399,
+      "text": "    # Clip lead distance to what is still possible to brake for"
+    },
+    {
+      "line": 400,
+      "text": "    min_x_lead = ((v_ego + v_lead)/2) * (v_ego - v_lead) / (-self.minimum_accel * 2)"
+    },
+    {
+      "line": 401,
+      "text": "    x_lead = np.clip(x_lead, min_x_lead, 1e8)"
+    },
+    {
+      "line": 402,
+      "text": "    v_lead = np.clip(v_lead, 0.0, 1e8)"
+    },
+    {
+      "line": 403,
+      "text": "    a_lead = np.clip(a_lead, -10., 5.)"
+    },
+    {
+      "line": 404,
+      "text": ""
+    },
+    {
+      "line": 405,
+      "text": "    lead_xv = self.extrapolate_lead(x_lead, v_lead, a_lead, a_lead_tau)"
+    },
+    {
+      "line": 406,
+      "text": "    return lead_xv, v_lead"
+    },
+    {
+      "line": 426,
+      "text": "    self.status = radarstate.leadOne.status or radarstate.leadTwo.status"
+    },
+    {
+      "line": 488,
+      "text": "      x_obstacles = np.column_stack([lead_0_follow_obstacle, lead_1_obstacle, cruise_obstacle, x2])"
+    },
+    {
+      "line": 489,
+      "text": "      # Only currently selected leadOne/leadTwo may constrain braking."
+    },
+    {
+      "line": 490,
+      "text": "      # Entry snapshots and lane-change credit guards never add obstacles."
+    },
+    {
+      "line": 491,
+      "text": "      self.source = SOURCES[np.argmin(x_obstacles[0])]"
+    }
+  ],
+  "work/carrotpilot/openpilot/selfdrive/controls/lib/longitudinal_planner.py": [
+    {
+      "line": 357,
+      "text": "    output_should_stop_e2e = sm['modelV2'].action.shouldStop"
+    },
+    {
+      "line": 358,
+      "text": "    output_v_target_now_e2e = sm['modelV2'].action.desiredVelocity"
+    },
+    {
+      "line": 359,
+      "text": ""
+    },
+    {
+      "line": 360,
+      "text": "    if self.mpc.mode == 'acc':"
+    },
+    {
+      "line": 361,
+      "text": "      output_a_target = output_a_target_mpc"
+    },
+    {
+      "line": 362,
+      "text": "      output_v_target_now = output_v_target_mpc"
+    },
+    {
+      "line": 363,
+      "text": "      self.output_should_stop = output_should_stop_mpc"
+    },
+    {
+      "line": 364,
+      "text": "    else:"
+    },
+    {
+      "line": 365,
+      "text": "      output_a_target = min(output_a_target_mpc, output_a_target_e2e)"
+    },
+    {
+      "line": 366,
+      "text": "      output_v_target_now = min(output_v_target_mpc, output_v_target_now_e2e)"
+    },
+    {
+      "line": 367,
+      "text": "      self.output_should_stop = output_should_stop_e2e or output_should_stop_mpc"
+    },
+    {
+      "line": 368,
+      "text": ""
+    },
+    {
+      "line": 369,
+      "text": "    #for idx in range(2):"
+    },
+    {
+      "line": 393,
+      "text": "    self._signal_prepare_time = now"
+    },
+    {
+      "line": 394,
+      "text": "    cs = sm['carState']"
+    },
+    {
+      "line": 395,
+      "text": "    active = (getattr(getattr(carrot, 'prepare_decision', None), 'active', False)"
+    },
+    {
+      "line": 396,
+      "text": "              and getattr(carrot, 'prepare_control_active', True)"
+    },
+    {
+      "line": 397,
+      "text": "              and not reset_state and not cs.gasPressed and not cs.brakePressed"
+    },
+    {
+      "line": 398,
+      "text": "              and 0 < elapsed <= .2"
+    },
+    {
+      "line": 399,
+      "text": "              and not self.output_should_stop and self.mpc.mode == 'acc'"
+    },
+    {
+      "line": 400,
+      "text": "              and not sm['radarState'].leadOne.status and not sm['radarState'].leadTwo.status)"
+    },
+    {
+      "line": 401,
+      "text": "    previous = getattr(self, '_signal_prepare_previous', cs.aEgo)"
+    },
+    {
+      "line": 402,
+      "text": "    uncapped = self.output_a_target"
+    },
+    {
+      "line": 403,
+      "text": "    self.output_a_target = self._signal_prepare_accel.apply(self.output_a_target, previous, elapsed, active)"
+    },
+    {
+      "line": 404,
+      "text": "    self._signal_prepare_previous = self.output_a_target"
+    },
+    {
+      "line": 405,
+      "text": "    if active:"
+    },
+    {
+      "line": 406,
+      "text": "      # Coasting must not cancel the requested gentle deceleration downstream."
+    },
+    {
+      "line": 407,
+      "text": "      self.coasting_target = 0.0"
+    },
+    {
+      "line": 408,
+      "text": "      self.output_v_target_now = min(self.output_v_target_now, max(0., cs.vEgo+self.output_a_target*self.dt))"
+    },
+    {
+      "line": 409,
+      "text": "      self.a_desired = min(self.a_desired, self.output_a_target)"
+    },
+    {
+      "line": 410,
+      "text": "      if self.output_a_target < uncapped:"
+    },
+    {
+      "line": 411,
+      "text": "        self.output_j_target_now = min(self.output_j_target_now, (self.output_a_target-previous)/elapsed)"
+    },
+    {
+      "line": 412,
+      "text": "      # No shouldStop or go request: the existing model owns stopping/handover."
+    },
+    {
+      "line": 413,
+      "text": ""
+    },
+    {
+      "line": 414,
+      "text": "  def apply_signal_start_guard(self, carrot):"
+    },
+    {
+      "line": 415,
+      "text": "    if getattr(getattr(carrot, 'start_decision', None), 'hold', False):"
+    },
+    {
+      "line": 416,
+      "text": "      # Explicit departure veto, including the first constrained MPC cycle."
+    },
+    {
+      "line": 417,
+      "text": "      # Preserve any stronger braking and normal longitudinal/Panda gating."
+    },
+    {
+      "line": 418,
+      "text": "      self.output_should_stop = True"
+    },
+    {
+      "line": 419,
+      "text": "      self.output_v_target_now = 0.0"
+    },
+    {
+      "line": 420,
+      "text": "      self.output_a_target = min(self.output_a_target, 0.0)"
+    },
+    {
+      "line": 486,
+      "text": "    longitudinalPlan.hasLead = sm['radarState'].leadOne.status"
+    },
+    {
+      "line": 487,
+      "text": "    longitudinalPlan.longitudinalPlanSource = self.mpc.source"
+    },
+    {
+      "line": 488,
+      "text": "    longitudinalPlan.fcw = self.fcw"
+    },
+    {
+      "line": 489,
+      "text": ""
+    },
+    {
+      "line": 490,
+      "text": "    longitudinalPlan.aTarget = float(self.output_a_target)"
+    },
+    {
+      "line": 491,
+      "text": "    longitudinalPlan.aTargetBase = float(self.output_a_target_base)"
+    },
+    {
+      "line": 492,
+      "text": "    longitudinalPlan.leadPreviewSeconds = float(self.lead_preview)"
+    },
+    {
+      "line": 493,
+      "text": "    longitudinalPlan.leadPreviewActionTime = float(self.lead_preview_action_time)"
+    },
+    {
+      "line": 494,
+      "text": "    longitudinalPlan.leadPreviewAccel = float(self.lead_preview_accel)"
+    },
+    {
+      "line": 495,
+      "text": "    longitudinalPlan.aChangeCost = float(self.mpc.a_change_cost)"
+    },
+    {
+      "line": 496,
+      "text": "    longitudinalPlan.trafficStopModelLeadOffset = float(carrot.trafficStopModelLeadOffset)"
+    },
+    {
+      "line": 497,
+      "text": "    longitudinalPlan.vTargetNow = float(self.output_v_target_now)"
+    },
+    {
+      "line": 498,
+      "text": "    longitudinalPlan.jTargetNow = float(self.output_j_target_now)"
+    },
+    {
+      "line": 499,
+      "text": "    longitudinalPlan.shouldStop = bool(self.output_should_stop)"
+    }
+  ],
+  "work/carrotpilot/openpilot/selfdrive/controls/lib/drive_helpers.py": [
+    {
+      "line": 109,
+      "text": "def get_accel_from_plan(speeds, accels, t_idxs, action_t=DT_MDL, vEgoStopping=0.05):"
+    },
+    {
+      "line": 110,
+      "text": "  if len(speeds) == len(t_idxs):"
+    },
+    {
+      "line": 111,
+      "text": "    v_now = speeds[0]"
+    },
+    {
+      "line": 112,
+      "text": "    a_now = accels[0]"
+    },
+    {
+      "line": 113,
+      "text": "    v_target = np.interp(action_t, t_idxs, speeds)"
+    },
+    {
+      "line": 114,
+      "text": "    a_target = 2 * (v_target - v_now) / (action_t) - a_now"
+    },
+    {
+      "line": 115,
+      "text": "    v_target_1sec = np.interp(action_t + 1.0, t_idxs, speeds)"
+    },
+    {
+      "line": 116,
+      "text": "    v_max = np.max(speeds)"
+    },
+    {
+      "line": 117,
+      "text": "  else:"
+    },
+    {
+      "line": 118,
+      "text": "    v_now = 0.0"
+    },
+    {
+      "line": 119,
+      "text": "    a_now = 0.0"
+    },
+    {
+      "line": 120,
+      "text": "    v_target = 0.0"
+    },
+    {
+      "line": 121,
+      "text": "    v_target_1sec = 0.0"
+    },
+    {
+      "line": 122,
+      "text": "    a_target = 0.0"
+    },
+    {
+      "line": 123,
+      "text": "    v_max = 0.0"
+    },
+    {
+      "line": 124,
+      "text": "  should_stop = (v_target < vEgoStopping and"
+    },
+    {
+      "line": 125,
+      "text": "                 v_target_1sec < vEgoStopping)"
+    }
+  ],
+  "work/carrotpilot/openpilot/selfdrive/carrot/radar/radard_dpath.py": [
+    {
+      "line": 103,
+      "text": "      front_radar_measurement_delay_s=front_radar_distance_delay_s(CP),"
+    },
+    {
+      "line": 104,
+      "text": "      production_live_tracks=True,"
+    },
+    {
+      "line": 105,
+      "text": "      # 현재 미지원 RAV4는 radarUnavailable 그대로이므로 이 정책도 켜지지 않는다."
+    },
+    {
+      "line": 106,
+      "text": "      retain_confirmed_near_front=(CP.brand == 'toyota' and CP.carFingerprint == 'TOYOTA_RAV4_TSS2_2022'"
+    },
+    {
+      "line": 107,
+      "text": "                                   and CP.openpilotLongitudinalControl and not CP.radarUnavailable),"
+    }
+  ],
+  "work/carrotpilot/openpilot/selfdrive/carrot/radar_motion/controller.py": [
+    {
+      "line": 548,
+      "text": "  def _retain_near_front_match("
+    },
+    {
+      "line": 549,
+      "text": "    self, match: VisionRadarMatch | None, points: tuple[RadarPointSnapshot, ...],"
+    },
+    {
+      "line": 550,
+      "text": "    raw_valid_ids: frozenset[int], path: tuple[tuple[float, float], ...],"
+    },
+    {
+      "line": 551,
+      "text": "    time_s: float, sample_time_s: float, v_ego: float,"
+    },
+    {
+      "line": 552,
+      "text": "  ) -> VisionRadarMatch | None:"
+    },
+    {
+      "line": 553,
+      "text": "    \"\"\"정상 L1의 동일 현재 측정만 짧은 거리 경계 아래에서 유지한다.\"\"\""
+    },
+    {
+      "line": 554,
+      "text": "    previous, previous_time = self._near_front_point, self._near_front_model_time_s"
+    },
+    {
+      "line": 555,
+      "text": "    last_sample = self._near_front_sample_time_s"
+    },
+    {
+      "line": 556,
+      "text": "    timing_ok = (all(math.isfinite(value) and value > 0.0 for value in (time_s, sample_time_s))"
+    },
+    {
+      "line": 557,
+      "text": "                 and abs(time_s - sample_time_s) <= RADAR_MOTION_MAX_TIME_SKEW_S"
+    },
+    {
+      "line": 558,
+      "text": "                 and (previous_time is None or 0.0 < time_s - previous_time <= RADAR_MOTION_MAX_TIME_SKEW_S)"
+    },
+    {
+      "line": 559,
+      "text": "                 and (last_sample is None or sample_time_s >= last_sample))"
+    },
+    {
+      "line": 560,
+      "text": "    stopped_ego = math.isfinite(v_ego) and 0.0 <= v_ego <= NEAR_FRONT_MAX_EGO_MPS"
+    },
+    {
+      "line": 561,
+      "text": "    if not timing_ok or not stopped_ego or self.enable_radar_tracks <= 0:"
+    },
+    {
+      "line": 562,
+      "text": "      self._reset_near_front()"
+    },
+    {
+      "line": 563,
+      "text": "      return match"
+    },
+    {
+      "line": 564,
+      "text": "    if match is not None:"
+    },
+    {
+      "line": 565,
+      "text": "      point = match.point"
+    },
+    {
+      "line": 566,
+      "text": "      # 신규 획득은 기존 matcher와 비전 확인을 통과한 0.5m 위 물체에만 맡긴다."
+    },
+    {
+      "line": 567,
+      "text": "      if (point.source == 'frontRadar' and point.track_id in raw_valid_ids"
+    },
+    {
+      "line": 568,
+      "text": "          and point.measured and point.d_rel > NEAR_FRONT_MAX_DREL_M"
+    },
+    {
+      "line": 569,
+      "text": "          and match.probability >= 0.6 and abs(point.v_lead) <= NEAR_FRONT_MAX_ABS_VLEAD_MPS"
+    },
+    {
+      "line": 570,
+      "text": "          and abs(match.d_path) <= NEAR_FRONT_MAX_ABS_DPATH_M and abs(point.y_rel) <= NEAR_FRONT_MAX_ABS_DPATH_M):"
+    },
+    {
+      "line": 571,
+      "text": "        self._near_front_point, self._near_front_model_time_s = point, time_s"
+    },
+    {
+      "line": 572,
+      "text": "        self._near_front_sample_time_s = sample_time_s"
+    },
+    {
+      "line": 573,
+      "text": "      else:"
+    },
+    {
+      "line": 574,
+      "text": "        self._reset_near_front()"
+    },
+    {
+      "line": 575,
+      "text": "      return match"
+    },
+    {
+      "line": 576,
+      "text": "    if previous is None or previous_time is None or last_sample is None:"
+    },
+    {
+      "line": 577,
+      "text": "      return None"
+    },
+    {
+      "line": 578,
+      "text": "    candidates = tuple(point for point in points if point.source == 'frontRadar' and point.track_id == previous.track_id)"
+    },
+    {
+      "line": 579,
+      "text": "    if len(candidates) != 1:"
+    },
+    {
+      "line": 580,
+      "text": "      self._reset_near_front()"
+    },
+    {
+      "line": 581,
+      "text": "      return None"
+    },
+    {
+      "line": 582,
+      "text": "    point = candidates[0]"
+    },
+    {
+      "line": 583,
+      "text": "    d_path = project_to_model_path(path, point.d_rel, point.y_rel).d_path"
+    },
+    {
+      "line": 584,
+      "text": "    predicted_distance = previous.d_rel + previous.v_rel * (time_s - previous_time)"
+    },
+    {
+      "line": 585,
+      "text": "    if (point.track_id not in raw_valid_ids or not point.measured"
+    },
+    {
+      "line": 586,
+      "text": "        or not 0.0 < point.d_rel <= NEAR_FRONT_MAX_DREL_M"
+    },
+    {
+      "line": 587,
+      "text": "        or abs(point.v_lead) > NEAR_FRONT_MAX_ABS_VLEAD_MPS"
+    },
+    {
+      "line": 588,
+      "text": "        or abs(point.y_rel) > NEAR_FRONT_MAX_ABS_DPATH_M"
+    },
+    {
+      "line": 589,
+      "text": "        or not math.isfinite(d_path) or abs(d_path) > NEAR_FRONT_MAX_ABS_DPATH_M"
+    },
+    {
+      "line": 590,
+      "text": "        or abs(point.d_rel - predicted_distance) > NEAR_FRONT_CONTINUITY_M):"
+    },
+    {
+      "line": 591,
+      "text": "      self._reset_near_front()"
+    },
+    {
+      "line": 592,
+      "text": "      return None"
+    },
+    {
+      "line": 593,
+      "text": "    self._near_front_point, self._near_front_model_time_s = point, time_s"
+    },
+    {
+      "line": 594,
+      "text": "    self._near_front_sample_time_s = sample_time_s"
+    },
+    {
+      "line": 595,
+      "text": "    # 현재 비전 확률을 만들어내지 않고 현재 레이더 측정의 값만 전달한다."
+    },
+    {
+      "line": 596,
+      "text": "    return VisionRadarMatch(point=point, probability=0.0, score=0.0, d_path=d_path)"
+    },
+    {
+      "line": 597,
+      "text": ""
+    },
+    {
+      "line": 598,
+      "text": "  def _reset_stationary_range_history(self) -> None:"
+    },
+    {
+      "line": 599,
+      "text": "    self._stationary_range_last_point = None"
+    },
+    {
+      "line": 600,
+      "text": "    self._stationary_range_last_time_s = None"
+    },
+    {
+      "line": 601,
+      "text": "    self._stationary_range_anchor_time_s = None"
+    },
+    {
+      "line": 602,
+      "text": ""
+    },
+    {
+      "line": 603,
+      "text": "  def _stationary_front_range_limit(self, match: Any, vision: Any, time_s: float) -> tuple[float, float | None]:"
+    },
+    {
+      "line": 604,
+      "text": "    limit = RADAR_MATCH_MAX_FARTHER_THAN_VISION_M"
+    },
+    {
+      "line": 605,
+      "text": "    if match is None or vision is None or not math.isfinite(time_s):"
+    },
+    {
+      "line": 606,
+      "text": "      return limit, None"
+    },
+    {
+      "line": 607,
+      "text": "    point = match.point"
+    },
+    {
+      "line": 608,
+      "text": "    if ("
+    },
+    {
+      "line": 609,
+      "text": "      point.source != \"frontRadar\" or not point.measured"
+    },
+    {
+      "line": 610,
+      "text": "      or point.radar_track_state < STATIONARY_FRONT_POSITION_LOCK_MIN_TRACK_STATE"
+    },
+    {
+      "line": 611,
+      "text": "      or abs(point.v_lead) > STATIONARY_MAX_ABS_VLEAD_MPS"
+    },
+    {
+      "line": 612,
+      "text": "      or (point.source, point.track_id) != self.primary_matcher.stationary_identity"
+    },
+    {
+      "line": 613,
+      "text": "      or abs(match.d_path) > STATIONARY_FRONT_RANGE_MAX_DPATH_M"
+    },
+    {
+      "line": 614,
+      "text": "      or vision.probability < RADAR_VISION_FALLBACK_MIN_PROBABILITY"
+    }
+  ],
+  "work/carrotpilot/openpilot/selfdrive/carrot/radar_motion/primary.py": [
+    {
+      "line": 790,
+      "text": "  leads = getattr(model, \"leadsV3\", ())"
+    },
+    {
+      "line": 791,
+      "text": "  if not leads:"
+    },
+    {
+      "line": 792,
+      "text": "    return None"
+    },
+    {
+      "line": 793,
+      "text": "  lead = leads[0]"
+    },
+    {
+      "line": 794,
+      "text": "  if not getattr(lead, \"x\", ()) or not getattr(lead, \"y\", ()) or not getattr(lead, \"v\", ()):"
+    },
+    {
+      "line": 795,
+      "text": "    return None"
+    },
+    {
+      "line": 796,
+      "text": "  d_rel = _first(lead.x) - RADAR_TO_CAMERA_M"
+    },
+    {
+      "line": 797,
+      "text": "  if d_rel <= 0.5:"
+    },
+    {
+      "line": 798,
+      "text": "    return None"
+    },
+    {
+      "line": 799,
+      "text": "  return VisionLead("
+    },
+    {
+      "line": 800,
+      "text": "    probability=_finite(getattr(lead, \"prob\", 0.0)),"
+    },
+    {
+      "line": 801,
+      "text": "    d_rel=d_rel,"
+    },
+    {
+      "line": 802,
+      "text": "    y_rel=-_first(lead.y),"
+    }
+  ],
+  "work/carrotpilot/openpilot/selfdrive/controls/controlsd.py": [
+    {
+      "line": 156,
+      "text": "                                           CS.standstill, steer_at_standstill)"
+    },
+    {
+      "line": 157,
+      "text": "    CC.latActive = self.carrot_controls.lat_suspend_control(CS, CC.latActive)"
+    },
+    {
+      "line": 158,
+      "text": "    # Wait only for the first readiness confirmation, including AlwaysLateral."
+    },
+    {
+      "line": 159,
+      "text": "    CC.latActive = CC.latActive and lateral_ready"
+    },
+    {
+      "line": 160,
+      "text": "    CC.longActive = CC.enabled and not any(e.overrideLongitudinal for e in self.sm['onroadEvents']) and self.CP.openpilotLongitudinalControl"
+    },
+    {
+      "line": 161,
+      "text": ""
+    },
+    {
+      "line": 162,
+      "text": "    # AlwaysLateral must also stop while manager drains workers for this reboot."
+    },
+    {
+      "line": 163,
+      "text": "    if self.params.get_bool(\"ImpactDashcamReboot\"):"
+    },
+    {
+      "line": 164,
+      "text": "      CC.enabled = CC.latActive = CC.longActive = False"
+    },
+    {
+      "line": 165,
+      "text": ""
+    },
+    {
+      "line": 166,
+      "text": "    actuators = CC.actuators"
+    },
+    {
+      "line": 167,
+      "text": ""
+    },
+    {
+      "line": 168,
+      "text": "    # Enable blinkers while lane changing"
+    },
+    {
+      "line": 169,
+      "text": "    if model_v2.meta.laneChangeState != LaneChangeState.off:"
+    },
+    {
+      "line": 170,
+      "text": "      CC.leftBlinker = model_v2.meta.laneChangeDirection == LaneChangeDirection.left"
+    },
+    {
+      "line": 171,
+      "text": "      CC.rightBlinker = model_v2.meta.laneChangeDirection == LaneChangeDirection.right"
+    },
+    {
+      "line": 172,
+      "text": ""
+    },
+    {
+      "line": 173,
+      "text": "    if not CC.latActive:"
+    },
+    {
+      "line": 174,
+      "text": "      self.LaC.reset()"
+    },
+    {
+      "line": 175,
+      "text": "    if CC.latActive and not self.lateral_started:"
+    },
+    {
+      "line": 176,
+      "text": "      self.desired_curvature = self.curvature"
+    },
+    {
+      "line": 177,
+      "text": "      self.lateral_started = True"
+    },
+    {
+      "line": 178,
+      "text": "    if not CC.longActive:"
+    },
+    {
+      "line": 179,
+      "text": "      self.LoC.reset()"
+    },
+    {
+      "line": 180,
+      "text": ""
+    },
+    {
+      "line": 181,
+      "text": "    # accel PID loop"
+    },
+    {
+      "line": 182,
+      "text": "    pid_accel_limits = self.CI.get_pid_accel_limits(self.CP, CS.vEgo, CS.vCruise * CV.KPH_TO_MS)"
+    },
+    {
+      "line": 183,
+      "text": "    t_since_plan = (self.sm.frame - self.sm.recv_frame['longitudinalPlan']) * DT_CTRL"
+    },
+    {
+      "line": 184,
+      "text": "    accel, aTarget, jerk = self.LoC.update(CC.longActive, CS, long_plan, pid_accel_limits, t_since_plan, self.sm['radarState'])"
+    }
+  ],
+  "work/carrotpilot/openpilot/selfdrive/selfdrived/selfdrived.py": [
+    {
+      "line": 426,
+      "text": "    radar_errors = self.sm['radarState'].radarErrors"
+    },
+    {
+      "line": 427,
+      "text": "    model_inputs_ready = (self.sm.all_checks(['modelV2', 'radarState', 'livePose', 'liveCalibration',"
+    },
+    {
+      "line": 428,
+      "text": "                                             'liveParameters', 'longitudinalPlan', 'driverAssistance']) and"
+    },
+    {
+      "line": 429,
+      "text": "                          pose.inputsOK and pose.sensorsOK and pose.posenetOK)"
+    },
+    {
+      "line": 430,
+      "text": "    if self.enabled or model_inputs_ready:"
+    },
+    {
+      "line": 431,
+      "text": "      self.model_startup_complete = True"
+    },
+    {
+      "line": 432,
+      "text": "    startup_fault = (radar_errors.canError or radar_errors.radarFault or radar_errors.wrongConfig or"
+    },
+    {
+      "line": 433,
+      "text": "                     radar_errors.radarUnavailableTemporary or"
+    },
+    {
+      "line": 434,
+      "text": "                     (self.sm.seen['livePose'] and (not pose.sensorsOK or not pose.posenetOK)))"
+    },
+    {
+      "line": 435,
+      "text": "    model_starting = big_model_settling and not self.model_startup_complete and not startup_fault"
+    },
+    {
+      "line": 436,
+      "text": "    if model_starting and not model_inputs_ready:"
+    },
+    {
+      "line": 437,
+      "text": "      # The first model output precedes readiness of its downstream services."
+    },
+    {
+      "line": 438,
+      "text": "      # Keep engagement blocked while they settle, without calling this a radar fault."
+    },
+    {
+      "line": 439,
+      "text": "      self.events.add(EventName.selfdriveInitializing)"
+    },
+    {
+      "line": 440,
+      "text": "    if not self.sm.valid['radarState']:"
+    },
+    {
+      "line": 441,
+      "text": "      if self.sm['radarState'].radarErrors.canError:"
+    },
+    {
+      "line": 442,
+      "text": "        self.events.add(EventName.canError)"
+    },
+    {
+      "line": 443,
+      "text": "      elif self.sm['radarState'].radarErrors.radarUnavailableTemporary:"
+    },
+    {
+      "line": 444,
+      "text": "        self.events.add(EventName.radarTempUnavailable)"
+    },
+    {
+      "line": 445,
+      "text": "      elif self.sm['radarState'].radarErrors.radarFault or self.sm['radarState'].radarErrors.wrongConfig:"
+    },
+    {
+      "line": 446,
+      "text": "        self.events.add(EventName.radarFault)"
+    }
+  ],
+  "work/carrotpilot/openpilot/selfdrive/selfdrived/events.py": [
+    {
+      "line": 940,
+      "text": "  EventName.radarFault: {"
+    },
+    {
+      "line": 941,
+      "text": "    ET.SOFT_DISABLE: soft_disable_alert(\"Radar Error: Restart the Car\"),"
+    },
+    {
+      "line": 942,
+      "text": "    ET.NO_ENTRY: NoEntryAlert(\"Radar Error: Restart the Car\"),"
+    },
+    {
+      "line": 943,
+      "text": "  },"
+    },
+    {
+      "line": 944,
+      "text": ""
+    },
+    {
+      "line": 945,
+      "text": "  EventName.radarTempUnavailable: {"
+    },
+    {
+      "line": 946,
+      "text": "    ET.SOFT_DISABLE: soft_disable_alert(\"Radar Temporarily Unavailable\"),"
+    },
+    {
+      "line": 947,
+      "text": "    ET.NO_ENTRY: NoEntryAlert(\"Radar Temporarily Unavailable\"),"
+    },
+    {
+      "line": 948,
+      "text": "  },"
+    },
+    {
+      "line": 949,
+      "text": ""
+    },
+    {
+      "line": 1010,
+      "text": "  EventName.canError: {"
+    },
+    {
+      "line": 1011,
+      "text": "    ET.PERMANENT: car_parser_result,"
+    },
+    {
+      "line": 1012,
+      "text": "    ET.IMMEDIATE_DISABLE: ImmediateDisableAlert(\"Unknown Vehicle Variant\"),"
+    },
+    {
+      "line": 1013,
+      "text": "    #ET.PERMANENT: Alert("
+    },
+    {
+      "line": 1014,
+      "text": "    # \"Unknown Vehicle Variant\","
+    },
+    {
+      "line": 1015,
+      "text": "    #  \"\","
+    },
+    {
+      "line": 1016,
+      "text": "    #  AlertStatus.normal, AlertSize.small,"
+    },
+    {
+      "line": 1017,
+      "text": "    #  Priority.LOW, VisualAlert.none, AudibleAlert.none, 1., creation_delay=1.),"
+    },
+    {
+      "line": 1018,
+      "text": "    ET.NO_ENTRY: NoEntryAlert(\"Unknown Vehicle Variant\"),"
+    },
+    {
+      "line": 1019,
+      "text": "  },"
+    }
+  ],
+  "work/carrotpilot/openpilot/selfdrive/selfdrived/state.py": [
+    {
+      "line": 7,
+      "text": "SOFT_DISABLE_TIME = 3  # seconds"
+    },
+    {
+      "line": 8,
+      "text": "ACTIVE_STATES = (State.enabled, State.softDisabling, State.overriding)"
+    },
+    {
+      "line": 9,
+      "text": "ENABLED_STATES = (State.preEnabled, *ACTIVE_STATES)"
+    },
+    {
+      "line": 10,
+      "text": ""
+    },
+    {
+      "line": 39,
+      "text": "        if self.state == State.enabled:"
+    },
+    {
+      "line": 40,
+      "text": "          if events.contains(ET.SOFT_DISABLE):"
+    },
+    {
+      "line": 41,
+      "text": "            print(\"#######State.enabled => softDisabling\", events.events)"
+    },
+    {
+      "line": 42,
+      "text": "            self.state = State.softDisabling"
+    },
+    {
+      "line": 43,
+      "text": "            self.soft_disable_timer = int(SOFT_DISABLE_TIME / DT_CTRL)"
+    },
+    {
+      "line": 44,
+      "text": "            self.current_alert_types.append(ET.SOFT_DISABLE)"
+    },
+    {
+      "line": 45,
+      "text": ""
+    },
+    {
+      "line": 46,
+      "text": "          elif events.contains(ET.OVERRIDE_LATERAL) or events.contains(ET.OVERRIDE_LONGITUDINAL):"
+    },
+    {
+      "line": 47,
+      "text": "            print(\"#######State.enabled => overriding\")"
+    },
+    {
+      "line": 48,
+      "text": "            self.state = State.overriding"
+    },
+    {
+      "line": 49,
+      "text": "            self.current_alert_types += [ET.OVERRIDE_LATERAL, ET.OVERRIDE_LONGITUDINAL]"
+    },
+    {
+      "line": 50,
+      "text": ""
+    },
+    {
+      "line": 51,
+      "text": "        # SOFT DISABLING"
+    },
+    {
+      "line": 52,
+      "text": "        elif self.state == State.softDisabling:"
+    },
+    {
+      "line": 53,
+      "text": "          if not events.contains(ET.SOFT_DISABLE):"
+    },
+    {
+      "line": 54,
+      "text": "            print(\"#######State.softDisabling => enabled\", events.events)"
+    },
+    {
+      "line": 55,
+      "text": "            # no more soft disabling condition, so go back to ENABLED"
+    },
+    {
+      "line": 56,
+      "text": "            self.state = State.enabled"
+    },
+    {
+      "line": 57,
+      "text": ""
+    },
+    {
+      "line": 58,
+      "text": "          elif self.soft_disable_timer > 0:"
+    },
+    {
+      "line": 59,
+      "text": "            #print(\"#######State.softDisabling => timeout => disable\")"
+    },
+    {
+      "line": 60,
+      "text": "            self.current_alert_types.append(ET.SOFT_DISABLE)"
+    },
+    {
+      "line": 61,
+      "text": ""
+    },
+    {
+      "line": 62,
+      "text": "          elif self.soft_disable_timer <= 0:"
+    },
+    {
+      "line": 63,
+      "text": "            print(\"#######State.softDisabling => disabled\")"
+    },
+    {
+      "line": 74,
+      "text": "        # OVERRIDING"
+    },
+    {
+      "line": 75,
+      "text": "        elif self.state == State.overriding:"
+    },
+    {
+      "line": 76,
+      "text": "          if events.contains(ET.SOFT_DISABLE):"
+    },
+    {
+      "line": 77,
+      "text": "            print(\"#######State.overriding => softDisabling\", events.events)"
+    },
+    {
+      "line": 78,
+      "text": "            self.state = State.softDisabling"
+    },
+    {
+      "line": 79,
+      "text": "            self.soft_disable_timer = int(SOFT_DISABLE_TIME / DT_CTRL)"
+    },
+    {
+      "line": 80,
+      "text": "            self.current_alert_types.append(ET.SOFT_DISABLE)"
+    },
+    {
+      "line": 81,
+      "text": "          elif not (events.contains(ET.OVERRIDE_LATERAL) or events.contains(ET.OVERRIDE_LONGITUDINAL)):"
+    },
+    {
+      "line": 82,
+      "text": "            print(\"#######State.overriding => enabled\")"
+    },
+    {
+      "line": 83,
+      "text": "            self.state = State.enabled"
+    },
+    {
+      "line": 84,
+      "text": "          else:"
+    },
+    {
+      "line": 85,
+      "text": "            self.current_alert_types += [ET.OVERRIDE_LATERAL, ET.OVERRIDE_LONGITUDINAL]"
+    },
+    {
+      "line": 107,
+      "text": "    # Check if openpilot is engaged and actuators are enabled"
+    },
+    {
+      "line": 108,
+      "text": "    enabled = self.state in ENABLED_STATES"
+    },
+    {
+      "line": 109,
+      "text": "    active = self.state in ACTIVE_STATES"
+    },
+    {
+      "line": 110,
+      "text": "    if active:"
+    },
+    {
+      "line": 111,
+      "text": "      self.current_alert_types.append(ET.WARNING)"
+    },
+    {
+      "line": 112,
+      "text": "    return enabled, active"
+    }
+  ],
+  "work/carrotpilot/openpilot/selfdrive/carrot/signal_start_guard.py": [
+    {
+      "line": 144,
+      "text": "  def update(self, now, observation, *, enabled, valid, drive, gas, speed, departure):"
+    },
+    {
+      "line": 145,
+      "text": "    if not enabled or not drive:"
+    },
+    {
+      "line": 146,
+      "text": "      self.reset()"
+    },
+    {
+      "line": 147,
+      "text": "      self.last_now = now if math.isfinite(now) else -math.inf"
+    },
+    {
+      "line": 148,
+      "text": "      return StartDecision()"
+    },
+    {
+      "line": 149,
+      "text": "    if gas:"
+    },
+    {
+      "line": 150,
+      "text": "      self.reset()"
+    },
+    {
+      "line": 151,
+      "text": "      self.last_now = now if math.isfinite(now) else -math.inf"
+    },
+    {
+      "line": 152,
+      "text": "      self.cooldown = now+10. if math.isfinite(now) else math.inf"
+    },
+    {
+      "line": 153,
+      "text": "      return StartDecision(reason='driver_gas')"
+    },
+    {
+      "line": 154,
+      "text": "    if not math.isfinite(now) or now < self.last_now:"
+    },
+    {
+      "line": 155,
+      "text": "      # Clock discontinuity cannot turn a held red into permission to go."
+    },
+    {
+      "line": 156,
+      "text": "      self.pending, self.count, self.box, self.session = None, 0, None, None"
+    },
+    {
+      "line": 157,
+      "text": "      return StartDecision(self.hold, reason='clock_discontinuity')"
+    },
+    {
+      "line": 158,
+      "text": "    self.last_now = now"
+    },
+    {
+      "line": 159,
+      "text": "    if now < self.cooldown:"
+    },
+    {
+      "line": 160,
+      "text": "      return StartDecision(reason='driver_cooldown')"
+    },
+    {
+      "line": 161,
+      "text": "    if not valid or not math.isfinite(speed):"
+    },
+    {
+      "line": 162,
+      "text": "      self.pending, self.count = None, 0"
+    },
+    {
+      "line": 163,
+      "text": "      return StartDecision(self.hold, reason='invalid_context')"
+    },
+    {
+      "line": 164,
+      "text": "    if not self.hold and abs(speed) > .3:"
+    },
+    {
+      "line": 165,
+      "text": "      self.reset()"
+    }
+  ],
+  "work/native_sim/closed_loop.py": [
+    {
+      "line": 137,
+      "text": "  def _messages(self, now):"
+    },
+    {
+      "line": 138,
+      "text": "    scenario = self.scenario"
+    },
+    {
+      "line": 139,
+      "text": "    cs = car.CarState(vEgo=float(self.speed), vEgoRaw=float(self.speed), vEgoCluster=float(self.speed),"
+    },
+    {
+      "line": 140,
+      "text": "                      aEgo=float(self.acceleration), standstill=bool(self.speed < 0.01), canValid=True,"
+    },
+    {
+      "line": 141,
+      "text": "                      gearShifter=\"drive\", vCruise=scenario.cruise_speed * 3.6, vCruiseCluster=scenario.cruise_speed * 3.6,"
+    },
+    {
+      "line": 142,
+      "text": "                      vCluRatio=1.0, cruiseState={\"enabled\": True, \"available\": True, \"speed\": scenario.cruise_speed})"
+    },
+    {
+      "line": 143,
+      "text": "    control = log.ControlsState(longControlState=self.long_control.long_control_state, forceDecel=False,"
+    },
+    {
+      "line": 144,
+      "text": "                                desiredCurvature=0.0, curvature=0.0)"
+    },
+    {
+      "line": 145,
+      "text": "    state = log.SelfdriveState(enabled=True, active=True, experimentalMode=False, personality=scenario.personality)"
+    },
+    {
+      "line": 146,
+      "text": "    cc = car.CarControl(enabled=True, longActive=True, latActive=False, orientationNED=[0.0, 0.0, 0.0])"
+    },
+    {
+      "line": 147,
+      "text": "    cc.hudControl.leadDistanceBars = scenario.personality + 1"
+    },
+    {
+      "line": 148,
+      "text": "    cc.hudControl.leadVisible = scenario.lead"
+    },
+    {
+      "line": 149,
+      "text": "    radar = log.RadarState()"
+    },
+    {
+      "line": 231,
+      "text": "                                            vTargetNow=float(self.planner.output_v_target_now),"
+    },
+    {
+      "line": 232,
+      "text": "                                            jTargetNow=float(self.planner.output_j_target_now),"
+    },
+    {
+      "line": 233,
+      "text": "                                            shouldStop=bool(self.planner.output_should_stop),"
+    },
+    {
+      "line": 234,
+      "text": "                                            cruiseTarget=self.planner.v_cruise_kph,"
+    },
+    {
+      "line": 235,
+      "text": "                                            fcw=bool(self.planner.fcw))"
+    },
+    {
+      "line": 236,
+      "text": "      self.model_time = now"
+    },
+    {
+      "line": 237,
+      "text": "    accel, a_target, jerk = self.long_control.update(True, cs, self.long_plan, (-3.5, 2.0), now-self.model_time,"
+    },
+    {
+      "line": 238,
+      "text": "                                                   self.sm[\"radarState\"])"
+    },
+    {
+      "line": 239,
+      "text": "    cc.actuators.accel = float(accel)"
+    },
+    {
+      "line": 240,
+      "text": "    cc.actuators.aTarget = float(a_target)"
+    },
+    {
+      "line": 241,
+      "text": "    cc.actuators.jerk = float(jerk)"
+    },
+    {
+      "line": 242,
+      "text": "    cc.actuators.longControlState = self.long_control.long_control_state"
+    },
+    {
+      "line": 243,
+      "text": "    state = SimpleNamespace(out=cs, gvc=self.acceleration, acc_type=1, pcm_acc_status=8,"
+    },
+    {
+      "line": 244,
+      "text": "                            pcm_follow_distance=4-cc.hudControl.leadDistanceBars, lkas_hud={})"
+    },
+    {
+      "line": 245,
+      "text": "    _, generated_can = self.controller.update(cc.as_reader(), state, int(VIRTUAL_NOW*1e9))"
+    },
+    {
+      "line": 246,
+      "text": "    acceleration_messages = [(addr, data, bus) for addr, data, bus in generated_can if addr == 0x343 and bus == 0]"
+    }
+  ],
+  "work/native_sim/inspect_stop.py": [
+    {
+      "line": 43,
+      "text": "plant.radar_bridge = recorder"
+    },
+    {
+      "line": 44,
+      "text": "result = plant.run(root)"
+    },
+    {
+      "line": 45,
+      "text": "result[\"ars\"] = recorder.bridge.summary()"
+    },
+    {
+      "line": 46,
+      "text": "(root / \"summary.json\").write_text(json.dumps(result, indent=2), encoding=\"utf-8\")"
+    },
+    {
+      "line": 47,
+      "text": "with (root / \"observation.csv\").open(\"w\", newline=\"\") as stream:"
+    },
+    {
+      "line": 48,
+      "text": "  writer = csv.writer(stream)"
+    },
+    {
+      "line": 49,
+      "text": "  writer.writerow([\"time_s\", \"true_gap_m\", \"v_ego_mps\", \"point_count\", \"point_d_rel_m\", \"point_v_lead_mps\","
+    },
+    {
+      "line": 50,
+      "text": "                   \"point_a_lead_mps2\", \"lead_status\", \"lead_radar\", \"lead_d_rel_m\", \"lead_v_lead_mps\","
+    },
+    {
+      "line": 51,
+      "text": "                   \"lead_a_lead_mps2\", \"lead_a_tau_s\", \"frame_id\"])"
+    },
+    {
+      "line": 52,
+      "text": "  writer.writerows(recorder.rows)"
+    },
+    {
+      "line": 53,
+      "text": "print(json.dumps(result), flush=True)"
+    }
+  ]
+}

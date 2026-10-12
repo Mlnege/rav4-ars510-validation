@@ -1,0 +1,10 @@
+{
+  "동결시각_UTC": "2026-10-12T16:17:45.462441+00:00",
+  "파일읽기_지문불변": true,
+  "새주행시험": false,
+  "files": {
+    "REVIEW_KO.md": "db245fc5df0be12cc2244efa88510ed6fc79b4a2f30485258e6ebbce804625c2",
+    "fingerprints.json": "014b33b700df75af193d507efb6708af9544ff81242cdbd9ed3f4a981ce5af73",
+    "candidate_diff.patch": "964870e644b2619a441d230a0d470ff2b82e8a9c078ef9863043f34544e205d4"
+  }
+}

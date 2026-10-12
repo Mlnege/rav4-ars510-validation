@@ -1,0 +1,21 @@
+{
+  "cases": [
+    {
+      "kind": "temporary",
+      "force_decel_active_ticks": 300,
+      "positive_control_ticks": 300,
+      "negative_control_ticks": 0,
+      "deceleration_observed": false,
+      "interpretation_ko": "고정 ego 합성 입력에서 감속 요청이 실제 제어 부호로 전달되는지 검사. 물리 제동 거리는 미검증."
+    },
+    {
+      "kind": "producer_stopped",
+      "force_decel_active_ticks": 300,
+      "positive_control_ticks": 300,
+      "negative_control_ticks": 0,
+      "deceleration_observed": false,
+      "interpretation_ko": "고정 ego 합성 입력에서 감속 요청이 실제 제어 부호로 전달되는지 검사. 물리 제동 거리는 미검증."
+    }
+  ],
+  "deceleration_missing_cases": 2
+}

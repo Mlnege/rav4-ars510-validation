@@ -1,0 +1,34 @@
+--- work/carrotpilot/openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py
++++ work/radar_loss_authority_root/candidate_sources/long_mpc.py
+@@ -420,7 +420,8 @@
+              lead_gap_enabled=False,
+              lead_track_frames=(0, 0),
+              measured_a_ego=0.0,
+-             cutout_relief_enabled=False):
++             cutout_relief_enabled=False,
++             force_slow_decel=False):
+     v_ego = self.x0[1]
+     a_ego = self.x0[2]
+     self.status = radarstate.leadOne.status or radarstate.leadTwo.status
+@@ -442,6 +443,10 @@
+       stop_x = 1000.0
+     else:
+       v_cruise, stop_x, mode = carrot.v_cruise, carrot.stop_dist, carrot.mode
++
++    if force_slow_decel:
++      # 호스트 감속 요청은 당근 목표 속도를 읽은 뒤에도 유지한다.
++      v_cruise = 0.0
+ 
+     # To estimate a safe distance from a moving lead, we calculate how much stopping
+     # distance that lead needs as a minimum. We can add that to the current distance
+--- work/carrotpilot/openpilot/selfdrive/controls/lib/longitudinal_planner.py
++++ work/radar_loss_authority_root/candidate_sources/longitudinal_planner.py
+@@ -266,6 +266,8 @@
+       ),
+       lead_track_frames=lead_track_frames,
+       measured_a_ego=sm['carState'].aEgo,
++      # 검증 범위는 정확한 RAV4 2022의 직접 종방향 제어로 제한한다.
++      force_slow_decel=force_slow_decel and self.actuator_accel_limits is not None,
+     )
+ 
+     self.v_desired_trajectory = np.interp(CONTROL_N_T_IDX, T_IDXS_MPC, self.mpc.v_solution)

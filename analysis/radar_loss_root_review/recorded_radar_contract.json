@@ -1,0 +1,80 @@
+{
+  "files": [
+    {
+      "alias": "log_a",
+      "counts": {
+        "carControl": 3354,
+        "carControl_longActive_true": 0,
+        "carControl_enabled_true": 0,
+        "radarState": 623
+      },
+      "radar_contract_counts": {
+        "valid=False;errors=none": 54,
+        "valid=True;errors=none": 569
+      },
+      "lead_type_counts": {
+        "leadOne;status=False;radar=False": 201,
+        "leadTwo;status=False;radar=False": 623,
+        "leadOne;status=True;radar=False": 422
+      }
+    },
+    {
+      "alias": "log_b",
+      "counts": {
+        "carControl": 5997,
+        "carControl_longActive_true": 0,
+        "carControl_enabled_true": 0,
+        "radarState": 1019
+      },
+      "radar_contract_counts": {
+        "valid=False;errors=none": 16,
+        "valid=True;errors=none": 1003
+      },
+      "lead_type_counts": {
+        "leadOne;status=False;radar=False": 957,
+        "leadTwo;status=False;radar=False": 1019,
+        "leadOne;status=True;radar=False": 62
+      }
+    },
+    {
+      "alias": "log_c",
+      "counts": {},
+      "radar_contract_counts": {},
+      "lead_type_counts": {}
+    },
+    {
+      "alias": "log_d",
+      "counts": {
+        "carControl": 6007,
+        "carControl_longActive_true": 0,
+        "carControl_enabled_true": 0,
+        "radarState": 1150
+      },
+      "radar_contract_counts": {
+        "valid=False;errors=none": 50,
+        "valid=True;errors=none": 1100
+      },
+      "lead_type_counts": {
+        "leadOne;status=False;radar=False": 4,
+        "leadTwo;status=False;radar=False": 1150,
+        "leadOne;status=True;radar=False": 1146
+      }
+    }
+  ],
+  "source_schema_before": {
+    "log.capnp": "48fe892e247d907844dbc973fdb3bc5a4cb4127a0e9bd5b86a6bdbbae979fb74",
+    "car.capnp": "3042bfa92e6b42532145815a6a23fc5d9b775f2762b136384d1d2191cc7f1465"
+  },
+  "source_schema_after": {
+    "log.capnp": "48fe892e247d907844dbc973fdb3bc5a4cb4127a0e9bd5b86a6bdbbae979fb74",
+    "car.capnp": "3042bfa92e6b42532145815a6a23fc5d9b775f2762b136384d1d2191cc7f1465"
+  },
+  "schema_unchanged": true,
+  "original_file_stat_unchanged": true,
+  "wall_elapsed_s": 0.7799371000000974,
+  "probe_sha256": "f040f17bb14775102c5aaf9bdc287d9adeae678312035c44fe3063da8f78be25",
+  "vehicle_tx": false,
+  "params_access": false,
+  "identity_or_coordinates_inspected": false,
+  "scope_ko": "원본 radarState 계약의 익명 집계. 진단 ARS 재생과 별도이며 오류 없음이 객체 탐지·PCS·안전성을 입증하지 않는다."
+}

@@ -1,0 +1,27 @@
+[
+  {
+    "name": "run.py",
+    "sha256": "d42b31e81ce5540e9b06952f3558a85c45c4719b6590c7c002d7596558042993",
+    "same": true
+  },
+  {
+    "name": "whole_chain.py",
+    "sha256": "4bda5e45297634630ddcbddc557c0e021de437b49f0596e824ab505f0a06085e",
+    "same": true
+  },
+  {
+    "name": "whole_inputs.py",
+    "sha256": "690e7fe014c0a620f4c3590e78b7db6a6faff968ba594771587b4dc0e58c7023",
+    "same": true
+  },
+  {
+    "name": "whole_io.py",
+    "sha256": "5dd434ff3fce1406b2782c7f1237157308ad84ce13584855931c46b148ac4f9d",
+    "same": true
+  },
+  {
+    "name": "whole_objects.py",
+    "sha256": "4f102e3a9b0358b771e2bca31a6a487008050695ae8f2fb655d0a86f1c15045b",
+    "same": true
+  }
+]

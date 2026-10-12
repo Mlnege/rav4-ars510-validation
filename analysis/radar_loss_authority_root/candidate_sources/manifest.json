@@ -1,0 +1,12 @@
+[
+  {
+    "path": "openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py",
+    "original_sha256_raw": "b0a5c630260ad76b58033b8d44719992c4e008399b2c520e3692b556ce12e274",
+    "candidate_sha256_raw": "8d493b65acc3f5a4273bb436009d9ab99fdc573063e5f0581d23c45147b33b00"
+  },
+  {
+    "path": "openpilot/selfdrive/controls/lib/longitudinal_planner.py",
+    "original_sha256_raw": "01ead57b64c3bde5ae56bebefb015986e877014cc0d63885e77833e08f9b886f",
+    "candidate_sha256_raw": "63ac8ab4d0b00284808f6100d812795e9b7eae0de90c230e9ce97dde33f58617"
+  }
+]

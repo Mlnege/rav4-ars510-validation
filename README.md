@@ -13,16 +13,16 @@
 롱컨 활성 조건은 PC 모의주행의 `longActive=True`와 허용된 제어 권한 입력으로 검사했습니다. 센서·카메라 인식 결과와 차량의 지연·응답은 명시된 가정입니다. 실제 배터리 회수량, 실차 급제동 성능, 순정 PCS/AEB 유지, Konik 전체 빌드는 미검증입니다. ACC 보조 관측 누락·오래된 입력과 일부 정지거리 부족 조건에서는 모의 충돌이 남아 있습니다.
 
 
-근본 원인 분석을 추가했다. 실제 비활성 로그의 초기 추론 지연·속도 기준 차이와 합성 지연의 권한 반응을 구분하고, 이력·공개조건 하나로 급감속 실패를 설명할 수 없다는 반례를 보존했다. 소스 63개와 패치 8개의 개수는 유지하며, r7에서는 오프라인 재생기의 오류 전파 수정으로 replay.py와 patch01의 지문을 갱신했다. 주행 제어 코드는 r4 이후 그대로다. 새 분석 범위와 지문 변환은 `analysis/README_KO.md`, `published_analysis_manifest.json`에 있다.
+근본 원인 분석을 추가했다. 실제 비활성 로그의 초기 추론 지연·속도 기준 차이와 합성 지연의 권한 반응을 구분하고, 이력·공개조건 하나로 급감속 실패를 설명할 수 없다는 반례를 보존했다. r9까지 소스 63개와 패치 8개의 개수를 유지했고, r7에서는 오프라인 재생기의 오류 전파 수정으로 replay.py와 patch01의 지문을 갱신했다. r9까지 주행 제어 코드는 r4 이후 그대로였고, r10은 재현된 감속 요청 전달 손실을 수정했다. 새 분석 범위와 지문 변환은 `analysis/README_KO.md`, `published_analysis_manifest.json`에 있다.
 
 ## 파일을 별도 검증 공간에 준비하기
 
 Linux, Git, SHA256 도구와 Python 3.12.3 이상·3.13 미만이 필요합니다. 기존 `/data/openpilot`에 쓰지 않습니다. 아래 명령은 고정 버전 clone, 패치 적용 검사, 변경 파일 해시 검사, CPU·Python·기존 소스 비교와 격리된 가상환경 다운로드만 실행합니다.
 
 ```sh
-git clone --branch lab-20261013-r9 --depth 1 https://github.com/Mlnege/rav4-ars510-validation.git rav4-ars510-validation
+git clone --branch lab-20261013-r10 --depth 1 https://github.com/Mlnege/rav4-ars510-validation.git rav4-ars510-validation
 cd rav4-ars510-validation
-bash tools/remote_download.sh --destination /data/rav4-validation-lab --install-deps
+bash tools/remote_download.sh --destination /data/rav4-validation-lab-r10 --install-deps
 ```
 
 `--python /경로/python3.12`로 실행 파일을 선택할 수 있습니다. 대상 폴더가 비어 있지 않으면 중단합니다. 기존 설치가 `/data/openpilot` 이외에 있으면 `--installed-openpilot /기존/설치`도 지정합니다. 기본 차량 설치 경로는 이 옵션과 관계없이 보호합니다.
@@ -34,7 +34,7 @@ bash tools/remote_download.sh --destination /data/rav4-validation-lab --install-
 준비된 공간의 `work/carrotpilot`에서 수신 검사를 실행할 수 있습니다. 로그와 기록 당시 전체 cereal 스키마는 사용자가 별도 보관한 자료를 지정합니다. 원본 주행 로그·차량 식별자·좌표·계정 정보는 이 배포에 포함하지 않았습니다.
 
 ```sh
-cd /data/rav4-validation-lab/work/carrotpilot
+cd /data/rav4-validation-lab-r10/work/carrotpilot
 ../offline-venv/bin/python -m pytest -c tools/ars510_offline/pytest.ini opendbc_repo/opendbc/car/toyota/tests/test_ars510_offline.py tools/ars510_offline/test_legacy_regression.py
 ../offline-venv/bin/python -m tools.ars510_offline.replay /보관/rlog폴더 --schemas /보관/기록당시전체스키마 --output /별도/재생결과
 ```
@@ -45,7 +45,7 @@ native MPC와 안전 C 검사의 재현은 `validation/native/VALIDATION_KO.md`,
 
 ## 자료와 범위
 
-- `patches/`: 기능별 수정 8개, manifest 순서로 적용
+- `patches/`: 기능별 수정 9개, manifest 순서로 적용
 - `reports/`: 실제 CAN 분석·Vision Only 원인·PCM 모드0·전방/코너/당근 구현 가능성
 - `results/`: 실제 실행한 검사 결과와 가상 주행 CSV·그림
 - `validation/`: 입출력을 격리한 실제 계산 코드 검증 도구
@@ -60,3 +60,6 @@ ARS510 원형 소스·DBC는 MIT 라이선스와 저작권 표시를 유지했�
 r8에는 실제 CAN의 비활성 호스트·MPC 연결, 정확한 CAN 묶음과 시간 가정, 기록 Panda 모드 전환 및 수신/송신 통지 분류 검증을 추가했습니다. `reports/연결과_초기화_검증갱신_r8.md`에 완료 범위와 최초 실패·정정을 정리했습니다. 소스 63개·패치 8개·manifest는 r7과 바이트가 같습니다. 직접 롱컨 설정은 원본 CP 5개 중 True3/False2였으며, 실제 활성화는 모두 꺼져 있었습니다. 검사 수치가 실차 제어 성공이나 PCS·회생 보증을 뜻하지 않습니다.
 
 r9에서는 정확한 CAN 묶음과 원본 CP·기록 Panda 정책을 같은 비활성 호스트/MPC/CAN 경로에 연결했습니다. 실제 발행 P는 미관측이고 새 헤더는 선언한 재생 시각 가정입니다. `reports/통합검증_갱신_r9.md`에서 송신 기대값을 정의한 3,191개와 미정 21,135개의 범위를 확인하세요. 코드 소스·패치·manifest는 r8.1과 그대로이며 새 장치 빌드나 실차 배포는 없습니다.
+
+
+r10은 오류 해제 대기 중 감속 목표를 다시 크루즈 속도로 덮던 결함을 정확 RAV4 2022 직접 종방향에 한정해 수정했습니다. 기존 01~08 패치는 바이트 그대로이며 09를 추가했습니다. 소스64개·패치9개·실차배포False입니다. `reports/레이더_소실_감속요청_수정검증.md`에서 최초 실패, 60고유 계획/300반복틱, 수정 후 남은 양수CAN과 최초 파일경로 준비 실패를 확인하세요. 기본False의 새 MPC 인자를 실제 수정 Python/동결 native 사본으로 검증했으며 새 C 빌드나 실차 제동 검증으로 표현하지 않습니다.

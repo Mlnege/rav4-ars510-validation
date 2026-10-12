@@ -1,0 +1,442 @@
+{
+  "generated_utc": "2026-10-12T16:05:41.099169+00:00",
+  "kind": "source_read_and_fingerprint_only",
+  "new_dynamic_tests": 0,
+  "vehicle_or_socket_execution": false,
+  "r9_source_files": 63,
+  "source_mismatches": [],
+  "source_checks": [
+    {
+      "path": "docs/ars510_offline_20261012.md",
+      "sha256_lf": "9b540c75395280e9be02f63c6c1685bfc983ea90d7f2d2e903d118bf6010497a",
+      "matches_r9": true
+    },
+    {
+      "path": "docs/rav4_pcm_mode0_20261012.md",
+      "sha256_lf": "a7d32041cbfe8e1a05effef317d5389d80d3e6d4a0d722f1f15f1392a71beb4f",
+      "matches_r9": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/ars510/LICENSE",
+      "sha256_lf": "56b07f3b4fd5f231ee865512b6345985d83f61cff58da92dcdedfe665b903a0e",
+      "matches_r9": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/ars510/__init__.py",
+      "sha256_lf": "2b90c995ed9915b3bb83a399524387d3863f4f7db23c6a2c2daeb3be23f8a62c",
+      "matches_r9": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/ars510/constants.py",
+      "sha256_lf": "4c130c12107d895b361663716e7eeea2729458cc0dce4c20284f4f1b575df63a",
+      "matches_r9": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/ars510/interface.py",
+      "sha256_lf": "fb04d359df44df0bea7c49ed8a8caa93de15d6efa8c1351b786e6fdc465cb6be",
+      "matches_r9": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/ars510/objects.py",
+      "sha256_lf": "026ee8ddd038430f4b3e8a4987fd8d94622746b236ea20d24e368988500e0973",
+      "matches_r9": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/ars510/record.py",
+      "sha256_lf": "6f893898eda96d442b70c3b248b943f1c56adc255c0d4768c4c0efdf4945c19b",
+      "matches_r9": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/ars510/shell85.py",
+      "sha256_lf": "726af1543211830e1eda3d609b4962cdc07d54ea3022a6c46a1b5280520137b5",
+      "matches_r9": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/ars510/support.py",
+      "sha256_lf": "8c0a1677612d0c18da272f08f3ec5a61af00f6cf1a13343335ef5311ed59153d",
+      "matches_r9": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/ars510/tracks.py",
+      "sha256_lf": "0c59bd460d9191a030e65b6267d3ed98cc14f0b0e3ac04ea006a6d21da5e4561",
+      "matches_r9": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/ars510/transport.py",
+      "sha256_lf": "33dd639634a956759a06f36b3c3d826df8e9af3d9985e014ad129a452430704d",
+      "matches_r9": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/ars510_offline.py",
+      "sha256_lf": "8b471914b92466fb9589c298b976fe377eea18e7c111e81f89258cab45d12a50",
+      "matches_r9": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/carcontroller.py",
+      "sha256_lf": "074bc65aabcc13471a907e6bfd9421972c8061c9c3ff17e694dc3f168d2dec29",
+      "matches_r9": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/tests/test_ars510_offline.py",
+      "sha256_lf": "f8b96f52f415bccf619ada99afcbda0744910a7804660f075f9c9c5be2e3e621",
+      "matches_r9": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/tests/test_stopping_command.py",
+      "sha256_lf": "103639fdde17dfd3af4578837b1978ce27fb776ef3ba3938b027a5119637a2a0",
+      "matches_r9": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/safety/safety.h",
+      "sha256_lf": "26d93aedb6d26dc6071c9d85564ab29100e0bf7265a0e72af543d033ae9d4169",
+      "matches_r9": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/safety/safety/safety_honda.h",
+      "sha256_lf": "49980b50de36e42537ebfaf7156e8d2000ac89d91a65167655af117b142ecf93",
+      "matches_r9": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/safety/safety/safety_hyundai.h",
+      "sha256_lf": "062a2a16f13a84c2c0a7122e10a0091ddab1fd71b7d2716f90cf7a9e2c1671b1",
+      "matches_r9": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/safety/safety/safety_hyundai_canfd.h",
+      "sha256_lf": "c404148637d0b8a152d2cfce2b67fda4c417daacef47c5ea666abdaff89deabf",
+      "matches_r9": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/safety/tests/common.py",
+      "sha256_lf": "116b4d6dd06d1a86860bca0ed67f6826f788892dc65f365981f6858abbf022a9",
+      "matches_r9": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/safety/tests/libsafety/libsafety_py.py",
+      "sha256_lf": "c4f10fe54c03052d28473a42c54de80768ec7a3d55e82b0c0c207e6b72e16aa2",
+      "matches_r9": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/safety/tests/test_tesla.py",
+      "sha256_lf": "33e3b203de70ea05fc3502720313fe07856e020a9a51d7fd47888ce9568c27d4",
+      "matches_r9": true
+    },
+    {
+      "path": "opendbc_repo/opendbc/safety/tests/test_volkswagen_pq.py",
+      "sha256_lf": "4b06fd8ac907607f51df8f0a366c8f93734f570a2054836ff9725ccc9abf2b12",
+      "matches_r9": true
+    },
+    {
+      "path": "openpilot/selfdrive/car/cruise.py",
+      "sha256_lf": "7130a2a597689730e31ac7cb99f62632f33b04230610dd7a0367e8740b9263f9",
+      "matches_r9": true
+    },
+    {
+      "path": "openpilot/selfdrive/car/tests/test_toyota_pcm_mode0.py",
+      "sha256_lf": "596df03b1643403595d8b4b43eeb49207524531fcdd0106180931cf9a622a1bb",
+      "matches_r9": true
+    },
+    {
+      "path": "openpilot/selfdrive/car/toyota_pcm_speed.py",
+      "sha256_lf": "af70ee4f1c5bb2eb9dfde021c70491af6d1d13a644afe2fbad66ca6871fb2683",
+      "matches_r9": true
+    },
+    {
+      "path": "openpilot/selfdrive/carrot/radar/radard_dpath.py",
+      "sha256_lf": "74022911b373935db739622535ca7808c7eb5a61ac44fa3abda33e7a17cc3401",
+      "matches_r9": true
+    },
+    {
+      "path": "openpilot/selfdrive/carrot/radar_motion/controller.py",
+      "sha256_lf": "c9583f7b31adb844009a7db6d15dd5511740d9cc442b855ce63f778ba4d5fee5",
+      "matches_r9": true
+    },
+    {
+      "path": "openpilot/selfdrive/carrot/signal_stop_prepare.py",
+      "sha256_lf": "5334c66535e22c434ea98321c076a2a9035d8a9bc5034dd0c385dc0ecf199d02",
+      "matches_r9": true
+    },
+    {
+      "path": "openpilot/selfdrive/carrot/signal_stop_prepare_runtime.py",
+      "sha256_lf": "5ede16e0d25311c9ac6a47284591567a9c9eb80e02a433bc68c8a374f6fdf11e",
+      "matches_r9": true
+    },
+    {
+      "path": "openpilot/selfdrive/carrot/tests/test_signal_start_guard.py",
+      "sha256_lf": "f5a54da372f6bea6f611bcd8b157313adbed1f90cbc38bff44bff3b863d5e965",
+      "matches_r9": true
+    },
+    {
+      "path": "openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py",
+      "sha256_lf": "7f647b9a63762b9c808bddf418aae6dbbd55d15af6aa9cf0939606e05f9e50c1",
+      "matches_r9": true
+    },
+    {
+      "path": "openpilot/selfdrive/controls/lib/longitudinal_planner.py",
+      "sha256_lf": "781b78157fe272e4cdcb79c985602695fa14ccbddd38a9e8544a614b8ab2e8b0",
+      "matches_r9": true
+    },
+    {
+      "path": "openpilot/selfdrive/modeld/signal_tracking_shadow.py",
+      "sha256_lf": "2d54cb0385c1c0a288fbb73376d0fbb56e65796fa9c020d89d702fd2382e9331",
+      "matches_r9": true
+    },
+    {
+      "path": "openpilot/selfdrive/modeld/tests/test_signal_tracking_shadow.py",
+      "sha256_lf": "9df3ce190211d915334200f86c01109dfbd0ce26efcfbb10091d89160adb8a3e",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_offline/LICENSE.ars510",
+      "sha256_lf": "56b07f3b4fd5f231ee865512b6345985d83f61cff58da92dcdedfe665b903a0e",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_offline/__init__.py",
+      "sha256_lf": "a177f08cb7ef19824f95e5b4a9383e8f59c6d43b428e4e07cde34c09fd262a35",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_offline/bootstrap.py",
+      "sha256_lf": "57af6f78706e62cecc9b4ab5a0d4b055b1d3398c23f261c983b162f9c633c8a6",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_offline/control_context.py",
+      "sha256_lf": "661ba4ceef4586a2624b1d4ad2fbc46cb64a479cf2a6b7c9771cf4f0ce5f48a5",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_offline/dbc/ars510_objects_vbus.dbc",
+      "sha256_lf": "d34249fb011323e31cddfbb4936b9d430252bfffd9225a46fb59cb6eaa3bd1fc",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_offline/dbc/ars510_radar_bus.dbc",
+      "sha256_lf": "c63db6c7f40453660951825429dcdebe50206fcab6a729bc775dab6bde217fdf",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_offline/dbc/toyota_tss2_ars510.dbc",
+      "sha256_lf": "0e53f66115d1a5acca842141b3334278bb4265c1271481257006107885cf40f6",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_offline/diagnose.py",
+      "sha256_lf": "8a8864948ef4db7574ceb4ea286f72e4872004bd3ebbba8b806f403a0b89b312",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_offline/fixtures/public_id80_record.csv",
+      "sha256_lf": "dbbbaebcab2a6c972b2ae74dc3a197ca3f6890109f69605f7417cd23f803215c",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_offline/pytest.ini",
+      "sha256_lf": "e426e9d19abc292755ba0193e87e40a93f26b61e87db8e131fe90288610e9aa7",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_offline/replay.py",
+      "sha256_lf": "c5d91ef5c12dd3ca537d0de65e1b338fe25fcac31478e7059e299fb41cb9f1a6",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_offline/requirements.txt",
+      "sha256_lf": "293b2efcb98c0b3f1721000f2f33bb931869eb0c26e75279b42f8aef13e5107c",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_offline/test_legacy_regression.py",
+      "sha256_lf": "1adac712e8ccb6d6d217ff2b148db81ceafce170dc24ab98f0819da38fd7270e",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_validation/native/test_acc_witness_encoding.py",
+      "sha256_lf": "d3cb81258c570efff59a9c47167bde444f903c0bf2991835a1dd362cf211a8b3",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_validation/native/test_actuator_bounds.py",
+      "sha256_lf": "70354cf5e521982a79e7a221f05c332dba951f38ddeee9ebec07ce9e485a736d",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_validation/native/test_near_front_retention.py",
+      "sha256_lf": "3e824584e8d915859e833086ddd19e8d3a053115b6694d7d63347e05fff26bdc",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_validation/regen_probe.py",
+      "sha256_lf": "7903dd63eaeb4b5658910a934ae84c92648f9b790c65d28c1fc83ebe96afd202",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_validation/signal/camera_audit.py",
+      "sha256_lf": "d6fa0227988d984ad58ed1a873321493b201e7bce857c82c0f827febdbf2ff03",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_validation/signal/core.py",
+      "sha256_lf": "2244f41f2af5eb0ee9773d455b23cb74c7ebb3b90857f35765c78d0e38b2f1f5",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_validation/signal/native_signal.py",
+      "sha256_lf": "794eabd81940d04835036bdc37ba900d51981e6f5685f18af1ba18c3630d0ac3",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_validation/signal/native_signal_can.py",
+      "sha256_lf": "bc227394d7a7d83fa21a0e8eccba72246e907f34b2dccd91970dcda079badd5b",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_validation/signal/native_signal_can_paced.py",
+      "sha256_lf": "e98ffc3937c6c4e0ae4bff824a3e4539fe3f3b013724c64ec76048b9c8758851",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_validation/signal/realtime_signal.py",
+      "sha256_lf": "c810544cdf9291a14f5a06f173042c2eba4c23f501776225e3db9ae9c547b1f0",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_validation/signal/summarize_can_comparison.py",
+      "sha256_lf": "aed5d50f25900a9134f1ad63cbf90bb26e8f05a80cfeeacbc751fd4d8b7e687a",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_validation/signal/summarize_trace.py",
+      "sha256_lf": "2f808828f39c5ab0065dd82736aa9f2d38729f4f15824c5ea775ec75843cff7f",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_validation/signal/test_camera_profiles.py",
+      "sha256_lf": "fc32f0323a443d2eb5316d9df3d3440dcc2aab8c37062dc4d0fd09a925cdce4c",
+      "matches_r9": true
+    },
+    {
+      "path": "tools/ars510_validation/signal/test_native_signal.py",
+      "sha256_lf": "035b65ac995f84cf0a0900a3ea56846411d3862a652b7cc919ba1e27d9c62f97",
+      "matches_r9": true
+    }
+  ],
+  "excerpts": {
+    "openpilot/selfdrive/carrot/radar/radarcan.py": {
+      "sha256_raw": "3f2da75508194aa86179056574fa87fb0259c7aa65c45fd318b26325ef1c500b",
+      "ranges": [
+        {
+          "first_line": 41,
+          "last_line": 53,
+          "text": "\n  def publish_error(reason, now_ns):\n    nonlocal needs_reset, last_error_publish_ns\n    if not needs_reset:\n      cloudlog.error(f'radarcan input invalid: {reason}')\n    needs_reset = True\n    if now_ns - last_error_publish_ns >= 50_000_000:\n      msg = messaging.new_message('liveTracks')\n      msg.valid = False\n      msg.liveTracks.errors.canError = True\n      msg.liveTracks.radarTrackFlipped = radar_track_flip\n      pm.send('liveTracks', msg)\n      last_error_publish_ns = now_ns"
+        },
+        {
+          "first_line": 87,
+          "last_line": 101,
+          "text": "      result = radar.update_carrot(ego.v_ego, ego.a_ego, ego.receive_ns * 1e-9, packets)\n      processed += 1\n      if now() - ego.receive_ns > MAX_INPUT_AGE_NS:\n        publish_error('processingTimeout', now())\n        continue\n      if result is not None:\n        msg = messaging.new_message('liveTracks')\n        msg.valid = not any(result.errors.to_dict().values())\n        msg.liveTracks = result\n        # Assignment copies the result: decoder points/filter history stay raw.\n        set_radar_track_flip(msg.liveTracks, radar_track_flip)\n        pm.send('liveTracks', msg)\n    now_ns = now()\n    if now_ns - min(last_input_ns, last_can_input_ns) > MAX_INPUT_AGE_NS:\n      publish_error('inputTimeout', now_ns)"
+        }
+      ]
+    },
+    "openpilot/selfdrive/carrot/radar/radard_dpath.py": {
+      "sha256_raw": "f3f3506398dd9bd939b96c83ab21409d8daf3f326fccabb6adf79fb1948d7be2",
+      "ranges": [
+        {
+          "first_line": 90,
+          "last_line": 120,
+          "text": "    params = Params()\n    enable_radar_tracks = effective_radar_track_mode(\n      CP.brand,\n      CP.radarUnavailable,\n      params.get_int(\"EnableRadarTracks\"),\n    )\n    self.controller = DPathRadarController(\n      prefer_corner_radar=corner_radar_enabled(\n        CP,\n        params.get_int(\"EnableCornerRadar\"),\n      ),\n      enable_radar_tracks=enable_radar_tracks,\n      cut_in_sensitivity=PRODUCTION_CUT_IN_SENSITIVITY,\n      front_radar_measurement_delay_s=front_radar_distance_delay_s(CP),\n      production_live_tracks=True,\n      # 현재 미지원 RAV4는 radarUnavailable 그대로이므로 이 정책도 켜지지 않는다.\n      retain_confirmed_near_front=(CP.brand == 'toyota' and CP.carFingerprint == 'TOYOTA_RAV4_TSS2_2022'\n                                   and CP.openpilotLongitudinalControl and not CP.radarUnavailable),\n    )\n    self.radar_state = log.RadarState.new_message()\n    self.radar_state_valid = False\n\n  def update(self, sm: messaging.SubMaster, rr: car.RadarData) -> None:\n    self.radar_state_valid = sm.all_checks()\n    # Reuse the builder like conventional radard. Reallocating every 20 Hz\n    # frame is measurable on device and does not change any published field.\n    self.radar_state.mdMonoTime = sm.logMonoTime[\"modelV2\"]\n    self.radar_state.carStateMonoTime = sm.logMonoTime[\"carState\"]\n    self.radar_state.radarErrors = rr.errors\n\n    model_time_s = _model_measurement_time_s(sm)"
+        },
+        {
+          "first_line": 145,
+          "last_line": 151,
+          "text": "    self.radar_state.leadsRight2 = output.leads_right2\n\n  def publish(self, pm: messaging.PubMaster) -> None:\n    radar_msg = messaging.new_message(\"radarState\")\n    radar_msg.valid = self.radar_state_valid\n    radar_msg.radarState = self.radar_state\n    pm.send(\"radarState\", radar_msg)"
+        },
+        {
+          "first_line": 164,
+          "last_line": 171,
+          "text": "  sm = messaging.SubMaster(\n    [\"modelV2\", \"carState\", \"liveTracks\", \"livePose\"],\n    poll=\"modelV2\",\n    ignore_alive=[\"livePose\"],\n    ignore_valid=[\"livePose\"],\n  )\n  pm = messaging.PubMaster([\"radarState\"])\n  radar = DPathRadarD(CP)"
+        }
+      ]
+    },
+    "openpilot/selfdrive/selfdrived/selfdrived.py": {
+      "sha256_raw": "800640fea14be35cfbba710e800028e097ffc27d9cb3742361426e8354117728",
+      "ranges": [
+        {
+          "first_line": 424,
+          "last_line": 468,
+          "text": "    big_model_settling = self._big_model_settling()\n    pose = self.sm['livePose']\n    radar_errors = self.sm['radarState'].radarErrors\n    model_inputs_ready = (self.sm.all_checks(['modelV2', 'radarState', 'livePose', 'liveCalibration',\n                                             'liveParameters', 'longitudinalPlan', 'driverAssistance']) and\n                          pose.inputsOK and pose.sensorsOK and pose.posenetOK)\n    if self.enabled or model_inputs_ready:\n      self.model_startup_complete = True\n    startup_fault = (radar_errors.canError or radar_errors.radarFault or radar_errors.wrongConfig or\n                     radar_errors.radarUnavailableTemporary or\n                     (self.sm.seen['livePose'] and (not pose.sensorsOK or not pose.posenetOK)))\n    model_starting = big_model_settling and not self.model_startup_complete and not startup_fault\n    if model_starting and not model_inputs_ready:\n      # The first model output precedes readiness of its downstream services.\n      # Keep engagement blocked while they settle, without calling this a radar fault.\n      self.events.add(EventName.selfdriveInitializing)\n    if not self.sm.valid['radarState']:\n      if self.sm['radarState'].radarErrors.canError:\n        self.events.add(EventName.canError)\n      elif self.sm['radarState'].radarErrors.radarUnavailableTemporary:\n        self.events.add(EventName.radarTempUnavailable)\n      elif self.sm['radarState'].radarErrors.radarFault or self.sm['radarState'].radarErrors.wrongConfig:\n        self.events.add(EventName.radarFault)\n      elif model_starting:\n        if EventName.selfdriveInitializing not in self.events.names:\n          self.events.add(EventName.selfdriveInitializing)\n      else:\n        # Aggregate input validity is independent of decoded radar hardware errors.\n        self.events.add(EventName.commIssue)\n    if not self.sm.valid['pandaStates']:\n      self.events.add(EventName.usbError)\n    if CS.canTimeout:\n      self.events.add(EventName.canBusMissing)\n    elif not CS.canValid:\n      self.events.add(EventName.canError)\n\n    # generic catch-all. ideally, a more specific event should be added above instead\n    has_disable_events = self.events.contains(ET.NO_ENTRY) and (self.events.contains(ET.SOFT_DISABLE) or self.events.contains(ET.IMMEDIATE_DISABLE))\n    no_system_errors = (not has_disable_events) or (len(self.events) == num_events)\n    if not self.sm.all_checks() and no_system_errors and not model_starting:\n      if not self.sm.all_alive():\n        self.events.add(EventName.commIssue)\n      elif not self.sm.all_freq_ok():\n        self.events.add(EventName.commIssueAvgFreq)\n      else:"
+        }
+      ]
+    },
+    "openpilot/selfdrive/selfdrived/events.py": {
+      "sha256_raw": "e2a8655d9d243a8d8a02d18d7176ea6b87beb534a6106f16d462d2d008decf4e",
+      "ranges": [
+        {
+          "first_line": 920,
+          "last_line": 927,
+          "text": "  EventName.commIssue: {\n    ET.SOFT_DISABLE: soft_disable_alert(\"Communication Issue Between Processes\"),\n    ET.NO_ENTRY: comm_issue_alert,\n  },\n  EventName.commIssueAvgFreq: {\n    ET.SOFT_DISABLE: soft_disable_alert(\"Low Communication Rate Between Processes\"),\n    ET.NO_ENTRY: NoEntryAlert(\"Low Communication Rate Between Processes\"),\n  },"
+        },
+        {
+          "first_line": 940,
+          "last_line": 948,
+          "text": "  EventName.radarFault: {\n    ET.SOFT_DISABLE: soft_disable_alert(\"Radar Error: Restart the Car\"),\n    ET.NO_ENTRY: NoEntryAlert(\"Radar Error: Restart the Car\"),\n  },\n\n  EventName.radarTempUnavailable: {\n    ET.SOFT_DISABLE: soft_disable_alert(\"Radar Temporarily Unavailable\"),\n    ET.NO_ENTRY: NoEntryAlert(\"Radar Temporarily Unavailable\"),\n  },"
+        },
+        {
+          "first_line": 1010,
+          "last_line": 1022,
+          "text": "  EventName.canError: {\n    ET.PERMANENT: car_parser_result,\n    ET.IMMEDIATE_DISABLE: ImmediateDisableAlert(\"Unknown Vehicle Variant\"),\n    #ET.PERMANENT: Alert(\n    # \"Unknown Vehicle Variant\",\n    #  \"\",\n    #  AlertStatus.normal, AlertSize.small,\n    #  Priority.LOW, VisualAlert.none, AudibleAlert.none, 1., creation_delay=1.),\n    ET.NO_ENTRY: NoEntryAlert(\"Unknown Vehicle Variant\"),\n  },\n\n  EventName.canBusMissing: {\n    ET.PERMANENT: car_parser_result,"
+        }
+      ]
+    },
+    "openpilot/selfdrive/selfdrived/state.py": {
+      "sha256_raw": "f36d2065624c75643d7352e93a29aa6f75f0d684dbb26467e31d75eaaa36503c",
+      "ranges": [
+        {
+          "first_line": 1,
+          "last_line": 113,
+          "text": "from openpilot.cereal import log\nfrom openpilot.selfdrive.selfdrived.events import Events, ET\nfrom openpilot.common.realtime import DT_CTRL\n\nState = log.SelfdriveState.OpenpilotState\n\nSOFT_DISABLE_TIME = 3  # seconds\nACTIVE_STATES = (State.enabled, State.softDisabling, State.overriding)\nENABLED_STATES = (State.preEnabled, *ACTIVE_STATES)\n\nclass StateMachine:\n  def __init__(self):\n    self.current_alert_types = [ET.PERMANENT]\n    self.state = State.disabled\n    self.soft_disable_timer = 0\n\n  def update(self, events: Events):\n    # decrement the soft disable timer at every step, as it's reset on\n    # entrance in SOFT_DISABLING state\n    self.soft_disable_timer = max(0, self.soft_disable_timer - 1)\n\n    self.current_alert_types = [ET.PERMANENT]\n\n    # ENABLED, SOFT DISABLING, PRE ENABLING, OVERRIDING\n    if self.state != State.disabled:\n      # user and immediate disable always have priority in a non-disabled state\n      if events.contains(ET.USER_DISABLE):\n        print(\"####ET.USER_DISABLE\", events.events)\n        self.state = State.disabled\n        self.current_alert_types.append(ET.USER_DISABLE)\n\n      elif events.contains(ET.IMMEDIATE_DISABLE):\n        print(\"####ET.IMMEDIATE_DISABLE\", events.events)\n        self.state = State.disabled\n        self.current_alert_types.append(ET.IMMEDIATE_DISABLE)\n\n      else:\n        # ENABLED\n        if self.state == State.enabled:\n          if events.contains(ET.SOFT_DISABLE):\n            print(\"#######State.enabled => softDisabling\", events.events)\n            self.state = State.softDisabling\n            self.soft_disable_timer = int(SOFT_DISABLE_TIME / DT_CTRL)\n            self.current_alert_types.append(ET.SOFT_DISABLE)\n\n          elif events.contains(ET.OVERRIDE_LATERAL) or events.contains(ET.OVERRIDE_LONGITUDINAL):\n            print(\"#######State.enabled => overriding\")\n            self.state = State.overriding\n            self.current_alert_types += [ET.OVERRIDE_LATERAL, ET.OVERRIDE_LONGITUDINAL]\n\n        # SOFT DISABLING\n        elif self.state == State.softDisabling:\n          if not events.contains(ET.SOFT_DISABLE):\n            print(\"#######State.softDisabling => enabled\", events.events)\n            # no more soft disabling condition, so go back to ENABLED\n            self.state = State.enabled\n\n          elif self.soft_disable_timer > 0:\n            #print(\"#######State.softDisabling => timeout => disable\")\n            self.current_alert_types.append(ET.SOFT_DISABLE)\n\n          elif self.soft_disable_timer <= 0:\n            print(\"#######State.softDisabling => disabled\")\n            self.state = State.disabled\n\n        # PRE ENABLING\n        elif self.state == State.preEnabled:\n          if not events.contains(ET.PRE_ENABLE):\n            print(\"#######State.preEnabled => enabled\", events.events)\n            self.state = State.enabled\n          else:\n            self.current_alert_types.append(ET.PRE_ENABLE)\n\n        # OVERRIDING\n        elif self.state == State.overriding:\n          if events.contains(ET.SOFT_DISABLE):\n            print(\"#######State.overriding => softDisabling\", events.events)\n            self.state = State.softDisabling\n            self.soft_disable_timer = int(SOFT_DISABLE_TIME / DT_CTRL)\n            self.current_alert_types.append(ET.SOFT_DISABLE)\n          elif not (events.contains(ET.OVERRIDE_LATERAL) or events.contains(ET.OVERRIDE_LONGITUDINAL)):\n            print(\"#######State.overriding => enabled\")\n            self.state = State.enabled\n          else:\n            self.current_alert_types += [ET.OVERRIDE_LATERAL, ET.OVERRIDE_LONGITUDINAL]\n\n    # DISABLED\n    elif self.state == State.disabled:\n      if events.contains(ET.ENABLE):\n        print(\"####ET.ENABLE event....\", events.events)\n        if events.contains(ET.NO_ENTRY):\n          print(\"######## noEntry\", events.events)\n          self.current_alert_types.append(ET.NO_ENTRY)\n\n        else:\n          if events.contains(ET.PRE_ENABLE):\n            print(\"#######State.disabled => preEnabled\", events.events)\n            self.state = State.preEnabled\n          elif events.contains(ET.OVERRIDE_LATERAL) or events.contains(ET.OVERRIDE_LONGITUDINAL):\n            print(\"#######State.disabled => overriding\")\n            self.state = State.overriding\n          else:\n            print(\"#######State.disabled => enabled\")\n            self.state = State.enabled\n          self.current_alert_types.append(ET.ENABLE)\n\n    # Check if openpilot is engaged and actuators are enabled\n    enabled = self.state in ENABLED_STATES\n    active = self.state in ACTIVE_STATES\n    if active:\n      self.current_alert_types.append(ET.WARNING)\n    return enabled, active\n"
+        }
+      ]
+    },
+    "openpilot/selfdrive/controls/controlsd.py": {
+      "sha256_raw": "695609a1088d70b9a0cb07f8a68bf6fdd5a2a88b078c0d4d39a29cdbdd8f92cc",
+      "ranges": [
+        {
+          "first_line": 155,
+          "last_line": 168,
+          "text": "                                           CS.steerFaultTemporary, CS.steerFaultPermanent, below_min_speed,\n                                           CS.standstill, steer_at_standstill)\n    CC.latActive = self.carrot_controls.lat_suspend_control(CS, CC.latActive)\n    # Wait only for the first readiness confirmation, including AlwaysLateral.\n    CC.latActive = CC.latActive and lateral_ready\n    CC.longActive = CC.enabled and not any(e.overrideLongitudinal for e in self.sm['onroadEvents']) and self.CP.openpilotLongitudinalControl\n\n    # AlwaysLateral must also stop while manager drains workers for this reboot.\n    if self.params.get_bool(\"ImpactDashcamReboot\"):\n      CC.enabled = CC.latActive = CC.longActive = False\n\n    actuators = CC.actuators\n\n    # Enable blinkers while lane changing"
+        },
+        {
+          "first_line": 430,
+          "last_line": 439,
+          "text": "    cs.lateralPlanMonoTime = self.sm.logMonoTime['modelV2']\n    cs.desiredCurvature = self.desired_curvature\n    cs.longControlState = self.LoC.long_control_state\n    cs.upAccelCmd = float(self.LoC.pid.p)\n    cs.uiAccelCmd = float(self.LoC.pid.i)\n    cs.ufAccelCmd = float(self.LoC.pid.f)\n    cs.forceDecel = bool((not self.sm['driverMonitoringState'].dm2Disabled and\n                          self.sm['driverMonitoringState'].alertLevel == log.DriverMonitoringState.AlertLevel.three) or\n                         (self.sm['selfdriveState'].state == State.softDisabling))\n"
+        }
+      ]
+    },
+    "openpilot/selfdrive/controls/lib/longitudinal_planner.py": {
+      "sha256_raw": "01ead57b64c3bde5ae56bebefb015986e877014cc0d63885e77833e08f9b886f",
+      "ranges": [
+        {
+          "first_line": 159,
+          "last_line": 169,
+          "text": "\n    v_cruise_initialized = sm['carState'].vCruise != V_CRUISE_UNSET\n\n    long_control_off = sm['controlsState'].longControlState == LongCtrlState.off\n    force_slow_decel = sm['controlsState'].forceDecel\n\n    # Reset current state when not engaged, or user is controlling the speed\n    reset_state = long_control_off if self.CP.openpilotLongitudinalControl else not sm['selfdriveState'].enabled\n    # PCM cruise speed may be updated a few cycles later, check if initialized\n    reset_state = reset_state or not v_cruise_initialized or carrot.soft_hold_active\n"
+        },
+        {
+          "first_line": 222,
+          "last_line": 231,
+          "text": "      accel_limits_turns[1] = min(accel_limits_turns[1], clipped_accel_coast_interp)\n\n    if force_slow_decel:\n      v_cruise = 0.0\n    cutin_predecel_limit = (\n      get_cutin_predecel_accel_limit(sm['radarState'])\n      if not reset_state and not sm['carState'].gasPressed\n      else None\n    )\n    # clip limits, cannot init MPC outside of bounds"
+        }
+      ]
+    }
+  },
+  "review_notes_ko": [
+    "정상 빈 트랙과 오류 표시는 서로 다른 입력 계약이다.",
+    "radarcan은 오류가 있으면 liveTracks Event.valid=False로 발행한다.",
+    "DPath는 liveTracks의 valid 및 수신 건강 판정을 포함한 SubMaster.all_checks를 radarState.valid로 전달한다.",
+    "SelfdriveD는 invalid radarState의 오류 종류를 분기하며 CP.radarUnavailable로 이를 무시하지 않는다.",
+    "canError는 즉시 해제, radarFault/temporaryUnavailable/commIssue는 명목 3초 soft-disable 경로다.",
+    "softDisabling의 제어 활성 상태와 Controls.forceDecel의 감속 요청을 함께 봐야 한다.",
+    "LongitudinalPlanner는 forceDecel이면 내부 크루즈 목표를 0으로 설정한다. 물리 급제동 보장은 아니다.",
+    "원형 정상 producer에서 오류True/validTrue는 계약 불일치다. 별도 합성 시험을 실차 결함으로 해석하지 않는다."
+  ]
+}

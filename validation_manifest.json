@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "generated_utc": "2026-10-12T13:06:59.415519+00:00",
+  "generated_utc": "2026-10-12T16:37:04.653663+00:00",
   "carrot_source_repository": "https://github.com/ajouatom/openpilot",
   "carrot_source_branch": "carrot-wip",
   "carrot_source_commit": "0e4ee1bdbef3ad7284b136fddf31592e3f8a785f",
@@ -138,11 +138,11 @@
     },
     {
       "path": "openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py",
-      "sha256_lf": "7f647b9a63762b9c808bddf418aae6dbbd55d15af6aa9cf0939606e05f9e50c1"
+      "sha256_lf": "8d493b65acc3f5a4273bb436009d9ab99fdc573063e5f0581d23c45147b33b00"
     },
     {
       "path": "openpilot/selfdrive/controls/lib/longitudinal_planner.py",
-      "sha256_lf": "781b78157fe272e4cdcb79c985602695fa14ccbddd38a9e8544a614b8ab2e8b0"
+      "sha256_lf": "63ac8ab4d0b00284808f6100d812795e9b7eae0de90c230e9ce97dde33f58617"
     },
     {
       "path": "openpilot/selfdrive/modeld/signal_tracking_shadow.py",
@@ -213,6 +213,10 @@
       "sha256_lf": "70354cf5e521982a79e7a221f05c332dba951f38ddeee9ebec07ce9e485a736d"
     },
     {
+      "path": "tools/ars510_validation/native/test_force_decel.py",
+      "sha256_lf": "ff438aebffb4b445900c54ca25a05947b3f28c94a7c40e2b8a263dba90cd8650"
+    },
+    {
       "path": "tools/ars510_validation/native/test_near_front_retention.py",
       "sha256_lf": "3e824584e8d915859e833086ddd19e8d3a053115b6694d7d63347e05fff26bdc"
     },
@@ -280,7 +284,8 @@
     "05_safety_authority.patch",
     "06_camera_profile.patch",
     "07_validation_tools.patch",
-    "08_stopping_command.patch"
+    "08_stopping_command.patch",
+    "09_force_decel.patch"
   ],
-  "latest_source_change": "offline replay RadarData.errors→RadarState.radarErrors 전파·집계; 주행/권한/실차경로 변경 없음"
+  "latest_source_change": "정확 RAV4 2022 직접 종방향의 forceDecel 목표가 MPC에서 덮이지 않게 전달; 실차 활성화·CP·권한·PCS 변경 없음"
 }

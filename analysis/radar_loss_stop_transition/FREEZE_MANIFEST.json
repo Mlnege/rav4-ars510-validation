@@ -1,0 +1,31 @@
+{
+  "동결시각_UTC": "2026-10-12T16:13:27.078207+00:00",
+  "검사": "AST·JSON 구조·표의 근거 행·32개 읽기 원본 지문·한국어 문서 형식 확인",
+  "새_계산_실행": false,
+  "files": {
+    "collect_evidence.py": {
+      "sha256": "401547bcff7551ebb8d8298c4961e435bf579e763c141b4de6053ecccf5a9734",
+      "bytes": 9533
+    },
+    "REPORT_KO.md": {
+      "sha256": "a492c467eb84a7e938c663e8f841f679b855afda1793eb57c84f4273c83ba6dc",
+      "bytes": 21566
+    },
+    "PREPARATION_NOTES_KO.md": {
+      "sha256": "b8856aaa030a332ee82c2953f66af7f7967684ab267992b3e3e9e3a6689e7073",
+      "bytes": 1916
+    },
+    "frozen_read03/evidence.json": {
+      "sha256": "b7e3c4cbf04b5edd4b66e77b50b35b941f11df8bad4a5636bd7aa8fbe70e5b45",
+      "bytes": 22037
+    },
+    "frozen_read03/fingerprints.json": {
+      "sha256": "28e4b5e89656af9a829766b6b0dd5debf8931050bb2d9c75301ec9635ac60daf",
+      "bytes": 6833
+    },
+    "frozen_read03/current_source_excerpt.json": {
+      "sha256": "034269a2f1b61248ca3abb79a79e26d9ac90cd5bc7874ce10690d8be95194c89",
+      "bytes": 63704
+    }
+  }
+}

@@ -1,0 +1,96 @@
+diff --git a/openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py b/openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py
+--- a/openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py
++++ b/openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py
+@@ -420,7 +420,8 @@
+              lead_gap_enabled=False,
+              lead_track_frames=(0, 0),
+              measured_a_ego=0.0,
+-             cutout_relief_enabled=False):
++             cutout_relief_enabled=False,
++             force_slow_decel=False):
+     v_ego = self.x0[1]
+     a_ego = self.x0[2]
+     self.status = radarstate.leadOne.status or radarstate.leadTwo.status
+@@ -442,6 +443,10 @@
+       stop_x = 1000.0
+     else:
+       v_cruise, stop_x, mode = carrot.v_cruise, carrot.stop_dist, carrot.mode
++
++    if force_slow_decel:
++      # 호스트 감속 요청은 당근 목표 속도를 읽은 뒤에도 유지한다.
++      v_cruise = 0.0
+ 
+     # To estimate a safe distance from a moving lead, we calculate how much stopping
+     # distance that lead needs as a minimum. We can add that to the current distance
+diff --git a/openpilot/selfdrive/controls/lib/longitudinal_planner.py b/openpilot/selfdrive/controls/lib/longitudinal_planner.py
+--- a/openpilot/selfdrive/controls/lib/longitudinal_planner.py
++++ b/openpilot/selfdrive/controls/lib/longitudinal_planner.py
+@@ -266,6 +266,8 @@
+       ),
+       lead_track_frames=lead_track_frames,
+       measured_a_ego=sm['carState'].aEgo,
++      # 검증 범위는 정확한 RAV4 2022의 직접 종방향 제어로 제한한다.
++      force_slow_decel=force_slow_decel and self.actuator_accel_limits is not None,
+     )
+ 
+     self.v_desired_trajectory = np.interp(CONTROL_N_T_IDX, T_IDXS_MPC, self.mpc.v_solution)
+diff --git a/tools/ars510_validation/native/test_force_decel.py b/tools/ars510_validation/native/test_force_decel.py
+new file mode 100644
+--- /dev/null
++++ b/tools/ars510_validation/native/test_force_decel.py
+@@ -0,0 +1,55 @@
++"""실제 MPC의 감속 요청 전달과 타차 경로를 검사한다. 실차 제어 시험은 아니다."""
++from pathlib import Path
++import sys
++
++import numpy as np
++import pytest
++
++REPO_ROOT = Path(__file__).resolve().parents[3]
++sys.path.insert(0, str(REPO_ROOT.parent / "native_sim"))
++import closed_loop
++from closed_loop import NativeClosedLoopPlant, Scenario
++from opendbc.car import gen_empty_fingerprint
++from opendbc.car.toyota.interface import CarInterface
++from opendbc.car.toyota.values import CAR
++from openpilot.selfdrive.controls.lib.longcontrol import LongCtrlState
++
++
++def planner_series(platform, direct, force_decel):
++  params = CarInterface.get_params(platform, gen_empty_fingerprint(), [], direct, False, False)
++  plant = NativeClosedLoopPlant(Scenario(name="force_decel_contract", initial_speed=15.0,
++                                       cruise_speed=75.0 / 3.6, lead=False), CP=params)
++  targets = []
++  solutions = []
++  for index in range(40):
++    now = index * .05
++    closed_loop.VIRTUAL_NOW = 100.0 + now
++    plant._messages(now)
++    # 부분 계획 시험의 활성 상태 입력이며 전체 호스트/Panda 권한을 만들지 않는다.
++    plant.sm["controlsState"].longControlState = LongCtrlState.pid
++    plant.sm["controlsState"].forceDecel = force_decel and index >= 20
++    plant.planner.update(plant.sm, plant.carrot)
++    assert plant.planner.mpc.solution_status == 0
++    targets.append(plant.planner.output_a_target)
++    solutions.append(plant.planner.mpc.a_solution.copy())
++  return np.asarray(targets), np.asarray(solutions)
++
++
++def test_rav4_2022_host_deceleration_request_reaches_native_plan():
++  normal, _ = planner_series(CAR.TOYOTA_RAV4_TSS2_2022, True, False)
++  requested, _ = planner_series(CAR.TOYOTA_RAV4_TSS2_2022, True, True)
++  np.testing.assert_array_equal(normal[:20], requested[:20])
++  assert np.all(normal[20:] > 0.0)
++  assert np.any(requested[21:] < -0.1)
++  assert requested[-1] < 0.0
++
++
++@pytest.mark.parametrize("platform,direct", [
++  (CAR.TOYOTA_RAV4_TSS2_2022, False), (CAR.TOYOTA_RAV4_TSS2_2023, True),
++  (CAR.TOYOTA_RAV4_TSS2, True), (CAR.TOYOTA_CHR_TSS2, True),
++])
++def test_other_vehicle_or_stock_long_retains_existing_native_plan(platform, direct):
++  normal_target, normal_solution = planner_series(platform, direct, False)
++  force_target, force_solution = planner_series(platform, direct, True)
++  np.testing.assert_array_equal(normal_target, force_target)
++  np.testing.assert_array_equal(normal_solution, force_solution)

@@ -1,0 +1,54 @@
+{
+  "loaded_python_file": "work/native_sim/build_force_decel_frozen/long_mpc.py",
+  "loaded_planner_file": "work/carrotpilot/openpilot/selfdrive/controls/lib/longitudinal_planner.py",
+  "loaded_cython_file": "c_generated_code/acados_ocp_solver_pyx.cpython-312-x86_64-linux-gnu.so",
+  "runtime_hashes_before": {
+    "long_mpc.py": "2fa824f243a7438150adedcfebc3d3cf03bccb3447d368f54ee89824fb0c8f5e",
+    "acados_ocp_solver_pyx.cpython-312-x86_64-linux-gnu.so": "2533733258b4f2ceec5ce79a023b1c2992266a7d2a9637fd8f689e58a9ee2efb",
+    "libacados.so": "b5496cea328d9a239b1c1cb69b1327753e54eeebe331ef29ca91b97a85544228",
+    "libacados_ocp_solver_long.so": "2cf19053e5712920719b54ba8f970fcfd178ffe4acd5c77e3170a423b030eb71",
+    "libblasfeo.so": "4804a491b10ca1065010c84d1e7fb9cc005acd2cfed504f0655ba94bd77ac01b",
+    "libhpipm.so": "1eac1f3673d6f99876104f86ef8b80f884f860ce77ba9ff135af5b2e355616c6",
+    "libqpOASES_e.so.3.1": "48444b891f694cb720146a2ce2a83a42086d8a911064e5b14df5f6d08486f47b"
+  },
+  "runtime_hashes_after": {
+    "long_mpc.py": "2fa824f243a7438150adedcfebc3d3cf03bccb3447d368f54ee89824fb0c8f5e",
+    "acados_ocp_solver_pyx.cpython-312-x86_64-linux-gnu.so": "2533733258b4f2ceec5ce79a023b1c2992266a7d2a9637fd8f689e58a9ee2efb",
+    "libacados.so": "b5496cea328d9a239b1c1cb69b1327753e54eeebe331ef29ca91b97a85544228",
+    "libacados_ocp_solver_long.so": "2cf19053e5712920719b54ba8f970fcfd178ffe4acd5c77e3170a423b030eb71",
+    "libblasfeo.so": "4804a491b10ca1065010c84d1e7fb9cc005acd2cfed504f0655ba94bd77ac01b",
+    "libhpipm.so": "1eac1f3673d6f99876104f86ef8b80f884f860ce77ba9ff135af5b2e355616c6",
+    "libqpOASES_e.so.3.1": "48444b891f694cb720146a2ce2a83a42086d8a911064e5b14df5f6d08486f47b"
+  },
+  "runtime_files_unchanged": true,
+  "new_native_build": false,
+  "force_decel_behavior_checks": [
+    {
+      "kind": "temporary",
+      "deceleration_observed": true,
+      "disable_timing_preserved": true
+    },
+    {
+      "kind": "radar_fault",
+      "deceleration_observed": true,
+      "disable_timing_preserved": true
+    },
+    {
+      "kind": "wrong_config",
+      "deceleration_observed": true,
+      "disable_timing_preserved": true
+    },
+    {
+      "kind": "invalid_without_error",
+      "deceleration_observed": true,
+      "disable_timing_preserved": true
+    },
+    {
+      "kind": "producer_stopped",
+      "deceleration_observed": true,
+      "disable_timing_preserved": true
+    }
+  ],
+  "actual_vehicle_tx": false,
+  "scope_ko": "실제 수정 Python·기존 native 바이너리 사본의 메모리 호스트 검사. 가상 시간과 고정 ego 입력이며 실차 안전성은 미검증."
+}
