@@ -1706,8 +1706,8 @@
   {
     "path": "analysis/radar_loss_authority_root/native_force_regression.xml",
     "original_sha256": "6bb4563b2850d020c317383d862b82d83bd246a94aa83f986ec4c7da3d655af1",
-    "published_sha256": "bc0e748606d04dc4b587c568823d7b90f05116b007d4ad30e39c4a7657ca3d41",
-    "transform": "개인 경로 제거·LF·모의 행 자료 gzip; 공개 XML hostname을 offline으로 정규화"
+    "published_sha256": "6a7ffb5cc56b581f61aeb247c40436baec531dac81f5de734a1deb4ee94a019a",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip; 공개 XML hostname을 offline으로 정규화; XML 줄끝 LF 정규화"
   },
   {
     "path": "analysis/radar_loss_authority_root/native_force_setup_failure.json",
@@ -1820,8 +1820,8 @@
   {
     "path": "analysis/radar_loss_authority_root/signal_force_regression.xml",
     "original_sha256": "fd0bf93764fc6304736e810da5ceca541eb4c4468fd8696ed15ab713f66e0da5",
-    "published_sha256": "0230db669d0035ecaae76622aba5c2198fa7e44de237e1bdff6f0121b119a447",
-    "transform": "개인 경로 제거·LF·모의 행 자료 gzip; 공개 XML hostname을 offline으로 정규화"
+    "published_sha256": "d28102ac6ae6ffcb1ef29a5040d6bc680d8abacf8a88121ce4daf726819c875d",
+    "transform": "개인 경로 제거·LF·모의 행 자료 gzip; 공개 XML hostname을 offline으로 정규화; XML 줄끝 LF 정규화"
   },
   {
     "path": "analysis/radar_loss_authority_root/tx_transition/generated_can_rows.json.gz",

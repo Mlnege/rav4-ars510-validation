@@ -20,9 +20,9 @@
 Linux, Git, SHA256 도구와 Python 3.12.3 이상·3.13 미만이 필요합니다. 기존 `/data/openpilot`에 쓰지 않습니다. 아래 명령은 고정 버전 clone, 패치 적용 검사, 변경 파일 해시 검사, CPU·Python·기존 소스 비교와 격리된 가상환경 다운로드만 실행합니다.
 
 ```sh
-git clone --branch lab-20261013-r10 --depth 1 https://github.com/Mlnege/rav4-ars510-validation.git rav4-ars510-validation
-cd rav4-ars510-validation
-bash tools/remote_download.sh --destination /data/rav4-validation-lab-r10 --install-deps
+git clone --branch lab-20261013-r10.1 --depth 1 https://github.com/Mlnege/rav4-ars510-validation.git rav4-ars510-validation-r10-1
+cd rav4-ars510-validation-r10-1
+bash tools/remote_download.sh --destination /data/rav4-validation-lab-r10-1 --install-deps
 ```
 
 `--python /경로/python3.12`로 실행 파일을 선택할 수 있습니다. 대상 폴더가 비어 있지 않으면 중단합니다. 기존 설치가 `/data/openpilot` 이외에 있으면 `--installed-openpilot /기존/설치`도 지정합니다. 기본 차량 설치 경로는 이 옵션과 관계없이 보호합니다.
@@ -34,7 +34,7 @@ bash tools/remote_download.sh --destination /data/rav4-validation-lab-r10 --inst
 준비된 공간의 `work/carrotpilot`에서 수신 검사를 실행할 수 있습니다. 로그와 기록 당시 전체 cereal 스키마는 사용자가 별도 보관한 자료를 지정합니다. 원본 주행 로그·차량 식별자·좌표·계정 정보는 이 배포에 포함하지 않았습니다.
 
 ```sh
-cd /data/rav4-validation-lab-r10/work/carrotpilot
+cd /data/rav4-validation-lab-r10-1/work/carrotpilot
 ../offline-venv/bin/python -m pytest -c tools/ars510_offline/pytest.ini opendbc_repo/opendbc/car/toyota/tests/test_ars510_offline.py tools/ars510_offline/test_legacy_regression.py
 ../offline-venv/bin/python -m tools.ars510_offline.replay /보관/rlog폴더 --schemas /보관/기록당시전체스키마 --output /별도/재생결과
 ```
@@ -63,3 +63,6 @@ r9에서는 정확한 CAN 묶음과 원본 CP·기록 Panda 정책을 같은 비
 
 
 r10은 오류 해제 대기 중 감속 목표를 다시 크루즈 속도로 덮던 결함을 정확 RAV4 2022 직접 종방향에 한정해 수정했습니다. 기존 01~08 패치는 바이트 그대로이며 09를 추가했습니다. 소스64개·패치9개·실차배포False입니다. `reports/레이더_소실_감속요청_수정검증.md`에서 최초 실패, 60고유 계획/300반복틱, 수정 후 남은 양수CAN과 최초 파일경로 준비 실패를 확인하세요. 기본False의 새 MPC 인자를 실제 수정 Python/동결 native 사본으로 검증했으며 새 C 빌드나 실차 제동 검증으로 표현하지 않습니다.
+
+
+r10.1은 공개 XML7개의 줄끝만 LF로 정규화한 형식 정정입니다. 코드64개·패치9개·검사 결과는 r10과 같습니다. r10태그는 보존하며 새 명령은 r10.1을 사용합니다.
