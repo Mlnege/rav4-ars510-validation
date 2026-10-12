@@ -13,6 +13,7 @@ from pathlib import Path
 
 from closed_loop import NativeClosedLoopPlant, Scenario
 from offline_io import BUILD_ROOT, REPO_ROOT
+from opendbc.can import native
 from opendbc.car.toyota.ars510.objects import decode_native_slot
 from opendbc.car.toyota.ars510.record import occupied_slots
 from openpilot.selfdrive.controls.lib.longitudinal_mpc_lib.long_mpc import T_IDXS
@@ -199,6 +200,9 @@ def main():
     print(json.dumps({k: result[k] for k in ('name', 'first_contact_time_s', 'first_contact_gap_m', 'final_speed_mps')}, ensure_ascii=False), flush=True)
   metadata = {
     "native_build": str(BUILD_ROOT),
+    "CAN_raw_backend": native.BACKEND,
+    "MPC_backend": 'acados_C_Cython',
+    "Safety_backend": 'not_invoked_in_this_observer',
     "source_sha256": {str(path.relative_to(REPO_ROOT)): hashlib.sha256(path.read_bytes()).hexdigest() for path in (
       REPO_ROOT/'opendbc_repo/opendbc/car/toyota/ars510/interface.py',
       REPO_ROOT/'openpilot/selfdrive/carrot/radar_motion/controller.py',

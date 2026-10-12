@@ -4,6 +4,8 @@
 
 실제 CarrotPlanner → LongitudinalPlanner → acados MPC → LongControl → Toyota CarController → 실제 CANParser를 연결해 **메모리 안에서** 검증했다. ARS 경로는 합성 패킷 → 원형 ARS 조립/CRC/fused → 실제 RadarInterfaceBase/MyTrack → Cap’n Proto liveTracks 직렬화 → 실제 DPathRadarController → 위 종방향 경로다. 계산기·제어기를 가짜 함수로 바꾸지 않았다. 차량·Panda·운영 Params·실제 CAN 송신에 접근하지 않았다.
 
+명칭 정정: 현재 Linux에서 `opendbc.can.native.BACKEND=python`, raw_values=None를 직접 확인했다. CANParser/CANPacker는 프로젝트 원형의 지원되는 Python fallback이며 CAN Cython 컴파일을 확인한 것은 아니다. MPC는 실제 acados C/Cython이다. 별도 Safety C 검증과도 범위를 구분한다. 이전'CAN native parser'표현은이문서에서정정하며 CAN native 빌드·장치CPU 성능을입증했다고보고하지않는다.
+
 ## 바뀐 계산과 원형 보존 범위
 
 원형 공통 MPC는 최대 제동 명령을 −4.0m/s²로 계산하지만 Toyota 공개 인터페이스와 CarController는 −3.5m/s²~+2.0m/s² 명령만 허용한다. 같은 가상 차량에서 MPC 목표가 −4.0이어도 실제 생성된 ACC_CONTROL 명령은 −3.5에 묶이는 불일치를 재현했다.
@@ -33,7 +35,7 @@
 
 원형 fused는0x80 객체목록 외에0x235/0x237의 순정 ACC 선택 대상 관측을 함께 사용한다. 이를 빠뜨린 합성 입력에서는 속도·거리 필터가 급제동을 늦게 반영한다. 같은 실제 DPath/종방향 계산에서 정확한 센서 가정 입력은 정지했지만 ACC 관측 없는 ARS 합성 입력은 접촉했다.
 
-`witness_bridge.py`는 기존 `ars510_radar_bus.dbc`와 vendor `support.py`의 확정 필드만 합성한다. 거리0.025m, 상대속도0.125m/s, 상대가속도0.125m/s², STATE/PRESENT를 기존 decoder와 실제 native CANParser로 함께 검증했다. **CHECK_BYTE는 실물 검증 알고리즘을 확인하지 않아0 placeholder다. ECU가 받아들일 유효 프레임이나 실차 호환 증거로 부르지 않는다.** 실제 차량 송신 횟수는0이다.
+`witness_bridge.py`는 기존 `ars510_radar_bus.dbc`와 vendor `support.py`의 확정 필드만 합성한다. 거리0.025m, 상대속도0.125m/s, 상대가속도0.125m/s², STATE/PRESENT를 기존 decoder와 원형 CANParser(Python backend)로 함께 검증했다. **CHECK_BYTE는 실물 검증 알고리즘을 확인하지 않아0 placeholder다. ECU가 받아들일 유효 프레임이나 실차 호환 증거로 부르지 않는다.** 실제 차량 송신 횟수는0이다.
 
 다음은 최신 Python 소스·고정 native 빌드의20초 가상 주행 결과다. 차량 반응 가정은 명령 지연0.10초+1차 응답 시정수0.15초다. 카메라·앞차·경로는 합성 입력이다.
 

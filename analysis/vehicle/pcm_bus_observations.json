@@ -1,0 +1,160 @@
+[
+  {
+    "anonymous_log": "log_1",
+    "frame_category_counts": {
+      "bus0:PCM_CRUISE:received": 1096,
+      "bus0:PCM_CRUISE:accepted": 1096,
+      "bus2:PCM_CRUISE:received": 204,
+      "bus2:PCM_CRUISE:accepted": 204,
+      "bus0:PCM_CRUISE_2:received": 1096,
+      "bus0:PCM_CRUISE_2:accepted": 1096,
+      "bus2:PCM_CRUISE_2:received": 204,
+      "bus2:PCM_CRUISE_2:accepted": 204
+    },
+    "signal_category_counts": {
+      "bus0:PCM_CRUISE:CRUISE_ACTIVE:False": 1096,
+      "bus2:PCM_CRUISE:CRUISE_ACTIVE:False": 204,
+      "bus0:PCM_CRUISE_2:MAIN_ON:False": 1096,
+      "bus2:PCM_CRUISE_2:MAIN_ON:False": 204
+    },
+    "same_time_carState_category_counts": {
+      "bus0:PCM_CRUISE:match": 3362,
+      "bus0:PCM_CRUISE_2:match": 3362,
+      "bus1:PCM_CRUISE:no_valid_observation": 3362,
+      "bus1:PCM_CRUISE_2:no_valid_observation": 3362,
+      "bus2:PCM_CRUISE:match": 538,
+      "bus2:PCM_CRUISE_2:match": 538,
+      "bus2:PCM_CRUISE:older_than_100ms": 2824,
+      "bus2:PCM_CRUISE_2:older_than_100ms": 2824
+    },
+    "relative_freshness_counts": {
+      "bus0:PCM_CRUISE:0_to_20ms": 2143,
+      "bus0:PCM_CRUISE_2:0_to_20ms": 2141,
+      "bus2:PCM_CRUISE:0_to_20ms": 336,
+      "bus2:PCM_CRUISE_2:0_to_20ms": 336,
+      "bus0:PCM_CRUISE:20_to_50ms": 1219,
+      "bus2:PCM_CRUISE:20_to_50ms": 197,
+      "bus0:PCM_CRUISE_2:20_to_50ms": 1221,
+      "bus2:PCM_CRUISE_2:20_to_50ms": 197,
+      "bus2:PCM_CRUISE:50_to_100ms": 5,
+      "bus2:PCM_CRUISE_2:50_to_100ms": 5,
+      "bus2:PCM_CRUISE:100_to_500ms": 40,
+      "bus2:PCM_CRUISE_2:100_to_500ms": 40,
+      "bus2:PCM_CRUISE:over_500ms": 2784,
+      "bus2:PCM_CRUISE_2:over_500ms": 2784
+    },
+    "fresh_comparison_limit_ms": 100.0,
+    "real_vehicle_tx_count": 0,
+    "interpretation": "유효 원본만 비교한다. 100ms는 진단용 경계이며 실제 제어 조건을 바꾸지 않는다",
+    "CAN_raw_backend": "python"
+  },
+  {
+    "anonymous_log": "log_2",
+    "frame_category_counts": {
+      "bus0:PCM_CRUISE_2:received": 1942,
+      "bus0:PCM_CRUISE_2:accepted": 1942,
+      "bus0:PCM_CRUISE:received": 1941,
+      "bus0:PCM_CRUISE:accepted": 1941,
+      "bus2:PCM_CRUISE:received": 236,
+      "bus2:PCM_CRUISE:accepted": 236,
+      "bus2:PCM_CRUISE_2:received": 236,
+      "bus2:PCM_CRUISE_2:accepted": 236
+    },
+    "signal_category_counts": {
+      "bus0:PCM_CRUISE_2:MAIN_ON:False": 1942,
+      "bus0:PCM_CRUISE:CRUISE_ACTIVE:False": 1941,
+      "bus2:PCM_CRUISE:CRUISE_ACTIVE:False": 236,
+      "bus2:PCM_CRUISE_2:MAIN_ON:False": 236
+    },
+    "same_time_carState_category_counts": {
+      "bus0:PCM_CRUISE:match": 6022,
+      "bus0:PCM_CRUISE_2:match": 6022,
+      "bus1:PCM_CRUISE:no_valid_observation": 6022,
+      "bus1:PCM_CRUISE_2:no_valid_observation": 6022,
+      "bus2:PCM_CRUISE:match": 615,
+      "bus2:PCM_CRUISE_2:match": 615,
+      "bus2:PCM_CRUISE:older_than_100ms": 5407,
+      "bus2:PCM_CRUISE_2:older_than_100ms": 5407
+    },
+    "relative_freshness_counts": {
+      "bus0:PCM_CRUISE:20_to_50ms": 2207,
+      "bus0:PCM_CRUISE_2:20_to_50ms": 2207,
+      "bus2:PCM_CRUISE:20_to_50ms": 226,
+      "bus2:PCM_CRUISE_2:20_to_50ms": 226,
+      "bus0:PCM_CRUISE:0_to_20ms": 3815,
+      "bus0:PCM_CRUISE_2:0_to_20ms": 3815,
+      "bus2:PCM_CRUISE:0_to_20ms": 384,
+      "bus2:PCM_CRUISE_2:0_to_20ms": 384,
+      "bus2:PCM_CRUISE:50_to_100ms": 5,
+      "bus2:PCM_CRUISE_2:50_to_100ms": 5,
+      "bus2:PCM_CRUISE:100_to_500ms": 40,
+      "bus2:PCM_CRUISE_2:100_to_500ms": 40,
+      "bus2:PCM_CRUISE:over_500ms": 5367,
+      "bus2:PCM_CRUISE_2:over_500ms": 5367
+    },
+    "fresh_comparison_limit_ms": 100.0,
+    "real_vehicle_tx_count": 0,
+    "interpretation": "유효 원본만 비교한다. 100ms는 진단용 경계이며 실제 제어 조건을 바꾸지 않는다",
+    "CAN_raw_backend": "python"
+  },
+  {
+    "anonymous_log": "log_3",
+    "frame_category_counts": {},
+    "signal_category_counts": {},
+    "same_time_carState_category_counts": {},
+    "relative_freshness_counts": {},
+    "fresh_comparison_limit_ms": 100.0,
+    "real_vehicle_tx_count": 0,
+    "interpretation": "유효 원본만 비교한다. 100ms는 진단용 경계이며 실제 제어 조건을 바꾸지 않는다",
+    "CAN_raw_backend": "python"
+  },
+  {
+    "anonymous_log": "log_4",
+    "frame_category_counts": {
+      "bus0:PCM_CRUISE:received": 1941,
+      "bus0:PCM_CRUISE:accepted": 1941,
+      "bus2:PCM_CRUISE:received": 213,
+      "bus2:PCM_CRUISE:accepted": 213,
+      "bus0:PCM_CRUISE_2:received": 1941,
+      "bus0:PCM_CRUISE_2:accepted": 1941,
+      "bus2:PCM_CRUISE_2:received": 213,
+      "bus2:PCM_CRUISE_2:accepted": 213
+    },
+    "signal_category_counts": {
+      "bus0:PCM_CRUISE:CRUISE_ACTIVE:False": 1941,
+      "bus2:PCM_CRUISE:CRUISE_ACTIVE:False": 213,
+      "bus0:PCM_CRUISE_2:MAIN_ON:False": 1941,
+      "bus2:PCM_CRUISE_2:MAIN_ON:False": 213
+    },
+    "same_time_carState_category_counts": {
+      "bus0:PCM_CRUISE:match": 6017,
+      "bus0:PCM_CRUISE_2:match": 6017,
+      "bus1:PCM_CRUISE:no_valid_observation": 6017,
+      "bus1:PCM_CRUISE_2:no_valid_observation": 6017,
+      "bus2:PCM_CRUISE:match": 541,
+      "bus2:PCM_CRUISE_2:match": 541,
+      "bus2:PCM_CRUISE:older_than_100ms": 5476,
+      "bus2:PCM_CRUISE_2:older_than_100ms": 5476
+    },
+    "relative_freshness_counts": {
+      "bus0:PCM_CRUISE:0_to_20ms": 3831,
+      "bus0:PCM_CRUISE_2:0_to_20ms": 3830,
+      "bus2:PCM_CRUISE:0_to_20ms": 336,
+      "bus2:PCM_CRUISE_2:0_to_20ms": 336,
+      "bus0:PCM_CRUISE:20_to_50ms": 2186,
+      "bus0:PCM_CRUISE_2:20_to_50ms": 2187,
+      "bus2:PCM_CRUISE:20_to_50ms": 200,
+      "bus2:PCM_CRUISE_2:20_to_50ms": 200,
+      "bus2:PCM_CRUISE:50_to_100ms": 5,
+      "bus2:PCM_CRUISE_2:50_to_100ms": 5,
+      "bus2:PCM_CRUISE:100_to_500ms": 40,
+      "bus2:PCM_CRUISE_2:100_to_500ms": 40,
+      "bus2:PCM_CRUISE:over_500ms": 5436,
+      "bus2:PCM_CRUISE_2:over_500ms": 5436
+    },
+    "fresh_comparison_limit_ms": 100.0,
+    "real_vehicle_tx_count": 0,
+    "interpretation": "유효 원본만 비교한다. 100ms는 진단용 경계이며 실제 제어 조건을 바꾸지 않는다",
+    "CAN_raw_backend": "python"
+  }
+]

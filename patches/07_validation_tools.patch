@@ -1,10 +1,10 @@
 diff --git a/tools/ars510_validation/native/test_acc_witness_encoding.py b/tools/ars510_validation/native/test_acc_witness_encoding.py
 new file mode 100644
-index 0000000..85166d4
+index 0000000..8c8b6cf
 --- /dev/null
 +++ b/tools/ars510_validation/native/test_acc_witness_encoding.py
 @@ -0,0 +1,43 @@
-+"""합성 ACC 필드를 원형 support와 실제 native CANParser DBC로 동시에 읽는다."""
++"""합성 ACC 필드를 원형 support와 원형 CANParser(Python backend)의 DBC로 함께 읽는다."""
 +from pathlib import Path
 +import sys
 +

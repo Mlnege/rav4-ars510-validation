@@ -1,0 +1,532 @@
+[
+  {
+    "anonymous_log": "log_1",
+    "event_counts": {
+      "initData": 1,
+      "can": 3507,
+      "carParams": 1,
+      "carState": 3362,
+      "selfdriveState": 3355,
+      "carControl": 3354
+    },
+    "carParams_variants": [
+      {
+        "known_toyota_model": true,
+        "model": "TOYOTA_RAV4_TSS2_2022",
+        "brand_is_toyota": true,
+        "flags": {
+          "HYBRID": false,
+          "RADAR_ACC": true,
+          "DISABLE_RADAR": true,
+          "TSS2": true,
+          "NO_DSU": true,
+          "NO_STOP_TIMER": true,
+          "SECOC": false,
+          "RAISED_ACCEL_LIMIT": true
+        },
+        "carFw_count": 0,
+        "ecu_type_counts": {},
+        "fingerprint_source": "fixed",
+        "fuzzy": false,
+        "pcmCruise": true,
+        "directLong": true,
+        "radarUnavailable": true,
+        "enableDsu": false,
+        "passive": false,
+        "longitudinalActuatorDelay": 0.15000000596046448,
+        "radarDelay": 0.0,
+        "transmission_type": "unknown",
+        "pt_dbc": "toyota_nodsu_pt_generated",
+        "radar_dbc_present": false,
+        "selected_gear_message_by_current_source": "GEAR_PACKET",
+        "count": 1
+      }
+    ],
+    "init_allowlisted_variants": [
+      {
+        "count": 1,
+        "settings": {
+          "AlphaLongitudinalEnabled": {
+            "valid_boolean": true,
+            "value": true
+          },
+          "CarParamsCache": {
+            "present": true
+          },
+          "CarParamsPersistent": {
+            "present": true
+          },
+          "CarSelected3": {
+            "recognized_selection": true,
+            "selected_model": "TOYOTA_RAV4_TSS2_2022",
+            "known_doc_mentions_hybrid": true
+          },
+          "CruiseButtonMode": {
+            "valid_number": true,
+            "value": 0.0
+          },
+          "DisengageOnAccelerator": {
+            "valid_boolean": true,
+            "value": false
+          },
+          "EnableRadarTracks": {
+            "valid_number": true,
+            "value": 1.0
+          },
+          "LongActuatorDelay": {
+            "valid_number": true,
+            "value": 20.0
+          },
+          "LongTuningKf": {
+            "valid_number": true,
+            "value": 100.0
+          },
+          "LongTuningKiV": {
+            "valid_number": true,
+            "value": 0.0
+          },
+          "LongTuningKpV": {
+            "valid_number": true,
+            "value": 100.0
+          },
+          "OpenpilotEnabledToggle": {
+            "valid_boolean": true,
+            "value": true
+          },
+          "SpeedFromPCM": {
+            "valid_number": true,
+            "value": 1.0
+          },
+          "StoppingAccel": {
+            "valid_number": true,
+            "value": -50.0
+          }
+        }
+      }
+    ],
+    "carState_category_counts": {
+      "gear:drive": 1295,
+      "canValid:True": 3362,
+      "brakePressed:False": 376,
+      "regenBraking:False": 3362,
+      "cruiseEnabled:False": 3362,
+      "cruiseAvailable:False": 3362,
+      "gasPressed:True": 4,
+      "accFaulted:False": 3362,
+      "speed:zero": 2346,
+      "aEgo:zero": 2346,
+      "brakePressed:True": 2986,
+      "gasPressed:False": 3358,
+      "gear:park": 2067,
+      "speed:nonzero": 1016,
+      "aEgo:positive": 575,
+      "aEgo:negative": 441,
+      "negative_aEgo_without_brakePressed": 12
+    },
+    "selected_CAN_counts": {
+      "VSC1S07": 730,
+      "BRAKE_MODULE": 1459,
+      "GEAR_PACKET": 35,
+      "GEAR_PACKET_HYBRID": 2124
+    },
+    "CAN_signal_category_counts": {
+      "GVC:zero": 434,
+      "XGVCINV:False": 729,
+      "BRAKE_PRESSED:True": 1303,
+      "GEAR_PACKET:GEAR_CODE_32": 23,
+      "GEAR_PACKET:GEAR_P": 23,
+      "GEAR_PACKET_HYBRID:GEAR_CODE_0": 1388,
+      "GEAR_PACKET_HYBRID:GEAR_P": 1388,
+      "XGVCINV:True": 1,
+      "GVC:positive": 192,
+      "GEAR_PACKET:GEAR_CODE_0": 12,
+      "GEAR_PACKET:GEAR_D": 12,
+      "GEAR_PACKET_HYBRID:GEAR_CODE_3": 735,
+      "GEAR_PACKET_HYBRID:GEAR_D": 735,
+      "BRAKE_PRESSED:False": 156,
+      "GVC:negative": 104
+    },
+    "control_category_counts": {
+      "selfdriveEnabled:False": 3355,
+      "selfdriveActive:False": 3355,
+      "state:off": 3354,
+      "longActive:False": 3354,
+      "accel:zero": 3354,
+      "enabled:False": 3354,
+      "latActive:False": 3354
+    },
+    "CAN_raw_backend": "python"
+  },
+  {
+    "anonymous_log": "log_2",
+    "event_counts": {
+      "initData": 1,
+      "can": 6166,
+      "carParams": 2,
+      "carState": 6022,
+      "selfdriveState": 6023,
+      "carControl": 5997
+    },
+    "carParams_variants": [
+      {
+        "known_toyota_model": true,
+        "model": "TOYOTA_RAV4_TSS2_2022",
+        "brand_is_toyota": true,
+        "flags": {
+          "HYBRID": false,
+          "RADAR_ACC": true,
+          "DISABLE_RADAR": false,
+          "TSS2": true,
+          "NO_DSU": true,
+          "NO_STOP_TIMER": true,
+          "SECOC": false,
+          "RAISED_ACCEL_LIMIT": true
+        },
+        "carFw_count": 0,
+        "ecu_type_counts": {},
+        "fingerprint_source": "fixed",
+        "fuzzy": false,
+        "pcmCruise": true,
+        "directLong": false,
+        "radarUnavailable": true,
+        "enableDsu": false,
+        "passive": false,
+        "longitudinalActuatorDelay": 0.15000000596046448,
+        "radarDelay": 0.0,
+        "transmission_type": "unknown",
+        "pt_dbc": "toyota_nodsu_pt_generated",
+        "radar_dbc_present": false,
+        "selected_gear_message_by_current_source": "GEAR_PACKET",
+        "count": 2
+      }
+    ],
+    "init_allowlisted_variants": [
+      {
+        "count": 1,
+        "settings": {
+          "AlphaLongitudinalEnabled": {
+            "valid_boolean": true,
+            "value": false
+          },
+          "CarParamsPersistent": {
+            "present": true
+          },
+          "CarSelected3": {
+            "recognized_selection": true,
+            "selected_model": "TOYOTA_RAV4_TSS2_2022",
+            "known_doc_mentions_hybrid": true
+          },
+          "CruiseButtonMode": {
+            "valid_number": true,
+            "value": 0.0
+          },
+          "DisengageOnAccelerator": {
+            "valid_boolean": true,
+            "value": false
+          },
+          "EnableRadarTracks": {
+            "valid_number": true,
+            "value": 0.0
+          },
+          "LongActuatorDelay": {
+            "valid_number": true,
+            "value": 20.0
+          },
+          "LongTuningKf": {
+            "valid_number": true,
+            "value": 100.0
+          },
+          "LongTuningKiV": {
+            "valid_number": true,
+            "value": 0.0
+          },
+          "LongTuningKpV": {
+            "valid_number": true,
+            "value": 100.0
+          },
+          "OpenpilotEnabledToggle": {
+            "valid_boolean": true,
+            "value": true
+          },
+          "SpeedFromPCM": {
+            "valid_number": true,
+            "value": 3.0
+          },
+          "StoppingAccel": {
+            "valid_number": true,
+            "value": -50.0
+          }
+        }
+      }
+    ],
+    "carState_category_counts": {
+      "gear:drive": 6022,
+      "canValid:True": 6022,
+      "brakePressed:False": 5410,
+      "regenBraking:False": 6022,
+      "cruiseEnabled:False": 6022,
+      "cruiseAvailable:False": 6022,
+      "gasPressed:True": 4046,
+      "accFaulted:False": 6022,
+      "speed:zero": 2,
+      "aEgo:zero": 4,
+      "speed:nonzero": 6020,
+      "aEgo:positive": 3300,
+      "aEgo:negative": 2718,
+      "negative_aEgo_without_brakePressed": 2106,
+      "gasPressed:False": 1976,
+      "brakePressed:True": 612
+    },
+    "selected_CAN_counts": {
+      "VSC1S07": 1284,
+      "GEAR_PACKET_HYBRID": 3761,
+      "BRAKE_MODULE": 2566,
+      "GEAR_PACKET": 60
+    },
+    "CAN_signal_category_counts": {
+      "GVC:positive": 688,
+      "XGVCINV:False": 1284,
+      "BRAKE_PRESSED:False": 2311,
+      "GEAR_PACKET_HYBRID:GEAR_CODE_3": 3761,
+      "GEAR_PACKET_HYBRID:GEAR_D": 3761,
+      "GEAR_PACKET:GEAR_CODE_0": 60,
+      "GEAR_PACKET:GEAR_D": 60,
+      "GVC:zero": 57,
+      "GVC:negative": 539,
+      "BRAKE_PRESSED:True": 255
+    },
+    "control_category_counts": {
+      "selfdriveEnabled:False": 6023,
+      "selfdriveActive:False": 6023,
+      "state:off": 5997,
+      "longActive:False": 5997,
+      "accel:zero": 5997,
+      "enabled:False": 5997,
+      "latActive:False": 5997
+    },
+    "CAN_raw_backend": "python"
+  },
+  {
+    "anonymous_log": "log_3",
+    "event_counts": {
+      "initData": 1
+    },
+    "carParams_variants": [],
+    "init_allowlisted_variants": [
+      {
+        "count": 1,
+        "settings": {
+          "AlphaLongitudinalEnabled": {
+            "valid_boolean": true,
+            "value": true
+          },
+          "CarParamsCache": {
+            "present": true
+          },
+          "CarParamsPersistent": {
+            "present": true
+          },
+          "CarSelected3": {
+            "recognized_selection": true,
+            "selected_model": "TOYOTA_RAV4_TSS2_2022",
+            "known_doc_mentions_hybrid": true
+          },
+          "CruiseButtonMode": {
+            "valid_number": true,
+            "value": 3.0
+          },
+          "DisengageOnAccelerator": {
+            "valid_boolean": true,
+            "value": false
+          },
+          "EnableRadarTracks": {
+            "valid_number": true,
+            "value": 3.0
+          },
+          "LongActuatorDelay": {
+            "valid_number": true,
+            "value": 20.0
+          },
+          "LongTuningKf": {
+            "valid_number": true,
+            "value": 100.0
+          },
+          "LongTuningKiV": {
+            "valid_number": true,
+            "value": 0.0
+          },
+          "LongTuningKpV": {
+            "valid_number": true,
+            "value": 100.0
+          },
+          "OpenpilotEnabledToggle": {
+            "valid_boolean": true,
+            "value": true
+          },
+          "SpeedFromPCM": {
+            "valid_number": true,
+            "value": 0.0
+          },
+          "StoppingAccel": {
+            "valid_number": true,
+            "value": -50.0
+          }
+        }
+      }
+    ],
+    "carState_category_counts": {},
+    "selected_CAN_counts": {},
+    "CAN_signal_category_counts": {},
+    "control_category_counts": {},
+    "CAN_raw_backend": "python"
+  },
+  {
+    "anonymous_log": "log_4",
+    "event_counts": {
+      "initData": 1,
+      "can": 6161,
+      "carParams": 2,
+      "carState": 6017,
+      "selfdriveState": 6020,
+      "carControl": 6007
+    },
+    "carParams_variants": [
+      {
+        "known_toyota_model": true,
+        "model": "TOYOTA_RAV4_TSS2_2022",
+        "brand_is_toyota": true,
+        "flags": {
+          "HYBRID": false,
+          "RADAR_ACC": true,
+          "DISABLE_RADAR": true,
+          "TSS2": true,
+          "NO_DSU": true,
+          "NO_STOP_TIMER": true,
+          "SECOC": false,
+          "RAISED_ACCEL_LIMIT": true
+        },
+        "carFw_count": 0,
+        "ecu_type_counts": {},
+        "fingerprint_source": "fixed",
+        "fuzzy": false,
+        "pcmCruise": true,
+        "directLong": true,
+        "radarUnavailable": true,
+        "enableDsu": false,
+        "passive": false,
+        "longitudinalActuatorDelay": 0.15000000596046448,
+        "radarDelay": 0.0,
+        "transmission_type": "unknown",
+        "pt_dbc": "toyota_nodsu_pt_generated",
+        "radar_dbc_present": false,
+        "selected_gear_message_by_current_source": "GEAR_PACKET",
+        "count": 2
+      }
+    ],
+    "init_allowlisted_variants": [
+      {
+        "count": 1,
+        "settings": {
+          "AlphaLongitudinalEnabled": {
+            "valid_boolean": true,
+            "value": true
+          },
+          "CarParamsCache": {
+            "present": true
+          },
+          "CarParamsPersistent": {
+            "present": true
+          },
+          "CarSelected3": {
+            "recognized_selection": true,
+            "selected_model": "TOYOTA_RAV4_TSS2_2022",
+            "known_doc_mentions_hybrid": true
+          },
+          "CruiseButtonMode": {
+            "valid_number": true,
+            "value": 3.0
+          },
+          "DisengageOnAccelerator": {
+            "valid_boolean": true,
+            "value": false
+          },
+          "EnableRadarTracks": {
+            "valid_number": true,
+            "value": 3.0
+          },
+          "LongActuatorDelay": {
+            "valid_number": true,
+            "value": 20.0
+          },
+          "LongTuningKf": {
+            "valid_number": true,
+            "value": 100.0
+          },
+          "LongTuningKiV": {
+            "valid_number": true,
+            "value": 0.0
+          },
+          "LongTuningKpV": {
+            "valid_number": true,
+            "value": 100.0
+          },
+          "OpenpilotEnabledToggle": {
+            "valid_boolean": true,
+            "value": true
+          },
+          "SpeedFromPCM": {
+            "valid_number": true,
+            "value": 0.0
+          },
+          "StoppingAccel": {
+            "valid_number": true,
+            "value": -50.0
+          }
+        }
+      }
+    ],
+    "carState_category_counts": {
+      "gear:drive": 41,
+      "canValid:True": 6017,
+      "brakePressed:False": 5022,
+      "regenBraking:False": 6017,
+      "cruiseEnabled:False": 6017,
+      "cruiseAvailable:False": 6017,
+      "gasPressed:True": 3,
+      "accFaulted:False": 6017,
+      "speed:zero": 6017,
+      "aEgo:zero": 6017,
+      "gasPressed:False": 6014,
+      "gear:park": 5976,
+      "brakePressed:True": 995
+    },
+    "selected_CAN_counts": {
+      "BRAKE_MODULE": 2568,
+      "GEAR_PACKET_HYBRID": 3761,
+      "VSC1S07": 1283,
+      "GEAR_PACKET": 60
+    },
+    "CAN_signal_category_counts": {
+      "BRAKE_PRESSED:False": 2152,
+      "GEAR_PACKET_HYBRID:GEAR_CODE_0": 3759,
+      "GEAR_PACKET_HYBRID:GEAR_P": 3759,
+      "GVC:zero": 1216,
+      "XGVCINV:False": 1283,
+      "GEAR_PACKET:GEAR_CODE_32": 60,
+      "GEAR_PACKET:GEAR_P": 60,
+      "GVC:positive": 47,
+      "GVC:negative": 20,
+      "BRAKE_PRESSED:True": 415
+    },
+    "control_category_counts": {
+      "selfdriveEnabled:False": 6020,
+      "selfdriveActive:False": 6020,
+      "state:off": 6007,
+      "longActive:False": 6007,
+      "accel:zero": 6007,
+      "enabled:False": 6007,
+      "latActive:False": 6007
+    },
+    "CAN_raw_backend": "python"
+  }
+]

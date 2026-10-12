@@ -1,0 +1,12 @@
+{
+  "can_receive_calls": 203,
+  "can_send_calls": 0,
+  "OBD_callback_calls": 1,
+  "fw_count": 0,
+  "fw_skip_argument": true,
+  "actual_fingerprint_completed": true,
+  "scope": "실제 get_car 선택·인자전달과 실제 fingerprint 실행; CP/CI 구성 전 종료",
+  "historical_route_cause_proven": false,
+  "CAN_raw_backend_in_environment": "python",
+  "CAN_raw_decode_executed": false
+}

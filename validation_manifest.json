@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "generated_utc": "2026-10-12T08:58:20.340857+00:00",
+  "generated_utc": "2026-10-12T09:27:05.063030+00:00",
   "carrot_source_repository": "https://github.com/ajouatom/openpilot",
   "carrot_source_branch": "carrot-wip",
   "carrot_source_commit": "0e4ee1bdbef3ad7284b136fddf31592e3f8a785f",
@@ -206,7 +206,7 @@
     },
     {
       "path": "tools/ars510_validation/native/test_acc_witness_encoding.py",
-      "sha256_lf": "499d40df97516e12b9eaf197d98c60f18ffefc9d29614cef6c34ab2260b5e153"
+      "sha256_lf": "d3cb81258c570efff59a9c47167bde444f903c0bf2991835a1dd362cf211a8b3"
     },
     {
       "path": "tools/ars510_validation/native/test_actuator_bounds.py",

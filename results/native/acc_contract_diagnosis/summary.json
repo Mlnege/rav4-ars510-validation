@@ -5,7 +5,10 @@
       "opendbc_repo/opendbc/car/toyota/ars510/interface.py": "5275348cebbc3605d0ae3b9ba482142605f8e0df031fafb7ce56f5c6cec3c05a",
       "openpilot/selfdrive/carrot/radar_motion/controller.py": "0a2efb2712991ce495f4bb4991cc9ab1352673e96318ff5302fc5bd0d17a34f5",
       "openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py": "b0a5c630260ad76b58033b8d44719992c4e008399b2c520e3692b556ce12e274"
-    }
+    },
+    "CAN_raw_backend": "python",
+    "MPC_backend": "acados_C_Cython",
+    "Safety_backend": "not_invoked_in_this_observer"
   },
   "cases": [
     {

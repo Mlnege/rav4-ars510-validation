@@ -1,0 +1,684 @@
+{
+  "recorded_utc": "2026-10-12T08:57:47.608820+00:00",
+  "observations": [
+    {
+      "kind": "source_age_vs_receive_age",
+      "source_age_s": 0.0,
+      "all_checks": true,
+      "alive": {
+        "modelV2": true,
+        "longitudinalPlan": true,
+        "carControl": true
+      },
+      "freq_ok": {
+        "modelV2": true,
+        "longitudinalPlan": true,
+        "carControl": true
+      },
+      "receive_age_s": 0.0,
+      "model_header_age_s": 0.0
+    },
+    {
+      "kind": "source_age_vs_receive_age",
+      "source_age_s": 0.3229,
+      "all_checks": true,
+      "alive": {
+        "modelV2": true,
+        "longitudinalPlan": true,
+        "carControl": true
+      },
+      "freq_ok": {
+        "modelV2": true,
+        "longitudinalPlan": true,
+        "carControl": true
+      },
+      "receive_age_s": 0.0,
+      "model_header_age_s": 0.32289999999999
+    },
+    {
+      "kind": "source_age_vs_receive_age",
+      "source_age_s": 1.0,
+      "all_checks": true,
+      "alive": {
+        "modelV2": true,
+        "longitudinalPlan": true,
+        "carControl": true
+      },
+      "freq_ok": {
+        "modelV2": true,
+        "longitudinalPlan": true,
+        "carControl": true
+      },
+      "receive_age_s": 0.0,
+      "model_header_age_s": 1.0
+    },
+    {
+      "kind": "missing_receive",
+      "service": "modelV2",
+      "gap_s": 0.099,
+      "alive": true,
+      "freq_ok": true,
+      "all_checks_service": true
+    },
+    {
+      "kind": "missing_receive",
+      "service": "modelV2",
+      "gap_s": 0.101,
+      "alive": true,
+      "freq_ok": true,
+      "all_checks_service": true
+    },
+    {
+      "kind": "missing_receive",
+      "service": "modelV2",
+      "gap_s": 0.3229,
+      "alive": true,
+      "freq_ok": true,
+      "all_checks_service": true
+    },
+    {
+      "kind": "missing_receive",
+      "service": "modelV2",
+      "gap_s": 0.499,
+      "alive": true,
+      "freq_ok": true,
+      "all_checks_service": true
+    },
+    {
+      "kind": "missing_receive",
+      "service": "modelV2",
+      "gap_s": 0.501,
+      "alive": false,
+      "freq_ok": true,
+      "all_checks_service": false
+    },
+    {
+      "kind": "missing_receive",
+      "service": "longitudinalPlan",
+      "gap_s": 0.099,
+      "alive": true,
+      "freq_ok": true,
+      "all_checks_service": true
+    },
+    {
+      "kind": "missing_receive",
+      "service": "longitudinalPlan",
+      "gap_s": 0.101,
+      "alive": true,
+      "freq_ok": true,
+      "all_checks_service": true
+    },
+    {
+      "kind": "missing_receive",
+      "service": "longitudinalPlan",
+      "gap_s": 0.3229,
+      "alive": true,
+      "freq_ok": true,
+      "all_checks_service": true
+    },
+    {
+      "kind": "missing_receive",
+      "service": "longitudinalPlan",
+      "gap_s": 0.499,
+      "alive": true,
+      "freq_ok": true,
+      "all_checks_service": true
+    },
+    {
+      "kind": "missing_receive",
+      "service": "longitudinalPlan",
+      "gap_s": 0.501,
+      "alive": false,
+      "freq_ok": true,
+      "all_checks_service": false
+    },
+    {
+      "kind": "missing_receive",
+      "service": "carControl",
+      "gap_s": 0.099,
+      "alive": true,
+      "freq_ok": true,
+      "all_checks_service": true
+    },
+    {
+      "kind": "missing_receive",
+      "service": "carControl",
+      "gap_s": 0.101,
+      "alive": false,
+      "freq_ok": true,
+      "all_checks_service": false
+    },
+    {
+      "kind": "missing_receive",
+      "service": "carControl",
+      "gap_s": 0.3229,
+      "alive": false,
+      "freq_ok": true,
+      "all_checks_service": false
+    },
+    {
+      "kind": "missing_receive",
+      "service": "carControl",
+      "gap_s": 0.499,
+      "alive": false,
+      "freq_ok": true,
+      "all_checks_service": false
+    },
+    {
+      "kind": "missing_receive",
+      "service": "carControl",
+      "gap_s": 0.501,
+      "alive": false,
+      "freq_ok": true,
+      "all_checks_service": false
+    },
+    {
+      "kind": "ratekeeper_single_stall",
+      "injected_gap_s": 0.3229,
+      "monitor_return_lagged": false,
+      "lagging_property": true,
+      "average_interval_s": 0.013129000000000134,
+      "remaining_s": -0.30289999999943973
+    },
+    {
+      "kind": "controls_frame_age",
+      "real_gap_fixture_s": 0.3229,
+      "frame_gap": 0,
+      "t_since_plan_s": 0.0
+    },
+    {
+      "kind": "controls_frame_age",
+      "real_gap_fixture_s": 0.3229,
+      "frame_gap": 1,
+      "t_since_plan_s": 0.01
+    },
+    {
+      "kind": "controls_frame_age",
+      "real_gap_fixture_s": 0.3229,
+      "frame_gap": 32,
+      "t_since_plan_s": 0.32
+    },
+    {
+      "kind": "ordinary_long_control_age",
+      "plan_age_s": 0.0,
+      "processing_delay_s": 0.0,
+      "a_target": -1.0,
+      "output_accel": -1.0,
+      "state": "1",
+      "standalone_only": true
+    },
+    {
+      "kind": "ordinary_long_control_age",
+      "plan_age_s": 0.0,
+      "processing_delay_s": 0.0,
+      "a_target": 1.0,
+      "output_accel": 1.0,
+      "state": "1",
+      "standalone_only": true
+    },
+    {
+      "kind": "ordinary_long_control_age",
+      "plan_age_s": 0.199,
+      "processing_delay_s": 0.199,
+      "a_target": -1.0,
+      "output_accel": -1.0,
+      "state": "1",
+      "standalone_only": true
+    },
+    {
+      "kind": "ordinary_long_control_age",
+      "plan_age_s": 0.199,
+      "processing_delay_s": 0.199,
+      "a_target": 1.0,
+      "output_accel": 1.0,
+      "state": "1",
+      "standalone_only": true
+    },
+    {
+      "kind": "ordinary_long_control_age",
+      "plan_age_s": 0.201,
+      "processing_delay_s": 0.201,
+      "a_target": -1.0,
+      "output_accel": -1.0,
+      "state": "1",
+      "standalone_only": true
+    },
+    {
+      "kind": "ordinary_long_control_age",
+      "plan_age_s": 0.201,
+      "processing_delay_s": 0.201,
+      "a_target": 1.0,
+      "output_accel": 1.0,
+      "state": "1",
+      "standalone_only": true
+    },
+    {
+      "kind": "ordinary_long_control_age",
+      "plan_age_s": 0.3229,
+      "processing_delay_s": 0.3229,
+      "a_target": -1.0,
+      "output_accel": -1.0,
+      "state": "1",
+      "standalone_only": true
+    },
+    {
+      "kind": "ordinary_long_control_age",
+      "plan_age_s": 0.3229,
+      "processing_delay_s": 0.3229,
+      "a_target": 1.0,
+      "output_accel": 1.0,
+      "state": "1",
+      "standalone_only": true
+    },
+    {
+      "kind": "ordinary_long_control_age",
+      "plan_age_s": 1.0,
+      "processing_delay_s": 1.0,
+      "a_target": -1.0,
+      "output_accel": -1.0,
+      "state": "1",
+      "standalone_only": true
+    },
+    {
+      "kind": "ordinary_long_control_age",
+      "plan_age_s": 1.0,
+      "processing_delay_s": 1.0,
+      "a_target": 1.0,
+      "output_accel": 1.0,
+      "state": "1",
+      "standalone_only": true
+    },
+    {
+      "kind": "ordinary_long_control_age",
+      "plan_age_s": 4.0,
+      "processing_delay_s": 4.0,
+      "a_target": -1.0,
+      "output_accel": -1.0,
+      "state": "1",
+      "standalone_only": true
+    },
+    {
+      "kind": "ordinary_long_control_age",
+      "plan_age_s": 4.0,
+      "processing_delay_s": 4.0,
+      "a_target": 1.0,
+      "output_accel": 1.0,
+      "state": "1",
+      "standalone_only": true
+    },
+    {
+      "kind": "state_machine_communication_fault",
+      "event": "commIssue",
+      "first_update": {
+        "enabled": true,
+        "active": true,
+        "state": "3"
+      },
+      "disabled_at_update": 301,
+      "nominal_counter_seconds": 3.0,
+      "counter_uses_wall_time": false
+    },
+    {
+      "kind": "state_machine_communication_fault",
+      "event": "commIssueAvgFreq",
+      "first_update": {
+        "enabled": true,
+        "active": true,
+        "state": "3"
+      },
+      "disabled_at_update": 301,
+      "nominal_counter_seconds": 3.0,
+      "counter_uses_wall_time": false
+    },
+    {
+      "kind": "state_machine_communication_fault",
+      "event": "selfdrivedLagging",
+      "first_update": {
+        "enabled": true,
+        "active": true,
+        "state": "3"
+      },
+      "disabled_at_update": 301,
+      "nominal_counter_seconds": 3.0,
+      "counter_uses_wall_time": false
+    },
+    {
+      "kind": "state_machine_communication_fault",
+      "event": "modeldLagging",
+      "first_update": {
+        "enabled": true,
+        "active": true,
+        "state": "3"
+      },
+      "disabled_at_update": 301,
+      "nominal_counter_seconds": 3.0,
+      "counter_uses_wall_time": false
+    },
+    {
+      "kind": "frozen_replay_clock_stall",
+      "requested_wall_stall_s": 0.3229,
+      "measured_wall_s": 0.3231937400005336,
+      "thread_cpu_s": 0.0001910619999999641,
+      "monotonic_advance_s": 0.0,
+      "plan_processing_delay_s": 0.0,
+      "plan_valid": true,
+      "interpretation_ko": "실제 322.9ms 원인을 재현한 것이 아니라 같은 길이의 IO 대기를 주입한 측정 계약 검사."
+    },
+    {
+      "kind": "advanced_clock_preserved_source",
+      "advance_s": 0.3229,
+      "model_header_preserved": true,
+      "prepare_runtime_valid": false,
+      "prepare_control_active": false,
+      "plan_processing_delay_s": 0.3228999972343445,
+      "plan_valid": true,
+      "cached_harness_validity": true
+    },
+    {
+      "kind": "fresh_model_header_old_camera_eof",
+      "camera_eof_age_s": 0.3229,
+      "processing_delay_s": 0.0,
+      "plan_valid": true
+    },
+    {
+      "kind": "plan_publisher_dependency",
+      "invalid_service": "modelV2",
+      "plan_valid": true
+    },
+    {
+      "kind": "plan_publisher_dependency",
+      "invalid_service": "radarState",
+      "plan_valid": true
+    },
+    {
+      "kind": "plan_publisher_dependency",
+      "invalid_service": "carState",
+      "plan_valid": false
+    },
+    {
+      "kind": "plan_publisher_dependency",
+      "invalid_service": "controlsState",
+      "plan_valid": false
+    },
+    {
+      "kind": "plan_publisher_dependency",
+      "invalid_service": "selfdriveState",
+      "plan_valid": false
+    },
+    {
+      "kind": "final_prepare_elapsed",
+      "elapsed_s": 0.05,
+      "result_accel": -0.01249999999999929
+    },
+    {
+      "kind": "final_prepare_elapsed",
+      "elapsed_s": 0.199,
+      "result_accel": -0.04974999999999952
+    },
+    {
+      "kind": "final_prepare_elapsed",
+      "elapsed_s": 0.201,
+      "result_accel": 0.2
+    },
+    {
+      "kind": "final_prepare_elapsed",
+      "elapsed_s": 0.3229,
+      "result_accel": 0.2
+    },
+    {
+      "kind": "card_application_boundary",
+      "carcontrol_alive": true,
+      "carcontrol_valid": true,
+      "carcontrol_freq_ok": true,
+      "apply_calls": 1,
+      "memory_send_calls": 1,
+      "init_called": false,
+      "vehicle_can_sent": false,
+      "scope_ko": "원형 메서드 분기 검사. CI.apply/전송 IO sink만 교체했으며 이 검사에서 CarController/CAN/Panda는 실행하지 않음."
+    },
+    {
+      "kind": "card_application_boundary",
+      "carcontrol_alive": true,
+      "carcontrol_valid": false,
+      "carcontrol_freq_ok": true,
+      "apply_calls": 1,
+      "memory_send_calls": 1,
+      "init_called": false,
+      "vehicle_can_sent": false,
+      "scope_ko": "원형 메서드 분기 검사. CI.apply/전송 IO sink만 교체했으며 이 검사에서 CarController/CAN/Panda는 실행하지 않음."
+    },
+    {
+      "kind": "card_application_boundary",
+      "carcontrol_alive": true,
+      "carcontrol_valid": true,
+      "carcontrol_freq_ok": false,
+      "apply_calls": 1,
+      "memory_send_calls": 1,
+      "init_called": false,
+      "vehicle_can_sent": false,
+      "scope_ko": "원형 메서드 분기 검사. CI.apply/전송 IO sink만 교체했으며 이 검사에서 CarController/CAN/Panda는 실행하지 않음."
+    },
+    {
+      "kind": "card_application_boundary",
+      "carcontrol_alive": false,
+      "carcontrol_valid": true,
+      "carcontrol_freq_ok": true,
+      "apply_calls": 0,
+      "memory_send_calls": 0,
+      "init_called": false,
+      "vehicle_can_sent": false,
+      "scope_ko": "원형 메서드 분기 검사. CI.apply/전송 IO sink만 교체했으며 이 검사에서 CarController/CAN/Panda는 실행하지 않음."
+    }
+  ],
+  "source_sha256": {
+    "openpilot/cereal/messaging/__init__.py": "bee560dadd985b82aac55039581851d37bdeadf39aed0845d50c3ad3103d691b",
+    "openpilot/common/realtime.py": "6849bdf1339c3305ff8df7f0f593c981381274becb4780b57ecbf85e83276226",
+    "openpilot/selfdrive/controls/controlsd.py": "695609a1088d70b9a0cb07f8a68bf6fdd5a2a88b078c0d4d39a29cdbdd8f92cc",
+    "openpilot/selfdrive/car/card.py": "de239706c6194073d5758c7314d060146e4404b55648cdba90d183a59883b1a2"
+  },
+  "source_unchanged": true,
+  "runtime": {
+    "python": "3.12.15 (main, Oct  9 2026, 15:22:32) [Clang 22.1.3 ]",
+    "monotonic": {
+      "implementation": "clock_gettime(CLOCK_MONOTONIC)",
+      "monotonic": true,
+      "adjustable": false,
+      "resolution": 1e-09
+    },
+    "perf_counter": {
+      "implementation": "clock_gettime(CLOCK_MONOTONIC)",
+      "monotonic": true,
+      "adjustable": false,
+      "resolution": 1e-09
+    },
+    "scheduler_policy": 0
+  },
+  "execution_scope_ko": "원형 SubMaster/FrequencyTracker/Ratekeeper source class와 원형 state/LongControl/신호/계획 클래스를 실행. 소켓 생성자만 배제한 수신 상태 fixture와 실제 Cap'n Proto 사용. 표기한 controls 시간식 및 card 메서드는 AST로 수정 없이 추출. IO·시각만 합성하며 운영 Params·차량·Panda·환경 파일·기존 소스를 수정하지 않음.",
+  "physical_safety_proven": false,
+  "actual_322ms_rootcause_identified": false,
+  "review_source_manifest": [
+    {
+      "path": "openpilot/cereal/messaging/__init__.py",
+      "review_sha256": "bee560dadd985b82aac55039581851d37bdeadf39aed0845d50c3ad3103d691b",
+      "review_sha256_lf": "1938c80c71dba0855700015bc03371786a711c67bfe3a0c5e073ed790d5e10a9",
+      "executed_lab_sha256_lf": "1938c80c71dba0855700015bc03371786a711c67bfe3a0c5e073ed790d5e10a9"
+    },
+    {
+      "path": "openpilot/cereal/messaging/messaging.h",
+      "review_sha256": "37ec2abc3d57918e8af70b26ba31014c48c29e4b60b9b5d7e63a7d57e76d8c8c",
+      "review_sha256_lf": "7d007b2e4d32e102b9ab51d5a566323b51c69187eb3fde261d1002c3b6735a6b",
+      "executed_lab_sha256_lf": "7d007b2e4d32e102b9ab51d5a566323b51c69187eb3fde261d1002c3b6735a6b"
+    },
+    {
+      "path": "openpilot/cereal/services.py",
+      "review_sha256": "b4a95994527a7b321639004bdc9bea5b929c794cbb408d8610be9cca4db960b8",
+      "review_sha256_lf": "59f30a7e2218b7d2af9119c8c5e86dae4464bb30b2461de73de50012cbbd7360",
+      "executed_lab_sha256_lf": "59f30a7e2218b7d2af9119c8c5e86dae4464bb30b2461de73de50012cbbd7360"
+    },
+    {
+      "path": "openpilot/common/timing.h",
+      "review_sha256": "74b285e09aa06372399411f26481097f0ba72ae1dd131f7dab669ecc750be954",
+      "review_sha256_lf": "66a580e240fa4fe4af03bc3073ddd0f4db5d1027720e8adfa92ba448f7c8bc71",
+      "executed_lab_sha256_lf": "66a580e240fa4fe4af03bc3073ddd0f4db5d1027720e8adfa92ba448f7c8bc71"
+    },
+    {
+      "path": "openpilot/common/realtime.py",
+      "review_sha256": "6849bdf1339c3305ff8df7f0f593c981381274becb4780b57ecbf85e83276226",
+      "review_sha256_lf": "6337d64508299a53c00f0795397e5043ec7b69c864d6ca8c02604244502aba5e",
+      "executed_lab_sha256_lf": "6337d64508299a53c00f0795397e5043ec7b69c864d6ca8c02604244502aba5e"
+    },
+    {
+      "path": "openpilot/system/camerad/cameras/spectra.cc",
+      "review_sha256": "3005ff573a81b48d6de53734d969b8db9a05d87471eaf720ae1a971973cf50e5",
+      "review_sha256_lf": "e537c27f1d24f3232acc17a0c0b08183813253325e1a74662b27f8a61608943f",
+      "executed_lab_sha256_lf": "e537c27f1d24f3232acc17a0c0b08183813253325e1a74662b27f8a61608943f"
+    },
+    {
+      "path": "openpilot/selfdrive/modeld/modeld.py",
+      "review_sha256": "0bc9440f57ca2e896b92e6a4932681eddd7db28100fb07758482bc3cfef22e44",
+      "review_sha256_lf": "2ae0addbc2ad8a85255038700ace327b35e91a7bac41ff7dc5d6ac78e56ceda6",
+      "executed_lab_sha256_lf": "2ae0addbc2ad8a85255038700ace327b35e91a7bac41ff7dc5d6ac78e56ceda6"
+    },
+    {
+      "path": "openpilot/selfdrive/modeld/fill_model_msg.py",
+      "review_sha256": "5d19df893780ba3d4f012bada7d69886ef002e6fa11c2f4bcf1a825b14c2edcd",
+      "review_sha256_lf": "85f74594e50149addbdaeee6a48af07f34de8c540f37767371739e69f1ecf26d",
+      "executed_lab_sha256_lf": "85f74594e50149addbdaeee6a48af07f34de8c540f37767371739e69f1ecf26d"
+    },
+    {
+      "path": "openpilot/selfdrive/controls/plannerd.py",
+      "review_sha256": "6f063c18d50694f80087a56d1accf178f9ca7ec9cb83f9574e95f1a6eea417e9",
+      "review_sha256_lf": "078ff71e62494da26313909438e472dc005df8d52bd8cff75997f93130889685",
+      "executed_lab_sha256_lf": "078ff71e62494da26313909438e472dc005df8d52bd8cff75997f93130889685"
+    },
+    {
+      "path": "openpilot/selfdrive/controls/lib/longitudinal_planner.py",
+      "review_sha256": "01ead57b64c3bde5ae56bebefb015986e877014cc0d63885e77833e08f9b886f",
+      "review_sha256_lf": "781b78157fe272e4cdcb79c985602695fa14ccbddd38a9e8544a614b8ab2e8b0",
+      "executed_lab_sha256_lf": "781b78157fe272e4cdcb79c985602695fa14ccbddd38a9e8544a614b8ab2e8b0"
+    },
+    {
+      "path": "openpilot/selfdrive/controls/lib/longcontrol.py",
+      "review_sha256": "c5ee591a807e337aa74f0f2131178a1c73ce668e1ce4adf8db5e320cf5bcb2ca",
+      "review_sha256_lf": "15c6aa56c299aecdfab7be13487e723c423fcb7604941b5f64cf89037c77a10b",
+      "executed_lab_sha256_lf": "15c6aa56c299aecdfab7be13487e723c423fcb7604941b5f64cf89037c77a10b"
+    },
+    {
+      "path": "openpilot/selfdrive/controls/controlsd.py",
+      "review_sha256": "695609a1088d70b9a0cb07f8a68bf6fdd5a2a88b078c0d4d39a29cdbdd8f92cc",
+      "review_sha256_lf": "3d2d1f9aa7dd2c5ba7afa38f19080ec67859d528a260278168dc252d2a5ce590",
+      "executed_lab_sha256_lf": "3d2d1f9aa7dd2c5ba7afa38f19080ec67859d528a260278168dc252d2a5ce590"
+    },
+    {
+      "path": "openpilot/selfdrive/car/card.py",
+      "review_sha256": "de239706c6194073d5758c7314d060146e4404b55648cdba90d183a59883b1a2",
+      "review_sha256_lf": "6c5890f382469445f0adc32f4663a2543ed713247fae2e2db5bb27b3ae9c913b",
+      "executed_lab_sha256_lf": "6c5890f382469445f0adc32f4663a2543ed713247fae2e2db5bb27b3ae9c913b"
+    },
+    {
+      "path": "openpilot/selfdrive/selfdrived/selfdrived.py",
+      "review_sha256": "800640fea14be35cfbba710e800028e097ffc27d9cb3742361426e8354117728",
+      "review_sha256_lf": "047e5db3cb5d4829cc1a5952744904723329954c9016ef8f5b52aeab20bb503d",
+      "executed_lab_sha256_lf": "047e5db3cb5d4829cc1a5952744904723329954c9016ef8f5b52aeab20bb503d"
+    },
+    {
+      "path": "openpilot/selfdrive/selfdrived/state.py",
+      "review_sha256": "f36d2065624c75643d7352e93a29aa6f75f0d684dbb26467e31d75eaaa36503c",
+      "review_sha256_lf": "7081e646c1d183fdc7a4e7bf93e7390d32509e5b398200a319bf7b939b2a6b61",
+      "executed_lab_sha256_lf": "7081e646c1d183fdc7a4e7bf93e7390d32509e5b398200a319bf7b939b2a6b61"
+    },
+    {
+      "path": "openpilot/selfdrive/selfdrived/events.py",
+      "review_sha256": "e2a8655d9d243a8d8a02d18d7176ea6b87beb534a6106f16d462d2d008decf4e",
+      "review_sha256_lf": "8124b5d368e8afcdef585d75750e1ca896200b286d302ce3d6c46e6ecf7f8a2c",
+      "executed_lab_sha256_lf": "8124b5d368e8afcdef585d75750e1ca896200b286d302ce3d6c46e6ecf7f8a2c"
+    },
+    {
+      "path": "openpilot/selfdrive/carrot/signal_assist_runtime.py",
+      "review_sha256": "7b45df853f5474ca86a7407ab455b4978e5936607428dc64b37007f7a57a47a2",
+      "review_sha256_lf": "c9f005ce7298ed1b228df414e994a94c4fda7e03e2b71a58cd11fdb5805bc92c",
+      "executed_lab_sha256_lf": "c9f005ce7298ed1b228df414e994a94c4fda7e03e2b71a58cd11fdb5805bc92c"
+    },
+    {
+      "path": "openpilot/selfdrive/carrot/signal_stop_prepare_runtime.py",
+      "review_sha256": "69980533b791c48525e6793e2a2d6702d077561507f1dca18c3c01490880ddba",
+      "review_sha256_lf": "5ede16e0d25311c9ac6a47284591567a9c9eb80e02a433bc68c8a374f6fdf11e",
+      "executed_lab_sha256_lf": "5ede16e0d25311c9ac6a47284591567a9c9eb80e02a433bc68c8a374f6fdf11e"
+    },
+    {
+      "path": "openpilot/selfdrive/carrot/signal_stop_prepare.py",
+      "review_sha256": "f5c206efc2b4ff7d676d06ec4da558a3fe5b0f4901a56a920fa0ee193ee32c39",
+      "review_sha256_lf": "5334c66535e22c434ea98321c076a2a9035d8a9bc5034dd0c385dc0ecf199d02",
+      "executed_lab_sha256_lf": "5334c66535e22c434ea98321c076a2a9035d8a9bc5034dd0c385dc0ecf199d02"
+    },
+    {
+      "path": "openpilot/selfdrive/carrot/signal_start_guard.py",
+      "review_sha256": "f3ce89f60a7527f94075f0c470dd59e235a65f4ec621512416f3a5f12f171f10",
+      "review_sha256_lf": "becddf556604490349cd38f4cdeac9dfee16dc3c6d218cc73d804266a7b2d767",
+      "executed_lab_sha256_lf": "becddf556604490349cd38f4cdeac9dfee16dc3c6d218cc73d804266a7b2d767"
+    },
+    {
+      "path": "opendbc_repo/opendbc/safety/safety.h",
+      "review_sha256": "264acef46827c278c8a741106506506323ec27842eaf21856a16386ebe084dfe",
+      "review_sha256_lf": "26d93aedb6d26dc6071c9d85564ab29100e0bf7265a0e72af543d033ae9d4169",
+      "executed_lab_sha256_lf": "26d93aedb6d26dc6071c9d85564ab29100e0bf7265a0e72af543d033ae9d4169"
+    },
+    {
+      "path": "opendbc_repo/opendbc/safety/safety/safety_toyota.h",
+      "review_sha256": "a5c87dd55bce5a8f44e85e173784db42648a4982a95107dfe57a2479ec5d5cc0",
+      "review_sha256_lf": "7fd0c31d6e4eccb1cac411291ab83d3b5a70292a35be37053b03982d32dac5a4",
+      "executed_lab_sha256_lf": "7fd0c31d6e4eccb1cac411291ab83d3b5a70292a35be37053b03982d32dac5a4"
+    }
+  ],
+  "clock_domain_observations": {
+    "runtime": "독립 WSL Python 3.12 환경, Konik 실물 아님",
+    "samples": [
+      {
+        "boot_minus_monotonic_midpoint_ns": 817,
+        "sampling_uncertainty_ns": 1057
+      },
+      {
+        "boot_minus_monotonic_midpoint_ns": 40,
+        "sampling_uncertainty_ns": 170
+      },
+      {
+        "boot_minus_monotonic_midpoint_ns": 0,
+        "sampling_uncertainty_ns": 90
+      },
+      {
+        "boot_minus_monotonic_midpoint_ns": 10,
+        "sampling_uncertainty_ns": 70
+      },
+      {
+        "boot_minus_monotonic_midpoint_ns": 11,
+        "sampling_uncertainty_ns": 80
+      },
+      {
+        "boot_minus_monotonic_midpoint_ns": -5,
+        "sampling_uncertainty_ns": 75
+      },
+      {
+        "boot_minus_monotonic_midpoint_ns": 21,
+        "sampling_uncertainty_ns": 70
+      }
+    ],
+    "monotonic": {
+      "implementation": "clock_gettime(CLOCK_MONOTONIC)",
+      "monotonic": true,
+      "adjustable": false,
+      "resolution": 1e-09
+    },
+    "perf_counter": {
+      "implementation": "clock_gettime(CLOCK_MONOTONIC)",
+      "monotonic": true,
+      "adjustable": false,
+      "resolution": 1e-09
+    },
+    "actual_device_suspend_offset_verified": false
+  },
+  "setup_correction_ko": "검사 초안에서 EventName.enable이라는 존재하지 않는 enum을 사용해 중단됐음. 실제 원형 pcmEnable로 고쳐 전체54관측을 다시 실행함. 코어·assertion·정책은 변경하지 않음.",
+  "measurement_sources": [
+    "https://docs.python.org/3.12/library/time.html",
+    "https://docs.kernel.org/core-api/timekeeping.html"
+  ]
+}

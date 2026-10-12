@@ -4,6 +4,8 @@
 
 이 결과는 알려진 필드만 사용하는 합성 입력이며 실제 ECU 모델·센서 오차 분포가 아니다. 공개 슬롯의 속도 불확실성 코드47을 고정한 조건이다. ACC CHECK_BYTE는 미검증 placeholder0이고, 실제 차량 송신은0이다. 운영 설정·코어·root-owned runner/bridge를 수정하지 않았다.
 
+구현 범위 정정: MPC는 실제 acados C/Cython이고, CANParser/CANPacker는 현재 Linux의 원형 Python fallback이다(`opendbc.can.native.BACKEND=python`). CAN native 빌드나실제장치CPU 타이밍을입증한것은아니다. Safety C 검사는이관찰도구에서실행하지않으며별도결과다.
+
 ## 읽은 실제 단계와 시각
 
 `acc_contract_diagnosis.py`는 원형 `_payload`·`_fused_speed`를 호출하는 관찰 wrapper로 결과를 읽는다. 반환값은 그대로다. 같은 record의 합성 생성시각/기준값,0x80 raw 객체, 필터 상태, MyTrack 출력, DPath L1, 실제 native MPC의 관측/예측값과 생성된 ACC_CONTROL 명령을 기록했다. 원본 record가 완성 record와 바이트·순서로 맞는지도 확인한다.
