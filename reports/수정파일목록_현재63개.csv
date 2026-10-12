@@ -1,4 +1,4 @@
-﻿수정 파일,범위,SHA256_LF,실차 배포 허용
+수정 파일,범위,SHA256_LF,실차 배포 허용
 docs/ars510_offline_20261012.md,문서·라이선스,9b540c75395280e9be02f63c6c1685bfc983ea90d7f2d2e903d118bf6010497a,아니오
 docs/rav4_pcm_mode0_20261012.md,문서·라이선스,a7d32041cbfe8e1a05effef317d5389d80d3e6d4a0d722f1f15f1392a71beb4f,아니오
 opendbc_repo/opendbc/car/toyota/ars510/LICENSE,문서·라이선스,56b07f3b4fd5f231ee865512b6345985d83f61cff58da92dcdedfe665b903a0e,아니오
@@ -45,7 +45,7 @@ tools/ars510_offline/dbc/toyota_tss2_ars510.dbc,자동 검사·오프라인 도�
 tools/ars510_offline/diagnose.py,자동 검사·오프라인 도구,8a8864948ef4db7574ceb4ea286f72e4872004bd3ebbba8b806f403a0b89b312,아니오
 tools/ars510_offline/fixtures/public_id80_record.csv,자동 검사·오프라인 도구,dbbbaebcab2a6c972b2ae74dc3a197ca3f6890109f69605f7417cd23f803215c,아니오
 tools/ars510_offline/pytest.ini,자동 검사·오프라인 도구,e426e9d19abc292755ba0193e87e40a93f26b61e87db8e131fe90288610e9aa7,아니오
-tools/ars510_offline/replay.py,자동 검사·오프라인 도구,62f9cb97dcc02d5f4699d0c635c22da9ec6c86950a0602dc2a4fe3ba5b970d2c,아니오
+tools/ars510_offline/replay.py,자동 검사·오프라인 도구,c5d91ef5c12dd3ca537d0de65e1b338fe25fcac31478e7059e299fb41cb9f1a6,아니오
 tools/ars510_offline/requirements.txt,자동 검사·오프라인 도구,293b2efcb98c0b3f1721000f2f33bb931869eb0c26e75279b42f8aef13e5107c,아니오
 tools/ars510_offline/test_legacy_regression.py,자동 검사·오프라인 도구,1adac712e8ccb6d6d217ff2b148db81ceafce170dc24ab98f0819da38fd7270e,아니오
 tools/ars510_validation/native/test_acc_witness_encoding.py,자동 검사·오프라인 도구,d3cb81258c570efff59a9c47167bde444f903c0bf2991835a1dd362cf211a8b3,아니오

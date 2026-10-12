@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "generated_utc": "2026-10-12T09:48:22.369716+00:00",
+  "generated_utc": "2026-10-12T13:06:59.415519+00:00",
   "carrot_source_repository": "https://github.com/ajouatom/openpilot",
   "carrot_source_branch": "carrot-wip",
   "carrot_source_commit": "0e4ee1bdbef3ad7284b136fddf31592e3f8a785f",
@@ -194,7 +194,7 @@
     },
     {
       "path": "tools/ars510_offline/replay.py",
-      "sha256_lf": "62f9cb97dcc02d5f4699d0c635c22da9ec6c86950a0602dc2a4fe3ba5b970d2c"
+      "sha256_lf": "c5d91ef5c12dd3ca537d0de65e1b338fe25fcac31478e7059e299fb41cb9f1a6"
     },
     {
       "path": "tools/ars510_offline/requirements.txt",
@@ -281,5 +281,6 @@
     "06_camera_profile.patch",
     "07_validation_tools.patch",
     "08_stopping_command.patch"
-  ]
+  ],
+  "latest_source_change": "offline replay RadarData.errors→RadarState.radarErrors 전파·집계; 주행/권한/실차경로 변경 없음"
 }

@@ -7,9 +7,9 @@
   },
   {
     "path": "reports/수정파일목록_현재63개.csv",
-    "original_sha256": "aa735053d7464a0c85708aa6c56e9602681ef52ae6e14362fb1a4b5572f341cb",
-    "published_sha256": "fc65d1878bc88db16cee55f5c1e565fdf1c9d0271ea23af532a32e81e49ee7bd",
-    "transform": "개인 경로 제거·LF 문서 저장"
+    "original_sha256": "de4b0ba3fb861ffa4d01c2aa3da7a6091382e0a9c93170c898b18b796743a648",
+    "published_sha256": "0b04683e8659e7129bb6832455bd161689b9d5fc3c96401b9646863fe201bc4d",
+    "transform": "r7 현재 63개 소스 지문 목록, UTF-8 BOM 제거·LF 저장"
   },
   {
     "path": "reports/레이더_차량속도_기준대조.md",
@@ -478,5 +478,191 @@
     "original_sha256": "ef5a553576920a2af9ef74a2309053311e8011e25ad92241513295c66c1465f5",
     "published_sha256": "45b8df19185922c5da6c03205329a9f632cf02409f162ed3928b8798201fcd5a",
     "transform": "합성 연결 검사·개인 경로 제거 JSON 무손실 gzip, 차량 원본 로그 아님"
+  },
+  {
+    "path": "analysis/signal_host_can/audit_namespace.py",
+    "original_sha256": "5686532b769f4c7936e76257a5277d685eccb24b114a50a4a013206fff238de7",
+    "published_sha256": "5686532b769f4c7936e76257a5277d685eccb24b114a50a4a013206fff238de7",
+    "transform": "실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/signal_host_can/freeze_results.py",
+    "original_sha256": "25444681b22867b295251541b674c4b6c94cc0613f118ae41d5c4cd7f9106feb",
+    "published_sha256": "25444681b22867b295251541b674c4b6c94cc0613f118ae41d5c4cd7f9106feb",
+    "transform": "실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/signal_host_can/run_baseline.py",
+    "original_sha256": "4712bf0de915ef5f595bf6f8d6ca22cc8cb79c69fc97d1e996646f87356ffbd9",
+    "published_sha256": "4712bf0de915ef5f595bf6f8d6ca22cc8cb79c69fc97d1e996646f87356ffbd9",
+    "transform": "실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/signal_host_can/run_case.py",
+    "original_sha256": "3dc1147c61777cdb226f69fbb96f96ee42a8aff08272fb5823f58b88c9b07490",
+    "published_sha256": "3dc1147c61777cdb226f69fbb96f96ee42a8aff08272fb5823f58b88c9b07490",
+    "transform": "실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/signal_host_can/run_moving.py",
+    "original_sha256": "b7b88ec9678236205ad5862716a4023ed50efc981799931f2de8dd0c70d4804d",
+    "published_sha256": "b7b88ec9678236205ad5862716a4023ed50efc981799931f2de8dd0c70d4804d",
+    "transform": "실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/signal_host_can/run_suite.py",
+    "original_sha256": "c3c1aff0010d7cee6cb2eef8934cc5a41788a37ddb47cba33cdbb93c706ade01",
+    "published_sha256": "c3c1aff0010d7cee6cb2eef8934cc5a41788a37ddb47cba33cdbb93c706ade01",
+    "transform": "실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/signal_host_can/signal_io.py",
+    "original_sha256": "b34cebf1245d28d08834ea81a5c9d806432a06ad19f7a4a54f552cea88c59136",
+    "published_sha256": "b34cebf1245d28d08834ea81a5c9d806432a06ad19f7a4a54f552cea88c59136",
+    "transform": "실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/signal_host_can/whole_chain.py",
+    "original_sha256": "3cc789b2426d579d7119b84c942630146e4ed098cb8b81f2fe15df452db2197b",
+    "published_sha256": "3cc789b2426d579d7119b84c942630146e4ed098cb8b81f2fe15df452db2197b",
+    "transform": "실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/signal_host_can/whole_inputs.py",
+    "original_sha256": "7d93682b4c78c97d434fc6e84942bf59104bafc5401b018e4bdb282e126b88b5",
+    "published_sha256": "7d93682b4c78c97d434fc6e84942bf59104bafc5401b018e4bdb282e126b88b5",
+    "transform": "실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/signal_host_can/whole_io.py",
+    "original_sha256": "5dd434ff3fce1406b2782c7f1237157308ad84ce13584855931c46b148ac4f9d",
+    "published_sha256": "5dd434ff3fce1406b2782c7f1237157308ad84ce13584855931c46b148ac4f9d",
+    "transform": "실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/signal_host_can/whole_objects.py",
+    "original_sha256": "bac4e0fd9335948af7ace132adf231c93b724f03cecf9a08ee98374e8393d48d",
+    "published_sha256": "bac4e0fd9335948af7ace132adf231c93b724f03cecf9a08ee98374e8393d48d",
+    "transform": "실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/signal_host_can/RESULTS_KO.md",
+    "original_sha256": "a34ad9eb7bd995445d82f2341d1b33cfae3b183d5864a512bb478c838b642c7f",
+    "published_sha256": "a34ad9eb7bd995445d82f2341d1b33cfae3b183d5864a512bb478c838b642c7f",
+    "transform": "개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "analysis/signal_host_can/IO_SCOPE_PLAN_KO.md",
+    "original_sha256": "3d0676e495642767ac77753947917aeb3d78776b5b7e6b6126f80b949c81753e",
+    "published_sha256": "3d0676e495642767ac77753947917aeb3d78776b5b7e6b6126f80b949c81753e",
+    "transform": "개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "analysis/signal_host_can/frozen_results.json",
+    "original_sha256": "7b9fcd747644ad3983224413408b55c42450d1609ca13db2e545782e1cc3c88b",
+    "published_sha256": "7b9fcd747644ad3983224413408b55c42450d1609ca13db2e545782e1cc3c88b",
+    "transform": "개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "analysis/signal_host_can/evidence_manifest.json",
+    "original_sha256": "34d0c98bee68ddce7ceb2685cd7671d74bf89fe1b9398fb884a35acc0d8916d7",
+    "published_sha256": "34d0c98bee68ddce7ceb2685cd7671d74bf89fe1b9398fb884a35acc0d8916d7",
+    "transform": "개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "analysis/signal_host_can/namespace_audit.json",
+    "original_sha256": "b82c02adf42398ff567955ef38441aad26767ab6fd704e85783c8602a2e05fe5",
+    "published_sha256": "b82c02adf42398ff567955ef38441aad26767ab6fd704e85783c8602a2e05fe5",
+    "transform": "개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "analysis/signal_host_can/suite_final_summary.json",
+    "original_sha256": "b416e86dc149dc928e6ab7837ad72fb9a086fd86901fa89c61b7b4830f52d472",
+    "published_sha256": "b416e86dc149dc928e6ab7837ad72fb9a086fd86901fa89c61b7b4830f52d472",
+    "transform": "개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "reports/신호_Mode0_호스트_CAN_C_통합검증.md",
+    "original_sha256": "a34ad9eb7bd995445d82f2341d1b33cfae3b183d5864a512bb478c838b642c7f",
+    "published_sha256": "a34ad9eb7bd995445d82f2341d1b33cfae3b183d5864a512bb478c838b642c7f",
+    "transform": "개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "reports/레이더_모델식별_근거검토.md",
+    "original_sha256": "a158561f4c95258034ff33ce97382540ba28d6e77c9cfc28e7f5749b05ab6a67",
+    "published_sha256": "a158561f4c95258034ff33ce97382540ba28d6e77c9cfc28e7f5749b05ab6a67",
+    "transform": "개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "reports/레이더_오류전파_수정검증.md",
+    "original_sha256": "ed062e8251c4abbcc4b7599930ba3399a6b2189f8578083b29ff974309537f4e",
+    "published_sha256": "ed062e8251c4abbcc4b7599930ba3399a6b2189f8578083b29ff974309537f4e",
+    "transform": "개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "results/radar_error_replay/public_summary.json",
+    "original_sha256": "bfa24dd901aa158959fa2e0813a280e8ed69b401d232c435972ed7025668b0a0",
+    "published_sha256": "bfa24dd901aa158959fa2e0813a280e8ed69b401d232c435972ed7025668b0a0",
+    "transform": "개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "results/signal_host_can/가속입력_위상별_신호_CAN_비교.png",
+    "original_sha256": "93cacaca9b716b96e2f496be265a95e9cb31d97a2affdf089d1a701581f5312d",
+    "published_sha256": "93cacaca9b716b96e2f496be265a95e9cb31d97a2affdf089d1a701581f5312d",
+    "transform": "개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "analysis/signal_host_can/schema_review.md",
+    "original_sha256": "4f2309575cd1dc915c4eff27379f4e24e37f30d45ad5d05c0d14ef49967dd3e4",
+    "published_sha256": "4f2309575cd1dc915c4eff27379f4e24e37f30d45ad5d05c0d14ef49967dd3e4",
+    "transform": "개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "analysis/signal_host_can/transition_design_review.md",
+    "original_sha256": "b6445ed70eea4d89e311a3ba602d123e69f52a68bbfae41f7377600d839cb6d2",
+    "published_sha256": "b6445ed70eea4d89e311a3ba602d123e69f52a68bbfae41f7377600d839cb6d2",
+    "transform": "개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "analysis/signal_host_can/results_review.md",
+    "original_sha256": "543a7a05b8363ec3f683c14471c7b066e19a04a09e664af772f1844d89d8ac3a",
+    "published_sha256": "543a7a05b8363ec3f683c14471c7b066e19a04a09e664af772f1844d89d8ac3a",
+    "transform": "개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "analysis/signal_host_can/policy_options_review.md",
+    "original_sha256": "0c8221412789d579d2262e9d44ad53337712591e87faa6a74a05573db565897b",
+    "published_sha256": "0c8221412789d579d2262e9d44ad53337712591e87faa6a74a05573db565897b",
+    "transform": "개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "results/signal_host_can/cases.jsonl.gz",
+    "original_sha256": "2f5833daaab922502ffa07108824466d1204f84a201e4b88e823a8559e5eef26",
+    "published_sha256": "92eb83a6ce094602cdbb66c0c9028554bbbeab759437714922ecd1f8b0ed6a20",
+    "transform": "합성 신호/호스트/CAN 결과의 경로 제거 JSONL 무손실 gzip, 원본 차량 로그 아님"
+  },
+  {
+    "path": "results/signal_host_can/baseline.jsonl.gz",
+    "original_sha256": "b18cea705a0c7a3c18934632e3e6838b467ae185ace503fb0ab04adfe35f6e23",
+    "published_sha256": "b71aa2855b3fa9d1fe864d4a3729ccffe56c0461206bdbb652d3e958db8dec19",
+    "transform": "합성 신호/호스트/CAN 결과의 경로 제거 JSONL 무손실 gzip, 원본 차량 로그 아님"
+  },
+  {
+    "path": "analysis/signal_host_can/initial_expectation_failure/EXPLANATION_KO.md",
+    "original_sha256": "1e762fd77dd76129880e4e75f9d5f22d4699d3acebc6cc060461dca9a14800aa",
+    "published_sha256": "1e762fd77dd76129880e4e75f9d5f22d4699d3acebc6cc060461dca9a14800aa",
+    "transform": "개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "results/signal_host_can/initial_expectation_failure.jsonl.gz",
+    "original_sha256": "056975916be67fc3a85741a5c51da50497ba9243db00bd92bd451e6d3c58a8b8",
+    "published_sha256": "12c2df66dc5b878e313cac43d05a5f6c44c4135b760c501b92e31eab9636489a",
+    "transform": "합성 신호/호스트/CAN 결과의 경로 제거 JSONL 무손실 gzip, 원본 차량 로그 아님"
+  },
+  {
+    "path": "results/signal_host_can/parent_replay.jsonl.gz",
+    "original_sha256": "6176af273d826ebc48be6f44529469aedb7f0cc7b49650dfec335f42f127d57f",
+    "published_sha256": "5dbe6992e158e82401a95a817b9c2b8e08fc9d226f6dd6604f3fccf428549023",
+    "transform": "합성 신호/호스트/CAN 결과의 경로 제거 JSONL 무손실 gzip, 원본 차량 로그 아님"
   }
 ]

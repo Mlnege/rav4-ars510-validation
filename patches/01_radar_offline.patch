@@ -7009,10 +7009,10 @@ index 0000000..3591f3c
 +addopts = -ra
 diff --git a/tools/ars510_offline/replay.py b/tools/ars510_offline/replay.py
 new file mode 100644
-index 0000000..c000cd3
+index 0000000..2eb69c9
 --- /dev/null
 +++ b/tools/ars510_offline/replay.py
-@@ -0,0 +1,180 @@
+@@ -0,0 +1,188 @@
 +"""로컬 rlog를 ARS510→Carrot 필터→liveTracks→실제 lead 선택 코어로 재생한다.
 +
 +실차 인터페이스 등록, Params 변경, 소켓 연결, CAN 송신, planner 실행은 없다.
@@ -7080,12 +7080,13 @@ index 0000000..c000cd3
 +                                 front_radar_measurement_delay_s=front_radar_distance_delay_s(CP))
 +  counts = dict.fromkeys(("points", "serialized_liveTracks", "pipeline_model_updates", "models_with_points",
 +                         "points_present_at_models", "radar_lead_selections", "baseline_radar_lead_selections",
-+                         "serialized_radarState", "nonfinite_required", "error_publications"), 0)
++                         "serialized_radarState", "radar_state_error_models", "nonfinite_required", "error_publications"), 0)
 +  track_ids = set()
 +  extrema = {key: [math.inf, -math.inf] for key in ("dRel", "yRel", "vRel", "vLead", "aLead", "jLead")}
 +  v_ego = a_ego = yaw = 0.0
 +  have_state = False
 +  rr = car.RadarData.new_message()
++  radar_state_error_counts = dict.fromkeys(rr.errors.to_dict(), 0)
 +  rr.errors.radarUnavailableTemporary = True
 +  tracks_time = None
 +  first_ns = None
@@ -7150,12 +7151,18 @@ index 0000000..c000cd3
 +          counts["radar_lead_selections"] += _lead_count(output)
 +          counts["baseline_radar_lead_selections"] += _lead_count(vision_output)
 +          radar_state = log.RadarState.new_message()
++          # 실제 RadarD와 같은 오류를 전달해 수신 실패를 정상 상태로 바꾸지 않는다.
++          radar_state.radarErrors = rr.errors
 +          if output.lead_one:
 +            radar_state.leadOne = output.lead_one
 +          if output.lead_two:
 +            radar_state.leadTwo = output.lead_two
 +          with log.RadarState.from_bytes(radar_state.to_bytes()) as state:
 +            assert bool(state.leadOne.radar) == bool(output.lead_one and output.lead_one.get("radar"))
++            assert state.radarErrors.to_dict() == rr.errors.to_dict()
++            counts["radar_state_error_models"] += int(any(state.radarErrors.to_dict().values()))
++            for name, value in state.radarErrors.to_dict().items():
++              radar_state_error_counts[name] += int(value)
 +          counts["serialized_radarState"] += 1
 +  after = CP.to_dict()
 +  if before != after:
@@ -7167,6 +7174,7 @@ index 0000000..c000cd3
 +          "original_openpilotLongitudinalControl": bool(CP.openpilotLongitudinalControl),
 +          "carParams_unchanged": True, "params_backend": PARAMS_BACKEND, "motion_backend": MOTION_BACKEND,
 +          **counts, "unique_tracks": len(track_ids), "deleted_track_occurrences": deletions,
++          "radar_state_error_counts": radar_state_error_counts,
 +          "ranges": {key: value if counts["points"] else [None, None] for key, value in extrema.items()},
 +          "diagnostics": radar.diagnostics}
 +
