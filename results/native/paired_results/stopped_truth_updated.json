@@ -1,0 +1,81 @@
+{
+  "name": "stopped_truth_updated",
+  "duration": 30,
+  "initial_speed": 25,
+  "cruise_speed": 25,
+  "gap": 110,
+  "lead_speed": 0,
+  "lead": true,
+  "event_time": 5.0,
+  "lead_brake": 0,
+  "navigation_cap": 250.0,
+  "navigation_source": "road",
+  "actuator_delay": 0.1,
+  "actuator_tau": 0.15,
+  "sensor_delay": 0.0,
+  "personality": 1,
+  "signal_case": "none",
+  "vision_probability": 0.99,
+  "vision_distance_error": 0.0,
+  "vision_speed_error": 0.0,
+  "lead_lateral": 0.0,
+  "model_intent": "cruise",
+  "steps": 3000,
+  "model_steps": 600,
+  "native_status": {
+    "0": 600
+  },
+  "final_speed": 0.0,
+  "minimum_gap": 0.5042139941452319,
+  "collision": false,
+  "minimum_accel": -3.4999783330363057,
+  "geometric_overlap": false,
+  "clearance_rule_m": 0.4,
+  "first_geometric_overlap_s": null,
+  "first_unsafe_clearance_s": null,
+  "maximum_accel": 0.0,
+  "maximum_jerk": 120.12497013074406,
+  "maximum_moving_jerk": 4.162135270372214,
+  "brake_command_delay": 0.0,
+  "brake_response_delay": 0.0,
+  "native_work_mean_ms": 0.759834611665345,
+  "native_work_p99_ms": 0.8655519300828018,
+  "acc_control_messages": 1000,
+  "acc_control_decode_errors": 0,
+  "finite": true,
+  "native_solver": "acados.acados_template.acados_ocp_solver_pyx.AcadosOcpSolverCython",
+  "comparison_variant": "updated",
+  "simulation_sensor": "truth",
+  "python_source_files": {
+    "planner": {
+      "path": "$LAB/work/carrotpilot/openpilot/selfdrive/controls/lib/longitudinal_planner.py",
+      "sha256": "01ead57b64c3bde5ae56bebefb015986e877014cc0d63885e77833e08f9b886f"
+    },
+    "mpc": {
+      "path": "$LAB/work/native_sim/build_snapshot_b0a5c630260ad76b/long_mpc.py",
+      "sha256": "b0a5c630260ad76b58033b8d44719992c4e008399b2c520e3692b556ce12e274"
+    }
+  },
+  "native_build_root": "$LAB/work/native_sim/build_snapshot_b0a5c630260ad76b",
+  "actuator_accel_limits": [
+    -3.5,
+    2.0
+  ],
+  "mpc_minimum_accel": -3.5,
+  "final_mpc_min_parameters": [
+    -3.5,
+    -3.5,
+    -3.5,
+    -3.5,
+    -3.5,
+    -3.5,
+    -3.5,
+    -3.5,
+    -3.5,
+    -3.5,
+    -3.5,
+    -3.5,
+    -3.5
+  ],
+  "lead_aLeadTau_final": 1.5
+}

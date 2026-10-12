@@ -1,0 +1,10 @@
+{
+  "started_utc": "2026-10-12T07:02:47.850950+00:00",
+  "wall_seconds": 3601.7517452700004,
+  "steps": 72036,
+  "case": "mode0_red_go",
+  "solver_nonzero": 0,
+  "violations": {},
+  "maximum_rss_mb": 73.03515625,
+  "maximum_step_ms": 35.66501599999583
+}

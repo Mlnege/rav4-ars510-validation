@@ -1,0 +1,12 @@
+{
+  "named_cases": 171,
+  "named_failures": 0,
+  "failed_cases": [],
+  "exhaustive_signed16": {
+    "cases": 262144,
+    "tx_mismatches": 0,
+    "state_mutations": 0
+  },
+  "all_passed": true,
+  "library_sha256": "0da233bf51bc8375f969bc60101ae011638a0a05c69aa4f9abec3a87df678570"
+}

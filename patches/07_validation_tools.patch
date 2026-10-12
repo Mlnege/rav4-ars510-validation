@@ -1,0 +1,1666 @@
+diff --git a/tools/ars510_validation/native/test_acc_witness_encoding.py b/tools/ars510_validation/native/test_acc_witness_encoding.py
+new file mode 100644
+index 0000000..85166d4
+--- /dev/null
++++ b/tools/ars510_validation/native/test_acc_witness_encoding.py
+@@ -0,0 +1,43 @@
++"""합성 ACC 필드를 원형 support와 실제 native CANParser DBC로 동시에 읽는다."""
++from pathlib import Path
++import sys
++
++import pytest
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[4] / 'native_sim'))
++from offline_io import prepare, REPO_ROOT
++
++prepare(solver_overlay=True)
++from witness_bridge import encode_acc_witness
++from opendbc.can import CANParser
++from opendbc.car.toyota.ars510.support import parse_acc_target
++
++
++@pytest.mark.parametrize('gap,y,speed,accel', [
++  (50., 0., 0., 0.), (.5, .12, -20., -5.), (204.775, -20., 127.875, 19.375),
++  (10.123, .123, -.321, -1.432), (80., 20.95, -128., -12.5),
++])
++def test_exact_existing_dbc_and_vendor_decoder_agree(gap, y, speed, accel):
++  truth = {"present": True, "gap_m": gap, "y_rel_m": y, "lead_speed_mps": speed, "lead_accel_mps2": accel}
++  first, second = encode_acc_witness(truth, 0., 0., counter=7)
++  assert len(first) == len(second) == 8 and first[0] == second[0] == 0
++  decoded = parse_acc_target(first, second)
++  assert decoded.d_rel == pytest.approx(round(gap/.025)*.025)
++  assert decoded.y_rel == pytest.approx(round(y/.01)*.01)
++  assert decoded.v_rel == pytest.approx(round(speed/.125)*.125)
++  assert decoded.a_rel == pytest.approx(round(accel/.125)*.125)
++  # 원형 DBC와 바이트 동일한 저장소 내 공개 검증 fixture를 사용한다.
++  dbc = REPO_ROOT / 'tools/ars510_offline/dbc/ars510_radar_bus.dbc'
++  parser = CANParser(str(dbc), [("ACC_TARGET_1", 50), ("ACC_TARGET_2", 50)], 1)
++  assert parser.update([(10_000_000_000, [(0x235, first, 1), (0x237, second, 1)])]) == {0x235, 0x237}
++  assert parser.vl['ACC_TARGET_1']['REL_SPEED'] == pytest.approx(decoded.v_rel)
++  assert parser.vl['ACC_TARGET_1']['REL_ACCEL'] == pytest.approx(decoded.a_rel)
++  assert parser.vl['ACC_TARGET_1']['STATE'] == 5
++  assert parser.vl['ACC_TARGET_2']['LONG_DIST'] == pytest.approx(decoded.d_rel)
++  assert parser.vl['ACC_TARGET_2']['LAT_DIST'] == pytest.approx(decoded.y_rel)
++  assert parser.vl['ACC_TARGET_2']['PRESENT'] == 1
++
++
++def test_idle_numeric_fields_do_not_create_target():
++  truth = {"present": False, "gap_m": 0., "y_rel_m": 0., "lead_speed_mps": 0., "lead_accel_mps2": 0.}
++  assert parse_acc_target(*encode_acc_witness(truth, 0., 0.)) is None
+diff --git a/tools/ars510_validation/regen_probe.py b/tools/ars510_validation/regen_probe.py
+new file mode 100644
+index 0000000..c018492
+--- /dev/null
++++ b/tools/ars510_validation/regen_probe.py
+@@ -0,0 +1,117 @@
++"""기존 Toyota DBC의 저장 CAN 제동력만 읽는다. 순수 회생량은 판정하지 않는다."""
++import argparse
++from collections import Counter
++import json
++from pathlib import Path
++import re
++import sys
++
++import capnp
++import cantools
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
++from tools.ars510_offline.bootstrap import prepare  # noqa: TID251
++prepare()
++from tools.ars510_offline.replay import events  # noqa: TID251
++from opendbc.car.toyota.toyotacan import toyota_checksum
++
++
++def load_force_database(path):
++    # 전체 DBC의 다른 PCS 메시지에는 의도적인 중복 신호가 있어 필요한 두 메시지만 엄격 파싱한다.
++    source = path.read_text(encoding="utf-8")
++    blocks = []
++    for match in re.finditer(r"(?m)^BO_ (\d+) [^\n]+\n(?:[ \t]+SG_[^\n]+\n)*",source):
++        if int(match.group(1)) in (0x127,0xa6):
++            blocks.append(match.group(0))
++    if len(blocks) != 2:
++        raise ValueError("기존 Toyota 제동력 메시지 두 개를 읽지 못했습니다")
++    return cantools.database.load_string('VERSION ""\n\nNS_ :\n\nBS_:\n\nBU_: XXX\n\n'+'\n'.join(blocks),
++                                         database_format="dbc",strict=True)
++
++
++def inspect(path, schema, database):
++    values = {"FDRVREAL": [], "BRAKE_FORCE": []}
++    counts = Counter()
++    controls = Counter()
++    for_kind = {0x127: "FDRVREAL", 0xa6: "BRAKE_FORCE"}
++    with events(path, schema) as stream:
++        for event in stream:
++            kind = event.which()
++            if kind == "carControl":
++                controls["messages"] += 1
++                controls["enabled"] += int(event.carControl.enabled)
++                controls["longActive"] += int(event.carControl.longActive)
++            if kind != "can":
++                continue
++            for frame in event.can:
++                if frame.src != 0 or frame.address not in for_kind:
++                    continue
++                counts["received"] += 1
++                data = bytes(frame.dat)
++                if len(data) != 8:
++                    counts["rejected_length"] += 1
++                    continue
++                if frame.address == 0x127 and data[-1] != toyota_checksum(frame.address, None, bytearray(data)):
++                    counts["rejected_checksum"] += 1
++                    continue
++                try:
++                    decoded = database.decode_message(frame.address, data, decode_choices=False)
++                except (cantools.database.errors.DecodeError, KeyError):
++                    counts["decode_error"] += 1
++                    continue
++                signal = for_kind[frame.address]
++                value = float(decoded[signal])
++                # 기존 DBC 비트 배치로 독립 추출해 decoder·부호·단위 오류를 함께 확인한다.
++                if frame.address == 0x127:
++                    raw = ((data[3] & 7) << 8) | data[4]
++                    expected = (raw-2048 if raw & 1024 else raw)*25
++                else:
++                    expected = data[2]*40
++                    counts["brake_raw_full_scale_255"] += int(data[2] == 255)
++                if value != expected:
++                    counts["independent_decode_mismatch"] += 1
++                    continue
++                values[signal].append(value)
++    channels = {}
++    for signal, samples in values.items():
++        channels[signal] = {"samples": len(samples), "min_N": min(samples,default=None),
++                            "max_N": max(samples,default=None),
++                            "negative_samples": sum(value < 0 for value in samples),
++                            "positive_samples": sum(value > 0 for value in samples),
++                            "zero_samples": sum(value == 0 for value in samples)}
++    return {"file": path.name, "bus": 0, "counts": dict(counts), "channels": channels,
++            "carControl": dict(controls), "pure_regenerative_braking": "unverified",
++            "energy_recovery_Wh": None, "physical_CAN_transmission": False,
++            "BRAKE_checksum_defined_in_DBC": False,
++            "force_signal_ECU_calibration_verified": False,
++            "interpretation": "DBC수신값; FDRVREAL은엔진·모터·회생·크리프혼합이고실제물리분담미확인. BRAKE의255포화/무효의미도미확인"}
++
++
++def main():
++    if hasattr(sys.stdout,"reconfigure"):
++        sys.stdout.reconfigure(encoding="utf-8")
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("logs", type=Path)
++    parser.add_argument("--schemas", type=Path, required=True)
++    parser.add_argument("--dbc", type=Path, required=True)
++    parser.add_argument("--output", type=Path, required=True)
++    args = parser.parse_args()
++    schema_root = args.schemas.resolve()
++    schema = capnp.SchemaParser().load((schema_root/"log.capnp").as_posix(),
++                                      imports=[schema_root.as_posix(), (schema_root/"include").as_posix()])
++    database = load_force_database(args.dbc)
++    for address, signal in ((0x127,"FDRVREAL"),(0xa6,"BRAKE_FORCE")):
++        message = database.get_message_by_frame_id(address)
++        if message.length != 8 or signal not in {s.name for s in message.signals}:
++            raise ValueError("필요한 기존 Toyota DBC 계약과 다릅니다")
++    paths = [args.logs] if args.logs.is_file() else sorted(args.logs.glob("rlog*.zst"))
++    if not paths:
++        raise ValueError("저장된 로그가 없습니다")
++    result = [inspect(path,schema.Event,database) for path in paths]
++    args.output.parent.mkdir(parents=True,exist_ok=True)
++    args.output.write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding="utf-8")
++    print(json.dumps(result,ensure_ascii=False))
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/tools/ars510_validation/signal/camera_audit.py b/tools/ars510_validation/signal/camera_audit.py
+new file mode 100644
+index 0000000..5b43ebf
+--- /dev/null
++++ b/tools/ars510_validation/signal/camera_audit.py
+@@ -0,0 +1,80 @@
++"""사용자 로그에서 허용된 카메라·보정·유효성 필드의 분포만 읽는다."""
++
++import argparse
++from collections import Counter, defaultdict
++import json
++import math
++from pathlib import Path
++import sys
++
++import zstandard
++
++
++REPO_ROOT = Path(__file__).resolve().parents[3]
++sys.path.insert(0, str(REPO_ROOT))
++from tools.ars510_offline.bootstrap import prepare  # noqa: TID251
++
++prepare()
++
++from openpilot.cereal import log
++from openpilot.common.transformations.camera import DEVICE_CAMERAS
++
++
++def audit(root):
++  types, sensors, dimensions, calibrations = Counter(), Counter(), Counter(), Counter()
++  validity = defaultdict(Counter)
++  for path in sorted(Path(root).rglob("rlog*.zst")):
++    device_type = "unknown"
++    with path.open("rb") as stream, zstandard.ZstdDecompressor().stream_reader(stream) as decompressed:
++      raw = decompressed.read()
++    for event in log.Event.read_multiple_bytes(raw):
++      try:
++        kind = event.which()
++      except Exception:
++        validity["schema"]["unknown_union"] += 1
++        continue
++      if kind not in ("initData", "deviceState", "roadCameraState", "liveCalibration", "livePose"):
++        continue
++      validity[kind]["event_valid" if event.valid else "event_invalid"] += 1
++      value = getattr(event, kind)
++      if kind in ("initData", "deviceState"):
++        device_type = str(value.deviceType)
++        types[device_type] += 1
++      elif kind == "roadCameraState":
++        sensor = str(value.sensor)
++        sensors[sensor] += 1
++        config = DEVICE_CAMERAS.get((device_type, sensor))
++        if config is None:
++          validity[kind]["camera_mapping_unknown"] += 1
++        else:
++          dimensions[f"configured:{config.fcam.width}x{config.fcam.height}"] += 1
++          validity[kind]["os04c10_1344x760" if sensor == "os04c10" and config.fcam.size == (1344, 760)
++                         else "different_prepare_camera_profile"] += 1
++      elif kind == "liveCalibration":
++        calibrations[str(value.calStatus)] += 1
++        okay = len(value.rpyCalib) == 3 and all(math.isfinite(x) for x in value.rpyCalib)
++        validity[kind]["rpy_finite" if okay else "rpy_invalid"] += 1
++      elif kind == "livePose":
++        for flag in ("inputsOK", "posenetOK", "sensorsOK"):
++          validity[kind][f"{flag}:{bool(getattr(value, flag))}"] += 1
++        for measurement in ("angularVelocityDevice", "orientationNED"):
++          validity[kind][f"{measurement}.valid:{bool(getattr(value, measurement).valid)}"] += 1
++        delta_ns = int(event.logMonoTime) - int(value.timestamp)
++        validity[kind]["capture_age_le_200ms" if 0 <= delta_ns <= 200_000_000 else "capture_age_invalid"] += 1
++  return {"deviceType": dict(types), "sensor": dict(sensors), "widthHeight": dict(dimensions),
++          "calibrationStatus": dict(calibrations), "validityCounts": {key: dict(value) for key, value in validity.items()}}
++
++
++def main():
++  parser = argparse.ArgumentParser(description=__doc__)
++  parser.add_argument("--input", type=Path, required=True)
++  parser.add_argument("--output", type=Path, required=True)
++  args = parser.parse_args()
++  result = audit(args.input)
++  args.output.parent.mkdir(parents=True, exist_ok=True)
++  args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
++  print(json.dumps(result, ensure_ascii=False))
++
++
++if __name__ == "__main__":
++  main()
+diff --git a/tools/ars510_validation/signal/core.py b/tools/ars510_validation/signal/core.py
+new file mode 100644
+index 0000000..35f50e6
+--- /dev/null
++++ b/tools/ars510_validation/signal/core.py
+@@ -0,0 +1,203 @@
++"""원형 신호 판단·발행 스키마·최종 출력 제약의 독립 오프라인 검증.
++
++카메라 인식 모델과 MPC 계산을 대체하지 않는다. 이 모듈의 Windows 경로는
++원본 최종 출력 메서드만 추출하며, 전체 계획 계산은 Linux 원형 경로로 별도 검증한다.
++"""
++
++import ast
++from dataclasses import asdict
++import json
++from pathlib import Path
++import sys
++from types import SimpleNamespace
++
++import numpy as np
++
++
++REPO_ROOT = Path(__file__).resolve().parents[3]
++sys.path.insert(0, str(REPO_ROOT))
++from tools.ars510_offline.bootstrap import prepare  # noqa: TID251
++
++prepare()
++
++from openpilot.cereal import log
++from openpilot.selfdrive.carrot.signal_start_guard import SignalStartGuard, publish_start_observation
++from openpilot.selfdrive.carrot.signal_stop_prepare import SignalStopPrepare, housing_alignment, housing_range
++from openpilot.selfdrive.carrot.signal_stop_prepare_runtime import publish_prepare_observation
++
++
++def load_output_methods():
++  """수정 없는 LongitudinalPlanner의 두 최종 제약 메서드만 불러온다."""
++  path = REPO_ROOT / "openpilot/selfdrive/controls/lib/longitudinal_planner.py"
++  tree = ast.parse(path.read_text(encoding="utf-8"))
++  original = next(node for node in tree.body if isinstance(node, ast.ClassDef) and node.name == "LongitudinalPlanner")
++  methods = [node for node in original.body if isinstance(node, ast.FunctionDef)
++             and node.name in ("apply_signal_stop_prepare", "apply_signal_start_guard")]
++  module = ast.fix_missing_locations(ast.Module(body=methods, type_ignores=[]))
++  namespace = {}
++  exec(compile(module, str(path), "exec"), namespace)
++  return namespace
++
++
++OUTPUT_METHODS = load_output_methods()
++
++
++def observation_record(timestamp, frame_id, color="red", *, session="synthetic", source="detected", box=None):
++  """인식 결과 형식의 합성 입력이며 실제 이미지의 인식 성공을 뜻하지 않는다."""
++  return {
++    "session": session, "frame_id": frame_id, "timestamp_eof": round(timestamp * 1e9),
++    "tracks": [{"id": 1, "box": box or [667, 260, 707, 270], "age": 0,
++                "state": color, "observations": 10,
++                "evidence": {"raw": color, "source": source, "quality": .9,
++                             "red_score": .9 if color == "red" else 0.,
++                             "green_score": .9 if color == "green" else 0.}}],
++  }
++
++
++def publish_packets(record, directory):
++  """실제 publisher가 만든 두 JSON 스키마를 작업 폴더에서 읽는다."""
++  directory = Path(directory)
++  directory.mkdir(parents=True, exist_ok=True)
++  for name in ("start_guard_enabled", "stop_prepare_enabled"):
++    (directory / name).write_text("1", encoding="utf-8")
++  start_path, prepare_path = directory / "start.json", directory / "prepare.json"
++  publish_start_observation(record, directory, start_path)
++  publish_prepare_observation(record, directory, prepare_path)
++  return json.loads(start_path.read_text(encoding="utf-8")), json.loads(prepare_path.read_text(encoding="utf-8"))
++
++
++class SchemaInputs(dict):
++  """소켓 없이 실제 Cap'n Proto 서비스 스키마에 합성 값을 넣는다."""
++
++  def __init__(self, now=100., *, speed=15., lead=False):
++    self.events = {}
++    for service in ("carState", "radarState", "modelV2", "selfdriveState", "carControl", "controlsState",
++                    "livePose", "liveCalibration", "roadCameraState", "deviceState"):
++      event = log.Event.new_message(valid=True)
++      event.init(service)
++      self.events[service] = event
++      self[service] = getattr(event, service)
++    self["carState"].canValid = True
++    self["carState"].gearShifter = "drive"
++    self["carState"].vEgo = speed
++    self["carState"].vEgoCluster = speed
++    self["carState"].vCluRatio = 1.
++    self["carState"].vCruise = 75.
++    self["carControl"].enabled = True
++    self["carControl"].longActive = True
++    self["controlsState"].longControlState = "pid"
++    self["selfdriveState"].enabled = True
++    self["selfdriveState"].personality = "standard"
++    self["radarState"].leadOne.status = lead
++    self["radarState"].leadTwo.status = False
++    self["radarState"].leadOne.dRel = 35.
++    self["radarState"].leadOne.radarTrackId = 1001
++    self["radarState"].leadOne.vLead = speed
++    self["radarState"].leadOne.vRel = 0.
++    self["radarState"].leadOne.aLeadK = 0.
++    self["modelV2"].position.x = np.linspace(0, 160, 33).tolist()
++    self["modelV2"].position.y = [0.] * 33
++    self["modelV2"].velocity.x = [speed] * 33
++    self["modelV2"].acceleration.x = [0.] * 33
++    self["modelV2"].orientationRate.z = [0.] * 33
++    self["modelV2"].action.desiredVelocity = speed
++    self["modelV2"].meta.disengagePredictions.gasPressProbs = [1., 1.]
++    self["modelV2"].meta.laneChangeState = "off"
++    self["modelV2"].laneLines = [
++      {"x": np.linspace(0, 200, 33).tolist(), "y": [offset] * 33, "z": [0.] * 33}
++      for offset in (-5.4, -1.8, 1.8, 5.4)
++    ]
++    self["modelV2"].laneLineProbs = [.9] * 4
++    self["modelV2"].laneLineStds = [.2] * 4
++    self["modelV2"].roadEdges = [
++      {"x": np.linspace(0, 200, 33).tolist(), "y": [offset] * 33, "z": [0.] * 33}
++      for offset in (-4., 4.)
++    ]
++    self["modelV2"].roadEdgeStds = [.2, .2]
++    self["deviceState"].deviceType = "tici"
++    self["roadCameraState"].sensor = "os04c10"
++    self["liveCalibration"].calStatus = "calibrated"
++    self["liveCalibration"].rpyCalib = [0., 0., 0.]
++    pose = self["livePose"]
++    pose.inputsOK = pose.posenetOK = pose.sensorsOK = True
++    pose.angularVelocityDevice.valid = pose.orientationNED.valid = True
++    pose.angularVelocityDevice.xStd = pose.angularVelocityDevice.yStd = pose.angularVelocityDevice.zStd = .001
++    self.seen = dict.fromkeys(self.events, True)
++    self.valid = dict.fromkeys(self.events, True)
++    self.alive = dict.fromkeys(self.events, True)
++    event = log.Event.new_message(valid=False)
++    event.init("carrotMan")
++    self.events["carrotMan"] = event
++    self["carrotMan"] = event.carrotMan
++    self.seen["carrotMan"] = self.valid["carrotMan"] = self.alive["carrotMan"] = False
++    self.touch(now)
++
++  def touch(self, now):
++    self.recv_time = dict.fromkeys(self.events, now)
++    # 생성 시각과 동일한 내림 규칙을 써 1ns 미래 입력을 만들지 않는다.
++    self.logMonoTime = dict.fromkeys(self.events, int(now * 1e9))
++    self["livePose"].timestamp = int((now - .001) * 1e9)
++    for service, event in self.events.items():
++      event.logMonoTime = int(now * 1e9)
++      event.valid = self.valid[service]
++
++  def update(self, timeout=0):
++    # IPC 수신만 격리한다. 이미 배치한 실제 메시지와 유효성 메타데이터를 사용한다.
++    return None
++
++  def all_checks(self, service_list=None):
++    services = service_list or [key for key in self.events if key != "carrotMan"]
++    return all(self.seen[key] and self.valid[key] and self.alive[key] for key in services)
++
++  def geometry(self, box):
++    model = self["modelV2"]
++    return housing_range(box, 1141.5, [0., 0., 0.], model.roadEdges, model.roadEdgeStds,
++                         model.laneLines, model.laneLineProbs, model.laneLineStds)
++
++  def alignment(self, box, distance):
++    model = self["modelV2"]
++    return housing_alignment(box, distance, 1141.5, [0., 0., 0.], model.roadEdges, model.roadEdgeStds,
++                             model.laneLines, model.laneLineProbs, model.laneLineStds)
++
++
++class SignalBridge:
++  """원형 판단 결과를 원형 최종 출력 제약에 전달한다. MPC는 포함하지 않는다."""
++
++  def __init__(self):
++    self.start = SignalStartGuard()
++    self.prepare = SignalStopPrepare()
++    self.output = SimpleNamespace(output_a_target=0., output_v_target_now=15., output_j_target_now=0.,
++                                  output_should_stop=False, mpc=SimpleNamespace(mode="acc"), dt=.05,
++                                  a_desired=0., coasting_target=0.)
++
++  def step(self, now, sm, start_packet, prepare_packet, *, mode=2, target_accel=1., model_stopping=False,
++           entry_allowed=True, turning=False, departure=True, reset_state=False, plan_mode="acc"):
++    cs, radar = sm["carState"], sm["radarState"]
++    valid = sm.all_checks() and cs.canValid
++    enabled = mode > 0 and sm["selfdriveState"].enabled and sm["carControl"].longActive
++    start = self.start.update(now, start_packet, enabled=enabled, valid=valid,
++                              drive=str(cs.gearShifter) == "drive", gas=cs.gasPressed,
++                              speed=cs.vEgo, departure=departure)
++    prepare_decision = self.prepare.update(now, prepare_packet, enabled=enabled, valid=valid,
++                                          drive=str(cs.gearShifter) == "drive", speed=cs.vEgo,
++                                          gas=cs.gasPressed, brake=cs.brakePressed,
++                                          lead=radar.leadOne.status or radar.leadTwo.status,
++                                          turning=turning or cs.leftBlinker or cs.rightBlinker,
++                                          model_stopping=model_stopping, entry_allowed=entry_allowed,
++                                          geometry=sm.geometry, alignment=sm.alignment)
++    carrot = SimpleNamespace(start_decision=start, prepare_decision=prepare_decision,
++                             prepare_control_active=prepare_decision.active and mode == 2)
++    self.output.output_a_target = target_accel
++    self.output.output_v_target_now = max(0., cs.vEgo)
++    self.output.output_j_target_now = 1.
++    self.output.output_should_stop = model_stopping
++    self.output.a_desired = target_accel
++    self.output.coasting_target = 75.
++    self.output.mpc.mode = plan_mode
++    OUTPUT_METHODS["apply_signal_stop_prepare"](self.output, sm, carrot, reset_state, now=now)
++    OUTPUT_METHODS["apply_signal_start_guard"](self.output, carrot)
++    return {"now": now, "mode": mode, "speed": cs.vEgo, "input_accel": target_accel,
++            "start": asdict(start), "prepare": asdict(prepare_decision),
++            "output_accel": self.output.output_a_target, "output_speed": self.output.output_v_target_now,
++            "output_jerk": self.output.output_j_target_now, "should_stop": self.output.output_should_stop,
++            "backend": "original_signal_classes_and_extracted_final_output_methods"}
+diff --git a/tools/ars510_validation/signal/native_signal.py b/tools/ars510_validation/signal/native_signal.py
+new file mode 100644
+index 0000000..9351930
+--- /dev/null
++++ b/tools/ars510_validation/signal/native_signal.py
+@@ -0,0 +1,270 @@
++"""Linux 원형 CarrotPlanner/MPC/LongControl에 합성 신호 입력을 연결한다.
++
++입출력만 작업 프로세스에 격리한다. 이 실행은 이미지 인식 정확도나 실차
++응답을 입증하지 않으며, 임의 차량 메시지는 생성·송신하지 않는다.
++"""
++
++import argparse
++from contextlib import contextmanager
++import csv
++from datetime import datetime, UTC
++import io
++import json
++import math
++from pathlib import Path
++import sys
++import time
++
++
++REPO_ROOT = Path(__file__).resolve().parents[3]
++WORK_ROOT = REPO_ROOT.parent
++sys.path.insert(0, str(WORK_ROOT / "native_sim"))
++from offline_io import MemoryParams, prepare
++
++prepare(solver_overlay=True)
++
++from openpilot.cereal import log
++from opendbc.car import gen_empty_fingerprint
++from opendbc.car.toyota.interface import CarInterface
++from opendbc.car.toyota.values import CAR
++from openpilot.selfdrive.carrot.carrot_functions import CarrotPlanner
++from openpilot.selfdrive.carrot.signal_assist import SignalAssist
++from openpilot.selfdrive.carrot.signal_start_guard import SignalStartRuntime
++from openpilot.selfdrive.carrot.signal_stop_prepare_runtime import SignalPrepareRuntime
++import openpilot.selfdrive.carrot.signal_mode as mode_policy
++import openpilot.selfdrive.carrot.signal_start_guard as start_module
++import openpilot.selfdrive.carrot.signal_stop_prepare_runtime as prepare_module
++from openpilot.selfdrive.controls.lib.longitudinal_planner import LongitudinalPlanner
++from openpilot.selfdrive.controls.lib.longcontrol import LongControl
++from openpilot.selfdrive.modeld.constants import ModelConstants
++from openpilot.selfdrive.modeld.signal_tracking_shadow import tracking_camera_profile
++from tools.ars510_validation.signal.core import SchemaInputs, observation_record  # noqa: TID251
++
++
++class MemoryObservationPath:
++  """실제 JSON 발행·해석 코드를 그대로 쓰는 프로세스 내부 파일 입출력."""
++  storage = {}
++
++  def __init__(self, name):
++    self.name = str(name)
++
++  def with_suffix(self, suffix):
++    return MemoryObservationPath(str(Path(self.name).with_suffix(suffix)))
++
++  def write_text(self, text, *args, **kwargs):
++    self.storage[self.name] = text.encode("utf-8")
++    return len(text)
++
++  def replace(self, destination):
++    self.storage[str(destination.name)] = self.storage.pop(self.name)
++
++  def open(self, mode="rb"):
++    if self.name not in self.storage:
++      raise FileNotFoundError(self.name)
++    return io.BytesIO(self.storage[self.name])
++
++
++def publication_path(value):
++  return value if isinstance(value, MemoryObservationPath) else Path(value)
++
++
++class ReplayClock:
++  def __init__(self, now=100.):
++    self.now = now
++
++
++@contextmanager
++def input_clock(clock):
++  """저장 입력 재생의 시각 읽기만 격리하며 계산 함수를 바꾸지 않는다."""
++  original_monotonic, original_time = time.monotonic, time.time  # noqa: TID251
++  time.monotonic = lambda: clock.now
++  time.time = lambda: clock.now  # noqa: TID251
++  try:
++    yield
++  finally:
++    time.monotonic, time.time = original_monotonic, original_time  # noqa: TID251
++
++
++class PlanSink:
++  def __init__(self):
++    self.event = None
++
++  def send(self, service, event):
++    if service != "longitudinalPlan":
++      raise RuntimeError("종방향 계획 이외의 송신 시도는 허용하지 않습니다")
++    self.event = event
++
++
++class NativeSignalHarness:
++  def __init__(self, directory, *, speed=15., clock=None, camera_profile='os04c10'):
++    self.clock = clock or ReplayClock()
++    self.directory = Path(directory)
++    self.directory.mkdir(parents=True, exist_ok=True)
++    MemoryParams.values["SignalAssistMode"] = "0"
++    mode_policy._params = None
++    mode_policy._mode = 0
++    mode_policy._next_read = 0.
++    MemoryObservationPath.storage.clear()
++    self.sm = SchemaInputs(self.clock.now, speed=speed)
++    self.camera_profile = camera_profile
++    if camera_profile == 'ox03c10':
++      self.sm['deviceState'].deviceType = 'tizi'
++      self.sm['roadCameraState'].sensor = 'ox03c10'
++    self.start_runtime = SignalStartRuntime(observation_path=self.directory / "start.json")
++    self.prepare_runtime = SignalPrepareRuntime()
++    self.prepare_runtime.observation_path = self.directory / "prepare.json"
++    self.prepare_runtime.extra = self.sm
++    # 느린 데스크톱 파일시스템을 차량 tmpfs 시간으로 간주하지 않는다.
++    # JSON 변환·크기 검사·수신 해석은 원형이고 파일 저장소만 메모리로 격리한다.
++    self.start_runtime.observation_path = MemoryObservationPath("start.json")
++    self.prepare_runtime.observation_path = MemoryObservationPath("prepare.json")
++    start_module.Path = prepare_module.Path = publication_path
++    self.carrot = CarrotPlanner(signal_assist=SignalAssist(), start_guard=self.start_runtime.guard,
++                                stop_prepare=self.prepare_runtime.prepare)
++    self.carrot._start_runtime = self.start_runtime
++    self.carrot._prepare_runtime = self.prepare_runtime
++    self.cp = CarInterface.get_params(CAR.TOYOTA_RAV4_TSS2_2022, gen_empty_fingerprint(), [], True, False, False)
++    self.cp_before = self.cp.to_bytes()
++    self.cp.clear_write_flag()
++    self.planner = LongitudinalPlanner(self.cp, init_v=speed)
++    self.control = LongControl(self.cp)
++    self.sink = PlanSink()
++    self.frame_id = 0
++
++  def model_trajectory(self, speed, stop_distance=None):
++    model = self.sm["modelV2"]
++    decel = speed * speed / (2 * max(.1, stop_distance)) if stop_distance is not None else 0.
++    for index, horizon in enumerate(ModelConstants.T_IDXS):
++      if stop_distance is None:
++        # 정지 차량의 출발 검사는 명시적인 미래 진행 의도를 넣는다.
++        target = max(speed, self.sm["carState"].vCruise / 3.6)
++        rise_time = max(0., target - speed)
++        elapsed = min(horizon, rise_time)
++        velocity = min(target, speed + horizon)
++        position = speed * elapsed + .5 * elapsed * elapsed + target * max(0., horizon - rise_time)
++        acceleration = 1. if horizon < rise_time else 0.
++      else:
++        stop_time = speed / decel if decel > 0 else 0.
++        elapsed = min(horizon, stop_time)
++        velocity = max(0., speed - decel * horizon)
++        position = speed * elapsed - .5 * decel * elapsed * elapsed
++        acceleration = -decel if velocity > 0 else 0.
++      model.position.x[index] = position
++      model.velocity.x[index] = velocity
++      model.acceleration.x[index] = acceleration
++    model.action.desiredVelocity = speed
++    model.action.desiredAcceleration = -decel
++    model.action.shouldStop = stop_distance is not None
++
++  def step(self, now, *, signal_mode=2, speed=15., accel=0., color="red", latency=.1,
++           gas=False, brake=False, lead=False, can_valid=True, enabled=True, model_stop_distance=None,
++           session="synthetic", publish=True, plant=None, lead_speed=None, lead_distance=35.):
++    self.clock.now = now
++    MemoryParams.values["SignalAssistMode"] = str(signal_mode)
++    cs = self.sm["carState"]
++    cs.vEgo = cs.vEgoCluster = speed
++    cs.aEgo = accel
++    cs.gasPressed, cs.brakePressed, cs.canValid = gas, brake, can_valid
++    cs.standstill = speed < .01
++    self.sm.valid["carState"] = can_valid
++    self.sm["selfdriveState"].enabled = enabled
++    self.sm["carControl"].enabled = enabled
++    self.sm["carControl"].longActive = enabled and not gas and not brake and can_valid
++    self.sm["controlsState"].longControlState = "pid" if self.sm["carControl"].longActive else "off"
++    self.sm["radarState"].leadOne.status = lead
++    self.sm["radarState"].leadOne.radar = lead
++    actual_lead_speed = max(0., speed - 2.) if lead_speed is None else lead_speed
++    self.sm["radarState"].leadOne.dRel = lead_distance
++    self.sm["radarState"].leadOne.vLead = actual_lead_speed
++    self.sm["radarState"].leadOne.vRel = actual_lead_speed - speed if lead else 0.
++    self.sm.touch(now)
++    self.model_trajectory(speed, model_stop_distance)
++    if publish:
++      record = observation_record(now - latency, self.frame_id, color, session=session)
++      if self.camera_profile == 'ox03c10':
++        profile = tracking_camera_profile(type('MetadataFrame', (), {'width': 1928, 'height': 1208})(), self.sm, now)
++        if profile is not None:
++          record['source_size'] = profile['source_size']
++          record['coordinate_transform'] = profile['coordinate_transform']
++      start_module.publish_start_observation(record, path=self.start_runtime.observation_path)
++      prepare_module.publish_prepare_observation(record, path=self.prepare_runtime.observation_path)
++      self.frame_id += 1
++    self.planner.update(self.sm, self.carrot)
++    self.planner.publish(self.sm, self.sink, self.carrot)
++    raw = self.sink.event.to_bytes()
++    self.sink.event.clear_write_flag()
++    with log.Event.from_bytes(raw) as event:
++      plan = event.longitudinalPlan
++      # 원형 계획은 20 Hz, LongControl은 DT_CTRL=10 ms이므로 한 계획에
++      # 실제 제어 업데이트를 다섯 번 실행한다. 계산 함수를 대체하지 않는다.
++      control_samples = []
++      for control_index in range(5):
++        control_output, _, _ = self.control.update(self.sm["carControl"].longActive, cs, plan, (-3.5, 2.),
++                                                  control_index * .01, self.sm["radarState"])
++        control_samples.append(float(control_output))
++        if plant is not None:
++          plant.advance(float(control_output), driver_gas=gas, driver_brake=brake)
++          cs.vEgo = cs.vEgoCluster = plant.speed
++          cs.aEgo = plant.accel
++          cs.standstill = plant.speed < .01
++      result = {
++        "time": now, "mode": signal_mode, "speed": float(speed), "color": color,
++        "latency": latency, "can_valid": can_valid, "gas": gas, "brake": brake,
++        "solver_status": int(self.planner.mpc.solution_status), "source": str(plan.longitudinalPlanSource),
++        "state": self.carrot.xState.name, "a_target": float(plan.aTarget), "v_target": float(plan.vTargetNow),
++        "j_target": float(plan.jTargetNow), "should_stop": bool(plan.shouldStop),
++        "controller_accel": float(control_output), "start_hold": bool(self.carrot.start_decision.hold),
++        "start_released": bool(self.carrot.start_decision.released),
++        "start_reason": self.carrot.start_decision.reason, "prepare": bool(self.carrot.prepare_decision.active),
++        "prepare_control": bool(self.carrot.prepare_control_active), "prepare_reason": self.carrot.prepare_decision.reason,
++        "serialized_bytes": len(raw), "events": ",".join(str(item.name) for item in plan.events),
++        "processing_delay": float(plan.processingDelay),
++        "control_updates": len(control_samples),
++        "plan_valid": bool(event.valid),
++      }
++    if not all(math.isfinite(result[key]) for key in ("a_target", "v_target", "j_target", "controller_accel")):
++      raise AssertionError("원형 계획 또는 제어 출력에 유한하지 않은 값이 있습니다")
++    return result
++
++  def unchanged_cp(self):
++    raw = self.cp.to_bytes()
++    self.cp.clear_write_flag()
++    return raw == self.cp_before
++
++
++def main():
++  parser = argparse.ArgumentParser(description=__doc__)
++  parser.add_argument("--output", type=Path, required=True)
++  parser.add_argument("--steps", type=int, default=120)
++  parser.add_argument("--mode", type=int, choices=(0, 1, 2), default=2)
++  parser.add_argument("--camera-profile", choices=('os04c10', 'ox03c10'), default='os04c10')
++  args = parser.parse_args()
++  args.output.mkdir(parents=True, exist_ok=True)
++  clock = ReplayClock()
++  results = []
++  started = time.perf_counter()
++  with input_clock(clock):
++    harness = NativeSignalHarness(args.output / "transport", clock=clock, camera_profile=args.camera_profile)
++    for index in range(args.steps):
++      results.append(harness.step(100. + index * .05, signal_mode=args.mode))
++  with (args.output / "native_signal.csv").open("w", encoding="utf-8", newline="") as stream:
++    writer = csv.DictWriter(stream, fieldnames=list(results[0]))
++    writer.writeheader()
++    writer.writerows(results)
++  summary = {"timestamp_utc": datetime.now(UTC).isoformat(), "steps": len(results),
++             "mode": args.mode, "native_solver": type(harness.planner.mpc.solver).__module__,
++             "camera_profile": args.camera_profile,
++             "solver_nonzero": sum(row["solver_status"] != 0 for row in results),
++             "prepare_frames": sum(row["prepare"] for row in results),
++             "prepare_control_frames": sum(row["prepare_control"] for row in results),
++             "first_prepare_time": next((row["time"] - 100. for row in results if row["prepare"]), None),
++             "first_negative_target_time": next((row["time"] - 100. for row in results if row["a_target"] < 0), None),
++             "last_target": results[-1]["a_target"], "carparams_unchanged": harness.unchanged_cp(),
++             "wall_seconds": time.perf_counter() - started,
++             "camera_recognition_verified": False, "vehicle_verified": False}
++  (args.output / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
++  print(json.dumps(summary, ensure_ascii=False), flush=True)
++
++
++if __name__ == "__main__":
++  main()
+diff --git a/tools/ars510_validation/signal/native_signal_can.py b/tools/ars510_validation/signal/native_signal_can.py
+new file mode 100644
+index 0000000..621eaba
+--- /dev/null
++++ b/tools/ars510_validation/signal/native_signal_can.py
+@@ -0,0 +1,201 @@
++"""합성 OX 신호→원형 계획/제어→Toyota CAN 메모리 디코딩의 짧은 연결 검사.
++
++소켓·차량·CarInterface.init에는 접근하지 않는다. 차량 응답은 명시한 단순
++지연 모형이며 영상 색 정확도와 차량 안전성, Panda 허용을 증명하지 않는다.
++"""
++
++import argparse
++from collections import Counter
++import csv
++from datetime import UTC, datetime
++import hashlib
++import json
++import math
++from pathlib import Path
++from types import SimpleNamespace
++
++from tools.ars510_validation.signal.native_signal import NativeSignalHarness, ReplayClock, input_clock, REPO_ROOT  # noqa: TID251
++from tools.ars510_validation.signal.realtime_signal import DelayedPlant, source_hashes  # noqa: TID251
++from opendbc.can import CANParser
++from opendbc.car import Bus
++from opendbc.car.toyota.carcontroller import CarController
++from opendbc.car.toyota.toyotacan import toyota_checksum
++from opendbc.car.toyota.values import DBC
++from opendbc.dbc.generator.generator import create_dbc
++
++
++CASES = ('moving_red_prepare', 'moving_mode0_red', 'moving_mode1_red', 'moving_stale_red',
++         'moving_model_stop', 'moving_can_fault', 'stopped_red_green_go', 'stopped_green_keeps_model_stop',
++         'moving_lead_priority', 'moving_gas_override', 'moving_brake_override', 'moving_unknown_loss')
++
++
++def all_source_hashes():
++  result = source_hashes()
++  for name in ('opendbc_repo/opendbc/car/toyota/carcontroller.py', 'tools/ars510_validation/signal/native_signal_can.py'):
++    result[name] = hashlib.sha256((REPO_ROOT/name).read_bytes()).hexdigest()
++  return result
++
++
++class ToyotaCanPlant(DelayedPlant):
++  """LongControl 수치 출력을 실제 원형 CAN 인코딩/디코딩 뒤 모형에 전달한다."""
++  def __init__(self, harness, generated_dbc, *, speed, delay=.15, tau=.15):
++    super().__init__(speed, delay, tau)
++    self.harness = harness
++    dbc = DBC[harness.cp.carFingerprint].copy()
++    dbc[Bus.pt] = str(generated_dbc)
++    self.controller = CarController(dbc, harness.cp)
++    self.parser = CANParser(str(generated_dbc), [('ACC_CONTROL', 33)], 0)
++    self.control_index = 0
++    self.command = 0.
++    self.rows = []
++    self.failures = Counter()
++    self.acc_messages = 0
++    self.generated_indices = []
++    self.retained_positive_hold_ticks = 0
++
++  def advance(self, command, *, driver_gas=False, driver_brake=False):
++    h = self.harness
++    cs, cc = h.sm['carState'], h.sm['carControl']
++    plan = h.sink.event.longitudinalPlan
++    now = h.clock.now + (self.control_index % 5) * .01
++    cc.latActive = False
++    cc.orientationNED = [0., 0., 0.]
++    cc.hudControl.leadDistanceBars = 2
++    cc.hudControl.leadVisible = h.sm['radarState'].leadOne.status
++    cc.actuators.accel = command
++    cc.actuators.aTarget = float(plan.aTarget)
++    cc.actuators.jerk = float(plan.jTargetNow)
++    cc.actuators.longControlState = h.control.long_control_state
++    # 원형 native 폐루프와 같은 읽기 전용 상태 fixture다. 실물 ECU 상태라는 주장이 아니다.
++    state = SimpleNamespace(out=cs, gvc=self.accel, acc_type=1, pcm_acc_status=8,
++                            pcm_follow_distance=4-cc.hudControl.leadDistanceBars, lkas_hud={})
++    _, generated = self.controller.update(cc.as_reader(), state, int(now*1e9))
++    packets = [(address, data, bus) for address, data, bus in generated if address == 0x343 and bus == 0]
++    for address, data, _ in packets:
++      if len(data) != 8 or toyota_checksum(address, None, bytearray(data)) != data[-1]:
++        self.failures['checksum'] += 1
++    if packets:
++      self.generated_indices.append(self.control_index)
++      accepted = self.parser.update([(int(now*1e9), packets)])
++      if 0x343 not in accepted:
++        self.failures['dbc_decode'] += 1
++      else:
++        self.command = float(self.parser.vl['ACC_CONTROL']['ACCEL_CMD'])
++        self.acc_messages += len(packets)
++      if not cc.longActive and self.command != 0:
++        self.failures['inactive_generated_command'] += 1
++    if not math.isfinite(self.command) or not -3.5 <= self.command <= 2.:
++      self.failures['command_bounds'] += 1
++    held = bool(h.carrot.start_decision.hold)
++    if held and self.command > 0:
++      if packets:
++        self.failures['held_red_new_positive_command'] += len(packets)
++      else:
++        # 이미 발행한 명령의 1~2틱 유지와 새 양수 발행은 서로 다른 현상이다.
++        self.retained_positive_hold_ticks += 1
++    # 33.3Hz 메시지 사이에는 실제 마지막 디코딩 명령을 유지한다.
++    super().advance(self.command, driver_gas=driver_gas, driver_brake=driver_brake)
++    self.rows.append({'time': now, 'control_index': self.control_index, 'plan_target': float(plan.aTarget),
++                      'longcontrol_output': float(command), 'acc_control_created': bool(packets),
++                      'decoded_acc_command': self.command, 'can_valid': bool(cs.canValid),
++                      'long_active': bool(cc.longActive), 'start_hold': held,
++                      'long_control_state': str(cc.actuators.longControlState),
++                      'pcm_previous_request': float(self.controller.prev_accel),
++                      'pcm_pid_integral': float(self.controller.long_pid.i),
++                      'start_released': bool(h.carrot.start_decision.released),
++                      'should_stop': bool(plan.shouldStop), 'plant_speed': self.speed, 'plant_accel': self.accel})
++    self.control_index += 1
++
++
++def conditions(case, elapsed, plant):
++  mode = 0 if case == 'moving_mode0_red' else 1 if case == 'moving_mode1_red' or case.startswith('stopped') else 2
++  kwargs = {'signal_mode': mode, 'speed': plant.speed, 'accel': plant.accel, 'plant': plant}
++  if case == 'moving_stale_red':
++    kwargs['latency'] = .201
++  if case == 'moving_model_stop':
++    kwargs['model_stop_distance'] = max(.1, 70.-plant.position)
++  if case == 'moving_can_fault':
++    kwargs['can_valid'] = not 5. <= elapsed < 6.
++  if case == 'moving_lead_priority':
++    kwargs.update(lead=True, lead_speed=12., lead_distance=max(.1, 40.+12.*elapsed-plant.position))
++  if case == 'moving_gas_override':
++    kwargs['gas'] = 5. <= elapsed < 6.
++  if case == 'moving_brake_override':
++    kwargs['brake'] = 5. <= elapsed < 6.
++  if case == 'moving_unknown_loss':
++    kwargs['color'] = 'unknown' if 5. <= elapsed < 7. else 'red'
++  if case.startswith('stopped'):
++    kwargs['enabled'] = elapsed >= 2.
++    kwargs['color'] = 'green' if elapsed >= 5. else 'red'
++  if case == 'stopped_green_keeps_model_stop':
++    kwargs['model_stop_distance'] = .1
++  return kwargs
++
++
++def first_time(rows, predicate):
++  return next((row['time']-100. for row in rows if predicate(row)), None)
++
++
++def main():
++  parser = argparse.ArgumentParser(description=__doc__)
++  parser.add_argument('--output', type=Path, required=True)
++  parser.add_argument('--seconds', type=float, default=12.)
++  args = parser.parse_args()
++  args.output.mkdir(parents=True, exist_ok=True)
++  initial_hashes = all_source_hashes()
++  dbc_directory = args.output/'generated_dbc'
++  dbc_directory.mkdir(exist_ok=True)
++  create_dbc(str(REPO_ROOT/'opendbc_repo/opendbc/dbc/generator/toyota'), 'toyota_nodsu_pt.dbc', str(dbc_directory))
++  generated_dbc = dbc_directory/'toyota_nodsu_pt_generated.dbc'
++  assert generated_dbc.exists()
++  summary = []
++  for case in CASES:
++    clock = ReplayClock()
++    with input_clock(clock):
++      speed = 0. if case.startswith('stopped') else 15.
++      harness = NativeSignalHarness(args.output/'transport', clock=clock, speed=speed, camera_profile='ox03c10')
++      plant = ToyotaCanPlant(harness, generated_dbc, speed=speed)
++      plans = [harness.step(100.+index*.05, **conditions(case, index*.05, plant))
++               for index in range(round(args.seconds/.05))]
++    failures = plant.failures
++    failures['solver_status'] += sum(row['solver_status'] != 0 for row in plans)
++    if plant.generated_indices != list(range(0, plant.control_index, 3)):
++      failures['acc_regular_cadence'] += 1
++    if not harness.unchanged_cp():
++      failures['carparams_changed'] += 1
++    if case in ('moving_mode0_red', 'moving_mode1_red', 'moving_stale_red', 'moving_lead_priority'):
++      failures['ineligible_prepare_control'] += sum(row['prepare_control'] for row in plans)
++    if case == 'moving_red_prepare' and not any(row['prepare_control'] for row in plans):
++      failures['missing_prepare'] += 1
++    if case == 'stopped_green_keeps_model_stop':
++      failures['green_forced_go'] += sum(not row['should_stop'] for row in plans if row['time'] >= 105.)
++    for name, rows in (('plan', plans), ('can_control', plant.rows)):
++      with (args.output/(case+'_'+name+'.csv')).open('w', encoding='utf-8', newline='') as stream:
++        writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
++        writer.writeheader()
++        writer.writerows(rows)
++    result = {'case': case, 'plan_steps': len(plans), 'control_steps': plant.control_index,
++               'acc_messages': plant.acc_messages, 'violations': {key: count for key, count in failures.items() if count},
++               'retained_positive_hold_ticks': plant.retained_positive_hold_ticks,
++               'first_prepare_s': first_time(plans, lambda row: row['prepare_control']),
++               'first_negative_plan_target_s': first_time(plans, lambda row: row['a_target'] < 0),
++               'first_negative_acc_command_s': first_time(plant.rows, lambda row: row['decoded_acc_command'] < 0),
++               'first_negative_plant_accel_s': first_time(plant.rows, lambda row: row['plant_accel'] < 0),
++               'first_green_release_s': first_time(plans, lambda row: row['start_released']),
++               'minimum_acc_command': min(row['decoded_acc_command'] for row in plant.rows),
++               'carparams_unchanged': harness.unchanged_cp()}
++    summary.append(result)
++    print(json.dumps(result, ensure_ascii=False), flush=True)
++  final_hashes = all_source_hashes()
++  report = {'recorded_utc': datetime.now(UTC).isoformat(), 'cases': summary, 'camera_profile': 'ox03c10',
++             'source_unchanged': initial_hashes == final_hashes, 'source_hashes': final_hashes,
++             'plan_hz': 20, 'longcontrol_and_controller_hz': 100, 'acc_nominal_hz': 100/3,
++             'plant_delay_s': .15, 'plant_tau_s': .15, 'real_can_sent': False,
++             'camera_recognition_verified': False, 'vehicle_verified': False, 'panda_permission_verified': False,
++             'long_realtime_gate': False}
++  (args.output/'summary.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
++  return int(any(case['violations'] for case in summary) or initial_hashes != final_hashes)
++
++
++if __name__ == '__main__':
++  raise SystemExit(main())
+diff --git a/tools/ars510_validation/signal/native_signal_can_paced.py b/tools/ars510_validation/signal/native_signal_can_paced.py
+new file mode 100644
+index 0000000..b0739df
+--- /dev/null
++++ b/tools/ars510_validation/signal/native_signal_can_paced.py
+@@ -0,0 +1,186 @@
++"""최신 OX 신호와 Toyota CAN 메모리 폐루프를 35분 실제 시간으로 검사한다.
++
++신호 인식 입력 및 차량 모형은 합성이며 실차 송신·안전성 검증이 아니다.
++계산 코드·기존 한 시간 실행기를 바꾸지 않고 별도 작업 프로세스에서 실행한다.
++"""
++
++import argparse
++from collections import Counter
++import csv
++from datetime import UTC, datetime
++import hashlib
++import json
++from pathlib import Path
++import time
++
++import numpy as np
++import psutil
++
++from tools.ars510_validation.signal.native_signal import NativeSignalHarness, ReplayClock, input_clock, REPO_ROOT  # noqa: TID251
++from tools.ars510_validation.signal.native_signal_can import CASES, ToyotaCanPlant, all_source_hashes, conditions  # noqa: TID251
++from opendbc.dbc.generator.generator import create_dbc
++from offline_io import BUILD_ROOT
++
++
++def endpoint_hashes():
++  result = all_source_hashes()
++  result['tools/ars510_validation/signal/native_signal_can_paced.py'] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
++  result['work/native_sim/offline_io.py'] = hashlib.sha256((REPO_ROOT.parent/'native_sim/offline_io.py').read_bytes()).hexdigest()
++  result['openpilot/common/transformations/camera.py'] = hashlib.sha256(
++    (REPO_ROOT/'openpilot/common/transformations/camera.py').read_bytes()).hexdigest()
++  return result
++
++
++def main():
++  parser = argparse.ArgumentParser(description=__doc__)
++  parser.add_argument('--output', type=Path, required=True)
++  parser.add_argument('--seconds', type=float, default=2100.)
++  args = parser.parse_args()
++  args.output.mkdir(parents=True, exist_ok=True)
++  dbc_directory = args.output/'generated_dbc'
++  dbc_directory.mkdir(exist_ok=True)
++  create_dbc(str(REPO_ROOT/'opendbc_repo/opendbc/dbc/generator/toyota'), 'toyota_nodsu_pt.dbc', str(dbc_directory))
++  generated_dbc = dbc_directory/'toyota_nodsu_pt_generated.dbc'
++  initial_hashes = endpoint_hashes()
++  native_hashes = {str(path.relative_to(BUILD_ROOT)): hashlib.sha256(path.read_bytes()).hexdigest() for path in BUILD_ROOT.rglob('*.so')}
++  started, started_utc = time.perf_counter(), datetime.now(UTC).isoformat()
++  launch = {'started_utc': started_utc, 'requested_seconds': args.seconds, 'source_hashes': initial_hashes,
++            'native_snapshot': BUILD_ROOT.name, 'native_hashes': native_hashes}
++  (args.output/'launch_snapshot.json').write_text(json.dumps(launch, ensure_ascii=False, indent=2), encoding='utf-8')
++  failures, case_counts = Counter(), Counter()
++  maximum_rss, execution_max, late_ticks = 0, 0., 0
++  steps, can_messages, retained_ticks, cp_checks = 0, 0, 0, 0
++  current_case = None
++  harness = plant = None
++  next_report = 0.
++  clock = ReplayClock()
++  control_times = []
++  control_late_ticks, control_max_lateness = 0, 0.
++
++  def paced_update(original):
++    # 시간 대기만 추가한다. 원형 메서드의 인자·반환값·수치 상태는 바꾸지 않는다.
++    def update(*values, **kwargs):
++      nonlocal control_late_ticks, control_max_lateness
++      slot = len(control_times) % 5
++      target = started+steps*.05+slot*.01
++      wait = target-time.perf_counter()
++      if wait > 0:
++        time.sleep(wait)
++      actual = time.perf_counter()
++      control_times.append(actual)
++      lateness = max(0., actual-target)
++      control_max_lateness = max(control_max_lateness, lateness)
++      # 일반 OS의 모든 sleep 깨움 오차를 위반으로 세지 않고 1ms 초과를 따로 기록한다.
++      control_late_ticks += lateness > .001
++      return original(*values, **kwargs)
++    return update
++
++  def finish_case():
++    nonlocal cp_checks
++    if harness is None:
++      return
++    cp_checks += 1
++    if not harness.unchanged_cp():
++      failures['carparams_changed'] += 1
++    if plant.generated_indices != list(range(0, plant.control_index, 3)):
++      failures['acc_regular_cadence'] += 1
++
++  with (args.output/'plan.csv').open('w', encoding='utf-8', newline='') as plan_file, \
++       (args.output/'can_control.csv').open('w', encoding='utf-8', newline='') as can_file, input_clock(clock):
++    plan_writer = can_writer = None
++    while time.perf_counter()-started < args.seconds:
++      schedule = steps*.05
++      case_index = int(schedule//12.)
++      case = CASES[case_index % len(CASES)]
++      elapsed = schedule-case_index*12.
++      if current_case != case:
++        finish_case()
++        current_case = case
++        clock.now = 100.+schedule
++        speed = 0. if case.startswith('stopped') else 15.
++        harness = NativeSignalHarness(args.output/'transport', clock=clock, speed=speed, camera_profile='ox03c10')
++        harness.control.update = paced_update(harness.control.update)
++        plant = ToyotaCanPlant(harness, generated_dbc, speed=speed)
++      before_failures = plant.failures.copy()
++      before_messages, before_retained = plant.acc_messages, plant.retained_positive_hold_ticks
++      call_start = time.perf_counter()
++      row = harness.step(100.+schedule, **conditions(case, elapsed, plant))
++      execution_max = max(execution_max, time.perf_counter()-call_start)
++      failures.update(plant.failures-before_failures)
++      can_messages += plant.acc_messages-before_messages
++      retained_ticks += plant.retained_positive_hold_ticks-before_retained
++      if row['solver_status'] != 0:
++        failures['solver_status'] += 1
++      if row['control_updates'] != 5:
++        failures['control_cadence'] += 1
++      if not 0 <= row['processing_delay'] <= .2:
++        failures['invalid_plan_timestamp'] += 1
++      if case in ('moving_mode0_red', 'moving_mode1_red', 'moving_stale_red', 'moving_lead_priority') and row['prepare_control']:
++        failures['ineligible_prepare_control'] += 1
++      if not row['can_valid'] and (row['plan_valid'] or row['controller_accel'] != 0):
++        failures['invalid_can_plan_control'] += 1
++      if case == 'stopped_green_keeps_model_stop' and elapsed >= 5. and not row['should_stop']:
++        failures['green_forced_go'] += 1
++      row.update(case=case, case_elapsed=elapsed, cycle=case_index//len(CASES))
++      if plan_writer is None:
++        plan_writer = csv.DictWriter(plan_file, fieldnames=list(row))
++        plan_writer.writeheader()
++      plan_writer.writerow(row)
++      for sample in plant.rows[-5:]:
++        sample = sample | {'case': case, 'case_elapsed': sample['time']-(100.+case_index*12.),
++                          'cycle': case_index//len(CASES)}
++        if can_writer is None:
++          can_writer = csv.DictWriter(can_file, fieldnames=list(sample))
++          can_writer.writeheader()
++        can_writer.writerow(sample)
++      case_counts[case] += 1
++      steps += 1
++      maximum_rss = max(maximum_rss, psutil.Process().memory_info().rss)
++      wall = time.perf_counter()-started
++      if wall >= next_report:
++        plan_file.flush()
++        can_file.flush()
++        status = {'started_utc': started_utc, 'wall_seconds': wall, 'plan_steps': steps, 'control_steps': steps*5,
++                  'can_messages': can_messages, 'case': case, 'violations': dict(failures),
++                  'retained_positive_hold_ticks': retained_ticks, 'maximum_rss_mb': maximum_rss/2**20,
++                  'maximum_step_ms': execution_max*1000, 'control_late_ticks_over_1ms': control_late_ticks,
++                  'control_max_lateness_ms': control_max_lateness*1000}
++        (args.output/'progress.json').write_text(json.dumps(status, ensure_ascii=False, indent=2), encoding='utf-8')
++        print(json.dumps(status, ensure_ascii=False), flush=True)
++        next_report = wall+60.
++      sleep = started+steps*.05-time.perf_counter()
++      if sleep > 0:
++        time.sleep(sleep)
++      else:
++        late_ticks += 1
++  finish_case()
++  final_hashes = endpoint_hashes()
++  if initial_hashes != final_hashes:
++    failures['source_changed'] += 1
++  final_native_hashes = {str(path.relative_to(BUILD_ROOT)): hashlib.sha256(path.read_bytes()).hexdigest() for path in BUILD_ROOT.rglob('*.so')}
++  if native_hashes != final_native_hashes:
++    failures['native_changed'] += 1
++  intervals_ms = np.diff(control_times)*1000
++  summary = {'started_utc': started_utc, 'finished_utc': datetime.now(UTC).isoformat(),
++             'wall_seconds': time.perf_counter()-started, 'plan_steps': steps, 'control_steps': steps*5,
++             'can_messages': can_messages, 'case_counts': dict(case_counts), 'carparams_checks': cp_checks,
++             'violations': dict(failures), 'retained_positive_hold_ticks': retained_ticks,
++             'source_unchanged': initial_hashes == final_hashes, 'source_hashes': final_hashes,
++             'native_unchanged': native_hashes == final_native_hashes, 'native_snapshot': BUILD_ROOT.name, 'native_hashes': native_hashes,
++             'maximum_rss_mb': maximum_rss/2**20, 'maximum_step_ms': execution_max*1000, 'late_ticks': late_ticks,
++             'control_wall_intercall_ms': {'minimum': float(np.min(intervals_ms)),
++                                           'p99': float(np.percentile(intervals_ms, 99)), 'maximum': float(np.max(intervals_ms))},
++             'control_late_ticks_over_1ms': control_late_ticks, 'control_max_lateness_ms': control_max_lateness*1000,
++             'control_actual_wall_spacing': True,
++             'plan_hz': 20, 'longcontrol_and_controller_hz': 100, 'acc_nominal_hz': 100/3,
++             'plant_delay_s': .15, 'plant_tau_s': .15, 'camera_profile': 'ox03c10',
++             'observer_input': 'synthetic_publisher_json', 'real_can_sent': False,
++             'camera_recognition_verified': False, 'vehicle_verified': False, 'panda_permission_verified': False,
++             'completed_one_hour_claimed': False}
++  (args.output/'summary.json').write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding='utf-8')
++  print(json.dumps(summary, ensure_ascii=False), flush=True)
++  return int(bool(failures))
++
++
++if __name__ == '__main__':
++  raise SystemExit(main())
+diff --git a/tools/ars510_validation/signal/realtime_signal.py b/tools/ars510_validation/signal/realtime_signal.py
+new file mode 100644
+index 0000000..0c85775
+--- /dev/null
++++ b/tools/ars510_validation/signal/realtime_signal.py
+@@ -0,0 +1,204 @@
++"""원형 native 신호·종방향 계산을 20/100 Hz로 한 시간 이상 반복 검증한다.
++
++차량 응답은 명시적인 단순 점질량·지연 모형이며 인식 입력은 합성이다.
++실차 CAN, PCS/AEB, Panda, 실제 설정 저장소에는 접근하지 않는다.
++"""
++
++import argparse
++from collections import Counter, deque
++import csv
++from datetime import datetime, UTC
++import hashlib
++import json
++import math
++from pathlib import Path
++import time
++
++import psutil
++
++from tools.ars510_validation.signal.native_signal import NativeSignalHarness, ReplayClock, input_clock, REPO_ROOT  # noqa: TID251
++from offline_io import BUILD_ROOT
++
++
++CASES = (
++  "mode0_red_go", "mode1_moving_red", "mode2_moving_red", "mode2_stale_red",
++  "mode2_lead_priority", "mode2_model_red_stop", "mode1_prearmed_stop", "green_keeps_model_stop",
++  "mode2_can_fault", "mode2_unknown_loss", "mode2_observer_gap", "mode1_gas_override",
++)
++
++
++class DelayedPlant:
++  """검증된 실차 모형이 아닌, 지연과 1차 응답을 명시한 수치 시험 모형."""
++  def __init__(self, speed, delay=.15, tau=.15):
++    self.speed, self.accel, self.position = speed, 0., 0.
++    self.delay = delay
++    self.tau = tau
++    self.queue = deque([0.] * max(1, round(delay / .01)))
++
++  def advance(self, command, *, driver_gas=False, driver_brake=False):
++    self.queue.append(command)
++    delayed = self.queue.popleft()
++    if driver_brake:
++      delayed = min(delayed, -2.)
++    elif driver_gas:
++      delayed = max(delayed, 1.)
++    old = self.accel
++    self.accel += (.01 / self.tau) * (delayed - self.accel)
++    self.speed = max(0., self.speed + .5 * (old + self.accel) * .01)
++    self.position += self.speed * .01
++
++
++def source_hashes():
++  files = ("openpilot/selfdrive/carrot/carrot_functions.py", "openpilot/selfdrive/carrot/signal_start_guard.py",
++           "openpilot/selfdrive/carrot/signal_stop_prepare.py", "openpilot/selfdrive/controls/lib/longitudinal_planner.py",
++           "openpilot/selfdrive/carrot/signal_stop_prepare_runtime.py", "openpilot/selfdrive/modeld/signal_tracking_shadow.py",
++           "openpilot/selfdrive/controls/lib/longcontrol.py",
++           "openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py",
++           "tools/ars510_validation/signal/core.py", "tools/ars510_validation/signal/native_signal.py",
++           "tools/ars510_validation/signal/realtime_signal.py")
++  return {name: hashlib.sha256((REPO_ROOT / name).read_bytes()).hexdigest() for name in files}
++
++
++def conditions(case, elapsed, plant, cycle):
++  mode = 0 if case.startswith("mode0") else 1 if case.startswith("mode1") or case == "green_keeps_model_stop" else 2
++  kwargs = {"signal_mode": mode, "speed": plant.speed, "accel": plant.accel, "latency": .1,
++            "color": "red", "plant": plant}
++  if case in ("mode1_prearmed_stop", "green_keeps_model_stop", "mode1_gas_override"):
++    kwargs["enabled"] = elapsed >= 2.
++  if case == "green_keeps_model_stop":
++    kwargs["model_stop_distance"] = .1
++    kwargs["color"] = "green" if elapsed >= 5. else "red"
++  elif case == "mode2_stale_red":
++    kwargs["latency"] = .25 + .05 * (cycle % 3)
++  elif case == "mode2_lead_priority":
++    kwargs.update(lead=True, lead_speed=12., lead_distance=max(.1, 40. + 12. * elapsed - plant.position))
++  elif case == "mode2_model_red_stop":
++    kwargs["model_stop_distance"] = max(.1, 70. - plant.position)
++  elif case == "mode2_can_fault":
++    kwargs["can_valid"] = not 5. <= elapsed < 6.
++  elif case == "mode2_unknown_loss":
++    kwargs["color"] = "unknown" if 5. <= elapsed < 7. else "red"
++  elif case == "mode2_observer_gap":
++    kwargs["publish"] = not 5. <= elapsed < 6.
++  elif case == "mode1_gas_override":
++    kwargs["gas"] = 5. <= elapsed < 6.
++  return kwargs
++
++
++def violations(case, row):
++  found = []
++  if row["solver_status"] != 0:
++    found.append("solver_status")
++  if not all(math.isfinite(row[key]) for key in ("a_target", "v_target", "j_target", "controller_accel")):
++    found.append("nonfinite_output")
++  if row["control_updates"] != 5:
++    found.append("control_cadence")
++  if row["processing_delay"] < 0 or row["processing_delay"] > .2:
++    found.append("invalid_plan_timestamp")
++  if row["mode"] == 0 and (row["start_hold"] or row["prepare"] or row["prepare_control"]):
++    found.append("mode0_active")
++  if row["mode"] == 1 and row["prepare_control"]:
++    found.append("mode1_moving_actuation")
++  if case in ("mode2_stale_red", "mode2_lead_priority") and row["prepare_control"]:
++    found.append("ineligible_prepare_control")
++  if not row["can_valid"] and (row["prepare_control"] or row["plan_valid"] or row["controller_accel"] != 0):
++    found.append("can_fault_output")
++  if row["start_hold"] and (row["v_target"] != 0 or not row["should_stop"] or row["a_target"] > 0):
++    found.append("red_veto_bypassed")
++  if case == "green_keeps_model_stop" and row["start_released"] and not row["should_stop"]:
++    found.append("green_forced_go")
++  return found
++
++
++def main():
++  parser = argparse.ArgumentParser(description=__doc__)
++  parser.add_argument("--seconds", type=float, default=3660.)
++  parser.add_argument("--output", type=Path, required=True)
++  parser.add_argument("--camera-profile", choices=('os04c10', 'ox03c10'), default='os04c10')
++  args = parser.parse_args()
++  args.output.mkdir(parents=True, exist_ok=True)
++  initial_hashes = source_hashes()
++  native_hashes = {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in BUILD_ROOT.rglob("*.so")}
++  started = time.perf_counter()
++  started_utc = datetime.now(UTC).isoformat()
++  clock = ReplayClock()
++  trace_path = args.output / "realtime_signal.csv"
++  counts, failures = Counter(), Counter()
++  maximum_rss = 0
++  execution_max = 0.
++  late_ticks = 0
++  steps = 0
++  current_case = None
++  harness = plant = None
++  checked_cp = 0
++  next_report = 0.
++  with trace_path.open("w", encoding="utf-8", newline="") as trace, input_clock(clock):
++    writer = None
++    while time.perf_counter() - started < args.seconds:
++      schedule = steps * .05
++      case_index = int(schedule // 12.)
++      case = CASES[case_index % len(CASES)]
++      elapsed = schedule - case_index * 12.
++      cycle = case_index // len(CASES)
++      if current_case != case:
++        if harness is not None:
++          checked_cp += 1
++          if not harness.unchanged_cp():
++            failures["carparams_changed"] += 1
++        current_case = case
++        initial_speed = 0. if case in ("mode0_red_go", "mode1_prearmed_stop", "green_keeps_model_stop", "mode1_gas_override") else 15.
++        plant = DelayedPlant(initial_speed, delay=(.08, .15, .3)[cycle % 3])
++        clock.now = 100. + schedule
++        harness = NativeSignalHarness(args.output / "transport", speed=initial_speed, clock=clock, camera_profile=args.camera_profile)
++      call_start = time.perf_counter()
++      row = harness.step(100. + schedule, **conditions(case, elapsed, plant, cycle))
++      execution_max = max(execution_max, time.perf_counter() - call_start)
++      row.update(case=case, case_elapsed=elapsed, cycle=cycle, plant_speed=plant.speed,
++                 plant_accel=plant.accel, plant_position=plant.position, actuator_delay=plant.delay)
++      problems = violations(case, row)
++      for reason in problems:
++        failures[reason] += 1
++      row["violations"] = ",".join(problems)
++      if writer is None:
++        writer = csv.DictWriter(trace, fieldnames=list(row))
++        writer.writeheader()
++      writer.writerow(row)
++      counts[case] += 1
++      steps += 1
++      maximum_rss = max(maximum_rss, psutil.Process().memory_info().rss)
++      wall = time.perf_counter() - started
++      if wall >= next_report:
++        trace.flush()
++        status = {"started_utc": started_utc, "wall_seconds": wall, "steps": steps, "case": case,
++                  "solver_nonzero": failures["solver_status"], "violations": dict(failures),
++                  "maximum_rss_mb": maximum_rss / 2**20, "maximum_step_ms": execution_max * 1000}
++        (args.output / "progress.json").write_text(json.dumps(status, ensure_ascii=False, indent=2), encoding="utf-8")
++        print(json.dumps(status, ensure_ascii=False), flush=True)
++        next_report = wall + 60.
++      sleep = started + steps * .05 - time.perf_counter()
++      if sleep > 0:
++        time.sleep(sleep)
++      else:
++        late_ticks += 1
++  if harness is not None:
++    checked_cp += 1
++    if not harness.unchanged_cp():
++      failures["carparams_changed"] += 1
++  final_hashes = source_hashes()
++  summary = {"started_utc": started_utc, "finished_utc": datetime.now(UTC).isoformat(),
++             "wall_seconds": time.perf_counter() - started, "plan_steps": steps, "control_steps": steps * 5,
++             "case_counts": dict(counts), "violations": dict(failures), "carparams_checks": checked_cp,
++             "source_unchanged": initial_hashes == final_hashes, "source_hashes": final_hashes,
++             "native_snapshot": BUILD_ROOT.name, "native_hashes": native_hashes,
++             "maximum_rss_mb": maximum_rss / 2**20, "maximum_step_ms": execution_max * 1000, "late_ticks": late_ticks,
++             "plant_model": "point_mass_command_delay_first_order_tau_0.15s",
++             "camera_profile": args.camera_profile,
++             "observer_input": "synthetic_publisher_json", "camera_recognition_verified": False,
++             "vehicle_verified": False, "real_can_sent": False}
++  (args.output / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
++  print(json.dumps(summary, ensure_ascii=False), flush=True)
++  return int(bool(failures))
++
++
++if __name__ == "__main__":
++  raise SystemExit(main())
+diff --git a/tools/ars510_validation/signal/summarize_can_comparison.py b/tools/ars510_validation/signal/summarize_can_comparison.py
+new file mode 100644
+index 0000000..b6f5159
+--- /dev/null
++++ b/tools/ars510_validation/signal/summarize_can_comparison.py
+@@ -0,0 +1,82 @@
++"""원본 실패와 수정 후 CAN 기록의 차이를 실제 CSV로만 그린다."""
++
++import argparse
++import csv
++import json
++from pathlib import Path
++
++import matplotlib
++matplotlib.use('Agg')
++from matplotlib import font_manager
++import matplotlib.pyplot as plt
++
++
++def load(folder):
++  with (folder/'stopped_red_green_go_can_control.csv').open(encoding='utf-8') as stream:
++    return list(csv.DictReader(stream))
++
++
++def values(rows, key):
++  return [float(row[key]) for row in rows]
++
++
++def metrics(rows):
++  held = [row for row in rows if row['start_hold'] == 'True']
++  positive = [row for row in held if float(row['decoded_acc_command']) > 0]
++  negative = next(row for row in held if float(row['decoded_acc_command']) < 0)
++  return {'positive_held_control_ticks': len(positive),
++          'new_positive_acc_messages_while_held': sum(row['acc_control_created'] == 'True' for row in positive),
++          'first_negative_acc_command_s': float(negative['time'])-100.,
++          'maximum_point_mass_speed_while_held_mps': max(values(held, 'plant_speed')),
++          'point_mass_distance_while_held_m': sum(values(held, 'plant_speed'))*.01,
++          'physical_measurement': False}
++
++
++def main():
++  parser = argparse.ArgumentParser(description=__doc__)
++  parser.add_argument('--before', type=Path, required=True)
++  parser.add_argument('--after', type=Path, required=True)
++  parser.add_argument('--output', type=Path, required=True)
++  args = parser.parse_args()
++  args.output.mkdir(parents=True, exist_ok=True)
++  for path in ('/mnt/c/Windows/Fonts/malgun.ttf', 'C:/Windows/Fonts/malgun.ttf'):
++    if Path(path).exists():
++      font_manager.fontManager.addfont(path)
++      plt.rcParams['font.family'] = font_manager.FontProperties(fname=path).get_name()
++      break
++  plt.rcParams.update({'axes.unicode_minus': False, 'font.size': 11, 'axes.spines.top': False, 'axes.spines.right': False})
++  before, after = load(args.before), load(args.after)
++  figure, axes = plt.subplots(1, 2, figsize=(13, 5), constrained_layout=True)
++  x_before = [value-100. for value in values(before, 'time')]
++  x_after = [value-100. for value in values(after, 'time')]
++  left, right = axes
++  left.step(x_before, values(before, 'decoded_acc_command'), where='post', color='#b42318', lw=2, label='수정 전 CAN 요청')
++  left.step(x_after, values(after, 'decoded_acc_command'), where='post', color='#175cd3', lw=2, label='수정 후 CAN 요청')
++  left.plot(x_after, values(after, 'longcontrol_output'), color='#667085', ls='--', lw=1.5, label='원형 LongControl 출력')
++  left.set_ylabel('가속도 요청 (m/s²)')
++  left.set_title('첫 정규 메시지에서 양수 요청 제거', loc='left')
++  left.set_ylim(-.25, .85)
++  right.plot(x_before, values(before, 'plant_speed'), color='#b42318', lw=2, label='수정 전 지연 모형 속도')
++  right.plot(x_after, values(after, 'plant_speed'), color='#175cd3', lw=2, label='수정 후 지연 모형 속도')
++  right.set_ylabel('가상 차량 속도 (m/s)')
++  right.set_title('기존 요청·확인·응답 지연의 영향은 남음', loc='left')
++  right.set_ylim(-.003, .09)
++  for axis in axes:
++    axis.axvline(2.15, color='#344054', lw=1, ls=':', label='2.15초 출발 금지 성립')
++    axis.axhline(0, color='#98a2b3', lw=.7)
++    axis.set_xlim(2., 3.)
++    axis.set_xlabel('시나리오 시작 후 시간 (초)')
++    axis.grid(axis='y', alpha=.2)
++    axis.legend(loc='best', frameon=False, fontsize=9)
++  figure.suptitle('OX 합성 신호 → 실제 Toyota CAN 계산의 재현·수정 비교\n' +
++                  '실물 송신 없음 · 확인 전 0.15초와 가정한 차량 응답 지연은 별도 제한', fontsize=13)
++  figure.savefig(args.output/'native_signal_can_before_after.png', dpi=160)
++  plt.close(figure)
++  summary = {'before': metrics(before), 'after': metrics(after), 'camera_recognition_verified': False,
++             'vehicle_verified': False, 'real_can_sent': False}
++  (args.output/'native_signal_can_before_after.json').write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding='utf-8')
++  print(json.dumps(summary, ensure_ascii=False))
++
++
++if __name__ == '__main__':
++  main()
+diff --git a/tools/ars510_validation/signal/summarize_trace.py b/tools/ars510_validation/signal/summarize_trace.py
+new file mode 100644
+index 0000000..5f5c129
+--- /dev/null
++++ b/tools/ars510_validation/signal/summarize_trace.py
+@@ -0,0 +1,98 @@
++"""저장된 원형 신호·종방향 계산 결과만 요약하고 정적 그림을 만든다."""
++
++import argparse
++from collections import defaultdict
++import csv
++from datetime import UTC, datetime
++import json
++from pathlib import Path
++
++import matplotlib
++matplotlib.use('Agg')
++import matplotlib.pyplot as plt
++from matplotlib import font_manager
++
++
++def rows_by_case(path):
++  cases = defaultdict(list)
++  with path.open(encoding='utf-8', newline='') as stream:
++    for row in csv.DictReader(stream):
++      if row.get('cycle') != '0' or row.get('violations') is None:
++        continue
++      cases[row['case']].append(row)
++  return cases
++
++
++def number(rows, key):
++  return [float(row[key]) for row in rows]
++
++
++def boolean(rows, key):
++  return [int(row[key] == 'True') for row in rows]
++
++
++def main():
++  parser = argparse.ArgumentParser(description=__doc__)
++  parser.add_argument('--trace', type=Path, required=True)
++  parser.add_argument('--output', type=Path, required=True)
++  args = parser.parse_args()
++  args.output.mkdir(parents=True, exist_ok=True)
++  # 그림의 한국어 글꼴만 읽는다. 운영 설정이나 시스템 글꼴을 설치하지 않는다.
++  for path in ('/mnt/c/Windows/Fonts/malgun.ttf', 'C:/Windows/Fonts/malgun.ttf'):
++    if Path(path).exists():
++      font_manager.fontManager.addfont(path)
++      plt.rcParams['font.family'] = font_manager.FontProperties(fname=path).get_name()
++      break
++  plt.rcParams.update({'axes.unicode_minus': False, 'font.size': 10, 'axes.spines.top': False, 'axes.spines.right': False})
++  cases = rows_by_case(args.trace)
++  selected = ('mode2_moving_red', 'mode2_model_red_stop', 'mode2_can_fault', 'green_keeps_model_stop')
++  assert all(len(cases[key]) == 240 for key in selected), '첫 시나리오 주기가 아직 완성되지 않았습니다'
++  figure, axes = plt.subplots(2, 2, figsize=(13, 8), constrained_layout=True)
++  titles = ('빨간 신호 정지 준비: 완만한 감속', '원형 모델 정지: 더 강한 제동 우선',
++            '5~6초 CAN 입력 오류: 실제 제어 출력 0', '5초 이후 초록: 원형 정지 판단 유지')
++  report = {}
++  for index, (axis, case, title) in enumerate(zip(axes.flat, selected, titles, strict=True)):
++    rows = cases[case]
++    x = number(rows, 'case_elapsed')
++    if index < 3:
++      axis.plot(x, number(rows, 'a_target'), color='#174ea6', lw=2, label='계획 가속도 목표')
++      axis.plot(x, number(rows, 'controller_accel'), color='#dc6803', lw=1.5, label='종방향 제어 출력')
++      axis.plot(x, number(rows, 'plant_accel'), color='#667085', lw=1.5, label='단순 차량 모형 응답')
++      axis.set_ylabel('가속도 (m/s²)')
++      if index == 0:
++        axis.axhline(-.5, color='#b42318', ls='--', lw=1, label='정지 준비 감속 -0.5')
++      if index == 2:
++        axis.axvspan(5, 6, color='#fee4e2', alpha=.8, label='CAN 유효성 오류')
++    else:
++      axis.step(x, boolean(rows, 'start_hold'), where='post', color='#b42318', lw=2, label='신호 출발 금지')
++      axis.step(x, boolean(rows, 'should_stop'), where='post', color='#174ea6', lw=2, ls='--', label='원형 모델 포함 정지 판단')
++      axis.axvspan(5, 12, color='#d1fadf', alpha=.5, label='합성 초록 관측')
++      axis.set_ylabel('조건 성립 여부 (0/1)')
++      axis.set_ylim(-.08, 1.18)
++    axis.set_title(title, loc='left', fontsize=12)
++    axis.set_xlabel('시나리오 시작 후 시간 (초)')
++    axis.set_xlim(0, 12)
++    axis.grid(axis='y', alpha=.2)
++    axis.legend(loc='best', frameon=False, fontsize=9)
++    active = [row for row in rows if row['prepare_control'] == 'True']
++    negative = [row for row in rows if float(row['a_target']) < 0]
++    released = [row for row in rows if row['start_released'] == 'True']
++    report[case] = {'plan_count': len(rows), 'control_count': sum(int(row['control_updates']) for row in rows),
++                    'first_prepare_seconds': float(active[0]['case_elapsed']) if active else None,
++                    'first_negative_target_seconds': float(negative[0]['case_elapsed']) if negative else None,
++                    'minimum_target_mps2': min(number(rows, 'a_target')),
++                    'first_green_release_seconds': float(released[0]['case_elapsed']) if released else None,
++                    'solver_errors': sum(row['solver_status'] != '0' for row in rows)}
++  figure.suptitle('OX03C10 좌표 계약 · 실제 계획/제어 코드의 오프라인 신호 시험\n' +
++                  '합성 신호 관측과 단순 지연 차량 모형 사용 · 실물 인식 정확도 및 실차 안전성 미검증', fontsize=14)
++  figure.savefig(args.output/'native_signal_first_cycle.png', dpi=150)
++  plt.close(figure)
++  summary = {'recorded_utc': datetime.now(UTC).isoformat(), 'case_metrics': report,
++             'scope': 'first_complete_synthetic_cycle_actual_native_algorithms',
++             'camera_recognition_verified': False, 'vehicle_verified': False, 'completed_one_hour_claimed': False}
++  (args.output/'native_signal_first_cycle.json').write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding='utf-8')
++  print(json.dumps(summary, ensure_ascii=False))
++
++
++if __name__ == '__main__':
++  main()
+diff --git a/tools/ars510_validation/signal/test_native_signal.py b/tools/ars510_validation/signal/test_native_signal.py
+new file mode 100644
+index 0000000..d2f4ad5
+--- /dev/null
++++ b/tools/ars510_validation/signal/test_native_signal.py
+@@ -0,0 +1,116 @@
++"""실제 신호 runtime→CarrotPlanner→native MPC→LongControl 인계 검증.
++
++관측·시각·설정·메시지 저장소만 합성한다. 이미지의 색 정확도나 실차 응답
++검사로 해석하면 안 된다. 실제 계산 클래스·solver·최종 제어를 실행한다.
++"""
++
++import pytest
++
++from tools.ars510_validation.signal.native_signal import NativeSignalHarness, ReplayClock, input_clock  # noqa: TID251
++
++
++@pytest.fixture(params=['os04c10', 'ox03c10'])
++def native(request, tmp_path):
++  clock = ReplayClock()
++  with input_clock(clock):
++    harness = NativeSignalHarness(tmp_path, clock=clock, camera_profile=request.param)
++    yield harness
++    assert harness.unchanged_cp()
++
++
++def checked_step(harness, index, **kwargs):
++  row = harness.step(100. + index * .05, **kwargs)
++  assert row['solver_status'] == 0
++  assert row['control_updates'] == 5
++  assert 0 <= row['processing_delay'] <= .2
++  assert -3.5 <= row['a_target'] <= 2.
++  assert -3.5 <= row['controller_accel'] <= 2.
++  return row
++
++
++@pytest.mark.parametrize('mode', [0, 1, 2])
++@pytest.mark.parametrize('latency', [.1, .199, .201, .4, .66, -.01])
++def test_native_moving_signal_mode_and_capture_deadline(native, mode, latency):
++  rows = [checked_step(native, index, signal_mode=mode, latency=latency) for index in range(100)]
++  if mode != 2 or not 0 <= latency <= .2:
++    assert not any(row['prepare_control'] for row in rows)
++  else:
++    assert any(row['prepare_control'] for row in rows)
++    assert min(row['a_target'] for row in rows) >= -.50001
++    assert not any(row['should_stop'] for row in rows)
++  if mode == 0:
++    assert not any(row['prepare'] or row['start_hold'] for row in rows)
++
++
++@pytest.mark.parametrize('fault', ['green', 'unknown', 'gas', 'brake', 'lead', 'can_invalid',
++                                 'session_restart', 'uncalibrated', 'camera_invalid', 'pose_invalid'])
++def test_native_active_prepare_yields_to_fault_and_original_priority(native, fault):
++  before = [checked_step(native, index) for index in range(100)]
++  assert before[-1]['prepare_control']
++  kwargs = {}
++  if fault in ('green', 'unknown'):
++    kwargs['color'] = fault
++  elif fault in ('gas', 'brake', 'lead'):
++    kwargs[fault] = True
++  elif fault == 'can_invalid':
++    kwargs['can_valid'] = False
++  elif fault == 'session_restart':
++    kwargs['session'] = 'restarted'
++  else:
++    # 합성 서비스의 유효성 입력만 바꾸며 read/update 판단은 그대로 실행한다.
++    if fault == 'uncalibrated':
++      native.sm['liveCalibration'].calStatus = 'uncalibrated'
++    elif fault == 'camera_invalid':
++      native.sm.valid['roadCameraState'] = False
++    elif fault == 'pose_invalid':
++      native.sm['livePose'].sensorsOK = False
++  row = checked_step(native, 100, **kwargs)
++  assert not row['prepare_control']
++  if fault in ('gas', 'brake', 'can_invalid'):
++    assert row['controller_accel'] == 0
++  if fault == 'can_invalid':
++    assert not row['plan_valid']
++
++
++def test_native_gentle_prepare_ramp_preserves_two_second_half_meter_target(native):
++  caps = []
++  for index in range(180):
++    row = checked_step(native, index)
++    if row['prepare_control']:
++      caps.append(native.planner._signal_prepare_accel.cap)
++  assert len(caps) > 100 and caps[-1] == -.5
++  for previous, current in zip(caps, caps[1:], strict=False):
++    assert -.5 <= current <= previous
++    assert current - previous >= -.25 * .05 - 1e-8
++
++
++@pytest.mark.parametrize('invalid_color,latency', [('unknown', .1), ('green', .66)])
++def test_native_stopped_red_latch_is_not_released_by_unknown_or_stale_green(native, invalid_color, latency):
++  rows = [checked_step(native, index, signal_mode=1, speed=0., enabled=index >= 40)
++          for index in range(60)]
++  assert rows[-1]['start_hold']
++  for index in range(60, 90):
++    row = checked_step(native, index, signal_mode=1, speed=0., color=invalid_color, latency=latency)
++    assert row['start_hold'] and not row['start_released']
++    assert row['should_stop'] and row['v_target'] == 0 and row['a_target'] <= 0
++
++
++def test_native_confirmed_green_only_removes_veto_and_model_stop_is_preserved(native):
++  rows = [checked_step(native, index, signal_mode=1, speed=0., enabled=index >= 40, model_stop_distance=.1)
++          for index in range(60)]
++  assert rows[-1]['start_hold']
++  green = [checked_step(native, index, signal_mode=1, speed=0., color='green', model_stop_distance=.1)
++           for index in range(60, 100)]
++  released = [row for row in green if row['start_released']]
++  assert len(released) == 1
++  # 동일 하우징의 초록 .7초 확인 전에는 출발 금지가 유지된다.
++  assert released[0]['time'] >= 103.7 - 1e-8
++  assert all(row['should_stop'] for row in green)
++
++
++def test_native_observer_gap_cancels_prepare_without_manufacturing_stop_or_go(native):
++  rows = [checked_step(native, index) for index in range(100)]
++  assert rows[-1]['prepare_control']
++  gap = [checked_step(native, index, publish=False) for index in range(100, 112)]
++  assert not gap[-1]['prepare_control']
++  assert not gap[-1]['should_stop']

@@ -1,0 +1,198 @@
+diff --git a/openpilot/selfdrive/carrot/tests/test_signal_start_guard.py b/openpilot/selfdrive/carrot/tests/test_signal_start_guard.py
+index fa1e901..33ccddc 100644
+--- a/openpilot/selfdrive/carrot/tests/test_signal_start_guard.py
++++ b/openpilot/selfdrive/carrot/tests/test_signal_start_guard.py
+@@ -188,7 +188,7 @@ def test_production_output_veto_after_mpc_and_coasting(hold, accel):
+   update = next(n for n in cls.body if isinstance(n, ast.FunctionDef) and n.name == 'update')
+   ns = {}
+   exec(compile(ast.Module([method], type_ignores=[]), str(path), 'exec'), ns)
+-  p = NS(output_should_stop=False, output_v_target_now=2., output_a_target=accel)
++  p = NS(output_should_stop=False, output_v_target_now=2., output_a_target=accel, actuator_accel_limits=None)
+   p.apply_signal_start_guard = lambda carrot: ns['apply_signal_start_guard'](p, carrot)
+   # Execute the real last output operations, including the preceding coast call.
+   p.update_coasting = lambda *a: setattr(p, 'output_a_target', accel)
+diff --git a/openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py b/openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py
+index f60ee0b..38551a5 100644
+--- a/openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py
++++ b/openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py
+@@ -3,7 +3,7 @@ import os
+ import time
+ import numpy as np
+ from openpilot.cereal import log
+-from opendbc.car.interfaces import ACCEL_MIN
++from opendbc.car.interfaces import ACCEL_MIN, ACCEL_MAX
+ from openpilot.common.realtime import DT_MDL
+ from openpilot.common.swaglog import cloudlog
+ # WARNING: imports outside of constants will not trigger a rebuild
+@@ -244,7 +244,9 @@ def gen_long_ocp():
+ 
+ 
+ class LongitudinalMpc:
+-  def __init__(self, mode='acc', dt=DT_MDL):
++  def __init__(self, mode='acc', dt=DT_MDL, *, actuator_accel_limits=None):
++    self.actuator_accel_limits = self.validate_actuator_accel_limits(actuator_accel_limits)
++    self.minimum_accel = ACCEL_MIN if self.actuator_accel_limits is None else self.actuator_accel_limits[0]
+     self.mode = mode
+     self.dt = dt
+     self.solver = AcadosOcpSolverCython(MODEL_NAME, ACADOS_SOLVER_TYPE, N)
+@@ -263,6 +265,21 @@ class LongitudinalMpc:
+     self.lead_danger_factor = LEAD_DANGER_FACTOR
+     self.predicted_danger_margin = 1e3
+ 
++  @staticmethod
++  def validate_actuator_accel_limits(limits):
++    """실측 마찰 보장이 아닌 송신 명령 한계이며 잘못된 값은 추정하지 않고 거절한다."""
++    if limits is None:
++      return None
++    try:
++      if len(limits) != 2 or any(isinstance(value, (bool, np.bool_)) for value in limits):
++        raise ValueError
++      minimum, maximum = (float(value) for value in limits)
++    except (TypeError, ValueError, OverflowError) as exc:
++      raise ValueError("가속도 명령 한계는 유효한 최소·최대 한 쌍이어야 합니다") from exc
++    if not (np.isfinite(minimum) and np.isfinite(maximum) and ACCEL_MIN <= minimum < 0.0 < maximum <= ACCEL_MAX):
++      raise ValueError("가속도 명령 한계의 부호·유한성·기존 허용 범위를 확인할 수 없습니다")
++    return minimum, maximum
++
+ 
+   def reset(self):
+     # self.solver = AcadosOcpSolverCython(MODEL_NAME, ACADOS_SOLVER_TYPE, N)
+@@ -380,7 +397,7 @@ class LongitudinalMpc:
+ 
+     # MPC will not converge if immediate crash is expected
+     # Clip lead distance to what is still possible to brake for
+-    min_x_lead = ((v_ego + v_lead)/2) * (v_ego - v_lead) / (-ACCEL_MIN * 2)
++    min_x_lead = ((v_ego + v_lead)/2) * (v_ego - v_lead) / (-self.minimum_accel * 2)
+     x_lead = np.clip(x_lead, min_x_lead, 1e8)
+     v_lead = np.clip(v_lead, 0.0, 1e8)
+     a_lead = np.clip(a_lead, -10., 5.)
+@@ -392,7 +409,7 @@ class LongitudinalMpc:
+     # TODO this sets a max accel limit, but the minimum limit is only for cruise decel
+     # needs refactor
+     self.cruise_min_a = min_a
+-    self.max_a = max_a
++    self.max_a = max_a if self.actuator_accel_limits is None else min(max_a, self.actuator_accel_limits[1])
+ 
+   def update(self, carrot, reset_state, radarstate, v_cruise, x, v, a, j,
+              personality=log.LongitudinalPersonality.standard,
+@@ -432,7 +449,7 @@ class LongitudinalMpc:
+     lead_0_obstacle = lead_xv_0[:,0] + get_stopped_equivalence_factor(lead_xv_0[:,1])
+     lead_1_obstacle = lead_xv_1[:,0] + get_stopped_equivalence_factor(lead_xv_1[:,1])
+ 
+-    self.params[:,0] = ACCEL_MIN if not reset_state else a_ego
++    self.params[:,0] = self.minimum_accel if not reset_state else a_ego
+     # negative accel constraint causes problems because negative speed is not allowed
+     self.params[:,1] = max(0.0, self.max_a if not reset_state else a_ego)
+ 
+diff --git a/openpilot/selfdrive/controls/lib/longitudinal_planner.py b/openpilot/selfdrive/controls/lib/longitudinal_planner.py
+index f911dcc..334c300 100644
+--- a/openpilot/selfdrive/controls/lib/longitudinal_planner.py
++++ b/openpilot/selfdrive/controls/lib/longitudinal_planner.py
+@@ -50,7 +50,19 @@ def get_coast_accel(pitch):
+ class LongitudinalPlanner:
+   def __init__(self, CP, init_v=0.0, init_a=0.0, dt=DT_MDL):
+     self.CP = CP
+-    self.mpc = LongitudinalMpc(dt=dt)
++    self.actuator_accel_limits = None
++    if (getattr(CP, 'brand', '') == 'toyota' and
++        getattr(CP, 'carFingerprint', '') == 'TOYOTA_RAV4_TSS2_2022' and
++        getattr(CP, 'openpilotLongitudinalControl', False)):
++      from opendbc.car.toyota.interface import CarInterface
++      # 수신·진단이나 차량 설정 변경 없이 기존 인터페이스의 송신 명령 한계를 읽는다.
++      limits = CarInterface.get_pid_accel_limits(CP, init_v, 0.0)
++      self.actuator_accel_limits = LongitudinalMpc.validate_actuator_accel_limits(limits)
++      if self.actuator_accel_limits is None:
++        raise ValueError("RAV4 직접 가감속의 송신 명령 한계를 읽지 못했습니다")
++      self.mpc = LongitudinalMpc(dt=dt, actuator_accel_limits=self.actuator_accel_limits)
++    else:
++      self.mpc = LongitudinalMpc(dt=dt)
+     self.fcw = False
+     # VW MEB(ID.4/ID.5)에서만 True. 가속 오버라이드 중 출발 FCW 오탐을 끄기 위한 게이트.
+     self.is_vw_meb = is_volkswagen_meb(CP)
+@@ -367,6 +379,9 @@ class LongitudinalPlanner:
+                          force_slow_decel, coasting_turn_blocked, cutin_predecel_limit)
+     self.apply_signal_stop_prepare(sm, carrot, reset_state)
+     self.apply_signal_start_guard(carrot)
++    if self.actuator_accel_limits is not None:
++      # preview·신호 보조 후에도 최종 목표는 실제 송신 가능한 명령 범위에 둔다.
++      self.output_a_target = float(np.clip(self.output_a_target, *self.actuator_accel_limits))
+ 
+   def apply_signal_stop_prepare(self, sm, carrot, reset_state, now=None):
+     import time
+diff --git a/tools/ars510_validation/native/test_actuator_bounds.py b/tools/ars510_validation/native/test_actuator_bounds.py
+new file mode 100644
+index 0000000..2c24083
+--- /dev/null
++++ b/tools/ars510_validation/native/test_actuator_bounds.py
+@@ -0,0 +1,71 @@
++"""실제 native MPC를 사용한 차량 명령 한계와 기존 경로 보존 회귀."""
++from pathlib import Path
++import sys
++
++import numpy as np
++import pytest
++
++
++REPO_ROOT = Path(__file__).resolve().parents[3]
++sys.path.insert(0, str(REPO_ROOT.parent / "native_sim"))
++from offline_io import prepare
++
++prepare(solver_overlay=True)
++from opendbc.car import gen_empty_fingerprint
++from opendbc.car.toyota.interface import CarInterface
++from opendbc.car.toyota.values import CAR
++from openpilot.cereal import log
++from openpilot.selfdrive.controls.lib.longitudinal_mpc_lib.long_mpc import ACCEL_MIN, LongitudinalMpc
++from openpilot.selfdrive.controls.lib.longitudinal_planner import LongitudinalPlanner
++
++
++def cp(platform=CAR.TOYOTA_RAV4_TSS2_2022, direct=True):
++  return CarInterface.get_params(platform, gen_empty_fingerprint(), [], direct, False, False)
++
++
++@pytest.mark.parametrize("bad", [
++  (), (0.0, 2.0), (-3.5, 0.0), (1.0, 2.0), (-3.5, -1.0), (-4.1, 2.0), (-3.5, 2.6),
++  (np.nan, 2.0), (-3.5, np.inf), (-np.inf, 2.0), (False, 2.0), (-3.5, True),
++  (-3.5, np.bool_(True)), ("not a number", 2.0), (-3.5,), (-3.5, 2.0, 3.0), 0,
++])
++def test_invalid_envelope_refuses_solver_setup(bad):
++  with pytest.raises(ValueError):
++    LongitudinalMpc(actuator_accel_limits=bad)
++
++
++def test_original_constructor_and_cruise_policy_are_preserved():
++  mpc = LongitudinalMpc()
++  assert mpc.actuator_accel_limits is None and mpc.minimum_accel == ACCEL_MIN
++  mpc.set_accel_limits(-2.0, 3.0)
++  assert mpc.cruise_min_a == -2.0 and mpc.max_a == 3.0
++
++
++def test_rav4_source_envelope_restricts_actual_native_parameters():
++  planner = LongitudinalPlanner(cp())
++  assert planner.actuator_accel_limits == (-3.5, 2.0)
++  assert planner.mpc.minimum_accel == -3.5
++  planner.mpc.set_accel_limits(-2.0, 2.5)
++  assert planner.mpc.cruise_min_a == -2.0 and planner.mpc.max_a == 2.0
++  # 존재하는 정지 객체의 불가능한 초기 거리에는 원형 수렴 floor를 같은 명령 하한으로 계산한다.
++  planner.mpc.set_cur_state(25.0, 0.0)
++  lead = log.RadarState.LeadData(status=True, dRel=1.0, vLead=0.0, vLeadK=0.0)
++  extrapolated, _ = planner.mpc.process_lead(lead)
++  assert extrapolated[0, 0] == pytest.approx(25.0**2 / (4.0*3.5))
++  assert type(planner.mpc.solver).__name__ == "AcadosOcpSolverCython"
++
++
++@pytest.mark.parametrize("platform,direct", [
++  (CAR.TOYOTA_RAV4_TSS2_2022, False), (CAR.TOYOTA_RAV4_TSS2_2023, True),
++  (CAR.TOYOTA_RAV4_TSS2, True), (CAR.TOYOTA_CHR_TSS2, True),
++])
++def test_other_vehicle_or_stock_long_keeps_legacy_limits(platform, direct):
++  planner = LongitudinalPlanner(cp(platform, direct))
++  assert planner.actuator_accel_limits is None and planner.mpc.minimum_accel == ACCEL_MIN
++
++
++@pytest.mark.parametrize("bad", [None, (-4.5, 2.0), (-3.5, 0.0), (np.nan, 2.0)])
++def test_invalid_toyota_public_interface_result_is_not_guessed(monkeypatch, bad):
++  params = cp()
++  monkeypatch.setattr(CarInterface, "get_pid_accel_limits", lambda *args: bad)
++  with pytest.raises(ValueError):
++    LongitudinalPlanner(params)

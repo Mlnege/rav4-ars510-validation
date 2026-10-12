@@ -1,0 +1,262 @@
+diff --git a/opendbc_repo/opendbc/safety/safety.h b/opendbc_repo/opendbc/safety/safety.h
+index 36aa0c8..4fc3888 100644
+--- a/opendbc_repo/opendbc/safety/safety.h
++++ b/opendbc_repo/opendbc/safety/safety.h
+@@ -619,13 +619,9 @@ int ROUND(float val) {
+ 
+ // Safety checks for longitudinal actuation
+ bool longitudinal_accel_checks(int desired_accel, const LongitudinalLimits limits) {
+-    if(desired_accel != 0) {
+-      if(!controls_allowed) print("@@@@@@@@ longitudinal_accel_checks... auto controls_allowed enabled...\n");
+-      controls_allowed = true;
+-    }
+-    //bool accel_valid = get_longitudinal_allowed() && !max_limit_check(desired_accel, limits.max_accel, limits.min_accel);
+-    bool accel_valid = !max_limit_check(desired_accel, limits.max_accel, limits.min_accel);
+-    bool accel_inactive = desired_accel == limits.inactive_accel;
++  // 송신 요청은 제어 권한을 만들 수 없으며 운전자 가속 중에는 작동을 허용하지 않는다.
++  bool accel_valid = get_longitudinal_allowed() && !max_limit_check(desired_accel, limits.max_accel, limits.min_accel);
++  bool accel_inactive = desired_accel == limits.inactive_accel;
+   return !(accel_valid || accel_inactive);
+ }
+ 
+@@ -661,10 +657,8 @@ bool steer_torque_cmd_checks(int desired_torque, int steer_req, const TorqueStee
+   bool violation = false;
+   uint32_t ts = microsecond_timer_get();
+ 
+-  bool aol_allowed = true;
+-  if (controls_allowed) acc_main_on = controls_allowed;
+-  
+-  if (controls_allowed || aol_allowed) {
++  // 별도 승인 상태 없이 송신 요청이 조향 권한이나 ACC 메인 상태를 만들 수 없다.
++  if (controls_allowed) {
+     // *** global torque limit check ***
+     violation |= max_limit_check(desired_torque, limits.max_steer, -limits.max_steer);
+ 
+@@ -691,7 +685,7 @@ bool steer_torque_cmd_checks(int desired_torque, int steer_req, const TorqueStee
+   }
+ 
+   // no torque if controls is not allowed
+-  if (!(controls_allowed || aol_allowed) && (desired_torque != 0)) {
++  if (!controls_allowed && (desired_torque != 0)) {
+     violation = true;
+   }
+ 
+@@ -733,7 +727,7 @@ bool steer_torque_cmd_checks(int desired_torque, int steer_req, const TorqueStee
+   }
+ 
+   // reset to 0 if either controls is not allowed or there's a violation
+-  if (violation || !(controls_allowed || aol_allowed)) {
++  if (violation || !controls_allowed) {
+     valid_steer_req_count = 0;
+     invalid_steer_req_count = 0;
+     desired_torque_last = 0;
+@@ -749,9 +743,8 @@ bool steer_torque_cmd_checks(int desired_torque, int steer_req, const TorqueStee
+ bool steer_angle_cmd_checks(int desired_angle, bool steer_control_enabled, const AngleSteeringLimits limits) {
+   bool violation = false;
+ 
+-  bool aol_allowed = true;
+-  if (controls_allowed) acc_main_on = controls_allowed;
+-  if ((controls_allowed || aol_allowed) && steer_control_enabled) {
++  // 비활성 각도 유지 규칙은 보존하고 실제 조향은 수신 기반 제어 허용을 요구한다.
++  if (controls_allowed && steer_control_enabled) {
+     // convert floating point angle rate limits to integers in the scale of the desired angle on CAN,
+     // add 1 to not false trigger the violation. also fudge the speed by 1 m/s so rate limits are
+     // always slightly above openpilot's in case we read an updated speed in between angle commands
+@@ -838,7 +831,7 @@ bool steer_angle_cmd_checks(int desired_angle, bool steer_control_enabled, const
+   }
+ 
+   // No angle control allowed when controls are not allowed
+-  violation |= !(controls_allowed || aol_allowed) && steer_control_enabled;
++  violation |= !controls_allowed && steer_control_enabled;
+ 
+   return violation;
+ }
+diff --git a/opendbc_repo/opendbc/safety/safety/safety_honda.h b/opendbc_repo/opendbc/safety/safety/safety_honda.h
+index 5df26a5..04c69df 100644
+--- a/opendbc_repo/opendbc/safety/safety/safety_honda.h
++++ b/opendbc_repo/opendbc/safety/safety/safety_honda.h
+@@ -271,7 +271,8 @@ static bool honda_tx_hook(const CANPacket_t *to_send) {
+     if (!controls_allowed) {
+       bool steer_applied = GET_BYTE(to_send, 0) | GET_BYTE(to_send, 1);
+       if (steer_applied) {
+-        //tx = false;
++        // 제어 허용이 없으면 차량별 조향 검사 결과를 실제 송신 차단에 반영한다.
++        tx = false;
+       }
+     }
+   }
+diff --git a/opendbc_repo/opendbc/safety/safety/safety_hyundai.h b/opendbc_repo/opendbc/safety/safety/safety_hyundai.h
+index 490905e..6f84175 100644
+--- a/opendbc_repo/opendbc/safety/safety/safety_hyundai.h
++++ b/opendbc_repo/opendbc/safety/safety/safety_hyundai.h
+@@ -256,7 +256,8 @@ static bool hyundai_tx_hook(const CANPacket_t *to_send) {
+                                         hyundai_alt_limits ? HYUNDAI_STEERING_LIMITS_ALT : HYUNDAI_STEERING_LIMITS;
+ 
+     if (steer_torque_cmd_checks(desired_torque, steer_req, limits)) {
+-      //tx = false;
++      // 기존 조향 제한을 위반한 요청은 전송하지 않는다.
++      tx = false;
+     }
+   }
+ 
+diff --git a/opendbc_repo/opendbc/safety/safety/safety_hyundai_canfd.h b/opendbc_repo/opendbc/safety/safety/safety_hyundai_canfd.h
+index 883d794..fef7403 100644
+--- a/opendbc_repo/opendbc/safety/safety/safety_hyundai_canfd.h
++++ b/opendbc_repo/opendbc/safety/safety/safety_hyundai_canfd.h
+@@ -643,7 +643,8 @@ static bool hyundai_canfd_tx_hook(const CANPacket_t *to_send_const) {
+     bool steer_req = GET_BIT(to_send, 52U);
+ 
+     if (steer_torque_cmd_checks(desired_torque, steer_req, HYUNDAI_CANFD_STEERING_LIMITS)) {
+-      //tx = false;
++      // CAN FD�� ���� ���� ���� ������ ���� �۽� �������� �����Ѵ�.
++      tx = false;
+     }
+   }
+ 
+diff --git a/opendbc_repo/opendbc/safety/tests/common.py b/opendbc_repo/opendbc/safety/tests/common.py
+index 9fded87..a26c9f7 100644
+--- a/opendbc_repo/opendbc/safety/tests/common.py
++++ b/opendbc_repo/opendbc/safety/tests/common.py
+@@ -156,6 +156,19 @@ class LongitudinalAccelSafetyTest(PandaSafetyTestBase, abc.ABC):
+             should_tx = False
+           self.assertEqual(should_tx, self._tx(self._accel_msg(accel)))
+ 
++  def test_accel_transmission_cannot_change_controls_allowed(self):
++    # 정상·비활성·범위 밖 송신 모두 수신 기반 제어 허용 상태를 바꾸면 안 된다.
++    accelerations = (self.MIN_ACCEL - 1, self.MIN_ACCEL, -0.1, 0, 0.1,
++                     self.MAX_ACCEL, self.MAX_ACCEL + 1, self.INACTIVE_ACCEL)
++    for controls_allowed in (False, True):
++      for gas_pressed in (False, True):
++        for accel in accelerations:
++          with self.subTest(controls_allowed=controls_allowed, gas_pressed=gas_pressed, accel=accel):
++            self.safety.set_controls_allowed(controls_allowed)
++            self.safety.set_gas_pressed_prev(gas_pressed)
++            self._tx(self._accel_msg(accel))
++            self.assertEqual(controls_allowed, self.safety.get_controls_allowed())
++
+ 
+ class LongitudinalGasBrakeSafetyTest(PandaSafetyTestBase, abc.ABC):
+ 
+@@ -224,6 +237,19 @@ class TorqueSteeringSafetyTestBase(PandaSafetyTestBase, abc.ABC):
+         else:
+           self.assertTrue(self._tx(self._torque_cmd_msg(t)))
+ 
++  def test_steer_transmission_cannot_change_authority(self):
++    # 조향 송신은 제어 허용이나 ACC 메인 상태를 새로 만들면 안 된다.
++    for controls_allowed in (False, True):
++      for torque in (-self.MAX_TORQUE - 1, -self.MAX_TORQUE, 0, self.MAX_TORQUE, self.MAX_TORQUE + 1):
++        with self.subTest(controls_allowed=controls_allowed, torque=torque):
++          self._reset_safety_hooks()
++          self.safety.set_controls_allowed(controls_allowed)
++          self._set_prev_torque(torque)
++          main_before = self.safety.get_acc_main_on()
++          self._tx(self._torque_cmd_msg(torque))
++          self.assertEqual(controls_allowed, self.safety.get_controls_allowed())
++          self.assertEqual(main_before, self.safety.get_acc_main_on())
++
+   def test_non_realtime_limit_up(self):
+     self.safety.set_controls_allowed(True)
+ 
+@@ -615,6 +641,21 @@ class AngleSteeringSafetyTest(PandaSafetyTestBase):
+     for _ in range(MAX_SAMPLE_VALS):
+       self._rx(self._speed_msg(speed))
+ 
++  def test_angle_transmission_cannot_change_authority(self):
++    # 비활성 각도 명령과 실제 조향 요청 모두 수신 기반 권한 상태를 보존한다.
++    for controls_allowed in (False, True):
++      for request in (False, True):
++        for angle in (-1.0, 0.0, 1.0):
++          with self.subTest(controls_allowed=controls_allowed, request=request, angle=angle):
++            self._reset_safety_hooks()
++            self._reset_angle_measurement(0.0)
++            self.safety.set_controls_allowed(controls_allowed)
++            self._set_prev_desired_angle(angle)
++            main_before = self.safety.get_acc_main_on()
++            self._tx(self._angle_cmd_msg(angle, request))
++            self.assertEqual(controls_allowed, self.safety.get_controls_allowed())
++            self.assertEqual(main_before, self.safety.get_acc_main_on())
++
+   def test_vehicle_speed_measurements(self):
+     # TODO: lower tolerance on these tests
+     self._common_measurement_test(self._speed_msg, 0, 80, 1, self.safety.get_vehicle_speed_min, self.safety.get_vehicle_speed_max)
+@@ -722,7 +763,7 @@ class PandaSafetyTest(PandaSafetyTestBase):
+         fwd_bus = self.FWD_BUS_LOOKUP.get(bus, -1)
+         if bus in self.FWD_BLACKLISTED_ADDRS and addr in self.FWD_BLACKLISTED_ADDRS[bus]:
+           fwd_bus = -1
+-        self.assertEqual(fwd_bus, self.safety.safety_fwd_hook(bus, addr), f"{addr=:#x} from {bus=} to {fwd_bus=}")
++        self.assertEqual(fwd_bus, self.safety.safety_fwd_hook(make_msg(bus, addr)), f"{addr=:#x} from {bus=} to {fwd_bus=}")
+ 
+   def test_spam_can_buses(self):
+     for bus in range(4):
+@@ -869,7 +910,7 @@ class PandaCarSafetyTest(PandaSafetyTest):
+     for bus in range(3):
+       for addr in self.SCANNED_ADDRS:
+         self.assertFalse(self._tx(make_msg(bus, addr, 8)))
+-        self.assertEqual(-1, self.safety.safety_fwd_hook(bus, addr))
++        self.assertEqual(-1, self.safety.safety_fwd_hook(make_msg(bus, addr)))
+ 
+   def test_prev_gas(self):
+     self.assertFalse(self.safety.get_gas_pressed_prev())
+diff --git a/opendbc_repo/opendbc/safety/tests/libsafety/libsafety_py.py b/opendbc_repo/opendbc/safety/tests/libsafety/libsafety_py.py
+index e851c6b..df68007 100644
+--- a/opendbc_repo/opendbc/safety/tests/libsafety/libsafety_py.py
++++ b/opendbc_repo/opendbc/safety/tests/libsafety/libsafety_py.py
+@@ -27,7 +27,7 @@ typedef struct {
+ ffi.cdef("""
+ bool safety_rx_hook(CANPacket_t *to_send);
+ bool safety_tx_hook(CANPacket_t *to_push);
+-int safety_fwd_hook(int bus_num, int addr);
++int safety_fwd_hook(CANPacket_t *to_send);
+ int set_safety_hooks(uint16_t mode, uint16_t param);
+ """)
+ 
+@@ -54,7 +54,7 @@ class Panda(PandaSafety, Protocol):
+   # safety
+   def safety_rx_hook(self, to_send: CANPacket) -> int: ...
+   def safety_tx_hook(self, to_push: CANPacket) -> int: ...
+-  def safety_fwd_hook(self, bus_num: int, addr: int) -> int: ...
++  def safety_fwd_hook(self, to_send: CANPacket) -> int: ...
+   def set_safety_hooks(self, mode: int, param: int) -> int: ...
+ 
+ 
+diff --git a/opendbc_repo/opendbc/safety/tests/test_tesla.py b/opendbc_repo/opendbc/safety/tests/test_tesla.py
+index 38123d5..59a3311 100755
+--- a/opendbc_repo/opendbc/safety/tests/test_tesla.py
++++ b/opendbc_repo/opendbc/safety/tests/test_tesla.py
+@@ -147,12 +147,12 @@ class TestTeslaLongitudinalSafety(TestTeslaSafetyBase):
+ 
+     # stock system sends no AEB -> no forwarding, and OP is allowed to TX
+     self.assertEqual(1, self._rx(no_aeb_msg_cam))
+-    self.assertEqual(-1, self.safety.safety_fwd_hook(2, no_aeb_msg_cam.addr))
++    self.assertEqual(-1, self.safety.safety_fwd_hook(no_aeb_msg_cam))
+     self.assertTrue(self._tx(no_aeb_msg))
+ 
+     # stock system sends AEB -> forwarding, and OP is not allowed to TX
+     self.assertEqual(1, self._rx(aeb_msg_cam))
+-    self.assertEqual(0, self.safety.safety_fwd_hook(2, aeb_msg_cam.addr))
++    self.assertEqual(0, self.safety.safety_fwd_hook(aeb_msg_cam))
+     self.assertFalse(self._tx(no_aeb_msg))
+ 
+   def test_prevent_reverse(self):
+diff --git a/opendbc_repo/opendbc/safety/tests/test_volkswagen_pq.py b/opendbc_repo/opendbc/safety/tests/test_volkswagen_pq.py
+index 72d0876..dbd77dd 100755
+--- a/opendbc_repo/opendbc/safety/tests/test_volkswagen_pq.py
++++ b/opendbc_repo/opendbc/safety/tests/test_volkswagen_pq.py
+@@ -123,7 +123,7 @@ class TestVolkswagenPqStockSafety(TestVolkswagenPqSafety):
+   FWD_BLACKLISTED_ADDRS = {2: [MSG_HCA_1, MSG_LDW_1]}
+ 
+   def setUp(self):
+-    self.packer = CANPackerPanda("vw_golf_mk4")
++    self.packer = CANPackerPanda("vw_pq")
+     self.safety = libsafety_py.libsafety
+     self.safety.set_safety_hooks(CarParams.SafetyModel.volkswagenPq, 0)
+     self.safety.init_tests()
+@@ -144,7 +144,7 @@ class TestVolkswagenPqLongSafety(TestVolkswagenPqSafety, common.LongitudinalAcce
+   INACTIVE_ACCEL = 3.01
+ 
+   def setUp(self):
+-    self.packer = CANPackerPanda("vw_golf_mk4")
++    self.packer = CANPackerPanda("vw_pq")
+     self.safety = libsafety_py.libsafety
+     self.safety.set_safety_hooks(CarParams.SafetyModel.volkswagenPq, VolkswagenSafetyFlags.LONG_CONTROL)
+     self.safety.init_tests()

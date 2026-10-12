@@ -1,0 +1,15 @@
+{
+  "started_utc": "2026-10-12T07:20:11.805165+00:00",
+  "planned_wall_seconds": 5400.0,
+  "source_hashes_at_import": {
+    "openpilot/selfdrive/controls/lib/longitudinal_planner.py": "01ead57b64c3bde5ae56bebefb015986e877014cc0d63885e77833e08f9b886f",
+    "openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py": "b0a5c630260ad76b58033b8d44719992c4e008399b2c520e3692b556ce12e274",
+    "openpilot/selfdrive/carrot/radar_motion/controller.py": "487ba11fdda3056459ed8ef6168552349cf57cefea802af6035efa335f03fe21",
+    "openpilot/selfdrive/carrot/radar/radard_dpath.py": "f3f3506398dd9bd939b96c83ab21409d8daf3f326fccabb6adf79fb1948d7be2"
+  },
+  "solver_build": "build_snapshot_b0a5c630260ad76b",
+  "physical_can_transmission": false,
+  "hardware_response": "assumed_delay_and_first_order_response",
+  "perception_input": "synthetic_future_model_and_known_radar_fields",
+  "whole_runtime_watchdog_validated": false
+}

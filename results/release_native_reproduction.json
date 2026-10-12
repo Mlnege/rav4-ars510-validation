@@ -1,0 +1,1196 @@
+{
+  "generated_utc": "2026-10-12T07:56:44.313677+00:00",
+  "scope_ko": "실제 업스트림에서 내려받아 패치한 별도 lab의 새 Python 환경과 새 실제 C/Cython solver 검증. 운영 설치와 차량을 접근하지 않음.",
+  "python": "3.12.15 (main, Oct  9 2026, 15:22:32) [Clang 22.1.3 ]",
+  "python_executable": "<workspace>/work/download_e2e/work/offline-venv/bin/python",
+  "venv": "<workspace>/work/download_e2e/work/offline-venv",
+  "native_build": "<workspace>/work/download_e2e/work/native_sim/build_unique",
+  "dependencies": {
+    "pycapnp": "2.2.4",
+    "numpy": "2.5.4",
+    "pytest": "9.1.1",
+    "comma-deps-acados": "0.2.2.post103",
+    "Cython": "3.3.0",
+    "cantools": "44.2.1"
+  },
+  "requirements_native_sha256": "8124a6d626ef05f6c5b954a6e2002fb983b86b64f201f08e8ed83f20a38e8b90",
+  "requirements_offline_sha256": "d416cd724752a64ff85b0edc8b1f2cf1ef40abf620b4ba2ac2e18490ea190890",
+  "source_core_comparison": [
+    {
+      "path": "openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py",
+      "download_sha256": "7f647b9a63762b9c808bddf418aae6dbbd55d15af6aa9cf0939606e05f9e50c1",
+      "frozen_work_sha256": "b0a5c630260ad76b58033b8d44719992c4e008399b2c520e3692b556ce12e274",
+      "download_sha256_lf": "7f647b9a63762b9c808bddf418aae6dbbd55d15af6aa9cf0939606e05f9e50c1",
+      "frozen_work_sha256_lf": "7f647b9a63762b9c808bddf418aae6dbbd55d15af6aa9cf0939606e05f9e50c1",
+      "download_sha256_after_tests": "7f647b9a63762b9c808bddf418aae6dbbd55d15af6aa9cf0939606e05f9e50c1"
+    },
+    {
+      "path": "openpilot/selfdrive/controls/lib/longitudinal_planner.py",
+      "download_sha256": "781b78157fe272e4cdcb79c985602695fa14ccbddd38a9e8544a614b8ab2e8b0",
+      "frozen_work_sha256": "01ead57b64c3bde5ae56bebefb015986e877014cc0d63885e77833e08f9b886f",
+      "download_sha256_lf": "781b78157fe272e4cdcb79c985602695fa14ccbddd38a9e8544a614b8ab2e8b0",
+      "frozen_work_sha256_lf": "781b78157fe272e4cdcb79c985602695fa14ccbddd38a9e8544a614b8ab2e8b0",
+      "download_sha256_after_tests": "781b78157fe272e4cdcb79c985602695fa14ccbddd38a9e8544a614b8ab2e8b0"
+    },
+    {
+      "path": "openpilot/selfdrive/controls/lib/longcontrol.py",
+      "download_sha256": "15c6aa56c299aecdfab7be13487e723c423fcb7604941b5f64cf89037c77a10b",
+      "frozen_work_sha256": "c5ee591a807e337aa74f0f2131178a1c73ce668e1ce4adf8db5e320cf5bcb2ca",
+      "download_sha256_lf": "15c6aa56c299aecdfab7be13487e723c423fcb7604941b5f64cf89037c77a10b",
+      "frozen_work_sha256_lf": "15c6aa56c299aecdfab7be13487e723c423fcb7604941b5f64cf89037c77a10b",
+      "download_sha256_after_tests": "15c6aa56c299aecdfab7be13487e723c423fcb7604941b5f64cf89037c77a10b"
+    },
+    {
+      "path": "openpilot/selfdrive/carrot/carrot_functions.py",
+      "download_sha256": "af18de71dd7f8ec07ebbb7a9e9678a023616bdea669ab9de9c5ef5ea6348de2b",
+      "frozen_work_sha256": "4f7f313f06889a258d4104bd286f04fd0c80fb0a6a07cb7760466a396cfa26d8",
+      "download_sha256_lf": "af18de71dd7f8ec07ebbb7a9e9678a023616bdea669ab9de9c5ef5ea6348de2b",
+      "frozen_work_sha256_lf": "af18de71dd7f8ec07ebbb7a9e9678a023616bdea669ab9de9c5ef5ea6348de2b",
+      "download_sha256_after_tests": "af18de71dd7f8ec07ebbb7a9e9678a023616bdea669ab9de9c5ef5ea6348de2b"
+    },
+    {
+      "path": "openpilot/selfdrive/carrot/radar_motion/controller.py",
+      "download_sha256": "c9583f7b31adb844009a7db6d15dd5511740d9cc442b855ce63f778ba4d5fee5",
+      "frozen_work_sha256": "0a2efb2712991ce495f4bb4991cc9ab1352673e96318ff5302fc5bd0d17a34f5",
+      "download_sha256_lf": "c9583f7b31adb844009a7db6d15dd5511740d9cc442b855ce63f778ba4d5fee5",
+      "frozen_work_sha256_lf": "c9583f7b31adb844009a7db6d15dd5511740d9cc442b855ce63f778ba4d5fee5",
+      "download_sha256_after_tests": "c9583f7b31adb844009a7db6d15dd5511740d9cc442b855ce63f778ba4d5fee5"
+    },
+    {
+      "path": "openpilot/selfdrive/carrot/signal_stop_prepare_runtime.py",
+      "download_sha256": "5ede16e0d25311c9ac6a47284591567a9c9eb80e02a433bc68c8a374f6fdf11e",
+      "frozen_work_sha256": "69980533b791c48525e6793e2a2d6702d077561507f1dca18c3c01490880ddba",
+      "download_sha256_lf": "5ede16e0d25311c9ac6a47284591567a9c9eb80e02a433bc68c8a374f6fdf11e",
+      "frozen_work_sha256_lf": "5ede16e0d25311c9ac6a47284591567a9c9eb80e02a433bc68c8a374f6fdf11e",
+      "download_sha256_after_tests": "5ede16e0d25311c9ac6a47284591567a9c9eb80e02a433bc68c8a374f6fdf11e"
+    },
+    {
+      "path": "openpilot/selfdrive/carrot/signal_start_guard.py",
+      "download_sha256": "becddf556604490349cd38f4cdeac9dfee16dc3c6d218cc73d804266a7b2d767",
+      "frozen_work_sha256": "f3ce89f60a7527f94075f0c470dd59e235a65f4ec621512416f3a5f12f171f10",
+      "download_sha256_lf": "becddf556604490349cd38f4cdeac9dfee16dc3c6d218cc73d804266a7b2d767",
+      "frozen_work_sha256_lf": "becddf556604490349cd38f4cdeac9dfee16dc3c6d218cc73d804266a7b2d767",
+      "download_sha256_after_tests": "becddf556604490349cd38f4cdeac9dfee16dc3c6d218cc73d804266a7b2d767"
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/ars510_offline.py",
+      "download_sha256": "8b471914b92466fb9589c298b976fe377eea18e7c111e81f89258cab45d12a50",
+      "frozen_work_sha256": "8b471914b92466fb9589c298b976fe377eea18e7c111e81f89258cab45d12a50",
+      "download_sha256_lf": "8b471914b92466fb9589c298b976fe377eea18e7c111e81f89258cab45d12a50",
+      "frozen_work_sha256_lf": "8b471914b92466fb9589c298b976fe377eea18e7c111e81f89258cab45d12a50",
+      "download_sha256_after_tests": "8b471914b92466fb9589c298b976fe377eea18e7c111e81f89258cab45d12a50"
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/carcontroller.py",
+      "download_sha256": "49f1ace9dc46fb509f2d1d982f740fd52cda006078cc9faa405efb7cb30026d8",
+      "frozen_work_sha256": "6c78cf5a7e092685a0f83fd50616f8e17d13ecfbba763fc10746aa03de74f60c",
+      "download_sha256_lf": "49f1ace9dc46fb509f2d1d982f740fd52cda006078cc9faa405efb7cb30026d8",
+      "frozen_work_sha256_lf": "49f1ace9dc46fb509f2d1d982f740fd52cda006078cc9faa405efb7cb30026d8",
+      "download_sha256_after_tests": "49f1ace9dc46fb509f2d1d982f740fd52cda006078cc9faa405efb7cb30026d8"
+    },
+    {
+      "path": "opendbc_repo/opendbc/car/toyota/interface.py",
+      "download_sha256": "0b84ccad62804f970f67149d0bcc33c9032e07f2637bfa77d27ccd1e3031a500",
+      "frozen_work_sha256": "67ecf7d0d3c89c6680bd6b93433e6540800fb1cfe5b031e30dd7dcb6ff783c32",
+      "download_sha256_lf": "0b84ccad62804f970f67149d0bcc33c9032e07f2637bfa77d27ccd1e3031a500",
+      "frozen_work_sha256_lf": "0b84ccad62804f970f67149d0bcc33c9032e07f2637bfa77d27ccd1e3031a500",
+      "download_sha256_after_tests": "0b84ccad62804f970f67149d0bcc33c9032e07f2637bfa77d27ccd1e3031a500"
+    }
+  ],
+  "source_comparison_ko": "Windows 원작업 사본의 CRLF와 Git 다운로드 사본의 LF 차이를 해시 양쪽에 기록함. 파일은 바꾸지 않음. LF 정규화 후 계산 소스가 동일하며 native 빌드에는 다운로드 사본 원바이트를 그대로 복사함.",
+  "test_fixture_refresh": [
+    {
+      "path": "openpilot/selfdrive/modeld/tests/test_signal_tracking_shadow.py",
+      "reason_ko": "다운로드 패키지 최초 생성 뒤 부모가 승인한 테스트 입력 경로 보정. 계산 코어와 assertion 변경 없음.",
+      "before_sha256": "59f51c64db9e3b199815a87b1f396cbd707ff1cbcdd9da8b734f0d19e131533c",
+      "copied_sha256": "86e5fffc5e118c379281e46cbe473c4dd18563114e1ae15bcfade4060260b37a"
+    },
+    {
+      "path": "openpilot/selfdrive/carrot/tests/test_signal_start_guard.py",
+      "reason_ko": "다운로드 패키지 최초 생성 뒤 부모가 승인한 테스트 입력 경로 보정. 계산 코어와 assertion 변경 없음.",
+      "before_sha256": "362eb8f8a7ec2bc3bf2b356b2b2faeffc1d9e8ed3cc77c2114b8e0d9346d542a",
+      "copied_sha256": "3c6d4ddc2e7acf2827b9e8fd9f79fc7417c59548f11cacb4e157080a4818c04a"
+    }
+  ],
+  "additional_test": {
+    "path": "tools/ars510_validation/signal/test_native_signal.py",
+    "sha256": "035b65ac995f84cf0a0900a3ea56846411d3862a652b7cc919ba1e27d9c62f97",
+    "reason_ko": "최초 다운로드 후 작성된 검증 테스트 66건을 원본 검증 파일에서 별도 lab으로만 복사. 계산 코드 변경 없음."
+  },
+  "limits_ko": [
+    "데스크톱 Linux x86_64 계산 검증이며 Konik A1M/ARM 전체 장치 빌드는 미검증.",
+    "합성 입력과 공개 테스트를 사용하며 영상 인식 정확도, 실제 제동 응답, 회생 에너지, ECU 호환성, PCS/AEB 보존을 증명하지 않음.",
+    "자동 적용·설정 변경·UDS·실차 CAN 송신·Panda 펌웨어 배포 없음.",
+    "pytest의 운영 프로세스/장치용 저장소 conftest는 실행하지 않고 순수 계산 검사를 별도 프로세스에서 실행."
+  ],
+  "native_build_manifest": {
+    "python": "3.12.15 (main, Oct  9 2026, 15:22:32) [Clang 22.1.3 ]",
+    "source_sha256": "7f647b9a63762b9c808bddf418aae6dbbd55d15af6aa9cf0939606e05f9e50c1",
+    "source_file": "<workspace>/work/download_e2e/work/carrotpilot/openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py",
+    "native_files": {
+      "acados_ocp_solver_pyx.cpython-312-x86_64-linux-gnu.so": "2533733258b4f2ceec5ce79a023b1c2992266a7d2a9637fd8f689e58a9ee2efb",
+      "libacados.so": "b5496cea328d9a239b1c1cb69b1327753e54eeebe331ef29ca91b97a85544228",
+      "libacados_ocp_solver_long.so": "2cf19053e5712920719b54ba8f970fcfd178ffe4acd5c77e3170a423b030eb71",
+      "libblasfeo.so": "4804a491b10ca1065010c84d1e7fb9cc005acd2cfed504f0655ba94bd77ac01b",
+      "libhpipm.so": "1eac1f3673d6f99876104f86ef8b80f884f860ce77ba9ff135af5b2e355616c6",
+      "libqpOASES_e.so.3.1": "48444b891f694cb720146a2ce2a83a42086d8a911064e5b14df5f6d08486f47b"
+    }
+  },
+  "success": true,
+  "interpretation_ko": "직접 실행한 결과만 기록. 새 의존성과 새 native 빌드에서 동일 계산 코어의 회귀 결과이며 장치/실차 설치 승인이 아님.",
+  "initial_attempts": [
+    {
+      "name": "native_build",
+      "returncode": 0,
+      "seconds": 30.681,
+      "command": [
+        "<workspace>/work/download_e2e/work/offline-venv/bin/python",
+        "<workspace>/work/download_e2e/work/native_sim/build_mpc.py"
+      ],
+      "cwd": "<workspace>/work/download_e2e/work/carrotpilot",
+      "log": "work/download_e2e/evidence/native_build.log"
+    },
+    {
+      "name": "native_74",
+      "returncode": 1,
+      "seconds": 7.593,
+      "command": [
+        "<workspace>/work/download_e2e/work/offline-venv/bin/python",
+        "-c",
+        "from tools.ars510_offline.bootstrap import prepare; prepare(); import pytest; raise SystemExit(pytest.main(['--noconftest', '-o', 'addopts=', '-q', '--junitxml', '<workspace>/work/download_e2e/evidence/native_74.xml', 'tools/ars510_validation/native']))"
+      ],
+      "cwd": "<workspace>/work/download_e2e/work/carrotpilot",
+      "log": "work/download_e2e/evidence/native_74.log",
+      "junit": {
+        "tests": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "camera_28",
+      "returncode": 1,
+      "seconds": 7.985,
+      "command": [
+        "<workspace>/work/download_e2e/work/offline-venv/bin/python",
+        "-c",
+        "from tools.ars510_offline.bootstrap import prepare; prepare(); import pytest; raise SystemExit(pytest.main(['--noconftest', '-o', 'addopts=', '-q', '--junitxml', '<workspace>/work/download_e2e/evidence/camera_28.xml', 'tools/ars510_validation/signal/test_camera_profiles.py']))"
+      ],
+      "cwd": "<workspace>/work/download_e2e/work/carrotpilot",
+      "log": "work/download_e2e/evidence/camera_28.log",
+      "junit": {
+        "tests": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "signal_native_66",
+      "returncode": 1,
+      "seconds": 10.532,
+      "command": [
+        "<workspace>/work/download_e2e/work/offline-venv/bin/python",
+        "-c",
+        "from tools.ars510_offline.bootstrap import prepare; prepare(); import pytest; raise SystemExit(pytest.main(['--noconftest', '-o', 'addopts=', '-q', '--junitxml', '<workspace>/work/download_e2e/evidence/signal_native_66.xml', 'tools/ars510_validation/signal/test_native_signal.py']))"
+      ],
+      "cwd": "<workspace>/work/download_e2e/work/carrotpilot",
+      "log": "work/download_e2e/evidence/signal_native_66.log",
+      "junit": {
+        "tests": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "signal_existing_267",
+      "returncode": 1,
+      "seconds": 9.711,
+      "command": [
+        "<workspace>/work/download_e2e/work/offline-venv/bin/python",
+        "-c",
+        "from tools.ars510_offline.bootstrap import prepare; prepare(); import pytest; raise SystemExit(pytest.main(['--noconftest', '-o', 'addopts=', '-q', '--junitxml', '<workspace>/work/download_e2e/evidence/signal_existing_267.xml', 'openpilot/selfdrive/carrot/tests/test_signal_assist.py', 'openpilot/selfdrive/carrot/tests/test_signal_assist_runtime.py', 'openpilot/selfdrive/carrot/tests/test_signal_start_guard.py', 'openpilot/selfdrive/carrot/tests/test_signal_stop_prepare.py', 'openpilot/selfdrive/carrot/tests/test_signal_red_priority.py', 'openpilot/selfdrive/carrot/tests/test_signal_mode.py', 'openpilot/selfdrive/carrot/tests/test_signal_display.py', 'openpilot/selfdrive/modeld/tests/test_signal_tracking_shadow.py']))"
+      ],
+      "cwd": "<workspace>/work/download_e2e/work/carrotpilot",
+      "log": "work/download_e2e/evidence/signal_existing_267.log",
+      "junit": {
+        "tests": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "ars510_offline",
+      "returncode": 1,
+      "seconds": 8.216,
+      "command": [
+        "<workspace>/work/download_e2e/work/offline-venv/bin/python",
+        "-c",
+        "from tools.ars510_offline.bootstrap import prepare; prepare(); import pytest; raise SystemExit(pytest.main(['--noconftest', '-o', 'addopts=', '-q', '--junitxml', '<workspace>/work/download_e2e/evidence/ars510_offline.xml', 'opendbc_repo/opendbc/car/toyota/tests/test_ars510_offline.py', 'tools/ars510_offline/test_legacy_regression.py']))"
+      ],
+      "cwd": "<workspace>/work/download_e2e/work/carrotpilot",
+      "log": "work/download_e2e/evidence/ars510_offline.log",
+      "junit": {
+        "tests": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "pcm_buttons",
+      "returncode": 1,
+      "seconds": 7.73,
+      "command": [
+        "<workspace>/work/download_e2e/work/offline-venv/bin/python",
+        "-c",
+        "from tools.ars510_offline.bootstrap import prepare; prepare(); import pytest; raise SystemExit(pytest.main(['--noconftest', '-o', 'addopts=', '-q', '--junitxml', '<workspace>/work/download_e2e/evidence/pcm_buttons.xml', 'openpilot/selfdrive/car/tests/test_toyota_pcm_mode0.py', 'openpilot/selfdrive/car/tests/test_toyota_pcm_speed.py', 'openpilot/selfdrive/car/tests/test_carrot_cruise_buttons.py']))"
+      ],
+      "cwd": "<workspace>/work/download_e2e/work/carrotpilot",
+      "log": "work/download_e2e/evidence/pcm_buttons.log",
+      "junit": {
+        "tests": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "results": [
+    {
+      "name": "native_build",
+      "returncode": 0,
+      "seconds": 30.681,
+      "command": [
+        "<workspace>/work/download_e2e/work/offline-venv/bin/python",
+        "<workspace>/work/download_e2e/work/native_sim/build_mpc.py"
+      ],
+      "cwd": "<workspace>/work/download_e2e/work/carrotpilot",
+      "log": "work/download_e2e/evidence/native_build.log"
+    },
+    {
+      "name": "native_74",
+      "returncode": 0,
+      "seconds": 9.965,
+      "command": [
+        "<workspace>/work/download_e2e/work/offline-venv/bin/python",
+        "-c",
+        "from tools.ars510_offline.bootstrap import prepare; prepare(); import pytest; raise SystemExit(pytest.main(['-s', '--noconftest', '-o', 'addopts=', '-q', '--junitxml', '<workspace>/work/download_e2e/evidence/native_74_uncaptured.xml', 'tools/ars510_validation/native']))"
+      ],
+      "cwd": "<workspace>/work/download_e2e/work/carrotpilot",
+      "log": "work/download_e2e/evidence/native_74_uncaptured.log",
+      "junit": {
+        "tests": 74,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "camera_28",
+      "returncode": 0,
+      "seconds": 6.605,
+      "command": [
+        "<workspace>/work/download_e2e/work/offline-venv/bin/python",
+        "-c",
+        "from tools.ars510_offline.bootstrap import prepare; prepare(); import pytest; raise SystemExit(pytest.main(['-s', '--noconftest', '-o', 'addopts=', '-q', '--junitxml', '<workspace>/work/download_e2e/evidence/camera_28_uncaptured.xml', 'tools/ars510_validation/signal/test_camera_profiles.py']))"
+      ],
+      "cwd": "<workspace>/work/download_e2e/work/carrotpilot",
+      "log": "work/download_e2e/evidence/camera_28_uncaptured.log",
+      "junit": {
+        "tests": 28,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "signal_native_66",
+      "returncode": 0,
+      "seconds": 18.906,
+      "command": [
+        "<workspace>/work/download_e2e/work/offline-venv/bin/python",
+        "-c",
+        "from tools.ars510_offline.bootstrap import prepare; prepare(); import pytest; raise SystemExit(pytest.main(['-s', '--noconftest', '-o', 'addopts=', '-q', '--junitxml', '<workspace>/work/download_e2e/evidence/signal_native_66_uncaptured.xml', 'tools/ars510_validation/signal/test_native_signal.py']))"
+      ],
+      "cwd": "<workspace>/work/download_e2e/work/carrotpilot",
+      "log": "work/download_e2e/evidence/signal_native_66_uncaptured.log",
+      "junit": {
+        "tests": 66,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "signal_existing_267",
+      "returncode": 0,
+      "seconds": 13.885,
+      "command": [
+        "<workspace>/work/download_e2e/work/offline-venv/bin/python",
+        "-c",
+        "import sys; sys.path.insert(0, '../native_sim'); from offline_io import prepare; prepare(); import pytest; raise SystemExit(pytest.main(['-s', '--noconftest', '-o', 'addopts=', '-q', '--junitxml', '<workspace>/work/download_e2e/evidence/signal_existing_267_memory_io.xml', 'openpilot/selfdrive/carrot/tests/test_signal_assist.py', 'openpilot/selfdrive/carrot/tests/test_signal_assist_runtime.py', 'openpilot/selfdrive/carrot/tests/test_signal_start_guard.py', 'openpilot/selfdrive/carrot/tests/test_signal_stop_prepare.py', 'openpilot/selfdrive/carrot/tests/test_signal_red_priority.py', 'openpilot/selfdrive/carrot/tests/test_signal_mode.py', 'openpilot/selfdrive/carrot/tests/test_signal_display.py', 'openpilot/selfdrive/modeld/tests/test_signal_tracking_shadow.py']))"
+      ],
+      "cwd": "<workspace>/work/download_e2e/work/carrotpilot",
+      "log": "work/download_e2e/evidence/signal_existing_267_memory_io.log",
+      "junit": {
+        "tests": 267,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "ars510_offline",
+      "returncode": 0,
+      "seconds": 7.685,
+      "command": [
+        "<workspace>/work/download_e2e/work/offline-venv/bin/python",
+        "-c",
+        "from tools.ars510_offline.bootstrap import prepare; prepare(); import pytest; raise SystemExit(pytest.main(['-s', '--noconftest', '-o', 'addopts=', '-q', '--junitxml', '<workspace>/work/download_e2e/evidence/ars510_offline_uncaptured.xml', 'opendbc_repo/opendbc/car/toyota/tests/test_ars510_offline.py', 'tools/ars510_offline/test_legacy_regression.py']))"
+      ],
+      "cwd": "<workspace>/work/download_e2e/work/carrotpilot",
+      "log": "work/download_e2e/evidence/ars510_offline_uncaptured.log",
+      "junit": {
+        "tests": 55,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "pcm_buttons",
+      "returncode": 0,
+      "seconds": 8.511,
+      "command": [
+        "<workspace>/work/download_e2e/work/offline-venv/bin/python",
+        "-c",
+        "import sys; sys.path.insert(0, '../native_sim'); from offline_io import prepare; prepare(); import pytest; raise SystemExit(pytest.main(['-s', '--noconftest', '-o', 'addopts=', '-q', '--junitxml', '<workspace>/work/download_e2e/evidence/pcm_buttons_memory_io.xml', 'openpilot/selfdrive/car/tests/test_toyota_pcm_mode0.py', 'openpilot/selfdrive/car/tests/test_toyota_pcm_speed.py', 'openpilot/selfdrive/car/tests/test_carrot_cruise_buttons.py']))"
+      ],
+      "cwd": "<workspace>/work/download_e2e/work/carrotpilot",
+      "log": "work/download_e2e/evidence/pcm_buttons_memory_io.log",
+      "junit": {
+        "tests": 216,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "capture_environment_issue": {
+    "reason_ko": "첫 6개 pytest는 전역 fd 출력 캡처의 임시 파일 truncate에서 실패했고 0건 실행됨. 최초 XML/로그를 보존하고 pytest -s로 출력 캡처만 해제함.",
+    "temporary_file_probe": {
+      "type": "FileNotFoundError",
+      "errno": 2,
+      "message": "[Errno 2] No such file or directory"
+    },
+    "assertions_modified": false,
+    "algorithm_modified": false
+  },
+  "dependency_smoke": {
+    "returncode": 0,
+    "output": "3.6.7 2.2.4",
+    "error": ""
+  },
+  "completed_utc": "2026-10-12T08:01:42.613652+00:00",
+  "io_harness_attempts": [
+    {
+      "name": "signal_existing_267",
+      "returncode": 1,
+      "seconds": 23.395,
+      "command": [
+        "<workspace>/work/download_e2e/work/offline-venv/bin/python",
+        "-c",
+        "from tools.ars510_offline.bootstrap import prepare; prepare(); import pytest; raise SystemExit(pytest.main(['-s', '--noconftest', '-o', 'addopts=', '-q', '--junitxml', '<workspace>/work/download_e2e/evidence/signal_existing_267_uncaptured.xml', 'openpilot/selfdrive/carrot/tests/test_signal_assist.py', 'openpilot/selfdrive/carrot/tests/test_signal_assist_runtime.py', 'openpilot/selfdrive/carrot/tests/test_signal_start_guard.py', 'openpilot/selfdrive/carrot/tests/test_signal_stop_prepare.py', 'openpilot/selfdrive/carrot/tests/test_signal_red_priority.py', 'openpilot/selfdrive/carrot/tests/test_signal_mode.py', 'openpilot/selfdrive/carrot/tests/test_signal_display.py', 'openpilot/selfdrive/modeld/tests/test_signal_tracking_shadow.py']))"
+      ],
+      "cwd": "<workspace>/work/download_e2e/work/carrotpilot",
+      "log": "work/download_e2e/evidence/signal_existing_267_uncaptured.log",
+      "junit": {
+        "tests": 267,
+        "failures": 36,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "pcm_buttons",
+      "returncode": 1,
+      "seconds": 11.401,
+      "command": [
+        "<workspace>/work/download_e2e/work/offline-venv/bin/python",
+        "-c",
+        "from tools.ars510_offline.bootstrap import prepare; prepare(); import pytest; raise SystemExit(pytest.main(['-s', '--noconftest', '-o', 'addopts=', '-q', '--junitxml', '<workspace>/work/download_e2e/evidence/pcm_buttons_uncaptured.xml', 'openpilot/selfdrive/car/tests/test_toyota_pcm_mode0.py', 'openpilot/selfdrive/car/tests/test_toyota_pcm_speed.py', 'openpilot/selfdrive/car/tests/test_carrot_cruise_buttons.py']))"
+      ],
+      "cwd": "<workspace>/work/download_e2e/work/carrotpilot",
+      "log": "work/download_e2e/evidence/pcm_buttons_uncaptured.log",
+      "junit": {
+        "tests": 216,
+        "failures": 6,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "io_harness_ko": "기존 신호/버튼 회귀는 원형 Params와 메시지 전송 입출력을 사용한다. ForbiddenParams 재생 harness로 실행한 42개 실패는 입출력 환경 실패였다. 계산 코드·assertions는 유지하고 패키지의 offline_io.prepare()가 제공하는 프로세스 내부 기본 설정·메모리 Cap'n Proto 메시지·로그 저장소를 사용한다. IPC/설정/로그만 대체하며 외부 소켓 생성은 차단한다. 실제 계산 코어 검증은 별도 native 74/신호 native 66에서 실행했다.",
+  "safety_reproduction": {
+    "library_sha256": "0da233bf51bc8375f969bc60101ae011638a0a05c69aa4f9abec3a87df678570",
+    "probe_sha256": "11548923a87af1dabc964b5ce51fc670f1970dfb78eb64af0bdc4f332e2316c0",
+    "compile_returncode": 0,
+    "compile_command": [
+      "gcc",
+      "-Wall",
+      "-Werror",
+      "-nostdlib",
+      "-fno-builtin",
+      "-std=gnu11",
+      "-Wfatal-errors",
+      "-Wno-pointer-to-int-cast",
+      "-shared",
+      "-fPIC",
+      "-Iwork/download_e2e/work/carrotpilot/opendbc_repo/opendbc/safety/board",
+      "-Iwork/download_e2e/work/carrotpilot/opendbc_repo/opendbc/safety",
+      "work/download_e2e/work/safety_validation/probe.c",
+      "-o",
+      "work/download_e2e/work/safety_validation/libsafety_download_native.so"
+    ],
+    "scope_ko": "다운로드 사본의 실제 C safety를 별도 .so로 컴파일. libsafety 실제 RX/TX/FWD 함수에 메모리 패킷만 전달. 실제 장치/Panda 펌웨어/차량 CAN 접근 없음.",
+    "copied_tool_ko": "최초 패키지 스냅샷에서 빠졌던 probe.c만 최신 release 검증 도구에서 own lab에 복사함. 헤더/차량 계산 소스 변경 없음.",
+    "results": [
+      {
+        "name": "safety_core",
+        "returncode": 0,
+        "seconds": 1.001,
+        "command": [
+          "<workspace>/work/download_e2e/work/offline-venv/bin/python",
+          "<workspace>/work/download_e2e/work/safety_validation/verify_compiled.py",
+          "<workspace>/work/download_e2e/work/safety_validation/libsafety_download_native.so",
+          "--output",
+          "<workspace>/work/download_e2e/evidence/safety_core.json",
+          "--exhaustive"
+        ],
+        "log": "work/download_e2e/evidence/safety_core.log",
+        "data": {
+          "named_cases": 171,
+          "named_failures": 0,
+          "failed_cases": [],
+          "exhaustive_signed16": {
+            "cases": 262144,
+            "tx_mismatches": 0,
+            "state_mutations": 0
+          },
+          "all_passed": true,
+          "library_sha256": "0da233bf51bc8375f969bc60101ae011638a0a05c69aa4f9abec3a87df678570"
+        }
+      },
+      {
+        "name": "safety_offsets",
+        "returncode": 0,
+        "seconds": 1.741,
+        "command": [
+          "<workspace>/work/download_e2e/work/offline-venv/bin/python",
+          "<workspace>/work/download_e2e/work/safety_validation/verify_offsets.py",
+          "<workspace>/work/download_e2e/work/safety_validation/libsafety_download_native.so",
+          "--output",
+          "<workspace>/work/download_e2e/evidence/safety_offsets.json"
+        ],
+        "log": "work/download_e2e/evidence/safety_offsets.log",
+        "data": {
+          "profiles": {
+            "toyota": {
+              "cases": 262144,
+              "limit_violation_mismatches": 0,
+              "controls_mutations": 0
+            },
+            "hyundai": {
+              "cases": 262144,
+              "limit_violation_mismatches": 0,
+              "controls_mutations": 0
+            },
+            "honda_rivian": {
+              "cases": 262144,
+              "limit_violation_mismatches": 0,
+              "controls_mutations": 0
+            },
+            "tesla": {
+              "cases": 262144,
+              "limit_violation_mismatches": 0,
+              "controls_mutations": 0
+            },
+            "ford": {
+              "cases": 262144,
+              "limit_violation_mismatches": 0,
+              "controls_mutations": 0
+            },
+            "volkswagen_mqb_pq_meb": {
+              "cases": 262144,
+              "limit_violation_mismatches": 0,
+              "controls_mutations": 0
+            }
+          },
+          "all_passed": true,
+          "library_sha256": "0da233bf51bc8375f969bc60101ae011638a0a05c69aa4f9abec3a87df678570"
+        }
+      },
+      {
+        "name": "safety_timing",
+        "returncode": 0,
+        "seconds": 0.72,
+        "command": [
+          "<workspace>/work/download_e2e/work/offline-venv/bin/python",
+          "<workspace>/work/download_e2e/work/safety_validation/verify_timing.py",
+          "<workspace>/work/download_e2e/work/safety_validation/libsafety_download_native.so",
+          "--output",
+          "<workspace>/work/download_e2e/evidence/safety_timing.json"
+        ],
+        "log": "work/download_e2e/evidence/safety_timing.log",
+        "data": {
+          "cases": 297,
+          "failures": 0,
+          "failed_cases": [],
+          "all_passed": true
+        }
+      },
+      {
+        "name": "safety_brand_steering",
+        "returncode": 0,
+        "seconds": 0.683,
+        "command": [
+          "<workspace>/work/download_e2e/work/offline-venv/bin/python",
+          "<workspace>/work/download_e2e/work/safety_validation/verify_brand_steering.py",
+          "<workspace>/work/download_e2e/work/safety_validation/libsafety_download_native.so",
+          "--output",
+          "<workspace>/work/download_e2e/evidence/safety_brand_steering.json"
+        ],
+        "log": "work/download_e2e/evidence/safety_brand_steering.log",
+        "data": {
+          "cases": 11,
+          "failures": 0,
+          "rows": [
+            {
+              "brand": "honda",
+              "case": "authority",
+              "controls_allowed": false,
+              "torque_code": 1,
+              "address": "0xe4",
+              "length": 5,
+              "expected": 0,
+              "actual": 0,
+              "passed": true
+            },
+            {
+              "brand": "honda",
+              "case": "authority",
+              "controls_allowed": false,
+              "torque_code": 0,
+              "address": "0xe4",
+              "length": 5,
+              "expected": 1,
+              "actual": 1,
+              "passed": true
+            },
+            {
+              "brand": "honda",
+              "case": "authority",
+              "controls_allowed": true,
+              "torque_code": 1,
+              "address": "0xe4",
+              "length": 5,
+              "expected": 1,
+              "actual": 1,
+              "passed": true
+            },
+            {
+              "brand": "hyundai",
+              "case": "authority",
+              "controls_allowed": false,
+              "torque_code": 1,
+              "address": "0x340",
+              "length": 8,
+              "expected": 0,
+              "actual": 0,
+              "passed": true
+            },
+            {
+              "brand": "hyundai",
+              "case": "authority",
+              "controls_allowed": false,
+              "torque_code": 0,
+              "address": "0x340",
+              "length": 8,
+              "expected": 1,
+              "actual": 1,
+              "passed": true
+            },
+            {
+              "brand": "hyundai",
+              "case": "authority",
+              "controls_allowed": true,
+              "torque_code": 1,
+              "address": "0x340",
+              "length": 8,
+              "expected": 1,
+              "actual": 1,
+              "passed": true
+            },
+            {
+              "brand": "hyundai",
+              "case": "above_existing_512_limit",
+              "torque_code": 600,
+              "expected": 0,
+              "actual": 0,
+              "passed": true
+            },
+            {
+              "brand": "hyundai_canfd",
+              "case": "authority",
+              "controls_allowed": false,
+              "torque_code": 1,
+              "address": "0x12a",
+              "length": 16,
+              "expected": 0,
+              "actual": 0,
+              "passed": true
+            },
+            {
+              "brand": "hyundai_canfd",
+              "case": "authority",
+              "controls_allowed": false,
+              "torque_code": 0,
+              "address": "0x12a",
+              "length": 16,
+              "expected": 1,
+              "actual": 1,
+              "passed": true
+            },
+            {
+              "brand": "hyundai_canfd",
+              "case": "authority",
+              "controls_allowed": true,
+              "torque_code": 1,
+              "address": "0x12a",
+              "length": 16,
+              "expected": 1,
+              "actual": 1,
+              "passed": true
+            },
+            {
+              "brand": "hyundai_canfd",
+              "case": "above_existing_512_limit",
+              "torque_code": 600,
+              "expected": 0,
+              "actual": 0,
+              "passed": true
+            }
+          ],
+          "note": "합성 메모리 패킷으로 원형 C 판정만 호출한다. 실제 ECU 수용·물리 조향 증거가 아니다."
+        }
+      },
+      {
+        "name": "safety_primary",
+        "returncode": 0,
+        "seconds": 25.538,
+        "command": [
+          "<workspace>/work/download_e2e/work/offline-venv/bin/python",
+          "<workspace>/work/download_e2e/work/safety_validation/run_upstream_tests.py",
+          "<workspace>/work/download_e2e/work/safety_validation/libsafety_download_native.so",
+          "<workspace>/work/download_e2e/work/carrotpilot/opendbc_repo/opendbc/safety/tests/test_toyota.py",
+          "<workspace>/work/download_e2e/work/carrotpilot/opendbc_repo/opendbc/safety/tests/test_tesla.py",
+          "<workspace>/work/download_e2e/work/carrotpilot/opendbc_repo/opendbc/safety/tests/test_ford.py",
+          "<workspace>/work/download_e2e/work/carrotpilot/opendbc_repo/opendbc/safety/tests/test_volkswagen_mqb.py",
+          "<workspace>/work/download_e2e/work/carrotpilot/opendbc_repo/opendbc/safety/tests/test_volkswagen_pq.py",
+          "<workspace>/work/download_e2e/work/carrotpilot/opendbc_repo/opendbc/safety/tests/test_rivian.py",
+          "--repo",
+          "<workspace>/work/download_e2e/work/carrotpilot",
+          "--junit",
+          "<workspace>/work/download_e2e/evidence/safety_primary.xml",
+          "--quiet-c"
+        ],
+        "log": "work/download_e2e/evidence/safety_primary.log",
+        "junit": {
+          "tests": 10422,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 300
+        }
+      },
+      {
+        "name": "safety_generated_toyota",
+        "returncode": 0,
+        "seconds": 3.934,
+        "command": [
+          "<workspace>/work/download_e2e/work/offline-venv/bin/python",
+          "<workspace>/work/download_e2e/work/safety_validation/verify_generated_toyota_can.py",
+          "<workspace>/work/download_e2e/work/safety_validation/libsafety_download_native.so",
+          "--repo",
+          "<workspace>/work/download_e2e/work/carrotpilot",
+          "--output",
+          "<workspace>/work/download_e2e/evidence/safety_generated_toyota.json"
+        ],
+        "log": "work/download_e2e/evidence/safety_generated_toyota.log",
+        "data": {
+          "source": {
+            "platform": "TOYOTA_RAV4_TSS2_2022",
+            "flags": 1372,
+            "radarUnavailable": true,
+            "openpilotLongitudinalControl": true,
+            "longitudinalActuatorDelay_s": 0.15000000596046448,
+            "safetyParam": 73,
+            "factory_alpha_long": true,
+            "car_interface_init_called": false,
+            "params_scope": "explicit_memory_read_defaults_only"
+          },
+          "cases": 12,
+          "failures": 0,
+          "carparams_unchanged": true,
+          "rows": [
+            {
+              "requested_accel_mps2": -1.0,
+              "generated_accel_raw_signed": -121,
+              "case": "active_fresh",
+              "controls_before": true,
+              "controls_after": true,
+              "expected_tx": 1,
+              "actual_tx": 1,
+              "passed": true,
+              "generated_message_addresses": [
+                "0x2e4",
+                "0x191",
+                "0x343",
+                "0x412",
+                "0x411",
+                "0x750"
+              ]
+            },
+            {
+              "requested_accel_mps2": -1.0,
+              "generated_accel_raw_signed": -121,
+              "case": "inactive",
+              "controls_before": false,
+              "controls_after": false,
+              "expected_tx": 0,
+              "actual_tx": 0,
+              "passed": true,
+              "generated_message_addresses": [
+                "0x2e4",
+                "0x191",
+                "0x343",
+                "0x412",
+                "0x411",
+                "0x750"
+              ]
+            },
+            {
+              "requested_accel_mps2": -1.0,
+              "generated_accel_raw_signed": -121,
+              "case": "gas",
+              "controls_before": false,
+              "controls_after": false,
+              "expected_tx": 0,
+              "actual_tx": 0,
+              "passed": true,
+              "generated_message_addresses": [
+                "0x2e4",
+                "0x191",
+                "0x343",
+                "0x412",
+                "0x411",
+                "0x750"
+              ]
+            },
+            {
+              "requested_accel_mps2": -1.0,
+              "generated_accel_raw_signed": -121,
+              "case": "brake",
+              "controls_before": false,
+              "controls_after": false,
+              "expected_tx": 0,
+              "actual_tx": 0,
+              "passed": true,
+              "generated_message_addresses": [
+                "0x2e4",
+                "0x191",
+                "0x343",
+                "0x412",
+                "0x411",
+                "0x750"
+              ]
+            },
+            {
+              "requested_accel_mps2": -1.0,
+              "generated_accel_raw_signed": -121,
+              "case": "timeout",
+              "controls_before": false,
+              "controls_after": false,
+              "expected_tx": 0,
+              "actual_tx": 0,
+              "passed": true,
+              "generated_message_addresses": [
+                "0x2e4",
+                "0x191",
+                "0x343",
+                "0x412",
+                "0x411",
+                "0x750"
+              ]
+            },
+            {
+              "requested_accel_mps2": -1.0,
+              "generated_accel_raw_signed": -121,
+              "case": "stock_long",
+              "controls_before": true,
+              "controls_after": true,
+              "expected_tx": 0,
+              "actual_tx": 0,
+              "passed": true,
+              "generated_message_addresses": [
+                "0x2e4",
+                "0x191",
+                "0x343",
+                "0x412",
+                "0x411",
+                "0x750"
+              ]
+            },
+            {
+              "requested_accel_mps2": 1.0,
+              "generated_accel_raw_signed": 121,
+              "case": "active_fresh",
+              "controls_before": true,
+              "controls_after": true,
+              "expected_tx": 1,
+              "actual_tx": 1,
+              "passed": true,
+              "generated_message_addresses": [
+                "0x2e4",
+                "0x191",
+                "0x343",
+                "0x412",
+                "0x411",
+                "0x750"
+              ]
+            },
+            {
+              "requested_accel_mps2": 1.0,
+              "generated_accel_raw_signed": 121,
+              "case": "inactive",
+              "controls_before": false,
+              "controls_after": false,
+              "expected_tx": 0,
+              "actual_tx": 0,
+              "passed": true,
+              "generated_message_addresses": [
+                "0x2e4",
+                "0x191",
+                "0x343",
+                "0x412",
+                "0x411",
+                "0x750"
+              ]
+            },
+            {
+              "requested_accel_mps2": 1.0,
+              "generated_accel_raw_signed": 121,
+              "case": "gas",
+              "controls_before": false,
+              "controls_after": false,
+              "expected_tx": 0,
+              "actual_tx": 0,
+              "passed": true,
+              "generated_message_addresses": [
+                "0x2e4",
+                "0x191",
+                "0x343",
+                "0x412",
+                "0x411",
+                "0x750"
+              ]
+            },
+            {
+              "requested_accel_mps2": 1.0,
+              "generated_accel_raw_signed": 121,
+              "case": "brake",
+              "controls_before": false,
+              "controls_after": false,
+              "expected_tx": 0,
+              "actual_tx": 0,
+              "passed": true,
+              "generated_message_addresses": [
+                "0x2e4",
+                "0x191",
+                "0x343",
+                "0x412",
+                "0x411",
+                "0x750"
+              ]
+            },
+            {
+              "requested_accel_mps2": 1.0,
+              "generated_accel_raw_signed": 121,
+              "case": "timeout",
+              "controls_before": false,
+              "controls_after": false,
+              "expected_tx": 0,
+              "actual_tx": 0,
+              "passed": true,
+              "generated_message_addresses": [
+                "0x2e4",
+                "0x191",
+                "0x343",
+                "0x412",
+                "0x411",
+                "0x750"
+              ]
+            },
+            {
+              "requested_accel_mps2": 1.0,
+              "generated_accel_raw_signed": 121,
+              "case": "stock_long",
+              "controls_before": true,
+              "controls_after": true,
+              "expected_tx": 0,
+              "actual_tx": 0,
+              "passed": true,
+              "generated_message_addresses": [
+                "0x2e4",
+                "0x191",
+                "0x343",
+                "0x412",
+                "0x411",
+                "0x750"
+              ]
+            }
+          ],
+          "actual_vehicle_transmission": false,
+          "pcs_notice": "alpha-long 원형 CP는 UDS/PCS off 경로를 포함한다. 메모리에서 생성한 0x411/0x750은 송신하거나 PCS 보존 증거로 취급하지 않았다."
+        }
+      }
+    ],
+    "success": true,
+    "primary_summary": {
+      "passed": 579,
+      "subtests_passed": 9543,
+      "skipped": 300,
+      "failures": 0,
+      "skip_reason_ko": "원형 fixture에서 비적용 추상 클래스/지원하지 않는 user regen message 항목 등. 건너뜀을 통과로 합산하지 않음."
+    }
+  },
+  "installed_distributions": [
+    {
+      "name": "argparse-addons",
+      "version": "0.12.0"
+    },
+    {
+      "name": "bitstruct",
+      "version": "8.23.0"
+    },
+    {
+      "name": "cantools",
+      "version": "44.2.1"
+    },
+    {
+      "name": "certifi",
+      "version": "2026.7.22"
+    },
+    {
+      "name": "cffi",
+      "version": "2.1.1"
+    },
+    {
+      "name": "charset-normalizer",
+      "version": "3.5.2"
+    },
+    {
+      "name": "comma-deps-acados",
+      "version": "0.2.2.post103"
+    },
+    {
+      "name": "contourpy",
+      "version": "1.4.0"
+    },
+    {
+      "name": "crccheck",
+      "version": "1.3.1"
+    },
+    {
+      "name": "crcmod-plus",
+      "version": "2.3.6"
+    },
+    {
+      "name": "cycler",
+      "version": "0.12.1"
+    },
+    {
+      "name": "Cython",
+      "version": "3.3.0"
+    },
+    {
+      "name": "fonttools",
+      "version": "4.66.1"
+    },
+    {
+      "name": "idna",
+      "version": "3.20"
+    },
+    {
+      "name": "iniconfig",
+      "version": "2.3.1"
+    },
+    {
+      "name": "Jinja2",
+      "version": "3.1.6"
+    },
+    {
+      "name": "kiwisolver",
+      "version": "1.5.1"
+    },
+    {
+      "name": "MarkupSafe",
+      "version": "3.0.4"
+    },
+    {
+      "name": "matplotlib",
+      "version": "3.11.2"
+    },
+    {
+      "name": "numpy",
+      "version": "2.5.4"
+    },
+    {
+      "name": "opencv-python-headless",
+      "version": "4.13.0.92"
+    },
+    {
+      "name": "packaging",
+      "version": "26.3"
+    },
+    {
+      "name": "parameterized",
+      "version": "0.9.0"
+    },
+    {
+      "name": "pillow",
+      "version": "12.3.0"
+    },
+    {
+      "name": "pip",
+      "version": "25.0.1"
+    },
+    {
+      "name": "pluggy",
+      "version": "1.6.0"
+    },
+    {
+      "name": "psutil",
+      "version": "7.2.2"
+    },
+    {
+      "name": "pycapnp",
+      "version": "2.2.4"
+    },
+    {
+      "name": "pycparser",
+      "version": "3.11"
+    },
+    {
+      "name": "pycryptodome",
+      "version": "3.24.1"
+    },
+    {
+      "name": "Pygments",
+      "version": "2.21.0"
+    },
+    {
+      "name": "pyparsing",
+      "version": "3.3.3"
+    },
+    {
+      "name": "pyserial",
+      "version": "3.5"
+    },
+    {
+      "name": "pytest",
+      "version": "9.1.1"
+    },
+    {
+      "name": "python-can",
+      "version": "4.6.1"
+    },
+    {
+      "name": "python-dateutil",
+      "version": "2.9.0.post0"
+    },
+    {
+      "name": "pyzmq",
+      "version": "27.2.0"
+    },
+    {
+      "name": "requests",
+      "version": "2.34.2"
+    },
+    {
+      "name": "scipy",
+      "version": "1.18.1"
+    },
+    {
+      "name": "sentry-sdk",
+      "version": "2.71.0"
+    },
+    {
+      "name": "setproctitle",
+      "version": "1.3.8"
+    },
+    {
+      "name": "setuptools",
+      "version": "84.0.0"
+    },
+    {
+      "name": "six",
+      "version": "1.17.0"
+    },
+    {
+      "name": "sounddevice",
+      "version": "0.5.6"
+    },
+    {
+      "name": "textparser",
+      "version": "0.26.2"
+    },
+    {
+      "name": "tqdm",
+      "version": "4.70.1"
+    },
+    {
+      "name": "typing_extensions",
+      "version": "4.16.0"
+    },
+    {
+      "name": "urllib3",
+      "version": "2.8.0"
+    },
+    {
+      "name": "wrapt",
+      "version": "1.17.3"
+    },
+    {
+      "name": "zstandard",
+      "version": "0.25.0"
+    }
+  ],
+  "pip_check": {
+    "returncode": 0,
+    "output": "No broken requirements found.",
+    "executed_ko": "별도 가상환경의 python -m pip check를 직접 실행한 결과"
+  },
+  "download_git_head": "0e4ee1bdbef3ad7284b136fddf31592e3f8a785f",
+  "pytest_summary": {
+    "tests": 706,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "finalized_utc": "2026-10-12T08:07:28.494963+00:00",
+  "public_path_redaction_ko": "보고서의 로컬 절대 작업 경로를 <workspace>로 치환함. 원형 실행 명령·오류 로그는 공개 대상이 아닌 별도 lab 증거 파일에 보존."
+}

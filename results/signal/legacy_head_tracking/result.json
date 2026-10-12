@@ -1,0 +1,8 @@
+{
+  "exit_code": 0,
+  "wall_seconds": 4.5084289069995975,
+  "scope": "original_existing_tests_with_io_only_bootstrap",
+  "tests": [
+    "openpilot/selfdrive/modeld/tests/test_signal_tracking_shadow.py"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "before": {
+    "positive_held_control_ticks": 16,
+    "new_positive_acc_messages_while_held": 5,
+    "first_negative_acc_command_s": 2.3100000000000023,
+    "maximum_point_mass_speed_while_held_mps": 0.08145297939189108,
+    "point_mass_distance_while_held_m": 0.053764489334648065,
+    "physical_measurement": false
+  },
+  "after": {
+    "positive_held_control_ticks": 1,
+    "new_positive_acc_messages_while_held": 0,
+    "first_negative_acc_command_s": 2.160000000000011,
+    "maximum_point_mass_speed_while_held_mps": 0.04474821154019044,
+    "point_mass_distance_while_held_m": 0.023777754846584148,
+    "physical_measurement": false
+  },
+  "camera_recognition_verified": false,
+  "vehicle_verified": false,
+  "real_can_sent": false
+}

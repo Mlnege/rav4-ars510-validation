@@ -1,0 +1,56 @@
+[
+  {
+    "file": "rlog.zst",
+    "carParams_observations": [
+      {
+        "flags": 1372,
+        "HYBRID_bit_present": false,
+        "carFw_entries": 0,
+        "longitudinalActuatorDelay_s": 0.15000000596046448,
+        "openpilotLongitudinalControl": true
+      }
+    ]
+  },
+  {
+    "file": "rlog_06.zst",
+    "carParams_observations": [
+      {
+        "flags": 1368,
+        "HYBRID_bit_present": false,
+        "carFw_entries": 0,
+        "longitudinalActuatorDelay_s": 0.15000000596046448,
+        "openpilotLongitudinalControl": false
+      },
+      {
+        "flags": 1368,
+        "HYBRID_bit_present": false,
+        "carFw_entries": 0,
+        "longitudinalActuatorDelay_s": 0.15000000596046448,
+        "openpilotLongitudinalControl": false
+      }
+    ]
+  },
+  {
+    "file": "rlog_11.zst",
+    "carParams_observations": []
+  },
+  {
+    "file": "rlog_12.zst",
+    "carParams_observations": [
+      {
+        "flags": 1372,
+        "HYBRID_bit_present": false,
+        "carFw_entries": 0,
+        "longitudinalActuatorDelay_s": 0.15000000596046448,
+        "openpilotLongitudinalControl": true
+      },
+      {
+        "flags": 1372,
+        "HYBRID_bit_present": false,
+        "carFw_entries": 0,
+        "longitudinalActuatorDelay_s": 0.15000000596046448,
+        "openpilotLongitudinalControl": true
+      }
+    ]
+  }
+]

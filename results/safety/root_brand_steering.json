@@ -1,0 +1,122 @@
+{
+  "cases": 11,
+  "failures": 0,
+  "rows": [
+    {
+      "brand": "honda",
+      "case": "authority",
+      "controls_allowed": false,
+      "torque_code": 1,
+      "address": "0xe4",
+      "length": 5,
+      "expected": 0,
+      "actual": 0,
+      "passed": true
+    },
+    {
+      "brand": "honda",
+      "case": "authority",
+      "controls_allowed": false,
+      "torque_code": 0,
+      "address": "0xe4",
+      "length": 5,
+      "expected": 1,
+      "actual": 1,
+      "passed": true
+    },
+    {
+      "brand": "honda",
+      "case": "authority",
+      "controls_allowed": true,
+      "torque_code": 1,
+      "address": "0xe4",
+      "length": 5,
+      "expected": 1,
+      "actual": 1,
+      "passed": true
+    },
+    {
+      "brand": "hyundai",
+      "case": "authority",
+      "controls_allowed": false,
+      "torque_code": 1,
+      "address": "0x340",
+      "length": 8,
+      "expected": 0,
+      "actual": 0,
+      "passed": true
+    },
+    {
+      "brand": "hyundai",
+      "case": "authority",
+      "controls_allowed": false,
+      "torque_code": 0,
+      "address": "0x340",
+      "length": 8,
+      "expected": 1,
+      "actual": 1,
+      "passed": true
+    },
+    {
+      "brand": "hyundai",
+      "case": "authority",
+      "controls_allowed": true,
+      "torque_code": 1,
+      "address": "0x340",
+      "length": 8,
+      "expected": 1,
+      "actual": 1,
+      "passed": true
+    },
+    {
+      "brand": "hyundai",
+      "case": "above_existing_512_limit",
+      "torque_code": 600,
+      "expected": 0,
+      "actual": 0,
+      "passed": true
+    },
+    {
+      "brand": "hyundai_canfd",
+      "case": "authority",
+      "controls_allowed": false,
+      "torque_code": 1,
+      "address": "0x12a",
+      "length": 16,
+      "expected": 0,
+      "actual": 0,
+      "passed": true
+    },
+    {
+      "brand": "hyundai_canfd",
+      "case": "authority",
+      "controls_allowed": false,
+      "torque_code": 0,
+      "address": "0x12a",
+      "length": 16,
+      "expected": 1,
+      "actual": 1,
+      "passed": true
+    },
+    {
+      "brand": "hyundai_canfd",
+      "case": "authority",
+      "controls_allowed": true,
+      "torque_code": 1,
+      "address": "0x12a",
+      "length": 16,
+      "expected": 1,
+      "actual": 1,
+      "passed": true
+    },
+    {
+      "brand": "hyundai_canfd",
+      "case": "above_existing_512_limit",
+      "torque_code": 600,
+      "expected": 0,
+      "actual": 0,
+      "passed": true
+    }
+  ],
+  "note": "합성 메모리 패킷으로 원형 C 판정만 호출한다. 실제 ECU 수용·물리 조향 증거가 아니다."
+}

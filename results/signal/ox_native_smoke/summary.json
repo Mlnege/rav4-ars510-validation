@@ -1,0 +1,17 @@
+{
+  "timestamp_utc": "2026-10-12T07:34:01.283761+00:00",
+  "steps": 120,
+  "mode": 2,
+  "native_solver": "acados.acados_template.acados_ocp_solver_pyx",
+  "camera_profile": "ox03c10",
+  "solver_nonzero": 0,
+  "prepare_frames": 96,
+  "prepare_control_frames": 96,
+  "first_prepare_time": 1.2000000000000028,
+  "first_negative_target_time": 4.049999999999997,
+  "last_target": -0.4839141070842743,
+  "carparams_unchanged": true,
+  "wall_seconds": 0.19234249700002692,
+  "camera_recognition_verified": false,
+  "vehicle_verified": false
+}

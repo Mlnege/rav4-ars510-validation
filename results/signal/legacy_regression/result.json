@@ -1,0 +1,15 @@
+{
+  "exit_code": 0,
+  "wall_seconds": 10.452985431000343,
+  "scope": "original_existing_tests_with_io_only_bootstrap",
+  "tests": [
+    "openpilot/selfdrive/carrot/tests/test_signal_assist.py",
+    "openpilot/selfdrive/carrot/tests/test_signal_assist_runtime.py",
+    "openpilot/selfdrive/carrot/tests/test_signal_start_guard.py",
+    "openpilot/selfdrive/carrot/tests/test_signal_stop_prepare.py",
+    "openpilot/selfdrive/carrot/tests/test_signal_red_priority.py",
+    "openpilot/selfdrive/carrot/tests/test_signal_mode.py",
+    "openpilot/selfdrive/carrot/tests/test_signal_display.py",
+    "openpilot/selfdrive/modeld/tests/test_signal_tracking_shadow.py"
+  ]
+}

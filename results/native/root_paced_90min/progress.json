@@ -1,0 +1,11 @@
+{
+  "started_utc": "2026-10-12T07:20:11.805165+00:00",
+  "wall_seconds": 5412.286012169,
+  "completed_cases": 180,
+  "steps": 540000,
+  "invariant_violations": [],
+  "overlap_cases": 24,
+  "step_lateness_p99_ms": 0.14433503972668407,
+  "step_work_p99_ms": 2.500394339976993,
+  "late_over_10ms_steps": 5
+}

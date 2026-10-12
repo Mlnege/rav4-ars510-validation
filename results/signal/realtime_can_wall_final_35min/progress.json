@@ -1,0 +1,14 @@
+{
+  "started_utc": "2026-10-12T08:22:46.501792+00:00",
+  "wall_seconds": 2040.8904415000006,
+  "plan_steps": 40818,
+  "control_steps": 204090,
+  "can_messages": 68030,
+  "case": "moving_mode1_red",
+  "violations": {},
+  "retained_positive_hold_ticks": 14,
+  "maximum_rss_mb": 83.97265625,
+  "maximum_step_ms": 52.7624989999822,
+  "control_late_ticks_over_1ms": 40873,
+  "control_max_lateness_ms": 322.9096280010708
+}

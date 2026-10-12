@@ -1,0 +1,45 @@
+{
+  "recorded_utc": "2026-10-12T07:50:31.852142+00:00",
+  "case_metrics": {
+    "mode2_moving_red": {
+      "plan_count": 240,
+      "control_count": 1200,
+      "first_prepare_seconds": 1.2000000000000028,
+      "first_negative_target_seconds": 4.050000000000001,
+      "minimum_target_mps2": -0.5,
+      "first_green_release_seconds": null,
+      "solver_errors": 0
+    },
+    "mode2_model_red_stop": {
+      "plan_count": 240,
+      "control_count": 1200,
+      "first_prepare_seconds": null,
+      "first_negative_target_seconds": 0.0,
+      "minimum_target_mps2": -2.580545663833618,
+      "first_green_release_seconds": null,
+      "solver_errors": 0
+    },
+    "mode2_can_fault": {
+      "plan_count": 240,
+      "control_count": 1200,
+      "first_prepare_seconds": 1.2000000000000028,
+      "first_negative_target_seconds": 4.050000000000011,
+      "minimum_target_mps2": -0.5,
+      "first_green_release_seconds": null,
+      "solver_errors": 0
+    },
+    "green_keeps_model_stop": {
+      "plan_count": 240,
+      "control_count": 1200,
+      "first_prepare_seconds": null,
+      "first_negative_target_seconds": 0.0,
+      "minimum_target_mps2": -0.00026936488575302064,
+      "first_green_release_seconds": 5.700000000000003,
+      "solver_errors": 0
+    }
+  },
+  "scope": "first_complete_synthetic_cycle_actual_native_algorithms",
+  "camera_recognition_verified": false,
+  "vehicle_verified": false,
+  "completed_one_hour_claimed": false
+}

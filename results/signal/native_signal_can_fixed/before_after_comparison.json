@@ -1,0 +1,101 @@
+{
+  "cases": {
+    "moving_red_prepare": {
+      "plan": {
+        "rows": 240,
+        "changed_rows_in_common_fields": 0,
+        "maximum_numeric_deltas": {}
+      },
+      "can_control": {
+        "rows": 1200,
+        "changed_rows_in_common_fields": 0,
+        "maximum_numeric_deltas": {}
+      }
+    },
+    "moving_mode0_red": {
+      "plan": {
+        "rows": 240,
+        "changed_rows_in_common_fields": 0,
+        "maximum_numeric_deltas": {}
+      },
+      "can_control": {
+        "rows": 1200,
+        "changed_rows_in_common_fields": 0,
+        "maximum_numeric_deltas": {}
+      }
+    },
+    "moving_mode1_red": {
+      "plan": {
+        "rows": 240,
+        "changed_rows_in_common_fields": 0,
+        "maximum_numeric_deltas": {}
+      },
+      "can_control": {
+        "rows": 1200,
+        "changed_rows_in_common_fields": 0,
+        "maximum_numeric_deltas": {}
+      }
+    },
+    "moving_stale_red": {
+      "plan": {
+        "rows": 240,
+        "changed_rows_in_common_fields": 0,
+        "maximum_numeric_deltas": {}
+      },
+      "can_control": {
+        "rows": 1200,
+        "changed_rows_in_common_fields": 0,
+        "maximum_numeric_deltas": {}
+      }
+    },
+    "moving_model_stop": {
+      "plan": {
+        "rows": 240,
+        "changed_rows_in_common_fields": 51,
+        "maximum_numeric_deltas": {
+          "speed": 0.000315698902734975,
+          "j_target": 0.0003978908061981201,
+          "a_target": 0.0001106560230255127,
+          "v_target": 6.9141387939453125e-06
+        }
+      },
+      "can_control": {
+        "rows": 1200,
+        "changed_rows_in_common_fields": 285,
+        "maximum_numeric_deltas": {
+          "decoded_acc_command": 0.0010000000000000009,
+          "plant_speed": 0.0003252754886046965,
+          "plant_accel": 0.0005515607095715191,
+          "plan_target": 0.0001106560230255127
+        }
+      }
+    },
+    "moving_can_fault": {
+      "plan": {
+        "rows": 240,
+        "changed_rows_in_common_fields": 0,
+        "maximum_numeric_deltas": {}
+      },
+      "can_control": {
+        "rows": 1200,
+        "changed_rows_in_common_fields": 0,
+        "maximum_numeric_deltas": {}
+      }
+    },
+    "stopped_green_keeps_model_stop": {
+      "plan": {
+        "rows": 240,
+        "changed_rows_in_common_fields": 0,
+        "maximum_numeric_deltas": {}
+      },
+      "can_control": {
+        "rows": 1200,
+        "changed_rows_in_common_fields": 0,
+        "maximum_numeric_deltas": {}
+      }
+    }
+  },
+  "all_unchanged": false,
+  "new_diagnostics_excluded_from_comparison": true,
+  "physical_measurement": false
+}

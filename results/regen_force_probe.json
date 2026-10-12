@@ -1,0 +1,143 @@
+[
+  {
+    "file": "rlog.zst",
+    "bus": 0,
+    "counts": {
+      "received": 5043,
+      "brake_raw_full_scale_255": 219
+    },
+    "channels": {
+      "FDRVREAL": {
+        "samples": 2124,
+        "min_N": 0.0,
+        "max_N": 1200.0,
+        "negative_samples": 0,
+        "positive_samples": 709,
+        "zero_samples": 1415
+      },
+      "BRAKE_FORCE": {
+        "samples": 2919,
+        "min_N": 0.0,
+        "max_N": 10200.0,
+        "negative_samples": 0,
+        "positive_samples": 2614,
+        "zero_samples": 305
+      }
+    },
+    "carControl": {
+      "messages": 3354,
+      "enabled": 0,
+      "longActive": 0
+    },
+    "pure_regenerative_braking": "unverified",
+    "energy_recovery_Wh": null,
+    "physical_CAN_transmission": false,
+    "BRAKE_checksum_defined_in_DBC": false,
+    "force_signal_ECU_calibration_verified": false,
+    "interpretation": "DBC수신값; FDRVREAL은엔진·모터·회생·크리프혼합이고실제물리분담미확인. BRAKE의255포화/무효의미도미확인"
+  },
+  {
+    "file": "rlog_06.zst",
+    "bus": 0,
+    "counts": {
+      "received": 8897,
+      "brake_raw_full_scale_255": 0
+    },
+    "channels": {
+      "FDRVREAL": {
+        "samples": 3761,
+        "min_N": -400.0,
+        "max_N": 3525.0,
+        "negative_samples": 1045,
+        "positive_samples": 2651,
+        "zero_samples": 65
+      },
+      "BRAKE_FORCE": {
+        "samples": 5136,
+        "min_N": 0.0,
+        "max_N": 5320.0,
+        "negative_samples": 0,
+        "positive_samples": 506,
+        "zero_samples": 4630
+      }
+    },
+    "carControl": {
+      "messages": 5997,
+      "enabled": 0,
+      "longActive": 0
+    },
+    "pure_regenerative_braking": "unverified",
+    "energy_recovery_Wh": null,
+    "physical_CAN_transmission": false,
+    "BRAKE_checksum_defined_in_DBC": false,
+    "force_signal_ECU_calibration_verified": false,
+    "interpretation": "DBC수신값; FDRVREAL은엔진·모터·회생·크리프혼합이고실제물리분담미확인. BRAKE의255포화/무효의미도미확인"
+  },
+  {
+    "file": "rlog_11.zst",
+    "bus": 0,
+    "counts": {},
+    "channels": {
+      "FDRVREAL": {
+        "samples": 0,
+        "min_N": null,
+        "max_N": null,
+        "negative_samples": 0,
+        "positive_samples": 0,
+        "zero_samples": 0
+      },
+      "BRAKE_FORCE": {
+        "samples": 0,
+        "min_N": null,
+        "max_N": null,
+        "negative_samples": 0,
+        "positive_samples": 0,
+        "zero_samples": 0
+      }
+    },
+    "carControl": {},
+    "pure_regenerative_braking": "unverified",
+    "energy_recovery_Wh": null,
+    "physical_CAN_transmission": false,
+    "BRAKE_checksum_defined_in_DBC": false,
+    "force_signal_ECU_calibration_verified": false,
+    "interpretation": "DBC수신값; FDRVREAL은엔진·모터·회생·크리프혼합이고실제물리분담미확인. BRAKE의255포화/무효의미도미확인"
+  },
+  {
+    "file": "rlog_12.zst",
+    "bus": 0,
+    "counts": {
+      "received": 8895,
+      "brake_raw_full_scale_255": 556
+    },
+    "channels": {
+      "FDRVREAL": {
+        "samples": 3761,
+        "min_N": 0.0,
+        "max_N": 1200.0,
+        "negative_samples": 0,
+        "positive_samples": 486,
+        "zero_samples": 3275
+      },
+      "BRAKE_FORCE": {
+        "samples": 5134,
+        "min_N": 0.0,
+        "max_N": 10200.0,
+        "negative_samples": 0,
+        "positive_samples": 829,
+        "zero_samples": 4305
+      }
+    },
+    "carControl": {
+      "messages": 6007,
+      "enabled": 0,
+      "longActive": 0
+    },
+    "pure_regenerative_braking": "unverified",
+    "energy_recovery_Wh": null,
+    "physical_CAN_transmission": false,
+    "BRAKE_checksum_defined_in_DBC": false,
+    "force_signal_ECU_calibration_verified": false,
+    "interpretation": "DBC수신값; FDRVREAL은엔진·모터·회생·크리프혼합이고실제물리분담미확인. BRAKE의255포화/무효의미도미확인"
+  }
+]

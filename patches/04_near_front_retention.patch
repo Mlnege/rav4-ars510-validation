@@ -1,0 +1,368 @@
+diff --git a/openpilot/selfdrive/carrot/radar/radard_dpath.py b/openpilot/selfdrive/carrot/radar/radard_dpath.py
+index 26d2f29..7e590e0 100644
+--- a/openpilot/selfdrive/carrot/radar/radard_dpath.py
++++ b/openpilot/selfdrive/carrot/radar/radard_dpath.py
+@@ -102,6 +102,9 @@ class DPathRadarD:
+       cut_in_sensitivity=PRODUCTION_CUT_IN_SENSITIVITY,
+       front_radar_measurement_delay_s=front_radar_distance_delay_s(CP),
+       production_live_tracks=True,
++      # 현재 미지원 RAV4는 radarUnavailable 그대로이므로 이 정책도 켜지지 않는다.
++      retain_confirmed_near_front=(CP.brand == 'toyota' and CP.carFingerprint == 'TOYOTA_RAV4_TSS2_2022'
++                                   and CP.openpilotLongitudinalControl and not CP.radarUnavailable),
+     )
+     self.radar_state = log.RadarState.new_message()
+     self.radar_state_valid = False
+diff --git a/openpilot/selfdrive/carrot/radar_motion/controller.py b/openpilot/selfdrive/carrot/radar_motion/controller.py
+index 147d674..2e62dba 100644
+--- a/openpilot/selfdrive/carrot/radar_motion/controller.py
++++ b/openpilot/selfdrive/carrot/radar_motion/controller.py
+@@ -40,6 +40,7 @@ from openpilot.selfdrive.carrot.radar_motion.primary import (
+   VISION_RADAR_MAX_DISTANCE_ERROR_M,
+   VISION_LEAD_MIN_PROB,
+   VisionLead,
++  VisionRadarMatch,
+   VisionRadarMatcher,
+   lead_from_vision,
+   lead_from_radar_point,
+@@ -103,6 +104,12 @@ CROSS_SENSOR_CLOSE_CUTIN_MIN_DREL_M = 2.0
+ CROSS_SENSOR_CLOSE_CUTIN_MAX_DREL_M = 12.0
+ CROSS_SENSOR_CLOSE_CUTIN_MAX_ABS_DPATH_M = 3.0
+ CROSS_SENSOR_CLOSE_CUTIN_MIN_VLEAD_MPS = 0.5
++# 이미 확인한 정지 물체의 현재 측정만 유지하며 신규 근거리 획득은 하지 않는다.
++NEAR_FRONT_MAX_EGO_MPS = 0.5
++NEAR_FRONT_MAX_ABS_VLEAD_MPS = 0.3
++NEAR_FRONT_MAX_DREL_M = 0.5
++NEAR_FRONT_MAX_ABS_DPATH_M = 0.5
++NEAR_FRONT_CONTINUITY_M = 0.125  # ARS 거리 두 눈금; 예측 속도에 더하는 관측 오차 한계
+ 
+ 
+ def _is_corner(point: RadarPointSnapshot) -> bool:
+@@ -464,6 +471,7 @@ class DPathRadarController:
+     front_radar_measurement_delay_s: float = 0.0,
+     corner_radar_measurement_delay_s: float = CORNER_RADAR_MEASUREMENT_DELAY_S,
+     production_live_tracks: bool = False,
++    retain_confirmed_near_front: bool = False,
+   ) -> None:
+     self.primary_matcher = VisionRadarMatcher()
+     self.scc_primary_fallback_matcher = VisionRadarMatcher()
+@@ -475,6 +483,10 @@ class DPathRadarController:
+       0.0, float(corner_radar_measurement_delay_s),
+     )
+     self.production_live_tracks = bool(production_live_tracks)
++    self.retain_confirmed_near_front = bool(retain_confirmed_near_front)
++    self._near_front_point: RadarPointSnapshot | None = None
++    self._near_front_model_time_s: float | None = None
++    self._near_front_sample_time_s: float | None = None
+     self.motion_sensor = "corner" if prefer_corner_radar else "front"
+     self.cut_in_sensitivity = max(0, min(5, int(cut_in_sensitivity)))
+     self._reset_motion_pipeline()
+@@ -498,6 +510,91 @@ class DPathRadarController:
+     self._stationary_range_last_time_s: float | None = None
+     self._stationary_range_anchor_time_s: float | None = None
+ 
++  def _reset_near_front(self) -> None:
++    self._near_front_point = None
++    self._near_front_model_time_s = None
++    self._near_front_sample_time_s = None
++
++  def _raw_valid_near_front_ids(self, radar_points: Iterable[Any]) -> frozenset[int]:
++    """일반 snapshot의 NaN 기본값 치환 전에 현재 원본 측정의 유한성을 확인한다."""
++    valid: set[int] = set()
++    seen: set[int] = set()
++    duplicates: set[int] = set()
++    for point in radar_points:
++      try:
++        if self.production_live_tracks:
++          identity, source, measured = int(point.trackId), str(point.radarSource).rsplit('.', 1)[-1], bool(point.measured)
++          values = (point.dRel, point.yRel, point.vRel, point.vLead, point.yvRel, point.aLead, point.jLead)
++        else:
++          identity = int(getattr(point, 'track_id', getattr(point, 'trackId', -1)))
++          source = str(getattr(point, 'source', getattr(point, 'radarSource', ''))).rsplit('.', 1)[-1]
++          measured = bool(getattr(point, 'measured', True))
++          values = tuple(getattr(point, snake, getattr(point, camel, math.nan)) for snake, camel in (
++            ('d_rel', 'dRel'), ('y_rel', 'yRel'), ('v_rel', 'vRel'), ('v_lead', 'vLead'),
++            ('yv_rel', 'yvRel'), ('a_lead', 'aLead'), ('j_lead', 'jLead'),
++          ))
++        if source == 'frontRadar' and identity >= 0:
++          if identity in seen:
++            duplicates.add(identity)
++          seen.add(identity)
++        if (source == 'frontRadar' and identity >= 0 and measured
++            and all(math.isfinite(float(value)) for value in values) and float(values[0]) > 0.0
++            and abs(float(values[3])) <= NEAR_FRONT_MAX_ABS_VLEAD_MPS):
++          valid.add(identity)
++      except (TypeError, ValueError, AttributeError, OverflowError):
++        continue
++    return frozenset(valid - duplicates)
++
++  def _retain_near_front_match(
++    self, match: VisionRadarMatch | None, points: tuple[RadarPointSnapshot, ...],
++    raw_valid_ids: frozenset[int], path: tuple[tuple[float, float], ...],
++    time_s: float, sample_time_s: float, v_ego: float,
++  ) -> VisionRadarMatch | None:
++    """정상 L1의 동일 현재 측정만 짧은 거리 경계 아래에서 유지한다."""
++    previous, previous_time = self._near_front_point, self._near_front_model_time_s
++    last_sample = self._near_front_sample_time_s
++    timing_ok = (all(math.isfinite(value) and value > 0.0 for value in (time_s, sample_time_s))
++                 and abs(time_s - sample_time_s) <= RADAR_MOTION_MAX_TIME_SKEW_S
++                 and (previous_time is None or 0.0 < time_s - previous_time <= RADAR_MOTION_MAX_TIME_SKEW_S)
++                 and (last_sample is None or sample_time_s >= last_sample))
++    stopped_ego = math.isfinite(v_ego) and 0.0 <= v_ego <= NEAR_FRONT_MAX_EGO_MPS
++    if not timing_ok or not stopped_ego or self.enable_radar_tracks <= 0:
++      self._reset_near_front()
++      return match
++    if match is not None:
++      point = match.point
++      # 신규 획득은 기존 matcher와 비전 확인을 통과한 0.5m 위 물체에만 맡긴다.
++      if (point.source == 'frontRadar' and point.track_id in raw_valid_ids
++          and point.measured and point.d_rel > NEAR_FRONT_MAX_DREL_M
++          and match.probability >= 0.6 and abs(point.v_lead) <= NEAR_FRONT_MAX_ABS_VLEAD_MPS
++          and abs(match.d_path) <= NEAR_FRONT_MAX_ABS_DPATH_M and abs(point.y_rel) <= NEAR_FRONT_MAX_ABS_DPATH_M):
++        self._near_front_point, self._near_front_model_time_s = point, time_s
++        self._near_front_sample_time_s = sample_time_s
++      else:
++        self._reset_near_front()
++      return match
++    if previous is None or previous_time is None or last_sample is None:
++      return None
++    candidates = tuple(point for point in points if point.source == 'frontRadar' and point.track_id == previous.track_id)
++    if len(candidates) != 1:
++      self._reset_near_front()
++      return None
++    point = candidates[0]
++    d_path = project_to_model_path(path, point.d_rel, point.y_rel).d_path
++    predicted_distance = previous.d_rel + previous.v_rel * (time_s - previous_time)
++    if (point.track_id not in raw_valid_ids or not point.measured
++        or not 0.0 < point.d_rel <= NEAR_FRONT_MAX_DREL_M
++        or abs(point.v_lead) > NEAR_FRONT_MAX_ABS_VLEAD_MPS
++        or abs(point.y_rel) > NEAR_FRONT_MAX_ABS_DPATH_M
++        or not math.isfinite(d_path) or abs(d_path) > NEAR_FRONT_MAX_ABS_DPATH_M
++        or abs(point.d_rel - predicted_distance) > NEAR_FRONT_CONTINUITY_M):
++      self._reset_near_front()
++      return None
++    self._near_front_point, self._near_front_model_time_s = point, time_s
++    self._near_front_sample_time_s = sample_time_s
++    # 현재 비전 확률을 만들어내지 않고 현재 레이더 측정의 값만 전달한다.
++    return VisionRadarMatch(point=point, probability=0.0, score=0.0, d_path=d_path)
++
+   def _reset_stationary_range_history(self) -> None:
+     self._stationary_range_last_point = None
+     self._stationary_range_last_time_s = None
+@@ -811,6 +908,10 @@ class DPathRadarController:
+     yaw_rate_rad_s: float = 0.0,
+     radar_to_model_time_s: float = 0.0,
+   ) -> DPathRadarOutput:
++    raw_valid_near_ids = frozenset()
++    if self.retain_confirmed_near_front:
++      radar_points = tuple(radar_points)
++      raw_valid_near_ids = self._raw_valid_near_front_ids(radar_points)
+     path = _model_path(model)
+     if len(path) < 2:
+       self.primary_matcher.reset()
+@@ -827,6 +928,7 @@ class DPathRadarController:
+       self._moving_range_last_point = None
+       self._moving_range_last_time_s = None
+       self._reset_stationary_range_history()
++      self._reset_near_front()
+       return DPathRadarOutput(
+         None, None, None, None, (), (), (), (), (), (), None,
+       )
+@@ -892,6 +994,11 @@ class DPathRadarController:
+       )
+     else:
+       self.scc_primary_fallback_matcher.reset()
++    if self.retain_confirmed_near_front:
++      primary_match = self._retain_near_front_match(
++        primary_match, points, raw_valid_near_ids, path,
++        float(time_s), float(time_s - radar_to_model_time_s), float(v_ego),
++      )
+     lead_one = None
+     if primary_match is not None:
+       lead_one = self._lead_from_radar_point(
+diff --git a/tools/ars510_validation/native/test_near_front_retention.py b/tools/ars510_validation/native/test_near_front_retention.py
+new file mode 100644
+index 0000000..df453e8
+--- /dev/null
++++ b/tools/ars510_validation/native/test_near_front_retention.py
+@@ -0,0 +1,181 @@
++"""실제 당근 controller의 근거리 유지와 신규 획득·시각·측정 거절을 검증한다."""
++from pathlib import Path
++import math
++import importlib.util
++import sys
++
++import pytest
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[4] / "native_sim"))
++from offline_io import prepare
++
++prepare()
++from openpilot.cereal import car, log
++from openpilot.selfdrive.carrot.radar_motion import DPathRadarController
++
++
++def model(distance, speed=0.0, probability=.99):
++  result = log.ModelDataV2()
++  result.position.x, result.position.y = [0., 100.], [0., 0.]
++  result.velocity.x = [.2]
++  lead = result.init("leadsV3", 1)[0]
++  lead.x, lead.y, lead.v, lead.a = [distance + 1.52] * 4, [0.] * 4, [speed] * 4, [0.] * 4
++  lead.xStd, lead.yStd, lead.vStd = [1.] * 4, [.5] * 4, [1.] * 4
++  lead.prob = probability
++  return result
++
++
++def point(distance, **overrides):
++  values = {"trackId": 1001, "dRel": distance, "yRel": 0.0, "vRel": -.2, "vLead": 0.0,
++            "aLead": 0.0, "jLead": 0.0, "aRel": 0.0, "yvRel": 0.0, "measured": True, "radarSource": "frontRadar"}
++  values.update(overrides)
++  return car.RadarData.RadarPoint(**values)
++
++
++def controller(enabled=True):
++  return DPathRadarController(production_live_tracks=True, retain_confirmed_near_front=enabled)
++
++
++def step(control, time=10., distance=.6, *, points=None, ego=.2, skew=0., speed=0., probability=.99):
++  return control.update(time_s=time, v_ego=ego, radar_points=[point(distance)] if points is None else points,
++                        model=model(distance, speed, probability), radar_to_model_time_s=skew)
++
++
++def seeded(control):
++  for index in range(12):
++    output = step(control, time=10. + index * .05)
++  assert output.lead_one and output.lead_one["radar"]
++  assert control._near_front_point is not None
++  return 10.6
++
++
++def test_current_same_id_near_measurement_is_preserved():
++  control = controller()
++  now = seeded(control)
++  output = step(control, now, .49)
++  assert output.lead_one and output.lead_one["radarTrackId"] == 1001
++  assert output.lead_one["dRel"] == pytest.approx(.49)
++  assert output.lead_one["modelProb"] == 0.0
++  for index in range(1, 20):
++    output = step(control, now + index * .05, .49)
++    assert output.lead_one and output.lead_one["radarTrackId"] == 1001
++
++
++def test_new_near_track_is_never_acquired():
++  output = step(controller(), distance=.49)
++  assert output.lead_one is None
++
++
++def test_default_policy_is_unchanged():
++  control = controller(False)
++  for index in range(12):
++    step(control, time=10. + index * .05)
++  assert step(control, 10.6, .49).lead_one is None
++
++
++@pytest.mark.parametrize("overrides", [
++  {"trackId": 1002}, {"measured": False}, {"radarSource": "scc"}, {"radarSource": "corner235"},
++  {"dRel": 0.0}, {"dRel": -.1}, {"dRel": math.nan}, {"yRel": math.nan},
++  {"vRel": math.nan}, {"vLead": math.nan}, {"yvRel": math.nan}, {"aLead": math.nan}, {"jLead": math.nan},
++  {"yRel": .6}, {"vRel": .8, "vLead": 1.0}, {"vRel": -1.2, "vLead": -1.0},
++  {"vLead": 1.0},
++])
++def test_invalid_or_different_current_measurement_drops_retention(overrides):
++  control = controller()
++  now = seeded(control)
++  output = step(control, now, .49, points=[point(.49, **overrides)])
++  if overrides.get('radarSource') == 'corner235':
++    # 기존 코너 이력 판단은 유지하며 새 근거리 유지 정책의 채택만 거절한다.
++    assert output.lead_one is None or output.lead_one['dRel'] > .5
++  else:
++    assert output.lead_one is None
++  assert control._near_front_point is None
++
++
++@pytest.mark.parametrize("points", [[], [point(.49), point(.49)], [point(.49, aLead=math.nan), point(.49)]])
++def test_absent_or_duplicate_observation_drops_retention(points):
++  control = controller()
++  now = seeded(control)
++  assert step(control, now, .49, points=points).lead_one is None
++
++
++@pytest.mark.parametrize("time,skew,ego", [
++  (10.55, 0., .2), (10.5, 0., .2), (10.6, .151, .2), (10.6, -.151, .2),
++  (10.8, 0., .2), (10.6, 0., .51), (10.6, 0., -.1),
++])
++def test_bad_time_staleness_or_ego_motion_drops_retention(time, skew, ego):
++  control = controller()
++  seeded(control)
++  assert step(control, time, .49, ego=ego, skew=skew).lead_one is None
++  assert control._near_front_point is None
++
++
++def test_same_old_publication_cannot_extend_observation_freshness():
++  control = controller()
++  now = seeded(control)
++  assert step(control, now, .49).lead_one is not None
++  assert step(control, now+.05, .49, skew=.05).lead_one is not None
++  assert step(control, now+.16, .49, skew=.16).lead_one is None
++
++
++def test_impossible_distance_jump_is_rejected():
++  control = controller()
++  now = seeded(control)
++  assert step(control, now, .2).lead_one is None
++
++
++def test_normal_above_boundary_target_resumes_existing_matcher():
++  control = controller()
++  now = seeded(control)
++  assert step(control, now, .49).lead_one is not None
++  output = step(control, now+.05, .6)
++  assert output.lead_one and output.lead_one["dRel"] == pytest.approx(.6)
++  assert output.lead_one["modelProb"] > .6
++
++
++@pytest.mark.parametrize("brand,fingerprint,direct,unavailable,expected", [
++  ("toyota", "TOYOTA_RAV4_TSS2_2022", True, True, False),
++  ("toyota", "TOYOTA_RAV4_TSS2_2022", True, False, True),
++  ("toyota", "TOYOTA_RAV4_TSS2_2022", False, False, False),
++  ("toyota", "TOYOTA_RAV4_TSS2_2023", True, False, False),
++  ("toyota", "TOYOTA_CHR_TSS2", True, False, False),
++  ("hyundai", "TOYOTA_RAV4_TSS2_2022", True, False, False),
++])
++def test_runtime_enablement_is_scoped_and_does_not_change_cp(brand, fingerprint, direct, unavailable, expected):
++  from openpilot.selfdrive.carrot.radar.radard_dpath import DPathRadarD
++  cp = car.CarParams(brand=brand, carFingerprint=fingerprint, openpilotLongitudinalControl=direct,
++                     radarUnavailable=unavailable)
++  before = cp.to_dict()
++  assert DPathRadarD(cp).controller.retain_confirmed_near_front is expected
++  assert cp.to_dict() == before
++
++
++def test_actual_rav4_interface_params_keep_policy_dormant():
++  from opendbc.car import gen_empty_fingerprint
++  from opendbc.car.toyota.interface import CarInterface
++  from opendbc.car.toyota.values import CAR
++  from openpilot.selfdrive.carrot.radar.radard_dpath import DPathRadarD
++  cp = CarInterface.get_params(CAR.TOYOTA_RAV4_TSS2_2022, gen_empty_fingerprint(), [], True, False, False)
++  before = cp.to_dict()
++  assert cp.radarUnavailable and cp.openpilotLongitudinalControl
++  assert not DPathRadarD(cp).controller.retain_confirmed_near_front
++  assert cp.to_dict() == before
++
++
++def test_default_off_actual_outputs_equal_original_controller():
++  """원형 controller 파일을 그대로 실행하여 모드별 600회 전체 출력의 같음을 확인한다."""
++  from dataclasses import asdict
++  source = Path(__file__).resolve().parents[4] / 'native_sim/baseline_build/controller.py'
++  spec = importlib.util.spec_from_file_location('ars_validation_original_controller', source)
++  original = importlib.util.module_from_spec(spec)
++  sys.modules[spec.name] = original
++  spec.loader.exec_module(original)
++  for mode in (-2, -1, 0, 1, 2, 3):
++    before = original.DPathRadarController(production_live_tracks=True, enable_radar_tracks=mode)
++    after = DPathRadarController(production_live_tracks=True, enable_radar_tracks=mode)
++    for index in range(100):
++      distance = 10. - .1 * index if index < 90 else .49
++      source_name = ('frontRadar', 'scc', 'corner235')[index // 30 % 3]
++      observed = point(distance, radarSource=source_name)
++      inputs = {"time_s": 10. + index * .05, "v_ego": .2, "radar_points": [observed], "model": model(distance)}
++      assert asdict(before.update(**inputs)) == asdict(after.update(**inputs))

@@ -1,0 +1,10 @@
+{
+  "opendbc_repo/opendbc/safety/safety.h": "264acef46827c278c8a741106506506323ec27842eaf21856a16386ebe084dfe",
+  "opendbc_repo/opendbc/safety/safety/safety_honda.h": "88ca487e33f0e9d3aab72fdfe36ffd6c4aed8522e91aed490a430c457199aaab",
+  "opendbc_repo/opendbc/safety/safety/safety_hyundai.h": "b931e1e45cf3834cbeab5b9315585806b001bbe06ec29e95c083c5b0b08edce4",
+  "opendbc_repo/opendbc/safety/safety/safety_hyundai_canfd.h": "9b0f7bb371efa5956073fbfd630aaa82b031aaebb9cbd0e3a6edb6516bf32db9",
+  "opendbc_repo/opendbc/safety/tests/common.py": "175fb61828eceb0b06ddca98ed1f5ff0d081c87a4e77c0288d7ce925036de6bd",
+  "opendbc_repo/opendbc/safety/tests/libsafety/libsafety_py.py": "0ffdf6dee4371d8f0e23e7600959f4f794b4278a315274fd6812a900dcc97b7b",
+  "opendbc_repo/opendbc/safety/tests/test_tesla.py": "3295488e9e0f19339f8a0723aaa99db565f8ede391879f9f2e9ba2c7a3cb3897",
+  "opendbc_repo/opendbc/safety/tests/test_volkswagen_pq.py": "ceba4d5a1ae43ef00c004eca474620ce69bc8140ff7613930f8dad2f2be94df3"
+}

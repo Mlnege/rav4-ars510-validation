@@ -1,0 +1,196 @@
+diff --git a/opendbc_repo/opendbc/car/toyota/carcontroller.py b/opendbc_repo/opendbc/car/toyota/carcontroller.py
+index aee8e13..47f47ae 100644
+--- a/opendbc_repo/opendbc/car/toyota/carcontroller.py
++++ b/opendbc_repo/opendbc/car/toyota/carcontroller.py
+@@ -200,6 +200,12 @@ class CarController(CarControllerBase):
+ 
+         # internal PCM gas command can get stuck unwinding from negative accel so we apply a generous rate limit
+         pcm_accel_cmd = actuators.accel
++        stopping_nonpositive = (self.CP.carFingerprint == CAR.TOYOTA_RAV4_TSS2_2022 and CC.longActive
++                                and stopping and actuators.accel <= 0.0)
++        if stopping_nonpositive:
++          # 명시한 정지 요청에서 이전 양수 가속·적분이 새 가속 명령으로 남지 않게 한다.
++          self.prev_accel = min(self.prev_accel, 0.0)
++          self.long_pid.i = min(self.long_pid.i, 0.0)
+         if CC.longActive:
+           pcm_accel_cmd = rate_limit(pcm_accel_cmd, self.prev_accel, ACCEL_WINDDOWN_LIMIT, ACCEL_WINDUP_LIMIT)
+         self.prev_accel = pcm_accel_cmd
+@@ -227,12 +233,19 @@ class CarController(CarControllerBase):
+         if CC.longActive:
+           # constantly slowly unwind integral to recover from large temporary errors
+           self.long_pid.i -= ACCEL_PID_UNWIND * float(np.sign(self.long_pid.i))
++          if stopping_nonpositive:
++            # 작은 음수 적분을 풀다가 0 위로 넘기는 경우도 정지 중에는 막는다.
++            self.long_pid.i = min(self.long_pid.i, 0.0)
+ 
+           error_future = pcm_accel_cmd - a_ego_future
+           pcm_accel_cmd = self.long_pid.update(error_future,
+                                                speed=CS.out.vEgo,
+                                                feedforward=pcm_accel_cmd,
+                                                freeze_integrator=actuators.longControlState != LongCtrlState.pid)
++          if stopping_nonpositive:
++            # P/D 보정도 정지 중 양수 CAN을 만들 수 있으므로 실제 명령값과 동기화한다.
++            pcm_accel_cmd = min(pcm_accel_cmd, 0.0)
++            self.long_pid.control = pcm_accel_cmd
+         else:
+           self.long_pid.reset()
+ 
+diff --git a/opendbc_repo/opendbc/car/toyota/tests/test_stopping_command.py b/opendbc_repo/opendbc/car/toyota/tests/test_stopping_command.py
+new file mode 100644
+index 0000000..2747171
+--- /dev/null
++++ b/opendbc_repo/opendbc/car/toyota/tests/test_stopping_command.py
+@@ -0,0 +1,153 @@
++"""RAV4 정지 요청의 실제 CAN 명령과 다른 Toyota의 원형 동작 보존을 검사한다."""
++import hashlib
++from pathlib import Path
++import subprocess
++import sys
++from types import ModuleType, SimpleNamespace
++
++import pytest
++
++REPO_ROOT = Path(__file__).resolve().parents[5]
++sys.path.insert(0, str(REPO_ROOT.parent/'native_sim'))
++from offline_io import prepare
++
++prepare()
++from opendbc.can import CANParser
++from opendbc.car import Bus, gen_empty_fingerprint
++from opendbc.car.common.pid import PIDController
++from opendbc.car.structs import CarControl, CarState
++from opendbc.car.toyota.carcontroller import CarController
++from opendbc.car.toyota.interface import CarInterface
++from opendbc.car.toyota.toyotacan import toyota_checksum
++from opendbc.car.toyota.values import CAR, DBC
++
++
++def cp(platform=CAR.TOYOTA_RAV4_TSS2_2022, direct=True):
++  return CarInterface.get_params(platform, gen_empty_fingerprint(), [], direct, False, False)
++
++
++def controller(params=None, cls=CarController):
++  params = cp() if params is None else params
++  dbcs = DBC[params.carFingerprint].copy()
++  dbcs[Bus.pt] = str(REPO_ROOT.parent/'native_sim/dbc/toyota_nodsu_pt_generated.dbc')
++  result = cls(dbcs, params)
++  result.prev_accel, result.long_pid.i = .623, .12
++  return result
++
++
++def inputs(request=-.003, *, mode='stopping', active=True, pitch=0., acceleration=0., speed=0.):
++  cc = CarControl(enabled=active, longActive=active, latActive=False, orientationNED=[0., pitch, 0.])
++  cc.actuators.accel, cc.actuators.longControlState = request, mode
++  cc.hudControl.leadDistanceBars = 2
++  out = CarState(vEgo=speed, vEgoRaw=speed, aEgo=acceleration, standstill=speed == 0., canValid=True,
++                 gearShifter='drive', cruiseState={'enabled': active, 'available': True})
++  cs = SimpleNamespace(out=out, gvc=acceleration, acc_type=1, pcm_acc_status=8, pcm_follow_distance=2, lkas_hud={})
++  return cc, cs
++
++
++def step(control, cc, cs, index=0):
++  _, can = control.update(cc.as_reader(), cs, 10_000_000_000+index*10_000_000)
++  accel = [(address, data, bus) for address, data, bus in can if address == 0x343 and bus == 0]
++  return can, accel
++
++
++def decoded(control, packets, index=0):
++  parser = CANParser(str(REPO_ROOT.parent/'native_sim/dbc/toyota_nodsu_pt_generated.dbc'), [('ACC_CONTROL', 33)], 0)
++  assert parser.update([(10_000_000_000+index*10_000_000, packets)]) == {0x343}
++  for address, data, _ in packets:
++    assert len(data) == 8 and toyota_checksum(address, None, bytearray(data)) == data[-1]
++  return float(parser.vl['ACC_CONTROL']['ACCEL_CMD'])
++
++
++def test_first_regular_stopping_command_is_nonpositive():
++  control = controller()
++  cc, cs = inputs()
++  baseline = controller(cls=original_class())
++  _, baseline_packets = step(baseline, cc, cs)
++  assert decoded(baseline, baseline_packets) > 0.
++  _, packets = step(control, cc, cs)
++  assert decoded(control, packets) <= 0.
++  assert control.prev_accel <= 0. and control.long_pid.i <= 0.
++
++
++@pytest.mark.parametrize('pitch,acceleration,speed', [(-.15, -.5, 0.), (.15, -.5, .5), (0., .3, .5), (0., -1., 2.)])
++@pytest.mark.parametrize('kp,kd', [(0., 0.), (.5, 0.), (2., .2)])
++def test_pitch_measurement_and_pid_terms_cannot_emit_positive_stopping_command(pitch, acceleration, speed, kp, kd):
++  control = controller()
++  control.long_pid = PIDController(kp, .25, k_f=1., k_d=kd, pos_limit=2., neg_limit=-3.5, rate=1/.03)
++  control.long_pid.i = .3
++  cc, cs = inputs(pitch=pitch, acceleration=acceleration, speed=speed)
++  _, packets = step(control, cc, cs)
++  assert decoded(control, packets) <= 0.
++  assert control.long_pid.i <= 0. and control.long_pid.control <= 0.
++
++
++def test_negative_integral_is_preserved_without_crossing_zero_during_unwind():
++  control = controller()
++  control.prev_accel, control.long_pid.i = -.5, -.2
++  cc, cs = inputs()
++  step(control, cc, cs)
++  assert control.long_pid.i == pytest.approx(-.1991)
++  control.long_pid.i = -.0005
++  control.frame = 3
++  _, packets = step(control, cc, cs, 3)
++  assert control.long_pid.i <= 0. and decoded(control, packets, 3) <= 0.
++
++
++def test_regular_can_cadence_retains_existing_command_between_sends():
++  control = controller()
++  control.frame, control.accel = 1, .623
++  cc, cs = inputs()
++  assert not step(control, cc, cs, 1)[1] and control.accel == .623
++  assert not step(control, cc, cs, 2)[1] and control.accel == .623
++  created = []
++  for index in range(3, 13):
++    _, packets = step(control, cc, cs, index)
++    if packets:
++      created.append(index)
++      assert decoded(control, packets, index) <= 0.
++  assert created == [3, 6, 9, 12]
++
++
++def test_pid_restart_accepts_positive_acceleration_after_stopping():
++  control = controller()
++  cc, cs = inputs()
++  step(control, cc, cs)
++  cc.actuators.accel, cc.actuators.longControlState = .5, 'pid'
++  for index in range(1, 10):
++    _, packets = step(control, cc, cs, index)
++    if packets:
++      assert decoded(control, packets, index) > 0.
++
++
++def original_class():
++  baseline_ref = '0e4ee1bdbef3ad7284b136fddf31592e3f8a785f:opendbc_repo/opendbc/car/toyota/carcontroller.py'
++  try:
++    source = subprocess.check_output(['git', '-C', str(REPO_ROOT), 'show', baseline_ref], stderr=subprocess.PIPE)
++  except (subprocess.CalledProcessError, OSError):
++    pytest.fail('원형 CarController 검증 commit 0e4ee1bdbef3ad7284b136fddf31592e3f8a785f를 읽지 못했습니다. 기준 commit을 fetch해야 합니다')
++  # 작업 전 원형과 같은 출처인지 확인하고 실제 원형 클래스를 그대로 실행한다.
++  assert hashlib.sha256(source).hexdigest() == '49f1ace9dc46fb509f2d1d982f740fd52cda006078cc9faa405efb7cb30026d8'
++  module = ModuleType('ars_validation_original_toyota_controller')
++  exec(compile(source, '<원형 Toyota CarController>', 'exec'), module.__dict__)
++  return module.CarController
++
++
++@pytest.mark.parametrize('platform,direct,mode,accel_request,active', [
++  (CAR.TOYOTA_RAV4_TSS2_2023, True, 'stopping', -.003, True),
++  (CAR.TOYOTA_CHR_TSS2, True, 'stopping', -.003, True),
++  (CAR.TOYOTA_RAV4_TSS2, True, 'stopping', -.003, True),
++  (CAR.TOYOTA_RAV4_TSS2_2022, False, 'stopping', -.003, True),
++  (CAR.TOYOTA_RAV4_TSS2_2022, True, 'stopping', -.003, False),
++  (CAR.TOYOTA_RAV4_TSS2_2022, True, 'stopping', .1, True),
++  (CAR.TOYOTA_RAV4_TSS2_2022, True, 'starting', .3, True),
++  (CAR.TOYOTA_RAV4_TSS2_2022, True, 'pid', -.003, True),
++])
++def test_non_target_paths_match_original_entire_can_array(platform, direct, mode, accel_request, active):
++  params = cp(platform, direct)
++  before_cp = params.to_dict()
++  before, after = controller(params, original_class()), controller(params)
++  cc, cs = inputs(accel_request, mode=mode, active=active)
++  for index in range(30):
++    assert step(before, cc, cs, index)[0] == step(after, cc, cs, index)[0]
++  assert params.to_dict() == before_cp

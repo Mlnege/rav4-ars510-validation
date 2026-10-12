@@ -1,0 +1,236 @@
+{
+  "source": {
+    "platform": "TOYOTA_RAV4_TSS2_2022",
+    "flags": 1372,
+    "radarUnavailable": true,
+    "openpilotLongitudinalControl": true,
+    "longitudinalActuatorDelay_s": 0.15000000596046448,
+    "safetyParam": 73,
+    "factory_alpha_long": true,
+    "car_interface_init_called": false,
+    "params_scope": "explicit_memory_read_defaults_only"
+  },
+  "cases": 12,
+  "failures": 8,
+  "carparams_unchanged": true,
+  "rows": [
+    {
+      "requested_accel_mps2": -1.0,
+      "generated_accel_raw_signed": -121,
+      "case": "active_fresh",
+      "controls_before": true,
+      "controls_after": true,
+      "expected_tx": 1,
+      "actual_tx": 1,
+      "passed": true,
+      "generated_message_addresses": [
+        "0x2e4",
+        "0x191",
+        "0x343",
+        "0x412",
+        "0x411",
+        "0x750"
+      ]
+    },
+    {
+      "requested_accel_mps2": -1.0,
+      "generated_accel_raw_signed": -121,
+      "case": "inactive",
+      "controls_before": false,
+      "controls_after": true,
+      "expected_tx": 0,
+      "actual_tx": 1,
+      "passed": false,
+      "generated_message_addresses": [
+        "0x2e4",
+        "0x191",
+        "0x343",
+        "0x412",
+        "0x411",
+        "0x750"
+      ]
+    },
+    {
+      "requested_accel_mps2": -1.0,
+      "generated_accel_raw_signed": -121,
+      "case": "gas",
+      "controls_before": false,
+      "controls_after": true,
+      "expected_tx": 0,
+      "actual_tx": 1,
+      "passed": false,
+      "generated_message_addresses": [
+        "0x2e4",
+        "0x191",
+        "0x343",
+        "0x412",
+        "0x411",
+        "0x750"
+      ]
+    },
+    {
+      "requested_accel_mps2": -1.0,
+      "generated_accel_raw_signed": -121,
+      "case": "brake",
+      "controls_before": false,
+      "controls_after": true,
+      "expected_tx": 0,
+      "actual_tx": 1,
+      "passed": false,
+      "generated_message_addresses": [
+        "0x2e4",
+        "0x191",
+        "0x343",
+        "0x412",
+        "0x411",
+        "0x750"
+      ]
+    },
+    {
+      "requested_accel_mps2": -1.0,
+      "generated_accel_raw_signed": -121,
+      "case": "timeout",
+      "controls_before": false,
+      "controls_after": true,
+      "expected_tx": 0,
+      "actual_tx": 1,
+      "passed": false,
+      "generated_message_addresses": [
+        "0x2e4",
+        "0x191",
+        "0x343",
+        "0x412",
+        "0x411",
+        "0x750"
+      ]
+    },
+    {
+      "requested_accel_mps2": -1.0,
+      "generated_accel_raw_signed": -121,
+      "case": "stock_long",
+      "controls_before": true,
+      "controls_after": true,
+      "expected_tx": 0,
+      "actual_tx": 0,
+      "passed": true,
+      "generated_message_addresses": [
+        "0x2e4",
+        "0x191",
+        "0x343",
+        "0x412",
+        "0x411",
+        "0x750"
+      ]
+    },
+    {
+      "requested_accel_mps2": 1.0,
+      "generated_accel_raw_signed": 121,
+      "case": "active_fresh",
+      "controls_before": true,
+      "controls_after": true,
+      "expected_tx": 1,
+      "actual_tx": 1,
+      "passed": true,
+      "generated_message_addresses": [
+        "0x2e4",
+        "0x191",
+        "0x343",
+        "0x412",
+        "0x411",
+        "0x750"
+      ]
+    },
+    {
+      "requested_accel_mps2": 1.0,
+      "generated_accel_raw_signed": 121,
+      "case": "inactive",
+      "controls_before": false,
+      "controls_after": true,
+      "expected_tx": 0,
+      "actual_tx": 1,
+      "passed": false,
+      "generated_message_addresses": [
+        "0x2e4",
+        "0x191",
+        "0x343",
+        "0x412",
+        "0x411",
+        "0x750"
+      ]
+    },
+    {
+      "requested_accel_mps2": 1.0,
+      "generated_accel_raw_signed": 121,
+      "case": "gas",
+      "controls_before": false,
+      "controls_after": true,
+      "expected_tx": 0,
+      "actual_tx": 1,
+      "passed": false,
+      "generated_message_addresses": [
+        "0x2e4",
+        "0x191",
+        "0x343",
+        "0x412",
+        "0x411",
+        "0x750"
+      ]
+    },
+    {
+      "requested_accel_mps2": 1.0,
+      "generated_accel_raw_signed": 121,
+      "case": "brake",
+      "controls_before": false,
+      "controls_after": true,
+      "expected_tx": 0,
+      "actual_tx": 1,
+      "passed": false,
+      "generated_message_addresses": [
+        "0x2e4",
+        "0x191",
+        "0x343",
+        "0x412",
+        "0x411",
+        "0x750"
+      ]
+    },
+    {
+      "requested_accel_mps2": 1.0,
+      "generated_accel_raw_signed": 121,
+      "case": "timeout",
+      "controls_before": false,
+      "controls_after": true,
+      "expected_tx": 0,
+      "actual_tx": 1,
+      "passed": false,
+      "generated_message_addresses": [
+        "0x2e4",
+        "0x191",
+        "0x343",
+        "0x412",
+        "0x411",
+        "0x750"
+      ]
+    },
+    {
+      "requested_accel_mps2": 1.0,
+      "generated_accel_raw_signed": 121,
+      "case": "stock_long",
+      "controls_before": true,
+      "controls_after": true,
+      "expected_tx": 0,
+      "actual_tx": 0,
+      "passed": true,
+      "generated_message_addresses": [
+        "0x2e4",
+        "0x191",
+        "0x343",
+        "0x412",
+        "0x411",
+        "0x750"
+      ]
+    }
+  ],
+  "actual_vehicle_transmission": false,
+  "pcs_notice": "alpha-long 원형 CP는 UDS/PCS off 경로를 포함한다. 메모리에서 생성한 0x411/0x750은 송신하거나 PCS 보존 증거로 취급하지 않았다."
+}

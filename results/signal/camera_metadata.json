@@ -1,0 +1,45 @@
+{
+  "deviceType": {
+    "tizi": 302
+  },
+  "sensor": {
+    "ox03c10": 3077
+  },
+  "widthHeight": {
+    "configured:1928x1208": 3077
+  },
+  "calibrationStatus": {
+    "calibrated": 588
+  },
+  "validityCounts": {
+    "initData": {
+      "event_valid": 4
+    },
+    "deviceState": {
+      "event_valid": 298
+    },
+    "liveCalibration": {
+      "event_invalid": 39,
+      "rpy_finite": 588,
+      "event_valid": 549
+    },
+    "roadCameraState": {
+      "event_valid": 3077,
+      "different_prepare_camera_profile": 3077
+    },
+    "livePose": {
+      "event_invalid": 56,
+      "inputsOK:False": 54,
+      "posenetOK:True": 2791,
+      "sensorsOK:True": 2791,
+      "angularVelocityDevice.valid:False": 56,
+      "orientationNED.valid:False": 56,
+      "capture_age_invalid": 59,
+      "inputsOK:True": 2737,
+      "event_valid": 2735,
+      "angularVelocityDevice.valid:True": 2735,
+      "orientationNED.valid:True": 2735,
+      "capture_age_le_200ms": 2732
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "long_active_assumption": true,
+  "control_authority_assumption": true,
+  "long_active_flag_is_assumption_not_vehicle_measurement": true,
+  "mass_kg": 1762.1273193359375,
+  "mass_source": "기준CarParams질량(실차계근값아님)",
+  "factory_hybrid_flag": false,
+  "factory_longitudinal_delay_s": 0.15000000596046448,
+  "physical_energy_recovery_Wh": null,
+  "regen_hardware_filter_effect": "unverified",
+  "scope": "평지·고정질량·평동운동에너지만;회전체·구배·배터리수용전력·엔진제동·마찰·공기저항·구름저항미분리",
+  "illustrative_speed_changes": [
+    {
+      "initial_kph": 30.0,
+      "final_kph": 0.0,
+      "kinetic_loss_Wh": 16.995826768286438,
+      "kinetic_component_perfect_recovery_Wh": 16.995826768286438,
+      "actual_regen_Wh": null
+    },
+    {
+      "initial_kph": 50.0,
+      "final_kph": 0.0,
+      "kinetic_loss_Wh": 47.210629911906764,
+      "kinetic_component_perfect_recovery_Wh": 47.210629911906764,
+      "actual_regen_Wh": null
+    },
+    {
+      "initial_kph": 80.0,
+      "final_kph": 0.0,
+      "kinetic_loss_Wh": 120.8592125744813,
+      "kinetic_component_perfect_recovery_Wh": 120.8592125744813,
+      "actual_regen_Wh": null
+    },
+    {
+      "initial_kph": 100.0,
+      "final_kph": 0.0,
+      "kinetic_loss_Wh": 188.84251964762706,
+      "kinetic_component_perfect_recovery_Wh": 188.84251964762706,
+      "actual_regen_Wh": null
+    },
+    {
+      "initial_kph": 100.0,
+      "final_kph": 50.0,
+      "kinetic_loss_Wh": 141.63188973572028,
+      "kinetic_component_perfect_recovery_Wh": 141.63188973572028,
+      "actual_regen_Wh": null
+    }
+  ],
+  "native_simulation_traces": [
+    {
+      "name": "case_001",
+      "input": "vturn",
+      "kinetic_loss_during_decelerations_Wh": 7.657476262284789,
+      "peak_assumed_deceleration_power_kW": 6.333329976073668,
+      "actual_regen_Wh": null,
+      "battery_acceptance_power_kW": null,
+      "post_contact_rows_excluded": false
+    },
+    {
+      "name": "case_002",
+      "input": "route",
+      "kinetic_loss_during_decelerations_Wh": 7.654822593257572,
+      "peak_assumed_deceleration_power_kW": 5.9316125120429986,
+      "actual_regen_Wh": null,
+      "battery_acceptance_power_kW": null,
+      "post_contact_rows_excluded": false
+    },
+    {
+      "name": "case_003",
+      "input": "합성선행차급감속",
+      "kinetic_loss_during_decelerations_Wh": 55.06950472450337,
+      "peak_assumed_deceleration_power_kW": 30.10759169995606,
+      "actual_regen_Wh": null,
+      "battery_acceptance_power_kW": null,
+      "post_contact_rows_excluded": false
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+........................................................................ [ 26%]
+........................................................................ [ 53%]
+........................................................................ [ 80%]
+...................................................                      [100%]
+=============================== warnings summary ===============================
+: 93 warnings
+  $LAB/work/carrotpilot/openpilot/common/transformations/orientation.py:28: DeprecationWarning: Setting the shape on a NumPy array has been deprecated in NumPy 2.5.
+  As an alternative, you can create a new view using np.reshape (with copy=False if needed).
+    inp.shape = (1, ) + inp.shape
+
+: 93 warnings
+  $LAB/work/carrotpilot/openpilot/common/transformations/orientation.py:31: DeprecationWarning: Setting the shape on a NumPy array has been deprecated in NumPy 2.5.
+  As an alternative, you can create a new view using np.reshape (with copy=False if needed).
+    result.shape = out_shape
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+267 passed, 186 warnings in 9.92s

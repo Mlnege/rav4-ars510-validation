@@ -1,0 +1,74 @@
+{
+  "counts": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "357",
+    "skipped": "721",
+    "tests": "12257",
+    "time": "41.399"
+  },
+  "remaining_failed_groups": {
+    "honda": 2,
+    "hyundai_legacy": 90,
+    "hyundai_canfd": 265
+  },
+  "common_failed_methods": [
+    [
+      "test_fwd_hook",
+      31
+    ],
+    [
+      "test_against_torque_driver",
+      30
+    ],
+    [
+      "test_non_realtime_limit_up",
+      30
+    ],
+    [
+      "test_spam_can_buses",
+      30
+    ],
+    [
+      "test_steer_safety_check",
+      30
+    ],
+    [
+      "test_tx_hook_on_wrong_safety_mode",
+      28
+    ],
+    [
+      "test_enable_control_allowed_from_cruise",
+      22
+    ],
+    [
+      "test_sampling_cruise_buttons",
+      22
+    ],
+    [
+      "test_not_allow_user_brake_when_moving",
+      21
+    ],
+    [
+      "test_vehicle_moving",
+      21
+    ],
+    [
+      "test_button_sends",
+      16
+    ],
+    [
+      "test_accel_actuation_limits",
+      9
+    ],
+    [
+      "test_realtime_limits",
+      9
+    ],
+    [
+      "test_steer_req_bit",
+      9
+    ]
+  ],
+  "note": "원형/수정형 모두 남은 기존 검사 불일치이며 실차 결함 수나 테스트를 통한 안전 인증은 아님"
+}

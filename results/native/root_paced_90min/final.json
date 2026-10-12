@@ -1,0 +1,21 @@
+{
+  "started_utc": "2026-10-12T07:20:11.805165+00:00",
+  "wall_seconds": 5412.286012169,
+  "completed_cases": 180,
+  "steps": 540000,
+  "invariant_violations": [],
+  "overlap_cases": 24,
+  "step_lateness_p99_ms": 0.14433503972668407,
+  "step_work_p99_ms": 2.500394339976993,
+  "late_over_10ms_steps": 5,
+  "finished_utc": "2026-10-12T08:50:24.200374+00:00",
+  "completed": true,
+  "simulation_seconds": 5400.0,
+  "source_hashes_at_end": {
+    "openpilot/selfdrive/controls/lib/longitudinal_planner.py": "01ead57b64c3bde5ae56bebefb015986e877014cc0d63885e77833e08f9b886f",
+    "openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py": "b0a5c630260ad76b58033b8d44719992c4e008399b2c520e3692b556ce12e274",
+    "openpilot/selfdrive/carrot/radar_motion/controller.py": "0a2efb2712991ce495f4bb4991cc9ab1352673e96318ff5302fc5bd0d17a34f5",
+    "openpilot/selfdrive/carrot/radar/radard_dpath.py": "f3f3506398dd9bd939b96c83ab21409d8daf3f326fccabb6adf79fb1948d7be2"
+  },
+  "source_files_changed_during_run": true
+}

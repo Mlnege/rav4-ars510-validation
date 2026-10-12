@@ -1,0 +1,36 @@
+{
+  "profiles": {
+    "toyota": {
+      "cases": 262144,
+      "limit_violation_mismatches": 0,
+      "controls_mutations": 0
+    },
+    "hyundai": {
+      "cases": 262144,
+      "limit_violation_mismatches": 0,
+      "controls_mutations": 0
+    },
+    "honda_rivian": {
+      "cases": 262144,
+      "limit_violation_mismatches": 0,
+      "controls_mutations": 0
+    },
+    "tesla": {
+      "cases": 262144,
+      "limit_violation_mismatches": 0,
+      "controls_mutations": 0
+    },
+    "ford": {
+      "cases": 262144,
+      "limit_violation_mismatches": 0,
+      "controls_mutations": 0
+    },
+    "volkswagen_mqb_pq_meb": {
+      "cases": 262144,
+      "limit_violation_mismatches": 0,
+      "controls_mutations": 0
+    }
+  },
+  "all_passed": true,
+  "library_sha256": "0da233bf51bc8375f969bc60101ae011638a0a05c69aa4f9abec3a87df678570"
+}

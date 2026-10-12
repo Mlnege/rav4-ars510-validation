@@ -1,0 +1,11 @@
+{
+  "source": "original_failed_stopped_red_green_go_can_control.csv",
+  "positive_held_control_ticks": 16,
+  "positive_new_acc_messages_while_held": 5,
+  "first_held_s": 2.1500000000000057,
+  "first_nonpositive_decoded_command_after_hold_s": 2.3100000000000023,
+  "maximum_positive_command_while_held_mps2": 0.623,
+  "maximum_model_speed_while_held_mps": 0.08145297939189108,
+  "distance_during_held_in_explicit_point_mass_model_m": 0.05376448933464807,
+  "physical_measurement": false
+}

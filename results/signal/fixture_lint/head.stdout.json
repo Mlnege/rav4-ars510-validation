@@ -1,0 +1,631 @@
+[
+  {
+    "cell": null,
+    "code": "TID251",
+    "end_location": {
+      "column": 68,
+      "row": 8
+    },
+    "filename": "$LAB\\work\\signal_validation\\fixture_lint\\test_signal_start_guard.py",
+    "fix": null,
+    "location": {
+      "column": 1,
+      "row": 8
+    },
+    "message": "`tools` is banned: Use openpilot.tools",
+    "name": "banned-api",
+    "noqa_row": 8,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/banned-api"
+  },
+  {
+    "cell": null,
+    "code": "TID251",
+    "end_location": {
+      "column": 75,
+      "row": 9
+    },
+    "filename": "$LAB\\work\\signal_validation\\fixture_lint\\test_signal_start_guard.py",
+    "fix": null,
+    "location": {
+      "column": 1,
+      "row": 9
+    },
+    "message": "`tools` is banned: Use openpilot.tools",
+    "name": "banned-api",
+    "noqa_row": 9,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/banned-api"
+  },
+  {
+    "cell": null,
+    "code": "C408",
+    "end_location": {
+      "column": 73,
+      "row": 14
+    },
+    "filename": "$LAB\\work\\signal_validation\\fixture_lint\\test_signal_start_guard.py",
+    "fix": {
+      "applicability": "unsafe",
+      "edits": [
+        {
+          "content": "{'timestamp': t, 'frame_id': round(t*1000), 'session': session,\r\n              'tracks': [dict(box=box or [640, 250, 680, 270], raw=color)]}",
+          "end_location": {
+            "column": 73,
+            "row": 14
+          },
+          "location": {
+            "column": 10,
+            "row": 13
+          }
+        }
+      ],
+      "message": "Rewrite as a literal"
+    },
+    "location": {
+      "column": 10,
+      "row": 13
+    },
+    "message": "Unnecessary `dict()` call (rewrite as a literal)",
+    "name": "unnecessary-collection-call",
+    "noqa_row": 13,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/unnecessary-collection-call"
+  },
+  {
+    "cell": null,
+    "code": "C408",
+    "end_location": {
+      "column": 71,
+      "row": 14
+    },
+    "filename": "$LAB\\work\\signal_validation\\fixture_lint\\test_signal_start_guard.py",
+    "fix": {
+      "applicability": "unsafe",
+      "edits": [
+        {
+          "content": "{'box': box or [640, 250, 680, 270], 'raw': color}",
+          "end_location": {
+            "column": 71,
+            "row": 14
+          },
+          "location": {
+            "column": 23,
+            "row": 14
+          }
+        }
+      ],
+      "message": "Rewrite as a literal"
+    },
+    "location": {
+      "column": 23,
+      "row": 14
+    },
+    "message": "Unnecessary `dict()` call (rewrite as a literal)",
+    "name": "unnecessary-collection-call",
+    "noqa_row": 14,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/unnecessary-collection-call"
+  },
+  {
+    "cell": null,
+    "code": "C408",
+    "end_location": {
+      "column": 92,
+      "row": 19
+    },
+    "filename": "$LAB\\work\\signal_validation\\fixture_lint\\test_signal_start_guard.py",
+    "fix": {
+      "applicability": "unsafe",
+      "edits": [
+        {
+          "content": "{'enabled': True, 'valid': True, 'drive': True, 'gas': False, 'speed': 0., 'departure': True}",
+          "end_location": {
+            "column": 92,
+            "row": 19
+          },
+          "location": {
+            "column": 13,
+            "row": 19
+          }
+        }
+      ],
+      "message": "Rewrite as a literal"
+    },
+    "location": {
+      "column": 13,
+      "row": 19
+    },
+    "message": "Unnecessary `dict()` call (rewrite as a literal)",
+    "name": "unnecessary-collection-call",
+    "noqa_row": 19,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/unnecessary-collection-call"
+  },
+  {
+    "cell": null,
+    "code": "E701",
+    "end_location": {
+      "column": 26,
+      "row": 48
+    },
+    "filename": "$LAB\\work\\signal_validation\\fixture_lint\\test_signal_start_guard.py",
+    "fix": null,
+    "location": {
+      "column": 25,
+      "row": 48
+    },
+    "message": "Multiple statements on one line (colon)",
+    "name": "multiple-statements-on-one-line-colon",
+    "noqa_row": 48,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-colon"
+  },
+  {
+    "cell": null,
+    "code": "E701",
+    "end_location": {
+      "column": 26,
+      "row": 49
+    },
+    "filename": "$LAB\\work\\signal_validation\\fixture_lint\\test_signal_start_guard.py",
+    "fix": null,
+    "location": {
+      "column": 25,
+      "row": 49
+    },
+    "message": "Multiple statements on one line (colon)",
+    "name": "multiple-statements-on-one-line-colon",
+    "noqa_row": 49,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-colon"
+  },
+  {
+    "cell": null,
+    "code": "E701",
+    "end_location": {
+      "column": 24,
+      "row": 50
+    },
+    "filename": "$LAB\\work\\signal_validation\\fixture_lint\\test_signal_start_guard.py",
+    "fix": null,
+    "location": {
+      "column": 23,
+      "row": 50
+    },
+    "message": "Multiple statements on one line (colon)",
+    "name": "multiple-statements-on-one-line-colon",
+    "noqa_row": 50,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-colon"
+  },
+  {
+    "cell": null,
+    "code": "E701",
+    "end_location": {
+      "column": 26,
+      "row": 51
+    },
+    "filename": "$LAB\\work\\signal_validation\\fixture_lint\\test_signal_start_guard.py",
+    "fix": null,
+    "location": {
+      "column": 25,
+      "row": 51
+    },
+    "message": "Multiple statements on one line (colon)",
+    "name": "multiple-statements-on-one-line-colon",
+    "noqa_row": 51,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-colon"
+  },
+  {
+    "cell": null,
+    "code": "E701",
+    "end_location": {
+      "column": 32,
+      "row": 52
+    },
+    "filename": "$LAB\\work\\signal_validation\\fixture_lint\\test_signal_start_guard.py",
+    "fix": null,
+    "location": {
+      "column": 31,
+      "row": 52
+    },
+    "message": "Multiple statements on one line (colon)",
+    "name": "multiple-statements-on-one-line-colon",
+    "noqa_row": 52,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-colon"
+  },
+  {
+    "cell": null,
+    "code": "E701",
+    "end_location": {
+      "column": 30,
+      "row": 53
+    },
+    "filename": "$LAB\\work\\signal_validation\\fixture_lint\\test_signal_start_guard.py",
+    "fix": null,
+    "location": {
+      "column": 29,
+      "row": 53
+    },
+    "message": "Multiple statements on one line (colon)",
+    "name": "multiple-statements-on-one-line-colon",
+    "noqa_row": 53,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-colon"
+  },
+  {
+    "cell": null,
+    "code": "E701",
+    "end_location": {
+      "column": 24,
+      "row": 54
+    },
+    "filename": "$LAB\\work\\signal_validation\\fixture_lint\\test_signal_start_guard.py",
+    "fix": null,
+    "location": {
+      "column": 23,
+      "row": 54
+    },
+    "message": "Multiple statements on one line (colon)",
+    "name": "multiple-statements-on-one-line-colon",
+    "noqa_row": 54,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-colon"
+  },
+  {
+    "cell": null,
+    "code": "C408",
+    "end_location": {
+      "column": 87,
+      "row": 54
+    },
+    "filename": "$LAB\\work\\signal_validation\\fixture_lint\\test_signal_start_guard.py",
+    "fix": {
+      "applicability": "unsafe",
+      "edits": [
+        {
+          "content": "{'box': [740, 250, 780, 270], 'raw': 'red'}",
+          "end_location": {
+            "column": 87,
+            "row": 54
+          },
+          "location": {
+            "column": 46,
+            "row": 54
+          }
+        }
+      ],
+      "message": "Rewrite as a literal"
+    },
+    "location": {
+      "column": 46,
+      "row": 54
+    },
+    "message": "Unnecessary `dict()` call (rewrite as a literal)",
+    "name": "unnecessary-collection-call",
+    "noqa_row": 54,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/unnecessary-collection-call"
+  },
+  {
+    "cell": null,
+    "code": "C408",
+    "end_location": {
+      "column": 99,
+      "row": 120
+    },
+    "filename": "$LAB\\work\\signal_validation\\fixture_lint\\test_signal_start_guard.py",
+    "fix": {
+      "applicability": "unsafe",
+      "edits": [
+        {
+          "content": "{'neural': True, 'session': 'a', 'frame_id': 1, 'timestamp_eof': 10**9,\r\n             'tracks': [dict(box=[640, 250, 680, 270], label='red', score=.9, neural_age=0., age=0)]}",
+          "end_location": {
+            "column": 99,
+            "row": 120
+          },
+          "location": {
+            "column": 9,
+            "row": 119
+          }
+        }
+      ],
+      "message": "Rewrite as a literal"
+    },
+    "location": {
+      "column": 9,
+      "row": 119
+    },
+    "message": "Unnecessary `dict()` call (rewrite as a literal)",
+    "name": "unnecessary-collection-call",
+    "noqa_row": 119,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/unnecessary-collection-call"
+  },
+  {
+    "cell": null,
+    "code": "C408",
+    "end_location": {
+      "column": 97,
+      "row": 120
+    },
+    "filename": "$LAB\\work\\signal_validation\\fixture_lint\\test_signal_start_guard.py",
+    "fix": {
+      "applicability": "unsafe",
+      "edits": [
+        {
+          "content": "{'box': [640, 250, 680, 270], 'label': 'red', 'score': .9, 'neural_age': 0., 'age': 0}",
+          "end_location": {
+            "column": 97,
+            "row": 120
+          },
+          "location": {
+            "column": 22,
+            "row": 120
+          }
+        }
+      ],
+      "message": "Rewrite as a literal"
+    },
+    "location": {
+      "column": 22,
+      "row": 120
+    },
+    "message": "Unnecessary `dict()` call (rewrite as a literal)",
+    "name": "unnecessary-collection-call",
+    "noqa_row": 120,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/unnecessary-collection-call"
+  },
+  {
+    "cell": null,
+    "code": "E701",
+    "end_location": {
+      "column": 18,
+      "row": 139
+    },
+    "filename": "$LAB\\work\\signal_validation\\fixture_lint\\test_signal_start_guard.py",
+    "fix": null,
+    "location": {
+      "column": 17,
+      "row": 139
+    },
+    "message": "Multiple statements on one line (colon)",
+    "name": "multiple-statements-on-one-line-colon",
+    "noqa_row": 139,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/multiple-statements-on-one-line-colon"
+  },
+  {
+    "cell": null,
+    "code": "C408",
+    "end_location": {
+      "column": 77,
+      "row": 159
+    },
+    "filename": "$LAB\\work\\signal_validation\\fixture_lint\\test_signal_start_guard.py",
+    "fix": {
+      "applicability": "unsafe",
+      "edits": [
+        {
+          "content": "{'now': t, 'enabled': True, 'valid': True, 'drive': True}",
+          "end_location": {
+            "column": 77,
+            "row": 159
+          },
+          "location": {
+            "column": 28,
+            "row": 159
+          }
+        }
+      ],
+      "message": "Rewrite as a literal"
+    },
+    "location": {
+      "column": 28,
+      "row": 159
+    },
+    "message": "Unnecessary `dict()` call (rewrite as a literal)",
+    "name": "unnecessary-collection-call",
+    "noqa_row": 159,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/unnecessary-collection-call"
+  },
+  {
+    "cell": null,
+    "code": "C408",
+    "end_location": {
+      "column": 75,
+      "row": 167
+    },
+    "filename": "$LAB\\work\\signal_validation\\fixture_lint\\test_signal_start_guard.py",
+    "fix": {
+      "applicability": "unsafe",
+      "edits": [
+        {
+          "content": "{'now': 2, 'enabled': True, 'valid': True, 'drive': True}",
+          "end_location": {
+            "column": 75,
+            "row": 167
+          },
+          "location": {
+            "column": 26,
+            "row": 167
+          }
+        }
+      ],
+      "message": "Rewrite as a literal"
+    },
+    "location": {
+      "column": 26,
+      "row": 167
+    },
+    "message": "Unnecessary `dict()` call (rewrite as a literal)",
+    "name": "unnecessary-collection-call",
+    "noqa_row": 167,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/unnecessary-collection-call"
+  },
+  {
+    "cell": null,
+    "code": "C408",
+    "end_location": {
+      "column": 81,
+      "row": 179
+    },
+    "filename": "$LAB\\work\\signal_validation\\fixture_lint\\test_signal_start_guard.py",
+    "fix": {
+      "applicability": "unsafe",
+      "edits": [
+        {
+          "content": "{'now': t+.35, 'enabled': True, 'valid': True, 'drive': True}",
+          "end_location": {
+            "column": 81,
+            "row": 179
+          },
+          "location": {
+            "column": 28,
+            "row": 179
+          }
+        }
+      ],
+      "message": "Rewrite as a literal"
+    },
+    "location": {
+      "column": 28,
+      "row": 179
+    },
+    "message": "Unnecessary `dict()` call (rewrite as a literal)",
+    "name": "unnecessary-collection-call",
+    "noqa_row": 179,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/unnecessary-collection-call"
+  },
+  {
+    "cell": null,
+    "code": "C408",
+    "end_location": {
+      "column": 45,
+      "row": 55
+    },
+    "filename": "$LAB\\work\\signal_validation\\fixture_lint\\test_signal_tracking_shadow.py",
+    "fix": {
+      "applicability": "unsafe",
+      "edits": [
+        {
+          "content": "{'state': prediction, 'tracks': []}",
+          "end_location": {
+            "column": 45,
+            "row": 55
+          },
+          "location": {
+            "column": 12,
+            "row": 55
+          }
+        }
+      ],
+      "message": "Rewrite as a literal"
+    },
+    "location": {
+      "column": 12,
+      "row": 55
+    },
+    "message": "Unnecessary `dict()` call (rewrite as a literal)",
+    "name": "unnecessary-collection-call",
+    "noqa_row": 55,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/unnecessary-collection-call"
+  },
+  {
+    "cell": null,
+    "code": "TID251",
+    "end_location": {
+      "column": 51,
+      "row": 117
+    },
+    "filename": "$LAB\\work\\signal_validation\\fixture_lint\\test_signal_tracking_shadow.py",
+    "fix": null,
+    "location": {
+      "column": 3,
+      "row": 117
+    },
+    "message": "`tools` is banned: Use openpilot.tools",
+    "name": "banned-api",
+    "noqa_row": 117,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/banned-api"
+  },
+  {
+    "cell": null,
+    "code": "C408",
+    "end_location": {
+      "column": 84,
+      "row": 141
+    },
+    "filename": "$LAB\\work\\signal_validation\\fixture_lint\\test_signal_tracking_shadow.py",
+    "fix": {
+      "applicability": "unsafe",
+      "edits": [
+        {
+          "content": "{'state': 'green' if self.trial else 'red', 'reason': 'test', 'tracks': []}",
+          "end_location": {
+            "column": 84,
+            "row": 141
+          },
+          "location": {
+            "column": 14,
+            "row": 141
+          }
+        }
+      ],
+      "message": "Rewrite as a literal"
+    },
+    "location": {
+      "column": 14,
+      "row": 141
+    },
+    "message": "Unnecessary `dict()` call (rewrite as a literal)",
+    "name": "unnecessary-collection-call",
+    "noqa_row": 141,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/unnecessary-collection-call"
+  },
+  {
+    "cell": null,
+    "code": "C416",
+    "end_location": {
+      "column": 54,
+      "row": 172
+    },
+    "filename": "$LAB\\work\\signal_validation\\fixture_lint\\test_signal_tracking_shadow.py",
+    "fix": {
+      "applicability": "unsafe",
+      "edits": [
+        {
+          "content": "dict(events)",
+          "end_location": {
+            "column": 54,
+            "row": 172
+          },
+          "location": {
+            "column": 13,
+            "row": 172
+          }
+        }
+      ],
+      "message": "Rewrite using `dict()`"
+    },
+    "location": {
+      "column": 13,
+      "row": 172
+    },
+    "message": "Unnecessary dict comprehension (rewrite using `dict()`)",
+    "name": "unnecessary-comprehension",
+    "noqa_row": 172,
+    "severity": "error",
+    "url": "https://docs.astral.sh/ruff/rules/unnecessary-comprehension"
+  }
+]

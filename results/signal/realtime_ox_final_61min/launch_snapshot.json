@@ -1,0 +1,26 @@
+{
+  "started_utc": "2026-10-12T07:39:47.672615+00:00",
+  "recorded_utc": "2026-10-12T07:41:21.365872+00:00",
+  "camera_profile": "ox03c10",
+  "native_snapshot": "build_snapshot_b0a5c630260ad76b",
+  "source_hashes": {
+    "openpilot/selfdrive/carrot/carrot_functions.py": "4f7f313f06889a258d4104bd286f04fd0c80fb0a6a07cb7760466a396cfa26d8",
+    "openpilot/selfdrive/carrot/signal_start_guard.py": "f3ce89f60a7527f94075f0c470dd59e235a65f4ec621512416f3a5f12f171f10",
+    "openpilot/selfdrive/carrot/signal_stop_prepare.py": "f5c206efc2b4ff7d676d06ec4da558a3fe5b0f4901a56a920fa0ee193ee32c39",
+    "openpilot/selfdrive/controls/lib/longitudinal_planner.py": "01ead57b64c3bde5ae56bebefb015986e877014cc0d63885e77833e08f9b886f",
+    "openpilot/selfdrive/carrot/signal_stop_prepare_runtime.py": "69980533b791c48525e6793e2a2d6702d077561507f1dca18c3c01490880ddba",
+    "openpilot/selfdrive/modeld/signal_tracking_shadow.py": "7f2a703709470d0e9dc6b86c5e440e4e54e716336dbdb4c1b14353c67772c157",
+    "openpilot/selfdrive/controls/lib/longcontrol.py": "c5ee591a807e337aa74f0f2131178a1c73ce668e1ce4adf8db5e320cf5bcb2ca",
+    "openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py": "b0a5c630260ad76b58033b8d44719992c4e008399b2c520e3692b556ce12e274",
+    "tools/ars510_validation/signal/core.py": "2244f41f2af5eb0ee9773d455b23cb74c7ebb3b90857f35765c78d0e38b2f1f5",
+    "tools/ars510_validation/signal/native_signal.py": "794eabd81940d04835036bdc37ba900d51981e6f5685f18af1ba18c3630d0ac3",
+    "tools/ars510_validation/signal/realtime_signal.py": "c810544cdf9291a14f5a06f173042c2eba4c23f501776225e3db9ae9c547b1f0"
+  },
+  "native_hashes": {
+    "c_generated_code/acados_ocp_solver_pyx.cpython-312-x86_64-linux-gnu.so": "5809fa9a1481c56a8e61a9df82f4d32f11a6f1acbafbfc7fdefbd93389c14592",
+    "c_generated_code/libacados.so": "b5496cea328d9a239b1c1cb69b1327753e54eeebe331ef29ca91b97a85544228",
+    "c_generated_code/libacados_ocp_solver_long.so": "2cf19053e5712920719b54ba8f970fcfd178ffe4acd5c77e3170a423b030eb71",
+    "c_generated_code/libblasfeo.so": "4804a491b10ca1065010c84d1e7fb9cc005acd2cfed504f0655ba94bd77ac01b",
+    "c_generated_code/libhpipm.so": "1eac1f3673d6f99876104f86ef8b80f884f860ce77ba9ff135af5b2e355616c6"
+  }
+}
