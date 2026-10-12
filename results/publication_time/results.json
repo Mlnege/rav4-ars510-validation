@@ -1,0 +1,1262 @@
+{
+  "started_utc": "2026-10-12T15:04:58.991079+00:00",
+  "finished_utc": "2026-10-12T15:05:06.806387+00:00",
+  "wall_seconds": 7.814981499999703,
+  "files": [
+    {
+      "alias": "log_a",
+      "status": "timing_observed",
+      "recorded_counts": {
+        "can_events": 3507,
+        "carState_events": 3362,
+        "model_events": 623,
+        "model_invalid": 0,
+        "model_zero_eof": 0,
+        "recorded_other_liveTracks": 570,
+        "recorded_other_liveTracks_points": 0,
+        "recorded_other_liveTracks_invalid": 0
+      },
+      "source_file_stat_unchanged": true,
+      "original_cp_unchanged": true,
+      "original_radarUnavailable": true,
+      "declared_radarDelay_s": 0.0,
+      "original_distance_projection_delay_s": 0.0,
+      "observations": {
+        "input_max": {
+          "clock_basis": "input_max",
+          "counts": {
+            "accepted_batches": 3362,
+            "completed_records": 479,
+            "calls_with_multiple_records": 0,
+            "returned_points": 246,
+            "returned_error_results": 477,
+            "model_without_completed_record": 45,
+            "timestamped_completed_records": 479,
+            "associated_model_invalid": 0,
+            "model_with_completed_record": 578
+          },
+          "batch_errors": {},
+          "numeric_order_counts": {
+            "F_le_K_true": 479,
+            "K_le_R_conditional_true": 479,
+            "R_le_S_true": 479,
+            "S_le_G_assumed_true": 479
+          },
+          "at_record_completion": {
+            "K_minus_F": {
+              "count": 479,
+              "min_ms": 27.344455,
+              "p50_ms": 31.1989,
+              "p99_ms": 48.172082,
+              "max_ms": 49.029484,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "R_minus_K": {
+              "count": 479,
+              "min_ms": 0.056459,
+              "p50_ms": 0.098752,
+              "p99_ms": 0.1375534,
+              "max_ms": 0.150524,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "S_minus_R": {
+              "count": 479,
+              "min_ms": 1.667687,
+              "p50_ms": 2.223634,
+              "p99_ms": 3.5632558199999997,
+              "max_ms": 3.763297,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "G_minus_S_assumed": {
+              "count": 479,
+              "min_ms": 0.0,
+              "p50_ms": 0.0,
+              "p99_ms": 17.776881999999997,
+              "max_ms": 26.678036,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_F": {
+              "count": 479,
+              "min_ms": -87.19683,
+              "p50_ms": -27.960129,
+              "p99_ms": 3.2170262599999897,
+              "max_ms": 7.287855,
+              "negative_count": 456,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_K": {
+              "count": 479,
+              "min_ms": -117.406962,
+              "p50_ms": -66.330565,
+              "p99_ms": -36.25588948000001,
+              "max_ms": -32.503493,
+              "negative_count": 479,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_R": {
+              "count": 479,
+              "min_ms": -117.492641,
+              "p50_ms": -66.42239,
+              "p99_ms": -36.353874620000006,
+              "max_ms": -32.605265,
+              "negative_count": 479,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_S": {
+              "count": 479,
+              "min_ms": -119.526636,
+              "p50_ms": -68.81837,
+              "p99_ms": -38.754150100000004,
+              "max_ms": -34.626604,
+              "negative_count": 479,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_G_assumed": {
+              "count": 479,
+              "min_ms": -119.526636,
+              "p50_ms": -68.929883,
+              "p99_ms": -39.08624412000001,
+              "max_ms": -34.626604,
+              "negative_count": 479,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "M_minus_E": {
+              "count": 479,
+              "min_ms": 26.967663,
+              "p50_ms": 34.698897,
+              "p99_ms": 47.41178314,
+              "max_ms": 51.547693,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            }
+          },
+          "at_model_event_latest_record": {
+            "E_minus_F": {
+              "count": 578,
+              "min_ms": -37.196807,
+              "p50_ms": 22.887409,
+              "p99_ms": 71.80988938000002,
+              "max_ms": 97.366366,
+              "negative_count": 32,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_K": {
+              "count": 578,
+              "min_ms": -67.406939,
+              "p50_ms": -7.679604,
+              "p99_ms": 37.771794230000076,
+              "max_ms": 57.488923,
+              "negative_count": 342,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_R": {
+              "count": 578,
+              "min_ms": -67.492618,
+              "p50_ms": -7.7699705,
+              "p99_ms": 37.666450420000075,
+              "max_ms": 57.37965,
+              "negative_count": 343,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_S": {
+              "count": 578,
+              "min_ms": -69.526613,
+              "p50_ms": -9.9521975,
+              "p99_ms": 35.23082718000009,
+              "max_ms": 55.269456,
+              "negative_count": 387,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_G_assumed": {
+              "count": 578,
+              "min_ms": -69.526613,
+              "p50_ms": -10.1715245,
+              "p99_ms": 31.16752799000003,
+              "max_ms": 55.269456,
+              "negative_count": 391,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "M_minus_E": {
+              "count": 578,
+              "min_ms": 26.967663,
+              "p50_ms": 35.1811975,
+              "p99_ms": 47.49030407,
+              "max_ms": 51.547693,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            }
+          },
+          "P_actual_observed": false,
+          "P_candidates_used_as_input": false,
+          "pending_states_at_end": 0,
+          "association_ko": "저장순서에서관측한모델/마지막정상완성record의상대산술. 다른clockdomain의실물동기·측정지연이입증됐다는뜻은아님."
+        },
+        "storage_max": {
+          "clock_basis": "storage_max",
+          "counts": {
+            "accepted_batches": 3362,
+            "completed_records": 479,
+            "calls_with_multiple_records": 0,
+            "returned_points": 246,
+            "returned_error_results": 477,
+            "model_without_completed_record": 45,
+            "timestamped_completed_records": 479,
+            "associated_model_invalid": 0,
+            "model_with_completed_record": 578
+          },
+          "batch_errors": {},
+          "numeric_order_counts": {
+            "F_le_K_true": 479,
+            "K_le_R_conditional_true": 479,
+            "R_le_S_true": 479,
+            "S_le_G_assumed_true": 479
+          },
+          "at_record_completion": {
+            "K_minus_F": {
+              "count": 479,
+              "min_ms": 27.344455,
+              "p50_ms": 31.1989,
+              "p99_ms": 48.172082,
+              "max_ms": 49.029484,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "R_minus_K": {
+              "count": 479,
+              "min_ms": 0.056459,
+              "p50_ms": 0.098752,
+              "p99_ms": 0.1375534,
+              "max_ms": 0.150524,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "S_minus_R": {
+              "count": 479,
+              "min_ms": 1.667687,
+              "p50_ms": 2.223634,
+              "p99_ms": 3.5632558199999997,
+              "max_ms": 3.763297,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "G_minus_S_assumed": {
+              "count": 479,
+              "min_ms": 0.0,
+              "p50_ms": 0.0,
+              "p99_ms": 18.839496319999963,
+              "max_ms": 28.88917,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_F": {
+              "count": 479,
+              "min_ms": -87.19683,
+              "p50_ms": -27.960129,
+              "p99_ms": 3.2170262599999897,
+              "max_ms": 7.287855,
+              "negative_count": 456,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_K": {
+              "count": 479,
+              "min_ms": -117.406962,
+              "p50_ms": -66.330565,
+              "p99_ms": -36.25588948000001,
+              "max_ms": -32.503493,
+              "negative_count": 479,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_R": {
+              "count": 479,
+              "min_ms": -117.492641,
+              "p50_ms": -66.42239,
+              "p99_ms": -36.353874620000006,
+              "max_ms": -32.605265,
+              "negative_count": 479,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_S": {
+              "count": 479,
+              "min_ms": -119.526636,
+              "p50_ms": -68.81837,
+              "p99_ms": -38.754150100000004,
+              "max_ms": -34.626604,
+              "negative_count": 479,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_G_assumed": {
+              "count": 479,
+              "min_ms": -119.85461,
+              "p50_ms": -69.046708,
+              "p99_ms": -39.08624412000001,
+              "max_ms": -37.136442,
+              "negative_count": 479,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "M_minus_E": {
+              "count": 479,
+              "min_ms": 26.967663,
+              "p50_ms": 34.698897,
+              "p99_ms": 47.41178314,
+              "max_ms": 51.547693,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            }
+          },
+          "at_model_event_latest_record": {
+            "E_minus_F": {
+              "count": 578,
+              "min_ms": -37.196807,
+              "p50_ms": 22.887409,
+              "p99_ms": 71.80988938000002,
+              "max_ms": 97.366366,
+              "negative_count": 32,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_K": {
+              "count": 578,
+              "min_ms": -67.406939,
+              "p50_ms": -7.679604,
+              "p99_ms": 37.771794230000076,
+              "max_ms": 57.488923,
+              "negative_count": 342,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_R": {
+              "count": 578,
+              "min_ms": -67.492618,
+              "p50_ms": -7.7699705,
+              "p99_ms": 37.666450420000075,
+              "max_ms": 57.37965,
+              "negative_count": 343,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_S": {
+              "count": 578,
+              "min_ms": -69.526613,
+              "p50_ms": -9.9521975,
+              "p99_ms": 35.23082718000009,
+              "max_ms": 55.269456,
+              "negative_count": 387,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_G_assumed": {
+              "count": 578,
+              "min_ms": -69.526613,
+              "p50_ms": -10.3087405,
+              "p99_ms": 31.022936880000017,
+              "max_ms": 55.269456,
+              "negative_count": 395,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "M_minus_E": {
+              "count": 578,
+              "min_ms": 26.967663,
+              "p50_ms": 35.1811975,
+              "p99_ms": 47.49030407,
+              "max_ms": 51.547693,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            }
+          },
+          "P_actual_observed": false,
+          "P_candidates_used_as_input": false,
+          "pending_states_at_end": 0,
+          "association_ko": "저장순서에서관측한모델/마지막정상완성record의상대산술. 다른clockdomain의실물동기·측정지연이입증됐다는뜻은아님."
+        }
+      }
+    },
+    {
+      "alias": "log_b",
+      "status": "timing_observed",
+      "recorded_counts": {
+        "can_events": 6166,
+        "carState_events": 6022,
+        "recorded_other_liveTracks": 1102,
+        "recorded_other_liveTracks_points": 0,
+        "recorded_other_liveTracks_invalid": 0,
+        "model_events": 1019,
+        "model_invalid": 0,
+        "model_zero_eof": 0
+      },
+      "source_file_stat_unchanged": true,
+      "original_cp_unchanged": true,
+      "original_radarUnavailable": true,
+      "declared_radarDelay_s": 0.0,
+      "original_distance_projection_delay_s": 0.0,
+      "observations": {
+        "input_max": {
+          "clock_basis": "input_max",
+          "counts": {
+            "accepted_batches": 6002,
+            "completed_records": 991,
+            "calls_with_multiple_records": 0,
+            "returned_points": 115,
+            "returned_error_results": 31,
+            "timestamped_completed_records": 991,
+            "record_without_observed_model": 151,
+            "batch_error_adapter_restarts": 4,
+            "associated_model_invalid": 0,
+            "model_with_completed_record": 1018,
+            "model_without_completed_record": 1
+          },
+          "batch_errors": {
+            "staleEgoState": 20
+          },
+          "numeric_order_counts": {
+            "F_le_K_true": 991,
+            "K_le_R_conditional_true": 991,
+            "R_le_S_true": 991,
+            "S_le_G_assumed_true": 991
+          },
+          "at_record_completion": {
+            "K_minus_F": {
+              "count": 991,
+              "min_ms": 27.015778,
+              "p50_ms": 39.539063,
+              "p99_ms": 42.1019066,
+              "max_ms": 47.104892,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "R_minus_K": {
+              "count": 991,
+              "min_ms": 0.062764,
+              "p50_ms": 0.11,
+              "p99_ms": 0.21409750000000005,
+              "max_ms": 1.950625,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "S_minus_R": {
+              "count": 991,
+              "min_ms": 1.674323,
+              "p50_ms": 2.364145,
+              "p99_ms": 3.7501404000000007,
+              "max_ms": 13.889942,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "G_minus_S_assumed": {
+              "count": 991,
+              "min_ms": 0.0,
+              "p50_ms": 0.0,
+              "p99_ms": 56.952548400000005,
+              "max_ms": 87.218646,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_F": {
+              "count": 840,
+              "min_ms": -896.34925,
+              "p50_ms": -37.4851525,
+              "p99_ms": 15.610970550000033,
+              "max_ms": 52.614753,
+              "negative_count": 820,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 3
+            },
+            "E_minus_K": {
+              "count": 840,
+              "min_ms": -937.784927,
+              "p50_ms": -76.4649025,
+              "p99_ms": -16.89565157999997,
+              "max_ms": 13.122744,
+              "negative_count": 838,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 4
+            },
+            "E_minus_R": {
+              "count": 840,
+              "min_ms": -937.95352,
+              "p50_ms": -76.5971925,
+              "p99_ms": -17.01055227999997,
+              "max_ms": 13.006278,
+              "negative_count": 838,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 4
+            },
+            "E_minus_S": {
+              "count": 840,
+              "min_ms": -940.889822,
+              "p50_ms": -79.0716585,
+              "p99_ms": -19.277245969999964,
+              "max_ms": 9.949875,
+              "negative_count": 838,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 4
+            },
+            "E_minus_G_assumed": {
+              "count": 840,
+              "min_ms": -946.738156,
+              "p50_ms": -80.7550605,
+              "p99_ms": -45.15054607,
+              "max_ms": -36.993601,
+              "negative_count": 840,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 13
+            },
+            "M_minus_E": {
+              "count": 840,
+              "min_ms": 34.058255,
+              "p50_ms": 44.224148,
+              "p99_ms": 54.47459859000001,
+              "max_ms": 820.725031,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 2,
+              "absolute_over_source_skew_limit": 2
+            }
+          },
+          "at_model_event_latest_record": {
+            "E_minus_F": {
+              "count": 1018,
+              "min_ms": -766.311541,
+              "p50_ms": 14.0145675,
+              "p99_ms": 83.22832060000003,
+              "max_ms": 153.627364,
+              "negative_count": 250,
+              "positive_over_source_age_limit": 5,
+              "absolute_over_source_skew_limit": 2
+            },
+            "E_minus_K": {
+              "count": 1018,
+              "min_ms": -797.223,
+              "p50_ms": -19.8814295,
+              "p99_ms": 46.033183680000064,
+              "max_ms": 113.876219,
+              "negative_count": 777,
+              "positive_over_source_age_limit": 1,
+              "absolute_over_source_skew_limit": 2
+            },
+            "E_minus_R": {
+              "count": 1018,
+              "min_ms": -797.347635,
+              "p50_ms": -20.04454,
+              "p99_ms": 45.89427617000007,
+              "max_ms": 113.749448,
+              "negative_count": 777,
+              "positive_over_source_age_limit": 1,
+              "absolute_over_source_skew_limit": 2
+            },
+            "E_minus_S": {
+              "count": 1018,
+              "min_ms": -800.16701,
+              "p50_ms": -22.5904455,
+              "p99_ms": 43.58678804000006,
+              "max_ms": 111.657573,
+              "negative_count": 816,
+              "positive_over_source_age_limit": 1,
+              "absolute_over_source_skew_limit": 2
+            },
+            "E_minus_G_assumed": {
+              "count": 1018,
+              "min_ms": -800.16701,
+              "p50_ms": -28.282168,
+              "p99_ms": 43.58678804000006,
+              "max_ms": 111.657573,
+              "negative_count": 846,
+              "positive_over_source_age_limit": 1,
+              "absolute_over_source_skew_limit": 2
+            },
+            "M_minus_E": {
+              "count": 1018,
+              "min_ms": 34.058255,
+              "p50_ms": 44.7102395,
+              "p99_ms": 54.80163255000001,
+              "max_ms": 820.725031,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 1,
+              "absolute_over_source_skew_limit": 1
+            }
+          },
+          "P_actual_observed": false,
+          "P_candidates_used_as_input": false,
+          "pending_states_at_end": 0,
+          "association_ko": "저장순서에서관측한모델/마지막정상완성record의상대산술. 다른clockdomain의실물동기·측정지연이입증됐다는뜻은아님."
+        },
+        "storage_max": {
+          "clock_basis": "storage_max",
+          "counts": {
+            "accepted_batches": 5997,
+            "completed_records": 990,
+            "calls_with_multiple_records": 0,
+            "returned_points": 115,
+            "returned_error_results": 48,
+            "timestamped_completed_records": 990,
+            "record_without_observed_model": 151,
+            "batch_error_adapter_restarts": 8,
+            "associated_model_invalid": 0,
+            "model_with_completed_record": 1018,
+            "model_without_completed_record": 1
+          },
+          "batch_errors": {
+            "staleEgoState": 25
+          },
+          "numeric_order_counts": {
+            "F_le_K_true": 990,
+            "K_le_R_conditional_true": 990,
+            "R_le_S_true": 990,
+            "S_le_G_assumed_true": 990
+          },
+          "at_record_completion": {
+            "K_minus_F": {
+              "count": 990,
+              "min_ms": 27.015778,
+              "p50_ms": 39.5384375,
+              "p99_ms": 42.10262326,
+              "max_ms": 47.104892,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "R_minus_K": {
+              "count": 990,
+              "min_ms": 0.062764,
+              "p50_ms": 0.1101875,
+              "p99_ms": 0.21412075000000003,
+              "max_ms": 1.950625,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "S_minus_R": {
+              "count": 990,
+              "min_ms": 1.674323,
+              "p50_ms": 2.3620215,
+              "p99_ms": 3.7504564400000002,
+              "max_ms": 13.889942,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "G_minus_S_assumed": {
+              "count": 990,
+              "min_ms": 0.0,
+              "p50_ms": 0.0,
+              "p99_ms": 58.29583443,
+              "max_ms": 75.753698,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_F": {
+              "count": 839,
+              "min_ms": -896.34925,
+              "p50_ms": -37.484718,
+              "p99_ms": 15.63470710000001,
+              "max_ms": 52.614753,
+              "negative_count": 819,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 3
+            },
+            "E_minus_K": {
+              "count": 839,
+              "min_ms": -937.784927,
+              "p50_ms": -76.441232,
+              "p99_ms": -16.87522835999999,
+              "max_ms": 13.122744,
+              "negative_count": 837,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 4
+            },
+            "E_minus_R": {
+              "count": 839,
+              "min_ms": -937.95352,
+              "p50_ms": -76.586177,
+              "p99_ms": -16.98939575999999,
+              "max_ms": 13.006278,
+              "negative_count": 837,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 4
+            },
+            "E_minus_S": {
+              "count": 839,
+              "min_ms": -940.889822,
+              "p50_ms": -79.071125,
+              "p99_ms": -19.251076739999988,
+              "max_ms": 9.949875,
+              "negative_count": 837,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 4
+            },
+            "E_minus_G_assumed": {
+              "count": 839,
+              "min_ms": -946.738156,
+              "p50_ms": -81.46247,
+              "p99_ms": -45.352650159999996,
+              "max_ms": -38.221297,
+              "negative_count": 839,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 15
+            },
+            "M_minus_E": {
+              "count": 839,
+              "min_ms": 34.058255,
+              "p50_ms": 44.221546,
+              "p99_ms": 54.47529078,
+              "max_ms": 820.725031,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 2,
+              "absolute_over_source_skew_limit": 2
+            }
+          },
+          "at_model_event_latest_record": {
+            "E_minus_F": {
+              "count": 1018,
+              "min_ms": -766.311541,
+              "p50_ms": 14.0145675,
+              "p99_ms": 83.22832060000003,
+              "max_ms": 153.627364,
+              "negative_count": 250,
+              "positive_over_source_age_limit": 5,
+              "absolute_over_source_skew_limit": 2
+            },
+            "E_minus_K": {
+              "count": 1018,
+              "min_ms": -797.223,
+              "p50_ms": -19.8814295,
+              "p99_ms": 46.033183680000064,
+              "max_ms": 113.876219,
+              "negative_count": 777,
+              "positive_over_source_age_limit": 1,
+              "absolute_over_source_skew_limit": 2
+            },
+            "E_minus_R": {
+              "count": 1018,
+              "min_ms": -797.347635,
+              "p50_ms": -20.04454,
+              "p99_ms": 45.89427617000007,
+              "max_ms": 113.749448,
+              "negative_count": 777,
+              "positive_over_source_age_limit": 1,
+              "absolute_over_source_skew_limit": 2
+            },
+            "E_minus_S": {
+              "count": 1018,
+              "min_ms": -800.16701,
+              "p50_ms": -22.5904455,
+              "p99_ms": 43.58678804000006,
+              "max_ms": 111.657573,
+              "negative_count": 816,
+              "positive_over_source_age_limit": 1,
+              "absolute_over_source_skew_limit": 2
+            },
+            "E_minus_G_assumed": {
+              "count": 1018,
+              "min_ms": -800.16701,
+              "p50_ms": -28.9431185,
+              "p99_ms": 43.58678804000006,
+              "max_ms": 111.657573,
+              "negative_count": 858,
+              "positive_over_source_age_limit": 1,
+              "absolute_over_source_skew_limit": 2
+            },
+            "M_minus_E": {
+              "count": 1018,
+              "min_ms": 34.058255,
+              "p50_ms": 44.7102395,
+              "p99_ms": 54.80163255000001,
+              "max_ms": 820.725031,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 1,
+              "absolute_over_source_skew_limit": 1
+            }
+          },
+          "P_actual_observed": false,
+          "P_candidates_used_as_input": false,
+          "pending_states_at_end": 0,
+          "association_ko": "저장순서에서관측한모델/마지막정상완성record의상대산술. 다른clockdomain의실물동기·측정지연이입증됐다는뜻은아님."
+        }
+      }
+    },
+    {
+      "alias": "log_c",
+      "status": "insufficient_original_carParams",
+      "recorded_counts": {},
+      "source_file_stat_unchanged": true
+    },
+    {
+      "alias": "log_d",
+      "status": "timing_observed",
+      "recorded_counts": {
+        "can_events": 6161,
+        "carState_events": 6017,
+        "model_events": 1150,
+        "model_invalid": 0,
+        "model_zero_eof": 0,
+        "recorded_other_liveTracks": 1101,
+        "recorded_other_liveTracks_points": 0,
+        "recorded_other_liveTracks_invalid": 0
+      },
+      "source_file_stat_unchanged": true,
+      "original_cp_unchanged": true,
+      "original_radarUnavailable": true,
+      "declared_radarDelay_s": 0.0,
+      "original_distance_projection_delay_s": 0.0,
+      "observations": {
+        "input_max": {
+          "clock_basis": "input_max",
+          "counts": {
+            "accepted_batches": 6016,
+            "completed_records": 930,
+            "calls_with_multiple_records": 0,
+            "returned_points": 6,
+            "returned_error_results": 404,
+            "batch_error_adapter_restarts": 1,
+            "model_without_completed_record": 27,
+            "timestamped_completed_records": 930,
+            "associated_model_invalid": 0,
+            "model_with_completed_record": 1123
+          },
+          "batch_errors": {
+            "staleEgoState": 1
+          },
+          "numeric_order_counts": {
+            "F_le_K_true": 930,
+            "K_le_R_conditional_true": 930,
+            "R_le_S_true": 930,
+            "S_le_G_assumed_true": 930
+          },
+          "at_record_completion": {
+            "K_minus_F": {
+              "count": 930,
+              "min_ms": 27.834072,
+              "p50_ms": 39.801975,
+              "p99_ms": 42.522211840000004,
+              "max_ms": 42.953689,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "R_minus_K": {
+              "count": 930,
+              "min_ms": 0.039584,
+              "p50_ms": 0.099742,
+              "p99_ms": 0.15360896000000002,
+              "max_ms": 2.473651,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "S_minus_R": {
+              "count": 930,
+              "min_ms": 1.54441,
+              "p50_ms": 2.210155,
+              "p99_ms": 3.50280747,
+              "max_ms": 3.929829,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "G_minus_S_assumed": {
+              "count": 930,
+              "min_ms": 0.0,
+              "p50_ms": 0.0,
+              "p99_ms": 17.99486364000001,
+              "max_ms": 35.151063,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_F": {
+              "count": 930,
+              "min_ms": -73.117868,
+              "p50_ms": -17.343783,
+              "p99_ms": 11.677369870000003,
+              "max_ms": 12.9617,
+              "negative_count": 781,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_K": {
+              "count": 930,
+              "min_ms": -113.222429,
+              "p50_ms": -54.815263,
+              "p99_ms": -28.068961079999998,
+              "max_ms": -27.187341,
+              "negative_count": 930,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_R": {
+              "count": 930,
+              "min_ms": -113.32889,
+              "p50_ms": -54.978835,
+              "p99_ms": -28.18334522,
+              "max_ms": -27.316928,
+              "negative_count": 930,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_S": {
+              "count": 930,
+              "min_ms": -115.938689,
+              "p50_ms": -57.520768,
+              "p99_ms": -31.224735839999997,
+              "max_ms": -29.678805,
+              "negative_count": 930,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_G_assumed": {
+              "count": 930,
+              "min_ms": -122.497849,
+              "p50_ms": -60.3689835,
+              "p99_ms": -31.224735839999997,
+              "max_ms": -29.678805,
+              "negative_count": 930,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "M_minus_E": {
+              "count": 930,
+              "min_ms": 23.488559,
+              "p50_ms": 29.6538815,
+              "p99_ms": 40.38542291,
+              "max_ms": 50.263909,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            }
+          },
+          "at_model_event_latest_record": {
+            "E_minus_F": {
+              "count": 1123,
+              "min_ms": -23.116623,
+              "p50_ms": 36.873183,
+              "p99_ms": 77.53712739999999,
+              "max_ms": 92.200852,
+              "negative_count": 9,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_K": {
+              "count": 1123,
+              "min_ms": -63.221184,
+              "p50_ms": -2.977153,
+              "p99_ms": 42.134679999999975,
+              "max_ms": 52.635366,
+              "negative_count": 618,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_R": {
+              "count": 1123,
+              "min_ms": -63.327645,
+              "p50_ms": -3.072624,
+              "p99_ms": 42.03823095999998,
+              "max_ms": 52.549061,
+              "negative_count": 618,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_S": {
+              "count": 1123,
+              "min_ms": -65.937444,
+              "p50_ms": -5.135015,
+              "p99_ms": 39.73810829999996,
+              "max_ms": 50.642612,
+              "negative_count": 636,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_G_assumed": {
+              "count": 1123,
+              "min_ms": -72.496604,
+              "p50_ms": -5.557733,
+              "p99_ms": 38.56280565999998,
+              "max_ms": 50.642612,
+              "negative_count": 670,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "M_minus_E": {
+              "count": 1123,
+              "min_ms": 23.399129,
+              "p50_ms": 29.669637,
+              "p99_ms": 40.48278632,
+              "max_ms": 50.263909,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            }
+          },
+          "P_actual_observed": false,
+          "P_candidates_used_as_input": false,
+          "pending_states_at_end": 0,
+          "association_ko": "저장순서에서관측한모델/마지막정상완성record의상대산술. 다른clockdomain의실물동기·측정지연이입증됐다는뜻은아님."
+        },
+        "storage_max": {
+          "clock_basis": "storage_max",
+          "counts": {
+            "accepted_batches": 6016,
+            "completed_records": 930,
+            "calls_with_multiple_records": 0,
+            "returned_points": 6,
+            "returned_error_results": 404,
+            "batch_error_adapter_restarts": 1,
+            "model_without_completed_record": 27,
+            "timestamped_completed_records": 930,
+            "associated_model_invalid": 0,
+            "model_with_completed_record": 1123
+          },
+          "batch_errors": {
+            "staleEgoState": 1
+          },
+          "numeric_order_counts": {
+            "F_le_K_true": 930,
+            "K_le_R_conditional_true": 930,
+            "R_le_S_true": 930,
+            "S_le_G_assumed_true": 930
+          },
+          "at_record_completion": {
+            "K_minus_F": {
+              "count": 930,
+              "min_ms": 27.834072,
+              "p50_ms": 39.801975,
+              "p99_ms": 42.522211840000004,
+              "max_ms": 42.953689,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "R_minus_K": {
+              "count": 930,
+              "min_ms": 0.039584,
+              "p50_ms": 0.099742,
+              "p99_ms": 0.15360896000000002,
+              "max_ms": 2.473651,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "S_minus_R": {
+              "count": 930,
+              "min_ms": 1.54441,
+              "p50_ms": 2.210155,
+              "p99_ms": 3.50280747,
+              "max_ms": 3.929829,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "G_minus_S_assumed": {
+              "count": 930,
+              "min_ms": 0.0,
+              "p50_ms": 0.0,
+              "p99_ms": 20.771404360000002,
+              "max_ms": 37.465647,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_F": {
+              "count": 930,
+              "min_ms": -73.117868,
+              "p50_ms": -17.343783,
+              "p99_ms": 11.677369870000003,
+              "max_ms": 12.9617,
+              "negative_count": 781,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_K": {
+              "count": 930,
+              "min_ms": -113.222429,
+              "p50_ms": -54.815263,
+              "p99_ms": -28.068961079999998,
+              "max_ms": -27.187341,
+              "negative_count": 930,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_R": {
+              "count": 930,
+              "min_ms": -113.32889,
+              "p50_ms": -54.978835,
+              "p99_ms": -28.18334522,
+              "max_ms": -27.316928,
+              "negative_count": 930,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_S": {
+              "count": 930,
+              "min_ms": -115.938689,
+              "p50_ms": -57.520768,
+              "p99_ms": -31.224735839999997,
+              "max_ms": -29.678805,
+              "negative_count": 930,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_G_assumed": {
+              "count": 930,
+              "min_ms": -122.497849,
+              "p50_ms": -61.124001,
+              "p99_ms": -31.224735839999997,
+              "max_ms": -29.678805,
+              "negative_count": 930,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "M_minus_E": {
+              "count": 930,
+              "min_ms": 23.488559,
+              "p50_ms": 29.6538815,
+              "p99_ms": 40.38542291,
+              "max_ms": 50.263909,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            }
+          },
+          "at_model_event_latest_record": {
+            "E_minus_F": {
+              "count": 1123,
+              "min_ms": -23.116623,
+              "p50_ms": 36.873183,
+              "p99_ms": 77.53712739999999,
+              "max_ms": 92.200852,
+              "negative_count": 9,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_K": {
+              "count": 1123,
+              "min_ms": -63.221184,
+              "p50_ms": -2.977153,
+              "p99_ms": 42.134679999999975,
+              "max_ms": 52.635366,
+              "negative_count": 618,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_R": {
+              "count": 1123,
+              "min_ms": -63.327645,
+              "p50_ms": -3.072624,
+              "p99_ms": 42.03823095999998,
+              "max_ms": 52.549061,
+              "negative_count": 618,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_S": {
+              "count": 1123,
+              "min_ms": -65.937444,
+              "p50_ms": -5.135015,
+              "p99_ms": 39.73810829999996,
+              "max_ms": 50.642612,
+              "negative_count": 636,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "E_minus_G_assumed": {
+              "count": 1123,
+              "min_ms": -72.496604,
+              "p50_ms": -5.713726,
+              "p99_ms": 38.56280565999998,
+              "max_ms": 50.642612,
+              "negative_count": 672,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            },
+            "M_minus_E": {
+              "count": 1123,
+              "min_ms": 23.399129,
+              "p50_ms": 29.669637,
+              "p99_ms": 40.48278632,
+              "max_ms": 50.263909,
+              "negative_count": 0,
+              "positive_over_source_age_limit": 0,
+              "absolute_over_source_skew_limit": 0
+            }
+          },
+          "P_actual_observed": false,
+          "P_candidates_used_as_input": false,
+          "pending_states_at_end": 0,
+          "association_ko": "저장순서에서관측한모델/마지막정상완성record의상대산술. 다른clockdomain의실물동기·측정지연이입증됐다는뜻은아님."
+        }
+      }
+    }
+  ],
+  "preparation_errors": [],
+  "params_backend": "process-local-access-forbidden",
+  "source_hashes": {
+    "publication_time_probe.py": "c82cb4f002ee8724af6138090644920a1e78b07524d1a738cb5c2a8a89f3776f",
+    "can_batch.py": "73d72c3c45ef500886af90224cf3f64fbb3f2ca6c638bdc65b9986f0b83ec040",
+    "paired_adapter_replay_quality.py": "ef23a7eb51506f780fa4c86b8e9459428c56568f547ab612030c65b5ee737388",
+    "carrot/radar/radarcan.py": "3f2da75508194aa86179056574fa87fb0259c7aa65c45fd318b26325ef1c500b",
+    "carrot/radar/radard_dpath.py": "f3f3506398dd9bd939b96c83ab21409d8daf3f326fccabb6adf79fb1948d7be2",
+    "carrot/radar_motion/controller.py": "0a2efb2712991ce495f4bb4991cc9ab1352673e96318ff5302fc5bd0d17a34f5",
+    "carrot/radar_motion/timing.py": "e13645d2a2a9588ac8ac61a43c9ba42abce4f3626aae1afcd57dfff7aa0a78c4",
+    "car/card.py": "de239706c6194073d5758c7314d060146e4404b55648cdba90d183a59883b1a2",
+    "pandad/pandad.cc": "42522dca45e7323e40b6db7c3c0204aef83df45b02d167a024bcf305c8a63dee",
+    "pandad/pandad_api_impl.py": "d53155b35a6577eba44f74fc164f177f3847140e0ce55fa839067613cc316cd7",
+    "ars510_offline.py": "8b471914b92466fb9589c298b976fe377eea18e7c111e81f89258cab45d12a50",
+    "ars510/interface.py": "5275348cebbc3605d0ae3b9ba482142605f8e0df031fafb7ce56f5c6cec3c05a",
+    "ars510/transport.py": "2e08804252f3aa85bb3dfca71ccc9f4f9e6d602d9a281c18b5e54124bb1351b0",
+    "ars510/record.py": "7fe407611ebcb1acf5bc5add9612a3d1ced5af784eecc102055cc840c0fc1309",
+    "ars510/objects.py": "94e1f6f922f34d21589a9188a704dcdfd6f4361cb8f24b6cb0ceadfcfdc9099b",
+    "ars510/support.py": "037617df3ae7908a2614416354172917e10a4c385ce2affe3580cd60ed1d5456",
+    "ars510/tracks.py": "719322772275e0a1be94e785b53ab388e4e5193699ccfebf71977c009f776736",
+    "ars510/constants.py": "f2f3422eeac18af36878504aed2bedf6a1b4e763e93acde49bf27cb921d046de",
+    "interfaces.py": "ce85b17a447ce59a21518b6358c0709da80730efeb3d70252b66909cca7bbb13",
+    "radar_tracks.py": "9c44d96e25cc3f540a650302276bc35a027d47c179b8774e243e0b3cb2d4f27b",
+    "common/timing.h": "74b285e09aa06372399411f26481097f0ba72ae1dd131f7dab669ecc750be954",
+    "cereal/messaging/messaging.h": "37ec2abc3d57918e8af70b26ba31014c48c29e4b60b9b5d7e63a7d57e76d8c8c",
+    "cereal/messaging/__init__.py": "bee560dadd985b82aac55039581851d37bdeadf39aed0845d50c3ad3103d691b"
+  },
+  "source_unchanged": true,
+  "source_skew_s": 0.15,
+  "P_actual_observed": false,
+  "actual_collector_clock_observed": false,
+  "P_candidates_used_as_input": false,
+  "dpath_executed": false,
+  "host_executed": false,
+  "CAN_transmitted": false,
+  "Params_changed": false,
+  "original_epoch_preserved": true,
+  "scope_ko": "F/K/R/S/E/M/G의원본epoch상대산술만익명집계. 미래ARS liveTracks P는미관측. S/G를생산P로만들거나skew/age/radarDelay/CP를변경하지않음."
+}

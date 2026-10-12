@@ -1120,5 +1120,239 @@
     "original_sha256": "b8f568356bc79c284b6ee8df3c678cb3b8dcbd771c0607d516e430c1ec1dc016",
     "published_sha256": "b8f568356bc79c284b6ee8df3c678cb3b8dcbd771c0607d516e430c1ec1dc016",
     "transform": "개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "analysis/paired_host_policy/run.py",
+    "original_sha256": "8c76d85216784f569816d662cc226c6426a6a032f6e5e32de6a554b48735ec06",
+    "published_sha256": "8c76d85216784f569816d662cc226c6426a6a032f6e5e32de6a554b48735ec06",
+    "transform": "진단 실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/paired_host_policy/whole_io.py",
+    "original_sha256": "5dd434ff3fce1406b2782c7f1237157308ad84ce13584855931c46b148ac4f9d",
+    "published_sha256": "5dd434ff3fce1406b2782c7f1237157308ad84ce13584855931c46b148ac4f9d",
+    "transform": "진단 실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/paired_host_policy/whole_objects.py",
+    "original_sha256": "4645210fdfecffb7703acad3f1f2bb73f5174fe1e264e01b99d3f1b9e73190e0",
+    "published_sha256": "4645210fdfecffb7703acad3f1f2bb73f5174fe1e264e01b99d3f1b9e73190e0",
+    "transform": "진단 실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/paired_host_policy/log_io.py",
+    "original_sha256": "2e2d35040ea6f3c2a23f3cb4abdd70cc14523bd99706392bc6bad8499ab61fe1",
+    "published_sha256": "2e2d35040ea6f3c2a23f3cb4abdd70cc14523bd99706392bc6bad8499ab61fe1",
+    "transform": "진단 실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/paired_host_policy/paired_stream.py",
+    "original_sha256": "f1dbd4cc8888ce8908528378058d082dc0be24f681123bc24efad8bf2bb24a6d",
+    "published_sha256": "f1dbd4cc8888ce8908528378058d082dc0be24f681123bc24efad8bf2bb24a6d",
+    "transform": "진단 실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/paired_host_policy/policy_io.py",
+    "original_sha256": "e35882a9877c2562134aa1fa19b96c7a82cbba1d9afbe8265608a0a14a0555d8",
+    "published_sha256": "e35882a9877c2562134aa1fa19b96c7a82cbba1d9afbe8265608a0a14a0555d8",
+    "transform": "진단 실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/paired_host_policy/audit_namespace.py",
+    "original_sha256": "d9ea1a4b7b275f602cef1736db2d008d264e5e29128a7ae96428b0c2530c3189",
+    "published_sha256": "d9ea1a4b7b275f602cef1736db2d008d264e5e29128a7ae96428b0c2530c3189",
+    "transform": "진단 실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/paired_host_policy/wire_time_check.py",
+    "original_sha256": "fcb0953d552aa9e7429d72a84964f490dbf0c9a4316ffdda1a3203d0b9d06958",
+    "published_sha256": "fcb0953d552aa9e7429d72a84964f490dbf0c9a4316ffdda1a3203d0b9d06958",
+    "transform": "진단 실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/paired_host_policy/capture_initial_runner.py",
+    "original_sha256": "0f3de3efeb82d6a50a4ac9e93ae17605689bc6a502534232b456c0f23d74f2ed",
+    "published_sha256": "0f3de3efeb82d6a50a4ac9e93ae17605689bc6a502534232b456c0f23d74f2ed",
+    "transform": "진단 실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/paired_host_policy/first_a_executed_source.py",
+    "original_sha256": "8242edc7f4a1c5e8f17204b2a073c48731e699e83eb039fe335b2d5c822d5800",
+    "published_sha256": "8242edc7f4a1c5e8f17204b2a073c48731e699e83eb039fe335b2d5c822d5800",
+    "transform": "진단 실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/paired_host_policy/IO_SCOPE_PLAN_KO.md",
+    "original_sha256": "8eea7e0e501be75ab4355b939c3d33320b301ef66ad89a7c921ce5da8bb37c4f",
+    "published_sha256": "8eea7e0e501be75ab4355b939c3d33320b301ef66ad89a7c921ce5da8bb37c4f",
+    "transform": "개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "analysis/paired_host_policy/freeze.py",
+    "original_sha256": "cf71a50ba6e3fdf2f63c1a0a26b63a1792b766034d74edcb61173526ba7a3653",
+    "published_sha256": "cf71a50ba6e3fdf2f63c1a0a26b63a1792b766034d74edcb61173526ba7a3653",
+    "transform": "진단 실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/paired_host_policy/RESULTS_KO.md",
+    "original_sha256": "ad75a70299e2f94a45b7d044c5835c84ad5cae1fad90a06affd52f7d767223f3",
+    "published_sha256": "ad75a70299e2f94a45b7d044c5835c84ad5cae1fad90a06affd52f7d767223f3",
+    "transform": "개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "analysis/paired_host_policy/frozen_results.json",
+    "original_sha256": "43be375ab824b1402b098fae82ab638124e424ad0a8912160350922d95339c88",
+    "published_sha256": "43be375ab824b1402b098fae82ab638124e424ad0a8912160350922d95339c88",
+    "transform": "익명 집계의 개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "analysis/paired_host_policy/evidence_manifest.json",
+    "original_sha256": "e4401942e735dcf0f557cecf9f4f6186775a3b7648048841baf86f7bb5e73438",
+    "published_sha256": "e4401942e735dcf0f557cecf9f4f6186775a3b7648048841baf86f7bb5e73438",
+    "transform": "익명 집계의 개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "results/paired_host_policy/log_a.json",
+    "original_sha256": "d6551d5f53377a2eb1e5023e627eaf575f9255ad01e3fd3d525dc817cd1e1f9d",
+    "published_sha256": "d6551d5f53377a2eb1e5023e627eaf575f9255ad01e3fd3d525dc817cd1e1f9d",
+    "transform": "익명 집계의 개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "results/paired_host_policy/log_b.json",
+    "original_sha256": "68d0635b57bd7005856b7775969f0f1dea09ad726e697453c6f913db39942a2b",
+    "published_sha256": "68d0635b57bd7005856b7775969f0f1dea09ad726e697453c6f913db39942a2b",
+    "transform": "익명 집계의 개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "results/paired_host_policy/log_c.json",
+    "original_sha256": "43a3e2711f11999a83eecbcfdfad180817297b67f9f3d4dcaf6fe2cf4f4f1cda",
+    "published_sha256": "43a3e2711f11999a83eecbcfdfad180817297b67f9f3d4dcaf6fe2cf4f4f1cda",
+    "transform": "익명 집계의 개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "results/paired_host_policy/log_d.json",
+    "original_sha256": "2e1fdd51389f92f14c3a6c9d12c557b223ebf1bb8c4b42c5bcae5699b3298a65",
+    "published_sha256": "2e1fdd51389f92f14c3a6c9d12c557b223ebf1bb8c4b42c5bcae5699b3298a65",
+    "transform": "익명 집계의 개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "results/paired_host_policy/parent_log_a.json",
+    "original_sha256": "98ac1c6aff0c96c93e64143b6b57f76ef95e3613b5a32da7a1fe6eb935d774fc",
+    "published_sha256": "98ac1c6aff0c96c93e64143b6b57f76ef95e3613b5a32da7a1fe6eb935d774fc",
+    "transform": "익명 집계의 개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "results/paired_host_policy/parent_log_b.json",
+    "original_sha256": "89c85db531dbea3aeccf48a416543b45d0d6648c43aa5940f319d33ef20f3250",
+    "published_sha256": "89c85db531dbea3aeccf48a416543b45d0d6648c43aa5940f319d33ef20f3250",
+    "transform": "익명 집계의 개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "results/paired_host_policy/parent_comparison.json",
+    "original_sha256": "1a04c34deb1fbd45ad4afbb6584e64860d993b8c575d05f3108dcd7760121d37",
+    "published_sha256": "7158525749a101f6a715fb5ad8ddaa49cfbe0e42170d42c0555da1269e6318c2",
+    "transform": "익명 집계의 개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "results/paired_host_policy/native_after_check.json",
+    "original_sha256": "3fd6ed93e6f101c4f5dc0d1ae5da53698e7622da7ae757d2dfdaa02cddc612ae",
+    "published_sha256": "08da31b698e10b6229a90cbc004276f9f23c94271882dd90c025a29c0769f935",
+    "transform": "익명 집계의 개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "results/paired_host_policy/wire_time_results.json",
+    "original_sha256": "f73866293d567fe6d8b4a35cb31761c4fd00ef8d8663639dcda8d320fd6c8c0c",
+    "published_sha256": "f73866293d567fe6d8b4a35cb31761c4fd00ef8d8663639dcda8d320fd6c8c0c",
+    "transform": "익명 집계의 개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "results/paired_host_policy/namespace_audit.json",
+    "original_sha256": "ceedaea7de84db3d90da41c9dafb6f6b6e53fa4997eee5af303ef6481e16e719",
+    "published_sha256": "ceedaea7de84db3d90da41c9dafb6f6b6e53fa4997eee5af303ef6481e16e719",
+    "transform": "익명 집계의 개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "analysis/paired_host_policy/design_review.md",
+    "original_sha256": "765d8a4097fa096c82f147be7c80e1f6c7402035eb4bc45e4a88b891a6fc2b16",
+    "published_sha256": "765d8a4097fa096c82f147be7c80e1f6c7402035eb4bc45e4a88b891a6fc2b16",
+    "transform": "개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "analysis/paired_host_policy/tx_review.md",
+    "original_sha256": "8b693e34df1257db446d8facd6ed737334888c29d6a61d077507cf41060e5e57",
+    "published_sha256": "8b693e34df1257db446d8facd6ed737334888c29d6a61d077507cf41060e5e57",
+    "transform": "개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "analysis/paired_host_policy/publication_scope_review.md",
+    "original_sha256": "85581d537c827eddd1b285217736fc5df4ee48c00ef2888767f30f3a32ad0586",
+    "published_sha256": "85581d537c827eddd1b285217736fc5df4ee48c00ef2888767f30f3a32ad0586",
+    "transform": "개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "reports/정확_CAN_원본_CP_기록정책_호스트_통합검증.md",
+    "original_sha256": "ad75a70299e2f94a45b7d044c5835c84ad5cae1fad90a06affd52f7d767223f3",
+    "published_sha256": "ad75a70299e2f94a45b7d044c5835c84ad5cae1fad90a06affd52f7d767223f3",
+    "transform": "개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "analysis/publication_time/publication_time_probe.py",
+    "original_sha256": "c82cb4f002ee8724af6138090644920a1e78b07524d1a738cb5c2a8a89f3776f",
+    "published_sha256": "c82cb4f002ee8724af6138090644920a1e78b07524d1a738cb5c2a8a89f3776f",
+    "transform": "진단 실행 코드 바이트 보존"
+  },
+  {
+    "path": "reports/레이더_발행시각_출처_검증.md",
+    "original_sha256": "1a70acc0bcce6f179b3e5b90317cec65b05c0efa5c2a66044f3c577abc167014",
+    "published_sha256": "1a70acc0bcce6f179b3e5b90317cec65b05c0efa5c2a66044f3c577abc167014",
+    "transform": "개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "results/publication_time/results.json",
+    "original_sha256": "8edb990c62d3b2c9ff143b1c0106225fa348cca0d5663cee3a95b73ca73d52a8",
+    "published_sha256": "4094a54ee1c87966c1f1796c114eab5f83037b31a0fd00dbf4f22f1440fb608f",
+    "transform": "익명 집계의 개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "results/publication_time/parent_log_b.json",
+    "original_sha256": "9d052e4ebd195d1ca86fefee70f266f4561b4d5c370eddc1349329bd9472abea",
+    "published_sha256": "185229e182bb98f9b21d6fd86023dbd9b10ef8dc57e37fc6a1063c33950a871f",
+    "transform": "익명 집계의 개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "results/publication_time/parent_comparison.json",
+    "original_sha256": "dd64e4adf15fab1f7458e7ffa0cca0f9755bdd217d073676a027e2dec6162852",
+    "published_sha256": "51595c950dcdff910bc44b3c5aa0686bbae1d2ac097e80eb4eeada4c6715e218",
+    "transform": "익명 집계의 개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "analysis/cp_wire/probe.py",
+    "original_sha256": "1540668b486b681fbe90447ad4dda65eb4855ff7489fdfb6b0eb57dd741ae79f",
+    "published_sha256": "1540668b486b681fbe90447ad4dda65eb4855ff7489fdfb6b0eb57dd741ae79f",
+    "transform": "진단 실행 코드 바이트 보존"
+  },
+  {
+    "path": "analysis/cp_wire/probe_checked.py",
+    "original_sha256": "07b5181c55195f135d222ead43d2995c749cc393a98f414aa031cf07401d56e6",
+    "published_sha256": "07b5181c55195f135d222ead43d2995c749cc393a98f414aa031cf07401d56e6",
+    "transform": "진단 실행 코드 바이트 보존"
+  },
+  {
+    "path": "results/cp_wire/initial.json",
+    "original_sha256": "cfa4bc4385489a5602165088c63bd8249591cfeab2913351cb8633c5a9c0e8ee",
+    "published_sha256": "cd507f94ae1a0d00c282c271980f73c1719eeb438ca9cbfe33246c70f86b521b",
+    "transform": "익명 집계의 개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "results/cp_wire/current.json",
+    "original_sha256": "2328528bcf89adbe2ce317f10d628695d9707929c5d3a7790e5ab5069c7ffae3",
+    "published_sha256": "b9b5372556d10384dc7599b79f6baf14e0d54946dd40fe88ad4ad3e4fbe3441c",
+    "transform": "익명 집계의 개인 경로 제거·LF 저장"
+  },
+  {
+    "path": "reports/원본_CP_자료형식_대조.md",
+    "original_sha256": "204232871186e5237cc05b43435aba14fcb34b7bf2902e10575a72ca57b5693d",
+    "published_sha256": "204232871186e5237cc05b43435aba14fcb34b7bf2902e10575a72ca57b5693d",
+    "transform": "개인 경로 제거·LF 저장"
   }
 ]

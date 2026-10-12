@@ -1,0 +1,39 @@
+{
+  "alias": "log_c",
+  "status": "insufficient_carParams",
+  "whole_host_executed": false,
+  "generated_utc": "2026-10-12T15:16:59.015630+00:00",
+  "library_sha256_before": "0da233bf51bc8375f969bc60101ae011638a0a05c69aa4f9abec3a87df678570",
+  "library_sha256_after": "0da233bf51bc8375f969bc60101ae011638a0a05c69aa4f9abec3a87df678570",
+  "library_unchanged": true,
+  "source_hashes_before": {
+    "openpilot/selfdrive/carrot/radar/can_batch.py": "73d72c3c45ef500886af90224cf3f64fbb3f2ca6c638bdc65b9986f0b83ec040",
+    "openpilot/selfdrive/carrot/radar/radarcan.py": "3f2da75508194aa86179056574fa87fb0259c7aa65c45fd318b26325ef1c500b",
+    "openpilot/selfdrive/carrot/radar/radard_dpath.py": "f3f3506398dd9bd939b96c83ab21409d8daf3f326fccabb6adf79fb1948d7be2",
+    "openpilot/selfdrive/selfdrived/selfdrived.py": "800640fea14be35cfbba710e800028e097ffc27d9cb3742361426e8354117728",
+    "openpilot/selfdrive/controls/controlsd.py": "695609a1088d70b9a0cb07f8a68bf6fdd5a2a88b078c0d4d39a29cdbdd8f92cc",
+    "openpilot/selfdrive/car/card.py": "de239706c6194073d5758c7314d060146e4404b55648cdba90d183a59883b1a2",
+    "openpilot/selfdrive/controls/lib/longitudinal_planner.py": "01ead57b64c3bde5ae56bebefb015986e877014cc0d63885e77833e08f9b886f",
+    "opendbc_repo/opendbc/car/toyota/ars510_offline.py": "8b471914b92466fb9589c298b976fe377eea18e7c111e81f89258cab45d12a50",
+    "opendbc_repo/opendbc/car/toyota/carcontroller.py": "f09cebd050f822a5c181f6c706cc3eb752c3f90bca24f5415a86b7506d502d97",
+    "opendbc_repo/opendbc/car/toyota/carstate.py": "057cc10985e792fd6c75e873a4bc5c272b3fded140cae6c1474dd6c1c7a873c1",
+    "opendbc_repo/opendbc/safety/safety.h": "264acef46827c278c8a741106506506323ec27842eaf21856a16386ebe084dfe",
+    "opendbc_repo/opendbc/safety/safety/safety_toyota.h": "a5c87dd55bce5a8f44e85e173784db42648a4982a95107dfe57a2479ec5d5cc0"
+  },
+  "source_hashes_after": {
+    "openpilot/selfdrive/carrot/radar/can_batch.py": "73d72c3c45ef500886af90224cf3f64fbb3f2ca6c638bdc65b9986f0b83ec040",
+    "openpilot/selfdrive/carrot/radar/radarcan.py": "3f2da75508194aa86179056574fa87fb0259c7aa65c45fd318b26325ef1c500b",
+    "openpilot/selfdrive/carrot/radar/radard_dpath.py": "f3f3506398dd9bd939b96c83ab21409d8daf3f326fccabb6adf79fb1948d7be2",
+    "openpilot/selfdrive/selfdrived/selfdrived.py": "800640fea14be35cfbba710e800028e097ffc27d9cb3742361426e8354117728",
+    "openpilot/selfdrive/controls/controlsd.py": "695609a1088d70b9a0cb07f8a68bf6fdd5a2a88b078c0d4d39a29cdbdd8f92cc",
+    "openpilot/selfdrive/car/card.py": "de239706c6194073d5758c7314d060146e4404b55648cdba90d183a59883b1a2",
+    "openpilot/selfdrive/controls/lib/longitudinal_planner.py": "01ead57b64c3bde5ae56bebefb015986e877014cc0d63885e77833e08f9b886f",
+    "opendbc_repo/opendbc/car/toyota/ars510_offline.py": "8b471914b92466fb9589c298b976fe377eea18e7c111e81f89258cab45d12a50",
+    "opendbc_repo/opendbc/car/toyota/carcontroller.py": "f09cebd050f822a5c181f6c706cc3eb752c3f90bca24f5415a86b7506d502d97",
+    "opendbc_repo/opendbc/car/toyota/carstate.py": "057cc10985e792fd6c75e873a4bc5c272b3fded140cae6c1474dd6c1c7a873c1",
+    "opendbc_repo/opendbc/safety/safety.h": "264acef46827c278c8a741106506506323ec27842eaf21856a16386ebe084dfe",
+    "opendbc_repo/opendbc/safety/safety/safety_toyota.h": "a5c87dd55bce5a8f44e85e173784db42648a4982a95107dfe57a2479ec5d5cc0"
+  },
+  "source_unchanged": true,
+  "runner_sha256": "8c76d85216784f569816d662cc226c6426a6a032f6e5e32de6a554b48735ec06"
+}

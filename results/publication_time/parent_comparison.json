@@ -1,0 +1,7 @@
+{
+  "alias": "log_b",
+  "semantic_result_equal": true,
+  "P_actual_observed": false,
+  "source_unchanged": true,
+  "root_exit_code": 0
+}

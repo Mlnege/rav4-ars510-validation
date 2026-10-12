@@ -1,0 +1,24 @@
+{
+  "cases": [
+    {
+      "alias": "log_a",
+      "groups_compared": 34,
+      "differences": [],
+      "checks": 18,
+      "mpc_radar_inputs": 175,
+      "source_unchanged": true,
+      "library_unchanged": true,
+      "independent_exit_code": 0
+    },
+    {
+      "alias": "log_b",
+      "groups_compared": 34,
+      "differences": [],
+      "checks": 18,
+      "mpc_radar_inputs": 0,
+      "source_unchanged": true,
+      "library_unchanged": true,
+      "independent_exit_code": 0
+    }
+  ]
+}

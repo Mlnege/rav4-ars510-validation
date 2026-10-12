@@ -1,0 +1,27 @@
+{
+  "generated_utc": "2026-10-12T15:33:45.356543+00:00",
+  "artifact_hashes": {
+    "IO_SCOPE_PLAN_KO.md": "8eea7e0e501be75ab4355b939c3d33320b301ef66ad89a7c921ce5da8bb37c4f",
+    "audit_namespace.py": "d9ea1a4b7b275f602cef1736db2d008d264e5e29128a7ae96428b0c2530c3189",
+    "capture_initial_runner.py": "0f3de3efeb82d6a50a4ac9e93ae17605689bc6a502534232b456c0f23d74f2ed",
+    "final_observation/RESULTS_KO.md": "ad75a70299e2f94a45b7d044c5835c84ad5cae1fad90a06affd52f7d767223f3",
+    "final_observation/frozen_results.json": "43be375ab824b1402b098fae82ab638124e424ad0a8912160350922d95339c88",
+    "first_a_executed_source.py": "8242edc7f4a1c5e8f17204b2a073c48731e699e83eb039fe335b2d5c822d5800",
+    "freeze.py": "cf71a50ba6e3fdf2f63c1a0a26b63a1792b766034d74edcb61173526ba7a3653",
+    "initial_source_capture.json": "34279f2a50e593ada827b21f58ff20ee484bdc9bd8c71fc31aa404445047e328",
+    "log_a_first/results.json": "d6551d5f53377a2eb1e5023e627eaf575f9255ad01e3fd3d525dc817cd1e1f9d",
+    "log_b_first/results.json": "68d0635b57bd7005856b7775969f0f1dea09ad726e697453c6f913db39942a2b",
+    "log_c_first/results.json": "43a3e2711f11999a83eecbcfdfad180817297b67f9f3d4dcaf6fe2cf4f4f1cda",
+    "log_d_first/results.json": "2e1fdd51389f92f14c3a6c9d12c557b223ebf1bb8c4b42c5bcae5699b3298a65",
+    "log_io.py": "2e2d35040ea6f3c2a23f3cb4abdd70cc14523bd99706392bc6bad8499ab61fe1",
+    "namespace_audit.json": "ceedaea7de84db3d90da41c9dafb6f6b6e53fa4997eee5af303ef6481e16e719",
+    "paired_stream.py": "f1dbd4cc8888ce8908528378058d082dc0be24f681123bc24efad8bf2bb24a6d",
+    "policy_io.py": "e35882a9877c2562134aa1fa19b96c7a82cbba1d9afbe8265608a0a14a0555d8",
+    "run.py": "8c76d85216784f569816d662cc226c6426a6a032f6e5e32de6a554b48735ec06",
+    "verify.py": "a4eda936b61397644489bc700b74b0bac01d96d8b7318597540c096300fcacb2",
+    "whole_io.py": "5dd434ff3fce1406b2782c7f1237157308ad84ce13584855931c46b148ac4f9d",
+    "whole_objects.py": "4645210fdfecffb7703acad3f1f2bb73f5174fe1e264e01b99d3f1b9e73190e0",
+    "wire_time_check.py": "fcb0953d552aa9e7429d72a84964f490dbf0c9a4316ffdda1a3203d0b9d06958",
+    "wire_time_results.json": "f73866293d567fe6d8b4a35cb31761c4fd00ef8d8663639dcda8d320fd6c8c0c"
+  }
+}

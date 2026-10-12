@@ -1,0 +1,94 @@
+{
+  "generated_utc": "2026-10-12T15:33:45.270021+00:00",
+  "counts": {
+    "can_count": 24326,
+    "c_tx_accept_count": 23912,
+    "c_tx_deny_count": 414,
+    "defined_tx_expectations": 3191,
+    "undefined_tx_expectations": 21135,
+    "nonzero_accel_requests": 0,
+    "host_ticks": 15407,
+    "host_enabled": 0,
+    "host_active": 0,
+    "longActive": 0,
+    "native_mpc_models": 2759,
+    "radar_lead_consumed_models": 175,
+    "c_controls_true_ticks": 0,
+    "c_long_true_ticks": 0,
+    "c_relay_true_ticks": 0,
+    "c_rx_invalid_true_ticks": 0,
+    "points": 367,
+    "records": 2399,
+    "radarState_error_models": 73,
+    "all_can_items": 838315,
+    "physical_rx": 647115,
+    "returned_notifications": 191166,
+    "rejected_notifications": 34,
+    "unknown_src": 0
+  },
+  "checks": {
+    "three_original_data_runs_completed": true,
+    "fifty_four_direct_checks_passed": true,
+    "insufficient_c_not_filled": true,
+    "native_radar_inputs_observed": true,
+    "recorded_off_conditions_preserved": true,
+    "c_rx_categories_match_all_items": true,
+    "known_and_unknown_tx_scope_preserved": true,
+    "c_tx_results_sum_to_generated": true,
+    "separate_wire_time_check_zero_differences": true,
+    "namespace_bindings_and_constants_match": true,
+    "first_a_executed_code_preserved": true,
+    "b_d_broader_sources_unchanged": true,
+    "all_shared_library_fingerprints_unchanged": true
+  },
+  "failures": [],
+  "original_result_hashes": {
+    "log_a": "d6551d5f53377a2eb1e5023e627eaf575f9255ad01e3fd3d525dc817cd1e1f9d",
+    "log_b": "68d0635b57bd7005856b7775969f0f1dea09ad726e697453c6f913db39942a2b",
+    "log_c": "43a3e2711f11999a83eecbcfdfad180817297b67f9f3d4dcaf6fe2cf4f4f1cda",
+    "log_d": "2e1fdd51389f92f14c3a6c9d12c557b223ebf1bb8c4b42c5bcae5699b3298a65"
+  },
+  "original_runner_fingerprints": {
+    "log_a": "8242edc7f4a1c5e8f17204b2a073c48731e699e83eb039fe335b2d5c822d5800",
+    "log_b": "8c76d85216784f569816d662cc226c6426a6a032f6e5e32de6a554b48735ec06",
+    "log_c": "8c76d85216784f569816d662cc226c6426a6a032f6e5e32de6a554b48735ec06",
+    "log_d": "8c76d85216784f569816d662cc226c6426a6a032f6e5e32de6a554b48735ec06"
+  },
+  "current_runner_sha256": "8c76d85216784f569816d662cc226c6426a6a032f6e5e32de6a554b48735ec06",
+  "independent_parent_execution": {
+    "path": "work/paired_host_policy_root/comparison.json",
+    "sha256": "1a04c34deb1fbd45ad4afbb6584e64860d993b8c575d05f3108dcd7760121d37",
+    "comparison": {
+      "cases": [
+        {
+          "alias": "log_a",
+          "groups_compared": 34,
+          "differences": [],
+          "checks": 18,
+          "mpc_radar_inputs": 175,
+          "source_unchanged": true,
+          "library_unchanged": true,
+          "independent_exit_code": 0
+        },
+        {
+          "alias": "log_b",
+          "groups_compared": 34,
+          "differences": [],
+          "checks": 18,
+          "mpc_radar_inputs": 0,
+          "source_unchanged": true,
+          "library_unchanged": true,
+          "independent_exit_code": 0
+        }
+      ]
+    },
+    "scope_ko": "부모가 지문 동일 복사본에서 별도 직접 실행한 a/b. 이 에이전트의 새 실행 건수에 합하지 않는다."
+  },
+  "scope_ko": "기존 first 결과를 읽은 별도 최종 관측 정리. 새 전체 실행·전체 TX 정책 검증·실차 안전 증명으로 세지 않는다.",
+  "unmeasured_scope_ko": [
+    "LKA/LTA의 request/torque 비작동 값을 별도 직접 집계하지 않았다.",
+    "독립 TX 기대값 미정 21,135개는 실제 hook 반환·권한불변·DBC/정의 checksum 관측 범위다.",
+    "a 최초 실행의 넓은 source12 전후 지문은 없으며 AST source5+공유C 지문을 확인했다. b/d 및 부모의 a/b 재실행은 source12 전후를 확인했다.",
+    "1Hz phase0·storage_max만 통합 실행했다. input_max와 다른 위상은 현재 미실행이다."
+  ]
+}

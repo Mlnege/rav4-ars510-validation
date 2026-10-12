@@ -1,0 +1,202 @@
+{
+  "files": [
+    {
+      "alias": "log_a",
+      "carParams_samples": 1,
+      "snapshots": [
+        {
+          "same": true,
+          "recorded_fields": {
+            "control_fields": {
+              "carFingerprint": "TOYOTA_RAV4_TSS2_2022",
+              "flags": 1372,
+              "openpilotLongitudinalControl": true,
+              "pcmCruise": true,
+              "radarUnavailable": true,
+              "alternativeExperience": 1,
+              "mass": 1762.1273193359375,
+              "wheelbase": 2.6898601055145264,
+              "centerToFront": 1.1835384368896484,
+              "steerRatio": 14.300000190734863,
+              "radarDelay": 0.0,
+              "longitudinalActuatorDelay": 0.15000000596046448,
+              "enableDsu": false,
+              "enableBsm": true,
+              "minEnableSpeed": -1.0,
+              "minSteerSpeed": 0.0
+            },
+            "safety_configs": [
+              {
+                "model": "toyota",
+                "parameter": 73
+              }
+            ],
+            "firmware_entry_count": 0
+          }
+        }
+      ]
+    },
+    {
+      "alias": "log_b",
+      "carParams_samples": 2,
+      "snapshots": [
+        {
+          "same": true,
+          "recorded_fields": {
+            "control_fields": {
+              "carFingerprint": "TOYOTA_RAV4_TSS2_2022",
+              "flags": 1368,
+              "openpilotLongitudinalControl": false,
+              "pcmCruise": true,
+              "radarUnavailable": true,
+              "alternativeExperience": 1,
+              "mass": 1762.1273193359375,
+              "wheelbase": 2.6898601055145264,
+              "centerToFront": 1.1835384368896484,
+              "steerRatio": 14.300000190734863,
+              "radarDelay": 0.0,
+              "longitudinalActuatorDelay": 0.15000000596046448,
+              "enableDsu": false,
+              "enableBsm": true,
+              "minEnableSpeed": -1.0,
+              "minSteerSpeed": 0.0
+            },
+            "safety_configs": [
+              {
+                "model": "toyota",
+                "parameter": 585
+              }
+            ],
+            "firmware_entry_count": 0
+          }
+        },
+        {
+          "same": true,
+          "recorded_fields": {
+            "control_fields": {
+              "carFingerprint": "TOYOTA_RAV4_TSS2_2022",
+              "flags": 1368,
+              "openpilotLongitudinalControl": false,
+              "pcmCruise": true,
+              "radarUnavailable": true,
+              "alternativeExperience": 1,
+              "mass": 1762.1273193359375,
+              "wheelbase": 2.6898601055145264,
+              "centerToFront": 1.1835384368896484,
+              "steerRatio": 14.300000190734863,
+              "radarDelay": 0.0,
+              "longitudinalActuatorDelay": 0.15000000596046448,
+              "enableDsu": false,
+              "enableBsm": true,
+              "minEnableSpeed": -1.0,
+              "minSteerSpeed": 0.0
+            },
+            "safety_configs": [
+              {
+                "model": "toyota",
+                "parameter": 585
+              }
+            ],
+            "firmware_entry_count": 0
+          }
+        }
+      ]
+    },
+    {
+      "alias": "log_c",
+      "carParams_samples": 0,
+      "snapshots": []
+    },
+    {
+      "alias": "log_d",
+      "carParams_samples": 2,
+      "snapshots": [
+        {
+          "same": true,
+          "recorded_fields": {
+            "control_fields": {
+              "carFingerprint": "TOYOTA_RAV4_TSS2_2022",
+              "flags": 1372,
+              "openpilotLongitudinalControl": true,
+              "pcmCruise": true,
+              "radarUnavailable": true,
+              "alternativeExperience": 1,
+              "mass": 1762.1273193359375,
+              "wheelbase": 2.6898601055145264,
+              "centerToFront": 1.1835384368896484,
+              "steerRatio": 14.300000190734863,
+              "radarDelay": 0.0,
+              "longitudinalActuatorDelay": 0.15000000596046448,
+              "enableDsu": false,
+              "enableBsm": true,
+              "minEnableSpeed": -1.0,
+              "minSteerSpeed": 0.0
+            },
+            "safety_configs": [
+              {
+                "model": "toyota",
+                "parameter": 73
+              }
+            ],
+            "firmware_entry_count": 0
+          }
+        },
+        {
+          "same": true,
+          "recorded_fields": {
+            "control_fields": {
+              "carFingerprint": "TOYOTA_RAV4_TSS2_2022",
+              "flags": 1372,
+              "openpilotLongitudinalControl": true,
+              "pcmCruise": true,
+              "radarUnavailable": true,
+              "alternativeExperience": 1,
+              "mass": 1762.1273193359375,
+              "wheelbase": 2.6898601055145264,
+              "centerToFront": 1.1835384368896484,
+              "steerRatio": 14.300000190734863,
+              "radarDelay": 0.0,
+              "longitudinalActuatorDelay": 0.15000000596046448,
+              "enableDsu": false,
+              "enableBsm": true,
+              "minEnableSpeed": -1.0,
+              "minSteerSpeed": 0.0
+            },
+            "safety_configs": [
+              {
+                "model": "toyota",
+                "parameter": 73
+              }
+            ],
+            "firmware_entry_count": 0
+          }
+        }
+      ]
+    }
+  ],
+  "failures": [],
+  "params_backend": "process-local-access-forbidden",
+  "probe_sha256": "1540668b486b681fbe90447ad4dda65eb4855ff7489fdfb6b0eb57dd741ae79f",
+  "fields_checked": [
+    "carFingerprint",
+    "flags",
+    "openpilotLongitudinalControl",
+    "pcmCruise",
+    "radarUnavailable",
+    "alternativeExperience",
+    "mass",
+    "wheelbase",
+    "centerToFront",
+    "steerRatio",
+    "radarDelay",
+    "longitudinalActuatorDelay",
+    "enableDsu",
+    "enableBsm",
+    "minEnableSpeed",
+    "minSteerSpeed"
+  ],
+  "vehicle_tx": false,
+  "source_modified": false,
+  "identity_fields_inspected": false,
+  "scope_ko": "기록 CP wire의 허용 필드와 현재 reader 대조. 모든 ordinal·미검사 필드·생성자 동작·설치 펌웨어 호환성 증명이 아님"
+}

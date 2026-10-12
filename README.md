@@ -4,7 +4,7 @@
 
 기준 CarrotPilot은 `carrot-wip`의 `0e4ee1bdbef3ad7284b136fddf31592e3f8a785f`, ARS510 분석 기준은 `673eb8e609e303feff2c15dd250592c383962156`입니다. 변경 파일의 정확한 목록·해시는 `validation_manifest.json`에 있습니다.
 
-검증 표현 정정: CANParser/CANPacker와 레이더 처리에서는 프로젝트의 원형 Python 처리 경로를 사용했습니다. 실제 C/Cython으로 빌드한 MPC, 별도로 빌드한 안전 검사 C와 구분합니다. 최초 태그의 일부 문서에 있던 'native CANParser' 표현은 부정확하며 CAN C++ 빌드·장치 처리 성능의 증거가 아닙니다. 이 표현 정정은 r7까지 반영됐고 현재 r8.1에서도 유지합니다. 배포 파일은 LF 줄끝으로 생성하며 Git의 자동 줄끝 변환도 끕니다. Windows에서 clone한 파일을 Linux로 옮겨도 원바이트가 바뀌지 않아야 합니다.
+검증 표현 정정: CANParser/CANPacker와 레이더 처리에서는 프로젝트의 원형 Python 처리 경로를 사용했습니다. 실제 C/Cython으로 빌드한 MPC, 별도로 빌드한 안전 검사 C와 구분합니다. 최초 태그의 일부 문서에 있던 'native CANParser' 표현은 부정확하며 CAN C++ 빌드·장치 처리 성능의 증거가 아닙니다. 이 표현 정정은 r7까지 반영됐고 이후 검증판에서도 유지합니다. 배포 파일은 LF 줄끝으로 생성하며 Git의 자동 줄끝 변환도 끕니다. Windows에서 clone한 파일을 Linux로 옮겨도 원바이트가 바뀌지 않아야 합니다.
 
 제공한 실제 로그에서 ARS 객체 CRC와 거리·속도 디코딩, 기존 레이더 처리 코어 전달을 검증했습니다. 실물 ECU 제조사·모델·펌웨어는 확인되지 않았습니다. 공유 대화의 부품번호 후보와 저장소의 지원 펌웨어 문자열은 실제 ECU 조회 응답으로 취급하지 않았습니다.
 
@@ -20,7 +20,7 @@
 Linux, Git, SHA256 도구와 Python 3.12.3 이상·3.13 미만이 필요합니다. 기존 `/data/openpilot`에 쓰지 않습니다. 아래 명령은 고정 버전 clone, 패치 적용 검사, 변경 파일 해시 검사, CPU·Python·기존 소스 비교와 격리된 가상환경 다운로드만 실행합니다.
 
 ```sh
-git clone --branch lab-20261012-r8.1 --depth 1 https://github.com/Mlnege/rav4-ars510-validation.git rav4-ars510-validation
+git clone --branch lab-20261013-r9 --depth 1 https://github.com/Mlnege/rav4-ars510-validation.git rav4-ars510-validation
 cd rav4-ars510-validation
 bash tools/remote_download.sh --destination /data/rav4-validation-lab --install-deps
 ```
@@ -58,3 +58,5 @@ ARS510 원형 소스·DBC는 MIT 라이선스와 저작권 표시를 유지했�
 통합 신호 갱신: `reports/통합신호_검증갱신_r7.md`에서 가속 입력 시점·정지 기억의 복구·오래된 모델 출처와 최초 기대 오류를 확인하세요. 주행 제어 코드는 그대로이며, 오프라인 오류 전파 수정만 patch01에 추가했습니다. 실차 배포 허용은 여전히 False입니다.
 
 r8에는 실제 CAN의 비활성 호스트·MPC 연결, 정확한 CAN 묶음과 시간 가정, 기록 Panda 모드 전환 및 수신/송신 통지 분류 검증을 추가했습니다. `reports/연결과_초기화_검증갱신_r8.md`에 완료 범위와 최초 실패·정정을 정리했습니다. 소스 63개·패치 8개·manifest는 r7과 바이트가 같습니다. 직접 롱컨 설정은 원본 CP 5개 중 True3/False2였으며, 실제 활성화는 모두 꺼져 있었습니다. 검사 수치가 실차 제어 성공이나 PCS·회생 보증을 뜻하지 않습니다.
+
+r9에서는 정확한 CAN 묶음과 원본 CP·기록 Panda 정책을 같은 비활성 호스트/MPC/CAN 경로에 연결했습니다. 실제 발행 P는 미관측이고 새 헤더는 선언한 재생 시각 가정입니다. `reports/통합검증_갱신_r9.md`에서 송신 기대값을 정의한 3,191개와 미정 21,135개의 범위를 확인하세요. 코드 소스·패치·manifest는 r8.1과 그대로이며 새 장치 빌드나 실차 배포는 없습니다.

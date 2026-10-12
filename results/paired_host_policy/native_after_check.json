@@ -1,0 +1,44 @@
+{
+  "files": [
+    {
+      "file": "acados_ocp_solver_pyx.cpython-312-x86_64-linux-gnu.so",
+      "historical_sha256": "2533733258b4f2ceec5ce79a023b1c2992266a7d2a9637fd8f689e58a9ee2efb",
+      "current_sha256": "2533733258b4f2ceec5ce79a023b1c2992266a7d2a9637fd8f689e58a9ee2efb",
+      "same": true
+    },
+    {
+      "file": "libacados.so",
+      "historical_sha256": "b5496cea328d9a239b1c1cb69b1327753e54eeebe331ef29ca91b97a85544228",
+      "current_sha256": "b5496cea328d9a239b1c1cb69b1327753e54eeebe331ef29ca91b97a85544228",
+      "same": true
+    },
+    {
+      "file": "libacados_ocp_solver_long.so",
+      "historical_sha256": "2cf19053e5712920719b54ba8f970fcfd178ffe4acd5c77e3170a423b030eb71",
+      "current_sha256": "2cf19053e5712920719b54ba8f970fcfd178ffe4acd5c77e3170a423b030eb71",
+      "same": true
+    },
+    {
+      "file": "libblasfeo.so",
+      "historical_sha256": "4804a491b10ca1065010c84d1e7fb9cc005acd2cfed504f0655ba94bd77ac01b",
+      "current_sha256": "4804a491b10ca1065010c84d1e7fb9cc005acd2cfed504f0655ba94bd77ac01b",
+      "same": true
+    },
+    {
+      "file": "libhpipm.so",
+      "historical_sha256": "1eac1f3673d6f99876104f86ef8b80f884f860ce77ba9ff135af5b2e355616c6",
+      "current_sha256": "1eac1f3673d6f99876104f86ef8b80f884f860ce77ba9ff135af5b2e355616c6",
+      "same": true
+    },
+    {
+      "file": "libqpOASES_e.so.3.1",
+      "historical_sha256": "48444b891f694cb720146a2ce2a83a42086d8a911064e5b14df5f6d08486f47b",
+      "current_sha256": "48444b891f694cb720146a2ce2a83a42086d8a911064e5b14df5f6d08486f47b",
+      "same": true
+    }
+  ],
+  "all_same_as_previous_frozen_build": true,
+  "scope_ko": "이번 통합 완료 후 현재 파일 확인. 이번 실행 전에 MPC 지문을 새로 수집한 결과나 메모리 내 전체 loaded page 검사와 다름",
+  "rebuilt": false,
+  "files_modified": false
+}

@@ -1,0 +1,114 @@
+{
+  "files": [
+    {
+      "alias": "log_a",
+      "counts": {
+        "event_headers_checked": 6621,
+        "radarInput/firstCanMonoTime": 3362,
+        "radarInput/lastCanMonoTime": 3362,
+        "radarInput/receiveMonoTime": 3362,
+        "radarInput/canPacketCount": 3362,
+        "roadCameraState/timestampEof": 671,
+        "roadCameraState/timestampSof": 671,
+        "wideRoadCameraState/timestampEof": 671,
+        "wideRoadCameraState/timestampSof": 671,
+        "driverCameraState/timestampEof": 671,
+        "driverCameraState/timestampSof": 671,
+        "modelV2/timestampEof": 623,
+        "livePose/timestamp": 623
+      },
+      "mismatches": {
+        "event_header": 0,
+        "radarInput/firstCanMonoTime": 0,
+        "radarInput/lastCanMonoTime": 0,
+        "radarInput/receiveMonoTime": 0,
+        "radarInput/canPacketCount": 0,
+        "roadCameraState/timestampEof": 0,
+        "roadCameraState/timestampSof": 0,
+        "wideRoadCameraState/timestampEof": 0,
+        "wideRoadCameraState/timestampSof": 0,
+        "driverCameraState/timestampEof": 0,
+        "driverCameraState/timestampSof": 0,
+        "modelV2/timestampEof": 0,
+        "livePose/timestamp": 0
+      },
+      "failed_count": 0
+    },
+    {
+      "alias": "log_b",
+      "counts": {
+        "event_headers_checked": 11669,
+        "radarInput/firstCanMonoTime": 6022,
+        "radarInput/lastCanMonoTime": 6022,
+        "radarInput/receiveMonoTime": 6022,
+        "radarInput/canPacketCount": 6022,
+        "driverCameraState/timestampEof": 1203,
+        "driverCameraState/timestampSof": 1203,
+        "wideRoadCameraState/timestampEof": 1203,
+        "wideRoadCameraState/timestampSof": 1203,
+        "roadCameraState/timestampEof": 1203,
+        "roadCameraState/timestampSof": 1203,
+        "modelV2/timestampEof": 1019,
+        "livePose/timestamp": 1019
+      },
+      "mismatches": {
+        "event_header": 0,
+        "radarInput/firstCanMonoTime": 0,
+        "radarInput/lastCanMonoTime": 0,
+        "radarInput/receiveMonoTime": 0,
+        "radarInput/canPacketCount": 0,
+        "driverCameraState/timestampEof": 0,
+        "driverCameraState/timestampSof": 0,
+        "wideRoadCameraState/timestampEof": 0,
+        "wideRoadCameraState/timestampSof": 0,
+        "roadCameraState/timestampEof": 0,
+        "roadCameraState/timestampSof": 0,
+        "modelV2/timestampEof": 0,
+        "livePose/timestamp": 0
+      },
+      "failed_count": 0
+    },
+    {
+      "alias": "log_c",
+      "counts": {},
+      "mismatches": {},
+      "failed_count": 0
+    },
+    {
+      "alias": "log_d",
+      "counts": {
+        "event_headers_checked": 11925,
+        "radarInput/firstCanMonoTime": 6017,
+        "radarInput/lastCanMonoTime": 6017,
+        "radarInput/receiveMonoTime": 6017,
+        "radarInput/canPacketCount": 6017,
+        "roadCameraState/timestampEof": 1203,
+        "roadCameraState/timestampSof": 1203,
+        "wideRoadCameraState/timestampEof": 1203,
+        "wideRoadCameraState/timestampSof": 1203,
+        "driverCameraState/timestampEof": 1203,
+        "driverCameraState/timestampSof": 1203,
+        "modelV2/timestampEof": 1150,
+        "livePose/timestamp": 1149
+      },
+      "mismatches": {
+        "event_header": 0,
+        "radarInput/firstCanMonoTime": 0,
+        "radarInput/lastCanMonoTime": 0,
+        "radarInput/receiveMonoTime": 0,
+        "radarInput/canPacketCount": 0,
+        "roadCameraState/timestampEof": 0,
+        "roadCameraState/timestampSof": 0,
+        "wideRoadCameraState/timestampEof": 0,
+        "wideRoadCameraState/timestampSof": 0,
+        "driverCameraState/timestampEof": 0,
+        "driverCameraState/timestampSof": 0,
+        "modelV2/timestampEof": 0,
+        "livePose/timestamp": 0
+      },
+      "failed_count": 0
+    }
+  ],
+  "failed_count": 0,
+  "scope_ko": "주요 camera/model/pose NS와 CS nested radarInput/header의 같은 값 직접 대조. 전체 schema ordinal·장치 clock 동등성·물리 수신 지연을 증명하지 않는다. 값·원본 절대시각은 출력하지 않는다."
+}
