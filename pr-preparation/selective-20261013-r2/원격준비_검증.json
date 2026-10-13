@@ -1,0 +1,26 @@
+{
+  "source_tag": "selective-runtime-20261013-r2",
+  "source_tag_commit": "30408a2b6eeda6c2f7478d6830ca3800290890f8",
+  "upstream_head": "0611d489aa3de76313f93d3cc1c6e55ec9015753",
+  "candidate": "94ecc00c4ba586d16d700e7c75693ed21ac52cd9",
+  "manifest_sha256_public_lf": "3cf538d4da714a259f1a26b13fe79e075ba1945fc8be158d3a19525d7a414a85",
+  "downloaded_source_files": {
+    "prepare_latest_carrot.sh": "141eeeff2533d2b066b8392932bda178c18785fbe7fb9750123026df92a9cc76",
+    "apply_runtime_overlay.py": "b0d1684ed8e07840801f02a3651d164558f0a1a2cabb1c4b8f3e54076790f6d8",
+    "assets/runtime_manifest.json": "3cf538d4da714a259f1a26b13fe79e075ba1945fc8be158d3a19525d7a414a85",
+    "assets/patches/radar.patch": "8e0d1a16c3adff726e32ed7cdcfacba4b6ef364fb6dacf804e9331451dd1f66b",
+    "assets/patches/pcm.patch": "c6fb111771d23da16dcaa5f283aa63d9ec2daf32e1a59b62d0c6d3fe233b4304",
+    "assets/patches/longitudinal.patch": "5339d13a2751e4bf215bb57565bb0660ef0a4cd084fc685494b58d943b2b382b"
+  },
+  "remote_bytes_equal": true,
+  "latest_head_checks": 2,
+  "runtime_files": 19,
+  "runtime_mismatches": 0,
+  "guard_files": 15,
+  "guard_mismatches": 0,
+  "changed_outside_runtime": [],
+  "script_exit_code": 0,
+  "vehicle_deployment_allowed": false,
+  "git_status_platform": "Linux checkout와 같은 Linux Git",
+  "scope_ko": "공개 고정 태그 다운로드→공식 최신 clone→check→apply→본문/변경목록/guard 검사 직접 완료. Linux개발 준비만이며 운영·전체빌드·실차 검증 아님."
+}

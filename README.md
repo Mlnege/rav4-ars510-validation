@@ -6,7 +6,7 @@
 
 [선택 패치·최신 소스 다운로드 안내](pr-preparation/selective-20261013-r2/README.md), [코드 검토5건과 수정 결과](pr-preparation/selective-20261013-r2/코드검토.md), [직접 검증 결과](pr-preparation/selective-20261013-r2/검증결과.md)를 확인하세요. 핵심 지문이나 문맥이 달라지면 강제 적용하지 않습니다. 후보 `94ecc00c`는 [최신 Carrot PR 비교](https://github.com/ajouatom/openpilot/compare/carrot-wip...Mlnege:codex/rav4-ars510-carrot-latest?expand=1)에 있으며 실제 PR는 제출하지 않았습니다.
 
-최신 공식0611 clone의 선택19 적용을 직접 확인했습니다. 원격 스크립트 전체 재현은 r2 폴더의 `원격준비_검증.json`이 있을 때 완료 근거로 사용합니다. 실제 로그는 제어OFF이며 ECU/펌웨어·PCS/AEB·회생·Konik 전체 빌드·실차 제동은 미검증입니다. 이전18파일 배포와2ec/417 자료는 당시 스냅샷으로 보존했습니다.
+최신 공식0611 clone의 선택19 적용을 직접 확인했습니다. 공개 고정 태그 다운로드부터 공식 최신 clone·검사·적용까지 직접 완료했으며 [원격 준비 근거](pr-preparation/selective-20261013-r2/원격준비_검증.json)에 기록했습니다. 실제 로그는 제어OFF이며 ECU/펌웨어·PCS/AEB·회생·Konik 전체 빌드·실차 제동은 미검증입니다. 이전18파일 배포와2ec/417 자료는 당시 스냅샷으로 보존했습니다.
 
 ## 최신 PR 준비 — 2026-10-13
 

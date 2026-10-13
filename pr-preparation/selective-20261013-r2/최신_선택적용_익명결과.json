@@ -76,5 +76,7 @@
   },
   "vehicle_deployment_allowed": false,
   "설명": "개발 clone의 선택 source만 검사했습니다. 빌드·제어 실행·실차 또는 firmware 안전 검증이 아닙니다.",
-  "scope_ko": "공식0611 최신 개발 clone의 선택19 검사/적용. 나머지 소스 보존과 지문 확인이며 운영/실차/전체빌드 검증 아님."
+  "scope_ko": "공식0611 최신 개발 clone의 선택19 검사/적용. 나머지 소스 보존과 지문 확인이며 운영/실차/전체빌드 검증 아님.",
+  "manifest_sha256_public_lf": "3cf538d4da714a259f1a26b13fe79e075ba1945fc8be158d3a19525d7a414a85",
+  "manifest_encoding_ko": "이 Windows 실행의 manifest_sha256는 원본CRLF 자산이다. 공개 사본은LF로 정규화했고 실제 원격준비 검사는 공개LF 바이트 그대로 실행했다."
 }
