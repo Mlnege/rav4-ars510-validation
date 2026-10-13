@@ -1,0 +1,7 @@
+{
+  "pytest_exit": 5,
+  "intentionally_skipped_modules": 3,
+  "collection_failures": 0,
+  "io_module_identities_unchanged": true,
+  "algorithm_tests_executed": 0
+}

@@ -1,0 +1,7 @@
+{
+  "scanned_text_files": 57,
+  "pattern_count": 6,
+  "findings": [],
+  "source_copies_sha_match": 37,
+  "scope_ko": "지정 패턴과 파일 종류의 직접 검사. 모든 개인정보/비밀 검출을 보장하는 검사가 아님."
+}

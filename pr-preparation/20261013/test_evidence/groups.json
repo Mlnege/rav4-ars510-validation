@@ -1,0 +1,29 @@
+{
+  "groups": [
+    {
+      "xml": "final_exact_capnp_182.xml",
+      "tests": 182,
+      "passed": 182,
+      "skipped": 0,
+      "failures": 0,
+      "seconds": 6.443
+    },
+    {
+      "xml": "final_remote_ars_suite.xml",
+      "tests": 272,
+      "passed": 271,
+      "skipped": 1,
+      "failures": 0,
+      "seconds": 43.011
+    },
+    {
+      "xml": "final_other_cars_prepared.xml",
+      "tests": 757,
+      "passed": 757,
+      "skipped": 0,
+      "failures": 0,
+      "seconds": 9.504
+    }
+  ],
+  "scope_ko": "757그룹은 당시 receiver49+타차708. 182는최종receiver53+native66+PCM63. 그룹/재실행을합산하지않음. 실제IPC process2는제외."
+}

@@ -1,0 +1,502 @@
+diff --git a/openpilot/README.md b/openpilot/README.md
+index d8c6cf75fe5340711e2181f33f53282a4111ae02..d8e5e202af4c2727756df4b8b7708ce1cd6ae97a 100644
+--- a/openpilot/README.md
++++ b/openpilot/README.md
+@@ -30,6 +30,19 @@ cd /data/ars510-radar && git pull && python openpilot/install.py /data/openpilot
+ A fork update resets `/data/openpilot`: run the installer again after updating (and turn off automatic updates
+ while testing).
+ 
++### native fork의 공유 패키지 소유권
++
++`toyota/radar_interface.py`의 `RadarInterface`가 literal `ARS510_CARROT_API = 1`,
++`ARS510_CARROT_PROFILE = "fused"`와 `supports_ars510` predicate를 선언하면 공유 `toyota/ars510/`은
++fork 소유다. installer는 fork Python을 실행하지 않고 이 AST 계약을 읽는다. 어떤 profile을 선택해도
++이 package·LICENSE·fork 부속 파일을 덮거나 삭제하지 않는다. package의 Python 파일 목록/원바이트가
++현재 checkout과 같을 때만 외부 hook/wrapper를 설치한다. 누락·다른 버전 또는 불명확한 native 계약이면
++파일을 바꾸기 전에 중단한다. `--check`도 native 불일치/불명확 상태를 표시하고 exit2를 반환한다.
++
++native fork의 `--uninstall`은 외부 hook/wrapper 등 관리 파일만 제거하고 공유 package와 native 수신기/factory를
++그대로 둔다. package가 fork 업데이트로 달라졌어도 삭제하지 않는다. native 계약이 없는 vanilla에서는 기존처럼
++installer가 package를 설치·삭제하고, 오래된 설치를 보고하는 `--check`의 exit0 정책을 유지한다.
++
+ | profile | config |
+ |---|---|
+ | `acc` (default) | the radar's ACC target alone as one point, the upstream proposal ([`upstream/ars510_acc_target.py`](../upstream/ars510_acc_target.py) with [`toyota_tss2_ars510.dbc`](../upstream/toyota_tss2_ars510.dbc), opendbc's CANParser, 33 code lines): the car Toyota's own ACC follows, published as soon as the radar picks it; every other car comes from the camera ([docs/17](../docs/17_upstream.md#towards-an-upstream-comma-interface)) |
+diff --git a/openpilot/ars510_radar_interface.py b/openpilot/ars510_radar_interface.py
+index 5e5600322770102d7c756cd6bb1e0a7e0aaa189a..caea14be3e5273aacaed6b7dc10e9a103d6b6ef2 100644
+--- a/openpilot/ars510_radar_interface.py
++++ b/openpilot/ars510_radar_interface.py
+@@ -189,6 +189,14 @@ def hook_car_interface(car_interface):
+ 
+   class RadarInterface(fork_radar_interface):
+     def __new__(cls, CP, *args, **kwargs):
++      native_supported = getattr(fork_radar_interface, "supports_ars510", None)
++      native_api = getattr(fork_radar_interface, "ARS510_CARROT_API", 0)
++      if (PROFILE is FUSED_CONFIG
++          and type(native_api) is int and native_api == 1
++          and getattr(fork_radar_interface, "ARS510_CARROT_PROFILE", None) == "fused"
++          and callable(native_supported) and native_supported(CP)):
++        # 지원을 명시한 당근 수신기의 MyTrack·시각 처리를 설치 후에도 보존한다.
++        return fork_radar_interface(CP, *args, **kwargs)
+       if is_ars510(CP):
+         return Ars510RadarInterface(CP, *args, **kwargs)
+       return fork_radar_interface(CP, *args, **kwargs)
+diff --git a/openpilot/install.py b/openpilot/install.py
+index f3deb180ed4abfe2b019fbfa3a1d87cf9524a65c..631916f23faf19ed72597a71d45456027b24bcf0 100644
+--- a/openpilot/install.py
++++ b/openpilot/install.py
+@@ -37,6 +37,7 @@ and stock/default select raw. Every alias prints its selection. Omit --profile f
+ from __future__ import annotations
+ 
+ import argparse
++import ast
+ import os
+ import shutil
+ import subprocess
+@@ -109,6 +110,76 @@ def sources() -> dict[str, Path]:
+           "acc_dbc": REPO / "upstream" / "toyota_tss2_ars510.dbc"}
+ 
+ 
++def native_package_owner(root: Path) -> tuple[str, str]:
++  """fork Python을 실행하지 않고 명시한 native package 보호 계약만 읽는다."""
++  path = root / "opendbc" / "car" / "toyota" / "radar_interface.py"
++  if not path.exists():
++    return "installer", "no native contract"
++  try:
++    text = path.read_text(encoding="utf-8")
++  except (OSError, UnicodeError):
++    return "ambiguous", "cannot read native contract source"
++  markers = ("ARS510_CARROT_API", "ARS510_CARROT_PROFILE")
++  if not any(name in text for name in markers):
++    return "installer", "no native contract"
++  try:
++    tree = ast.parse(text)
++  except SyntaxError:
++    return "ambiguous", "cannot parse native contract"
++  if not any((isinstance(node, ast.Name) and node.id in markers) or
++             (isinstance(node, ast.Attribute) and node.attr in markers) for node in ast.walk(tree)):
++    return "installer", "no native contract"
++  classes = [node for node in tree.body if isinstance(node, ast.ClassDef) and node.name == "RadarInterface"]
++  if len(classes) != 1:
++    return "ambiguous", "expected one native RadarInterface class"
++  values: dict[str, list[ast.expr]] = {name: [] for name in (*markers, "supports_ars510")}
++  predicate_functions = 0
++  for node in classes[0].body:
++    if isinstance(node, ast.FunctionDef) and node.name == "supports_ars510":
++      predicate_functions += 1
++    if isinstance(node, ast.Assign):
++      targets, value = node.targets, node.value
++    elif isinstance(node, ast.AnnAssign):
++      targets, value = [node.target], node.value
++    else:
++      continue
++    for target in targets:
++      if isinstance(target, ast.Name) and target.id in values and value is not None:
++        values[target.id].append(value)
++  api, profile = values[markers[0]], values[markers[1]]
++  if not (len(api) == len(profile) == 1 and isinstance(api[0], ast.Constant)
++          and type(api[0].value) is int and api[0].value == 1
++          and isinstance(profile[0], ast.Constant) and profile[0].value == "fused"):
++    return "ambiguous", "unsupported or nonliteral native API/profile"
++  support = values["supports_ars510"]
++  if predicate_functions + len(support) != 1:
++    return "ambiguous", "expected one native support predicate declaration"
++  predicate = predicate_functions == 1
++  if len(support) == 1:
++    value = support[0]
++    predicate |= isinstance(value, (ast.Name, ast.Attribute, ast.Lambda)) or (
++      isinstance(value, ast.Call) and isinstance(value.func, ast.Name)
++      and value.func.id in ("staticmethod", "classmethod") and len(value.args) == 1
++      and isinstance(value.args[0], (ast.Name, ast.Attribute, ast.Lambda)))
++  if not predicate:
++    return "ambiguous", "missing native support predicate declaration"
++  return "fork", "API 1, fused, support predicate declared"
++
++
++def package_state(src: Path, dst: Path) -> str:
++  """version 문자열 대신 공유 Python 파일 목록과 원바이트를 대조한다."""
++  if not dst.is_dir():
++    return "missing"
++  try:
++    files = sorted(p.relative_to(src) for p in src.rglob("*.py"))
++    if files != sorted(p.relative_to(dst) for p in dst.rglob("*.py")) or \
++       any((src / f).read_bytes() != (dst / f).read_bytes() for f in files):
++      return "different"
++  except OSError:
++    return "unreadable"
++  return "compatible"
++
++
+ def stale(t: dict[str, Path]) -> list[str]:
+   """Installed targets that differ from this checkout: an install made with an older (or newer) ars510-radar."""
+   out = []
+@@ -160,6 +231,8 @@ def main() -> int:
+   t = targets(root)
+   interface_py = root / "opendbc" / "car" / "toyota" / "interface.py"
+   text = interface_py.read_text()
++  owner, ownership_reason = native_package_owner(root)
++  native_state = package_state(REPO / "ars510", t["package"]) if owner == "fork" else None
+   legacy = legacy_patch(root)
+ 
+   if args.check:
+@@ -174,11 +247,38 @@ def main() -> int:
+       print(f"{name}: {'present' if p.exists() else 'to be installed'} ({p})")
+     for p in old_dbcs(root):
+       print(f"leftover from an older install (removed on the next install): {p}")
++    if owner == "fork":
++      print(f"native decoder package: fork-owned ({native_state}); install/uninstall preserve it")
++    elif owner == "ambiguous":
++      print(f"native decoder contract: ambiguous ({ownership_reason}); no changes permitted")
+     if t["interface"].exists():
+       diff = stale(t)
++      if owner == "fork" and native_state != "compatible":
++        remedy = "update the fork or use a matching ars510-radar checkout; do not overwrite the native package"
++      elif owner == "ambiguous":
++        remedy = "review the fork's native contract before making changes"
++      else:
++        remedy = "run install.py again, then reboot"
+       print("installed files: " + ("match this checkout" if not diff else
+-            f"differ from this checkout ({', '.join(diff)}); run install.py again, then reboot"))
+-    return 0
++            f"differ from this checkout ({', '.join(diff)}); {remedy}"))
++    if owner == "fork" and native_state != "compatible":
++      print("native decoder alignment required: update the fork or use a matching ars510-radar checkout; no package overwrite")
++    elif owner == "ambiguous":
++      print("native contract review required: verify the fork's API/profile/predicate declaration before making changes")
++    return 2 if owner == "ambiguous" or (owner == "fork" and (native_state != "compatible" or legacy is not None)) else 0
++
++  # 공유 package 문제는 legacy reverse·hook/DBC 제거보다 앞에서 중단한다.
++  if owner == "ambiguous":
++    print(f"native decoder contract: ambiguous ({ownership_reason}); checkout unchanged", file=sys.stderr)
++    return 2
++  if owner == "fork" and not args.uninstall and native_state != "compatible":
++    print(f"native decoder package: fork-owned ({native_state}); update the fork or use a matching ars510-radar checkout; "
++          "checkout unchanged", file=sys.stderr)
++    return 2
++  if owner == "fork" and legacy is not None:
++    print("native decoder contract with an older patch-based install; cannot reverse fork-owned files; checkout unchanged",
++          file=sys.stderr)
++    return 2
+ 
+   if legacy is not None and not git_apply(root, legacy, "--reverse"):
+     print(f"could not remove the older install ({legacy.name}); the checkout stays as it was", file=sys.stderr)
+@@ -189,20 +289,25 @@ def main() -> int:
+ 
+   if args.uninstall:
+     interface_py.write_text(text)
+-    for p in t.values():
++    for name, p in t.items():
++      if name == "package" and owner == "fork":
++        continue
+       if p.is_dir():
+         shutil.rmtree(p)
+       elif p.exists():
+         p.unlink()
+     print("removed" + (f" (including the older {legacy.name})" if legacy else ""))
++    if owner == "fork":
++      print(f"preserved fork-owned native decoder package ({native_state})")
+     return 0
+ 
+   if "class CarInterface" not in text:
+     print("expected a CarInterface class in toyota/interface.py; the checkout stays as it was", file=sys.stderr)
+     return 1
+-  if t["package"].exists():
+-    shutil.rmtree(t["package"])
+-  shutil.copytree(REPO / "ars510", t["package"], ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
++  if owner != "fork":
++    if t["package"].exists():
++      shutil.rmtree(t["package"])
++    shutil.copytree(REPO / "ars510", t["package"], ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
+   shutil.copyfile(REPO / "upstream" / "ars510_radar.py", t["upstream"])
+   shutil.copyfile(REPO / "upstream" / "ars510_acc_target.py", t["acc_target"])
+   shutil.copyfile(REPO / "upstream" / "toyota_tss2_ars510.dbc", t["acc_dbc"])
+@@ -212,6 +317,8 @@ def main() -> int:
+   assert src.count(PROFILE_LINE) == 1
+   t["interface"].write_text(src.replace(PROFILE_LINE, f'PROFILE = PROFILES["{args.profile}"]'))
+   interface_py.write_text(text.rstrip("\n") + "\n" + HOOK)
++  if owner == "fork":
++    print("preserved fork-owned native decoder package (compatible)")
+   print(f"installed into {root} ({args.profile} profile" + (f"; replaced the older {legacy.name}" if legacy else "") +
+         "). Reboot the device to activate.")
+   if args.profile in ("shared_speed", "shared_range"):
+diff --git a/tests/test_openpilot_integration.py b/tests/test_openpilot_integration.py
+index 70618f4eaf5e27c6742fa90fe4a4fb15b0f7b6d8..9c7d85fa1b93e1ede218c3338c6cd5fd70dd252b 100644
+--- a/tests/test_openpilot_integration.py
++++ b/tests/test_openpilot_integration.py
+@@ -7,10 +7,13 @@ Skipped when those are not set. Only the copy is modified.
+ from __future__ import annotations
+ 
+ import os
++import importlib.util
+ import py_compile
+ import shutil
+ import subprocess
+ import sys
++import types
++from enum import IntFlag
+ from pathlib import Path
+ 
+ import pytest
+@@ -65,3 +68,262 @@ def test_check_reports_an_outdated_install(tmp_path: Path) -> None:
+     assert "differ from this checkout (package, interface); run install.py again" in run("--check")
+     run()
+     assert "installed files: match this checkout" in run("--check")
++
++
++@pytest.fixture
++def dispatch_module(monkeypatch):
++    """계산 없이 원형 hook의 분기만 검사한다. 실제 Carrot 동역학은 별도 probe다."""
++    import ars510
++    from ars510 import constants
++
++    for name in ("opendbc", "opendbc.car", "opendbc.car.toyota"):
++        package = types.ModuleType(name)
++        package.__path__ = []
++        monkeypatch.setitem(sys.modules, name, package)
++
++    # fork의 기존 비트를 읽는 계약을 검사하기 위한 metadata fixture이며 CAN 신호가 아니다.
++    class ToyotaFlags(IntFlag):
++        RADAR_ACC = 1 << 13
++
++    values = types.ModuleType("opendbc.car.toyota.values")
++    values.ToyotaFlags = ToyotaFlags
++    interfaces = types.ModuleType("opendbc.car.interfaces")
++    interfaces.RadarInterfaceBase = type("RadarInterfaceBase", (), {})
++    logger = types.ModuleType("opendbc.car.carlog")
++    logger.carlog = types.SimpleNamespace(warning=lambda *args: None)
++    structs = types.SimpleNamespace(RadarData=types.SimpleNamespace(RadarPoint=types.SimpleNamespace))
++    sys.modules["opendbc.car"].structs = structs
++    for name, module in ((values.__name__, values), (interfaces.__name__, interfaces), (logger.__name__, logger),
++                         ("opendbc.car.toyota.ars510", ars510), ("opendbc.car.toyota.ars510.constants", constants)):
++        monkeypatch.setitem(sys.modules, name, module)
++
++    name = "_ars510_dispatch_contract"
++    spec = importlib.util.spec_from_file_location(name, REPO / "openpilot/ars510_radar_interface.py")
++    module = importlib.util.module_from_spec(spec)
++    monkeypatch.setitem(sys.modules, name, module)
++    spec.loader.exec_module(module)
++
++    class GenericArsFactory:
++        def __new__(cls, CP, *args, **kwargs):
++            return types.SimpleNamespace(kind="generic_ars", CP=CP, args=args, kwargs=kwargs)
++
++    monkeypatch.setattr(module, "Ars510RadarInterface", GenericArsFactory)
++    return module, ToyotaFlags
++
++
++def _dispatch_fixture(module, flags, *, profile="fused", marker_api=1, marker_profile="fused", supported=True,
++                      markers=True, radar_acc=True, unavailable=False, car="TOYOTA_RAV4_TSS2_2022", long_control=True):
++    CP = types.SimpleNamespace(carFingerprint=car, flags=int(flags.RADAR_ACC) if radar_acc else 0,
++                               radarUnavailable=unavailable, openpilotLongitudinalControl=long_control,
++                               pcmCruise=True, selected_control="unchanged")
++
++    class ForkFactory:
++        def __new__(cls, CP, *args, **kwargs):
++            return types.SimpleNamespace(kind="fork", CP=CP, args=args, kwargs=kwargs)
++
++    if markers:
++        ForkFactory.ARS510_CARROT_API = marker_api
++        ForkFactory.ARS510_CARROT_PROFILE = marker_profile
++        ForkFactory.supports_ars510 = staticmethod(lambda CP: supported)
++
++    class CarInterface:
++        RadarInterface = ForkFactory
++
++        @staticmethod
++        def _get_params(ret, candidate, fingerprint, car_fw, *, alpha_long=False):
++            ret.called = (candidate, fingerprint, car_fw, alpha_long)
++            return ret
++
++    module.PROFILE = module.PROFILES[profile]
++    return CP, module.hook_car_interface(CarInterface), ForkFactory
++
++
++@pytest.mark.parametrize("profile, expected", [("fused", "fork"), ("acc", "generic_ars"),
++                                               ("raw", "generic_ars"), ("openpilot", "generic_ars"),
++                                               ("colored", "generic_ars")])
++def test_native_dispatch_is_limited_to_fused(dispatch_module, profile, expected):
++    module, flags = dispatch_module
++    CP, CI, _ = _dispatch_fixture(module, flags, profile=profile)
++    before = vars(CP).copy()
++    result = CI.RadarInterface(CP, "extra_constructor", option="preserved")
++    assert result.kind == expected
++    assert result.CP is CP and result.args == ("extra_constructor",) and result.kwargs == {"option": "preserved"}
++    assert vars(CP) == before
++
++
++@pytest.mark.parametrize("options", [{"markers": False}, {"marker_api": 0}, {"marker_api": 2},
++                                      {"marker_api": "1"}, {"marker_api": None}, {"marker_api": True},
++                                      {"marker_api": 1.0}, {"marker_profile": "acc"},
++                                      {"marker_profile": None}, {"supported": False}])
++def test_incompatible_native_markers_keep_generic_ars(dispatch_module, options):
++    module, flags = dispatch_module
++    CP, CI, _ = _dispatch_fixture(module, flags, **options)
++    before = vars(CP).copy()
++    assert CI.RadarInterface(CP).kind == "generic_ars"
++    assert vars(CP) == before
++
++
++def test_noncallable_native_support_keeps_generic_ars(dispatch_module):
++    module, flags = dispatch_module
++    CP, CI, factory = _dispatch_fixture(module, flags)
++    factory.supports_ars510 = True
++    assert CI.RadarInterface(CP).kind == "generic_ars"
++
++
++@pytest.mark.parametrize("options", [{"radar_acc": False}, {"unavailable": True},
++                                      {"car": "TOYOTA_CHR_TSS2"}])
++def test_unsupported_native_model_uses_original_decision(dispatch_module, options):
++    module, flags = dispatch_module
++    CP, CI, _ = _dispatch_fixture(module, flags, supported=False, **options)
++    before = vars(CP).copy()
++    expected = "generic_ars" if options.get("car") == "TOYOTA_CHR_TSS2" else "fork"
++    assert CI.RadarInterface(CP).kind == expected
++    assert vars(CP) == before
++
++
++@pytest.mark.parametrize("long_control", [False, True])
++def test_native_dispatch_preserves_stock_and_direct_control_values(dispatch_module, long_control):
++    module, flags = dispatch_module
++    CP, CI, _ = _dispatch_fixture(module, flags, long_control=long_control, unavailable=True)
++    before = vars(CP).copy()
++    assert CI.RadarInterface(CP).kind == "fork"
++    assert vars(CP) == before
++
++
++def test_original_get_params_and_hook_idempotence_are_preserved(dispatch_module):
++    module, flags = dispatch_module
++    CP, CI, _ = _dispatch_fixture(module, flags, unavailable=True, long_control=False)
++    selected = {key: getattr(CP, key) for key in ("flags", "openpilotLongitudinalControl", "pcmCruise", "selected_control")}
++    fingerprint, firmware = {1: {}}, []
++    assert CI._get_params(CP, CP.carFingerprint, fingerprint, firmware, alpha_long=False) is CP
++    assert CP.called == (CP.carFingerprint, fingerprint, firmware, False)
++    assert CP.radarUnavailable is False  # 원형의 지원 모델 감지 정책이며 제어 설정은 아니다.
++    assert {key: getattr(CP, key) for key in selected} == selected
++    wrapped_factory = CI.RadarInterface
++    assert module.hook_car_interface(CI) is CI and CI.RadarInterface is wrapped_factory
++
++
++def _installer_fixture(tmp_path, *, native=True, source=None):
++    root = tmp_path / "opendbc_repo"
++    toyota = root / "opendbc/car/toyota"
++    toyota.mkdir(parents=True)
++    (root / "opendbc/dbc").mkdir()
++    (root / "opendbc/dbc/ars510_radar_bus.dbc").write_text("old Cabana fixture\n")
++    original = "class CarInterface:\n  pass\n"
++    (toyota / "interface.py").write_text(original)
++    if native:
++        source = source or (
++            "raise AssertionError('installer must not import a fork')\n"
++            "class RadarInterface:\n"
++            "  ARS510_CARROT_API = 1\n"
++            "  ARS510_CARROT_PROFILE = 'fused'\n"
++            "  supports_ars510 = staticmethod(lambda CP: True)\n")
++        (toyota / "radar_interface.py").write_text(source)
++        (toyota / "ars510_carrot.py").write_text(
++            "from opendbc.car.toyota.ars510.interface import FUSED_CONFIG\n")
++        shutil.copytree(REPO / "ars510", toyota / "ars510", ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
++        shutil.copyfile(REPO / "LICENSE", toyota / "ars510/LICENSE")
++        (toyota / "ars510/fork_notes.txt").write_text("fork-owned extra resource\n")
++    return root, toyota, original
++
++
++def _tree_bytes(path):
++    return {p.relative_to(path).as_posix(): p.read_bytes() for p in path.rglob("*") if p.is_file()}
++
++
++def _run_installer(root, *args):
++    return subprocess.run([sys.executable, str(REPO / "openpilot/install.py"), str(root), *args],
++                          cwd=REPO, capture_output=True, text=True)
++
++
++@pytest.mark.parametrize("profile", ["fused", "acc", "raw"])
++def test_native_package_survives_install_check_uninstall(tmp_path, profile):
++    root, toyota, original = _installer_fixture(tmp_path)
++    package_before = _tree_bytes(toyota / "ars510")
++    native_before = {name: (toyota / name).read_bytes() for name in ("radar_interface.py", "ars510_carrot.py")}
++    installed = _run_installer(root, "--profile", profile)
++    assert installed.returncode == 0, installed.stdout + installed.stderr
++    assert "preserved fork-owned native decoder package (compatible)" in installed.stdout
++    assert _tree_bytes(toyota / "ars510") == package_before
++    checked = _run_installer(root, "--check")
++    assert checked.returncode == 0 and "fork-owned (compatible)" in checked.stdout
++    assert "installed files: match this checkout" in checked.stdout
++    removed = _run_installer(root, "--uninstall")
++    assert removed.returncode == 0 and "preserved fork-owned" in removed.stdout
++    assert _tree_bytes(toyota / "ars510") == package_before
++    assert {name: (toyota / name).read_bytes() for name in native_before} == native_before
++    assert (toyota / "interface.py").read_text() == original
++    assert not (toyota / "ars510_radar_interface.py").exists()
++
++
++@pytest.mark.parametrize("mismatch", ["changed", "extra_python", "missing"])
++def test_native_incompatible_package_refuses_before_any_mutation(tmp_path, mismatch):
++    root, toyota, _ = _installer_fixture(tmp_path)
++    if mismatch == "changed":
++        (toyota / "ars510/interface.py").write_text("# different native version\n")
++    elif mismatch == "extra_python":
++        (toyota / "ars510/native_extension.py").write_text("# fork version\n")
++    else:
++        shutil.rmtree(toyota / "ars510")
++    before = _tree_bytes(root)
++    installed = _run_installer(root, "--profile", "fused")
++    assert installed.returncode == 2 and "fork-owned" in installed.stderr and "checkout unchanged" in installed.stderr
++    assert _tree_bytes(root) == before
++    checked = _run_installer(root, "--check")
++    assert checked.returncode == 2 and "fork-owned" in checked.stdout
++    assert _tree_bytes(root) == before
++
++
++def test_native_uninstall_keeps_a_different_fork_version(tmp_path):
++    root, toyota, _ = _installer_fixture(tmp_path)
++    assert _run_installer(root, "--profile", "fused").returncode == 0
++    (toyota / "ars510/interface.py").write_text("# updated by the fork, not the external installer\n")
++    protected = _tree_bytes(toyota / "ars510")
++    result = _run_installer(root, "--uninstall")
++    assert result.returncode == 0 and "preserved fork-owned native decoder package (different)" in result.stdout
++    assert _tree_bytes(toyota / "ars510") == protected
++
++
++@pytest.mark.parametrize("broken_contract", [False, True])
++def test_native_check_ends_with_alignment_or_contract_review(tmp_path, broken_contract):
++    root, toyota, _ = _installer_fixture(tmp_path)
++    assert _run_installer(root, "--profile", "fused").returncode == 0
++    (toyota / "ars510/interface.py").write_text("# a different fork-owned version\n")
++    if broken_contract:
++        path = toyota / "radar_interface.py"
++        path.write_text(path.read_text().replace("ARS510_CARROT_API = 1", "ARS510_CARROT_API = 2"))
++    before = _tree_bytes(root)
++    result = _run_installer(root, "--check")
++    assert result.returncode == 2 and "run install.py again" not in result.stdout
++    last = result.stdout.splitlines()[-1]
++    assert ("native contract review required" if broken_contract else "native decoder alignment required") in last
++    assert _tree_bytes(root) == before
++
++
++@pytest.mark.parametrize("source", [
++    "class RadarInterface:\n  ARS510_CARROT_API = 2\n  ARS510_CARROT_PROFILE = 'fused'\n  supports_ars510 = staticmethod(lambda CP: True)\n",
++    "class RadarInterface:\n  ARS510_CARROT_API = 1\n  ARS510_CARROT_PROFILE = 'raw'\n  supports_ars510 = staticmethod(lambda CP: True)\n",
++    "class RadarInterface:\n  ARS510_CARROT_API = int('1')\n  ARS510_CARROT_PROFILE = 'fused'\n  supports_ars510 = staticmethod(lambda CP: True)\n",
++    "class RadarInterface:\n  ARS510_CARROT_API = True\n  ARS510_CARROT_PROFILE = 'fused'\n  supports_ars510 = staticmethod(lambda CP: True)\n",
++    "class RadarInterface:\n  ARS510_CARROT_API = 1\n  ARS510_CARROT_PROFILE = 'fused'\n  supports_ars510 = None\n",
++    "class RadarInterface:\n  ARS510_CARROT_API = 1\n  ARS510_CARROT_API = 1\n  ARS510_CARROT_PROFILE = 'fused'\n  supports_ars510 = staticmethod(lambda CP: True)\n",
++    "class RadarInterface(:\n  ARS510_CARROT_API = 1\n",
++])
++def test_ambiguous_native_contract_never_mutates_the_checkout(tmp_path, source):
++    root, _, _ = _installer_fixture(tmp_path, source=source)
++    before = _tree_bytes(root)
++    for args in [("--check",), ("--profile", "fused"), ("--uninstall",)]:
++        result = _run_installer(root, *args)
++        assert result.returncode == 2 and "ambiguous" in result.stdout + result.stderr
++        assert _tree_bytes(root) == before
++
++
++def test_vanilla_installer_still_owns_and_removes_its_package(tmp_path):
++    root, toyota, original = _installer_fixture(tmp_path, native=False)
++    assert _run_installer(root, "--profile", "fused").returncode == 0
++    assert (toyota / "ars510/interface.py").exists()
++    (toyota / "ars510/interface.py").write_text("# stale external version\n")
++    checked = _run_installer(root, "--check")
++    assert checked.returncode == 0 and "differ from this checkout (package)" in checked.stdout
++    assert _run_installer(root, "--uninstall").returncode == 0
++    assert not (toyota / "ars510").exists() and (toyota / "interface.py").read_text() == original

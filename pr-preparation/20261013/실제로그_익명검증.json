@@ -1,0 +1,311 @@
+{
+  "checks": [
+    {
+      "name": "source_before_after",
+      "passed": true
+    },
+    {
+      "name": "vendor_byte_equal",
+      "passed": true
+    },
+    {
+      "name": "log_a:no_support_checksum_error",
+      "passed": true
+    },
+    {
+      "name": "log_a:original_cp_unchanged",
+      "passed": true
+    },
+    {
+      "name": "log_a:original_cp_radarUnavailable",
+      "passed": true
+    },
+    {
+      "name": "log_a:cp_wire",
+      "passed": true
+    },
+    {
+      "name": "log_a:model_wire",
+      "passed": true
+    },
+    {
+      "name": "log_a:pose_wire",
+      "passed": true
+    },
+    {
+      "name": "log_a:input_stat",
+      "passed": true
+    },
+    {
+      "name": "log_a:recorded_cc_off",
+      "passed": true
+    },
+    {
+      "name": "log_a:metadata_unchanged",
+      "passed": true
+    },
+    {
+      "name": "log_a:no_support_length_reset",
+      "passed": true
+    },
+    {
+      "name": "log_a:all_records_enter_base",
+      "passed": true
+    },
+    {
+      "name": "log_a:all_points_enter_mytrack",
+      "passed": true
+    },
+    {
+      "name": "log_a:finite_points",
+      "passed": true
+    },
+    {
+      "name": "log_a:current_dynamics",
+      "passed": true
+    },
+    {
+      "name": "log_a:slot_mapping",
+      "passed": true
+    },
+    {
+      "name": "log_a:slot_points_sets",
+      "passed": true
+    },
+    {
+      "name": "log_a:slot_values_float32",
+      "passed": true
+    },
+    {
+      "name": "log_a:slot_all_records",
+      "passed": true
+    },
+    {
+      "name": "log_a:split_sets",
+      "passed": true
+    },
+    {
+      "name": "log_a:split_dynamics_values",
+      "passed": true
+    },
+    {
+      "name": "log_a:split_all_records",
+      "passed": true
+    },
+    {
+      "name": "log_a:runtime_minus2",
+      "passed": true
+    },
+    {
+      "name": "log_a:runtime_radar_selections_zero",
+      "passed": true
+    },
+    {
+      "name": "log_b:no_support_checksum_error",
+      "passed": true
+    },
+    {
+      "name": "log_b:original_cp_unchanged",
+      "passed": true
+    },
+    {
+      "name": "log_b:original_cp_radarUnavailable",
+      "passed": true
+    },
+    {
+      "name": "log_b:cp_wire",
+      "passed": true
+    },
+    {
+      "name": "log_b:model_wire",
+      "passed": true
+    },
+    {
+      "name": "log_b:pose_wire",
+      "passed": true
+    },
+    {
+      "name": "log_b:input_stat",
+      "passed": true
+    },
+    {
+      "name": "log_b:recorded_cc_off",
+      "passed": true
+    },
+    {
+      "name": "log_b:metadata_unchanged",
+      "passed": true
+    },
+    {
+      "name": "log_b:no_support_length_reset",
+      "passed": true
+    },
+    {
+      "name": "log_b:all_records_enter_base",
+      "passed": true
+    },
+    {
+      "name": "log_b:all_points_enter_mytrack",
+      "passed": true
+    },
+    {
+      "name": "log_b:finite_points",
+      "passed": true
+    },
+    {
+      "name": "log_b:current_dynamics",
+      "passed": true
+    },
+    {
+      "name": "log_b:slot_mapping",
+      "passed": true
+    },
+    {
+      "name": "log_b:slot_points_sets",
+      "passed": true
+    },
+    {
+      "name": "log_b:slot_values_float32",
+      "passed": true
+    },
+    {
+      "name": "log_b:slot_all_records",
+      "passed": true
+    },
+    {
+      "name": "log_b:split_sets",
+      "passed": true
+    },
+    {
+      "name": "log_b:split_dynamics_values",
+      "passed": true
+    },
+    {
+      "name": "log_b:split_all_records",
+      "passed": true
+    },
+    {
+      "name": "log_b:runtime_minus2",
+      "passed": true
+    },
+    {
+      "name": "log_b:runtime_radar_selections_zero",
+      "passed": true
+    },
+    {
+      "name": "log_d:no_support_checksum_error",
+      "passed": true
+    },
+    {
+      "name": "log_d:original_cp_unchanged",
+      "passed": true
+    },
+    {
+      "name": "log_d:original_cp_radarUnavailable",
+      "passed": true
+    },
+    {
+      "name": "log_d:cp_wire",
+      "passed": true
+    },
+    {
+      "name": "log_d:model_wire",
+      "passed": true
+    },
+    {
+      "name": "log_d:pose_wire",
+      "passed": true
+    },
+    {
+      "name": "log_d:input_stat",
+      "passed": true
+    },
+    {
+      "name": "log_d:recorded_cc_off",
+      "passed": true
+    },
+    {
+      "name": "log_d:metadata_unchanged",
+      "passed": true
+    },
+    {
+      "name": "log_d:no_support_length_reset",
+      "passed": true
+    },
+    {
+      "name": "log_d:all_records_enter_base",
+      "passed": true
+    },
+    {
+      "name": "log_d:all_points_enter_mytrack",
+      "passed": true
+    },
+    {
+      "name": "log_d:finite_points",
+      "passed": true
+    },
+    {
+      "name": "log_d:current_dynamics",
+      "passed": true
+    },
+    {
+      "name": "log_d:slot_mapping",
+      "passed": true
+    },
+    {
+      "name": "log_d:slot_points_sets",
+      "passed": true
+    },
+    {
+      "name": "log_d:slot_values_float32",
+      "passed": true
+    },
+    {
+      "name": "log_d:slot_all_records",
+      "passed": true
+    },
+    {
+      "name": "log_d:split_sets",
+      "passed": true
+    },
+    {
+      "name": "log_d:split_dynamics_values",
+      "passed": true
+    },
+    {
+      "name": "log_d:split_all_records",
+      "passed": true
+    },
+    {
+      "name": "log_d:runtime_minus2",
+      "passed": true
+    },
+    {
+      "name": "log_d:runtime_radar_selections_zero",
+      "passed": true
+    }
+  ],
+  "check_count": 71,
+  "failure_count": 0,
+  "totals": {
+    "records": 2399,
+    "points": 367,
+    "mytrack_ge6": 236,
+    "aLead_nonzero": 233,
+    "jLead_nonzero": 209,
+    "diagnostic_mode1_selections": 175,
+    "model_updates": 2792,
+    "recorded_CC": 15358,
+    "recorded_panda_samples": 1484
+  },
+  "max_float64_to_float32_quantization_difference": {
+    "dRel": 9.367253710479417e-07,
+    "yRel": 2.2888183615066282e-07,
+    "vRel": 2.3084561462383135e-07,
+    "vLead": 1.1614301076434685e-07
+  },
+  "source_count": 32,
+  "loaded_path_count": 92,
+  "read_results_sha256": "4964224d7cd1a1bc1c427750a4e2ff434e36af332f41d69fb01521f091295ba6",
+  "scope_ko": "직접 실행 run05의 동결 JSON에서 계산한 구조/값 전달 검증. 새 재생이나 실차 gate가 아님"
+}

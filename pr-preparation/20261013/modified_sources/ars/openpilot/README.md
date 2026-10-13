@@ -1,0 +1,128 @@
+# Installing the ARS510 integration
+
+One installer for openpilot and its forks (sunnypilot, StarPilot, CarrotPilot and other trees with openpilot's `opendbc_repo`
+layout). It adds the decoder and appends one marked block to the end of Toyota's `interface.py`; the fork's files stay as
+shipped apart from that block, and card, radard and the planner run as shipped. How it works and what it does on the road:
+[docs/08](../docs/08_openpilot_integration.md).
+
+## Install on a comma device
+
+```bash
+cd /data && git clone https://github.com/ds-sebastian/ars510-radar
+python /data/ars510-radar/openpilot/install.py /data/openpilot
+sudo reboot
+```
+
+The fork is detected, the `acc` profile is installed, and an install made with an older patch-based
+version of this installer is replaced automatically. `--profile fused` installs the all-tracks Kalman profile and
+`--profile raw` the unfiltered decode for comparison ([docs/11](../docs/11_profiles_compared.md) compares them);
+`anchor` and `steady` install `fused`.
+
+**Reboot after installing.** The manager pre-imports its Python processes, so a new ignition cycle alone keeps the old
+Toyota modules. On the first drive after the reboot, `radarUnavailable` is false and leads are radar-backed.
+
+```bash
+python /data/ars510-radar/openpilot/install.py /data/openpilot --check        # report state (read-only), incl. whether the install matches this checkout
+python /data/ars510-radar/openpilot/install.py /data/openpilot --uninstall    # remove everything it added
+cd /data/ars510-radar && git pull && python openpilot/install.py /data/openpilot   # update, then reboot
+```
+
+A fork update resets `/data/openpilot`: run the installer again after updating (and turn off automatic updates
+while testing).
+
+### native fork의 공유 패키지 소유권
+
+`toyota/radar_interface.py`의 `RadarInterface`가 literal `ARS510_CARROT_API = 1`,
+`ARS510_CARROT_PROFILE = "fused"`와 `supports_ars510` predicate를 선언하면 공유 `toyota/ars510/`은
+fork 소유다. installer는 fork Python을 실행하지 않고 이 AST 계약을 읽는다. 어떤 profile을 선택해도
+이 package·LICENSE·fork 부속 파일을 덮거나 삭제하지 않는다. package의 Python 파일 목록/원바이트가
+현재 checkout과 같을 때만 외부 hook/wrapper를 설치한다. 누락·다른 버전 또는 불명확한 native 계약이면
+파일을 바꾸기 전에 중단한다. `--check`도 native 불일치/불명확 상태를 표시하고 exit2를 반환한다.
+
+native fork의 `--uninstall`은 외부 hook/wrapper 등 관리 파일만 제거하고 공유 package와 native 수신기/factory를
+그대로 둔다. package가 fork 업데이트로 달라졌어도 삭제하지 않는다. native 계약이 없는 vanilla에서는 기존처럼
+installer가 package를 설치·삭제하고, 오래된 설치를 보고하는 `--check`의 exit0 정책을 유지한다.
+
+| profile | config |
+|---|---|
+| `acc` (default) | the radar's ACC target alone as one point, the upstream proposal ([`upstream/ars510_acc_target.py`](../upstream/ars510_acc_target.py) with [`toyota_tss2_ars510.dbc`](../upstream/toyota_tss2_ars510.dbc), opendbc's CANParser, 33 code lines): the car Toyota's own ACC follows, published as soon as the radar picks it; every other car comes from the camera ([docs/17](../docs/17_upstream.md#towards-an-upstream-comma-interface)) |
+| `fused` | `FUSED_CONFIG`: the `raw` decode with range fusion, one Kalman speed filter fusing the object list and the ACC target (0x235) by the radar's own uncertainty, and a path gate; it drives exactly like the `openpilot` version. The all-tracks alternative: every radar car within 60 m ([docs/11](../docs/11_profiles_compared.md)) |
+| `openpilot` | the single-file version of `fused` ([`upstream/ars510_radar.py`](../upstream/ars510_radar.py)), installed as `opendbc/car/toyota/ars510_upstream.py`: one file in opendbc style with `fused`'s filter, points with `trackId` / `dRel` / `yRel` / `vRel` only (`upstream` is its older name) |
+| `raw` | `BASE_CONFIG`: the unfiltered radar decode with what radard needs, for research and comparison. Velocity excursions reach the planner (93 hard radar-only braking ticks on the held-out routes against 16 for `fused` and 14 for `acc`); the installer prints a warning. `stock` and `default` are its older names |
+
+`colored`, `shared_speed` and `shared_range` are alternatives that were tried and replayed worse than `acc` and `fused` ([docs/12](../docs/12_kalman_filter.md#kalman-variants-tested)); they stay installable for research.
+
+Older names still work and print what they select: `anchor` / `steady` → `fused`, `stock` / `default` → `raw`,
+`upstream` → `openpilot`. `--profile default` selects `raw`; leave `--profile` out to install `acc`.
+
+## What gets installed
+
+| file | installed as | what |
+|---|---|---|
+| `../ars510/` | `opendbc/car/toyota/ars510/` | the decoder package, unchanged |
+| `ars510_radar_interface.py` | `opendbc/car/toyota/ars510_radar_interface.py` | `Ars510RadarInterface` (raw CAN → RadarData) and the hook |
+| `../upstream/ars510_radar.py` | `opendbc/car/toyota/ars510_upstream.py` | the single-file `fused` (used by `--profile openpilot`) |
+| `../upstream/ars510_acc_target.py` | `opendbc/car/toyota/ars510_acc_target.py` | the ACC target alone (used by `--profile acc`) |
+| `../upstream/toyota_tss2_ars510.dbc` | `opendbc/dbc/toyota_tss2_ars510.dbc` | its DBC: the four ACC target messages |
+| 4-line block | end of `opendbc/car/toyota/interface.py` | `CarInterface = hook_car_interface(CarInterface)` |
+
+The DBCs in [`../dbc/`](../dbc) are for inspecting the radar in Cabana on a PC; the decoder reassembles the 106-frame
+record in Python. The only DBC installed on the device is `toyota_tss2_ars510.dbc`, which the `acc` profile parses.
+
+The hook wraps the fork's own Toyota `CarInterface` after it is defined:
+- **detection** in `_get_params`: a radar-ACC RAV4 2022 or 2023-25 gets `radarUnavailable = False` from the car model
+  (both radar firmwares in openpilot's fingerprints are the ARS510, [docs/01](../docs/01_radar_bus.md#radar-firmware));
+  the C-HR and Yaris are enabled for testing (same radar frames, [docs/01](../docs/01_radar_bus.md#c-hr-and-yaris)), the
+  Yaris always with `acc` because it sends no 0xB4 wheel speed;
+- **tracks** through `CarInterface.RadarInterface`: `Ars510RadarInterface` for that car, the fork's own
+  RadarInterface for every other car. Extra constructor arguments (sunnypilot's `CP_SP`) pass through, and forks
+  whose RadarPoint still has `aRel` / `yvRel` / `measured` get those fields filled.
+
+The install leaves `ToyotaFlags` as the fork defines it.
+
+Fork notes:
+- **StarPilot** runs its own radard (lateral gate when matching, match hysteresis) and planner (a
+  lead-acceleration extrapolation that holds `aLeadK` unchanged above 35 mph) and
+  enables its radar extras (adjacent-lane leads, "Force Stop" hint, radar UI) once radar is available.
+- **sunnypilot** carries `aRel` and `yvRel`: the radar's filtered acceleration and its lateral velocity, the latter
+  using the Toyota 0x24 yaw rate.
+
+## Test on a PC first
+
+```bash
+OP=~/openpilot                                          # any fork checkout with a .venv (tools/op.sh setup)
+cp -r $OP/opendbc_repo /tmp/opendbc_ars510
+python openpilot/install.py /tmp/opendbc_ars510
+$OP/.venv/bin/python openpilot/check_integration.py --opendbc /tmp/opendbc_ars510
+```
+
+`check_integration.py` runs synthetic records through the installed Toyota interface the way card does:
+- detection: cold start by firmware, fallback by bus 1, other cars untouched;
+- RadarData points: units, sign, ego-speed subtraction, age gate;
+- radarless behaviour before the first record;
+- the timeout report and recovery when records stop and resume.
+
+It passes 21-22 checks on current openpilot, the openpilot 10b9e73 used for replays and sunnypilot v2026.002.002. To
+replay your own drives stock vs installed, see
+[docs/09](../docs/09_tools_and_data.md#replay-your-drives-through-openpilot).
+
+## Troubleshooting
+
+| symptom | what to check |
+|---|---|
+| `expected opendbc/car/toyota/interface.py under …` | pass the openpilot checkout (`/data/openpilot`) or its `opendbc_repo` directly |
+| leads are still vision-only after installing | reboot (a full reboot reloads the Toyota modules); `--check` must show `hook … present`; the car must fingerprint as `TOYOTA_RAV4_TSS2_2022`, `TOYOTA_RAV4_TSS2_2023`, `TOYOTA_CHR_TSS2` or `TOYOTA_YARIS` (a radar-ACC Toyota) |
+| `radarUnavailable` true on a RAV4 2022 / 2023 with the hook present | `--check` must show `installed files: match this checkout`; an install from before the car-model detection needed the radar firmware in `carFw` or 0x80 / 0x85 on bus 1 during fingerprinting, and a car picked manually (CarrotPilot's car selection, `FINGERPRINT`) at a cold start has neither: `git pull`, install again, reboot |
+| radar leads disappeared after a fork update | the update reset `/data/openpilot`; run the installer again and reboot |
+| `radarUnavailableTemporary` alerts | the radar stopped sending its object list for more than 0.5 s; check the wiring / harness; openpilot longitudinal's radar disable keeps the object list running on `8821F0R03100` ([docs/01](../docs/01_radar_bus.md#openpilots-radar-disable)), so a log showing 0x80 stopping after the radar's `68 01` response points to other firmware or hardware in the radar line ([docs/08](../docs/08_openpilot_integration.md#checking-a-new-install-on-the-car)) |
+| the lead chevron sits on the hood when stopped close behind a car | a UI quirk: the chevron is drawn from the radar distance in the camera frame; driving uses the measured distance |
+| braking feels wrong | flag the moment with the bookmark button and open a [drive report](https://github.com/ds-sebastian/ars510-radar/issues/new?template=drive_report.yml); `--uninstall` returns to vision only |
+
+## Optional radard patch
+
+[`radard_vision_fusion.patch`](radard_vision_fusion.patch) is a separate radard change for forks that want it; apply it
+from an openpilot checkout with `git apply` (`install.py` leaves radard as shipped). It rewrites radard's track filter
+in covariance form (identical output for radar-only tracks) and fuses the vision lead's speed into the matched radar
+track. Replayed on the 20 held-out drives with the unfiltered decode, it brought the planner's requests closer to the
+driver's acceleration (pre-registered driver-agreement error −0.004) at a mean 0.085 s later reaction
+([`radard_vision_fusion.json`](../data/analysis/summaries/radard_vision_fusion.json)).

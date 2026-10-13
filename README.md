@@ -1,5 +1,19 @@
 # RAV4 2022 레이더·종방향 제어 오프라인 검증
 
+## 최신 PR 준비 — 2026-10-13
+
+사용자 요청에 따라 기존 반복 검증을 종료하고 최신 Carrot `2ec25da`와 ARS `fb5b29c`를 기준으로 PR 후보를 준비했습니다. 실제 PR은 아직 제출하지 않았습니다.
+
+- [Carrot 후보 비교](https://github.com/ajouatom/openpilot/compare/carrot-wip...Mlnege:codex/rav4-ars510-carrot-compat?expand=1): `41773212b683181d9ce569c627ef7a97a74f0dc6`, 33파일.
+- [ARS 후보 비교](https://github.com/ds-sebastian/ars510-radar/compare/main...Mlnege:codex/carrot-native-ars510-dispatch?expand=1): `a63279545adc72c5a4330f84391b9a19d932c6d7`, 4파일.
+- [패치·검증·다운로드 안내](pr-preparation/20261013/README.md): 수정 소스37개, PR 설명, 소스 확인 명령, Wiki 수동 설명 패치.
+
+최종 고정 pycapnp2.1.0에서 수신기·PCM·native 종방향 182개가 통과했습니다. 원격에서 새로 복제한 ARS 전체 시험은 271통과·설치 환경1개 생략입니다. 실제 로그는 정상 레코드2,399개·전달점367개와 원형 Float32 값 차이0을 확인했습니다. 다른 차량/Bosch/신호·야간/공유 필터/Panda 기반을 유지하며, 실제 ECU·PCS/AEB·회생·Konik 전체 빌드·물리 제동은 미검증입니다.
+
+아래 내용은 종료한 기존 `r10.1`까지의 조사 스냅샷입니다. 최신 후보의 기준·변경 파일·적용 명령은 위 새 안내를 사용합니다.
+
+## 이전 조사 스냅샷
+
 한국형 RAV4 Hybrid 2022의 저장 CAN을 분석하고, ARS 객체를 기존 당근레이더 처리 코어로 전달하는 수신 어댑터와 재현 가능한 검증 도구입니다. **실차 자동 설치·제어 활성화용 배포가 아닙니다.**
 
 기준 CarrotPilot은 `carrot-wip`의 `0e4ee1bdbef3ad7284b136fddf31592e3f8a785f`, ARS510 분석 기준은 `673eb8e609e303feff2c15dd250592c383962156`입니다. 변경 파일의 정확한 목록·해시는 `validation_manifest.json`에 있습니다.
