@@ -1,0 +1,610 @@
+{
+  "cases": [
+    {
+      "platform": "TOYOTA_ALPHARD_TSS2",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_ALPHARD_TSS2",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_AVALON",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_AVALON",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_AVALON_2019",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_AVALON_2019",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_AVALON_TSS2",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_AVALON_TSS2",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_CAMRY",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_CAMRY",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_CAMRY_TSS2",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_CAMRY_TSS2",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_CHR",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_CHR",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_CHR_TSS2",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_CHR_TSS2",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_COROLLA",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_COROLLA",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_COROLLA_TSS2",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_COROLLA_TSS2",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_HIGHLANDER",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_HIGHLANDER",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_HIGHLANDER_TSS2",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_HIGHLANDER_TSS2",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_PRIUS",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_PRIUS",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_PRIUS_V",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_PRIUS_V",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_PRIUS_TSS2",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_PRIUS_TSS2",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_RAV4",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_RAV4",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_RAV4H",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_RAV4H",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_RAV4_TSS2",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_RAV4_TSS2",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_RAV4_TSS2_2022",
+      "direct_requested": false,
+      "different_fields": [
+        "radarTimeStep",
+        "radarUnavailable"
+      ],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_RAV4_TSS2_2022",
+      "direct_requested": true,
+      "different_fields": [
+        "radarTimeStep",
+        "radarUnavailable"
+      ],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_RAV4_TSS2_2023",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_RAV4_TSS2_2023",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_RAV4_PRIME",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_RAV4_PRIME",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_YARIS",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_YARIS",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_MIRAI",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_MIRAI",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_SIENNA",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_SIENNA",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_SIENNA_4TH_GEN",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "TOYOTA_SIENNA_4TH_GEN",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "LEXUS_CTH",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "LEXUS_CTH",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "LEXUS_ES",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "LEXUS_ES",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "LEXUS_ES_TSS2",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "LEXUS_ES_TSS2",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "LEXUS_IS",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "LEXUS_IS",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "LEXUS_IS_TSS2",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "LEXUS_IS_TSS2",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "LEXUS_NX",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "LEXUS_NX",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "LEXUS_NX_TSS2",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "LEXUS_NX_TSS2",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "LEXUS_LC_TSS2",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "LEXUS_LC_TSS2",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "LEXUS_RC",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "LEXUS_RC",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "LEXUS_RX",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "LEXUS_RX",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "LEXUS_RX_TSS2",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "LEXUS_RX_TSS2",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "LEXUS_GS_F",
+      "direct_requested": false,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    },
+    {
+      "platform": "LEXUS_GS_F",
+      "direct_requested": true,
+      "different_fields": [],
+      "accepted": true,
+      "longitudinal_control_preserved": true,
+      "safety_configs_preserved": true
+    }
+  ],
+  "failures": [],
+  "source_before": "a761e2d6b914a504f86965073bbe599605b5a17833e5e5fe4333b97fc5daf3db",
+  "source_after": "a761e2d6b914a504f86965073bbe599605b5a17833e5e5fe4333b97fc5daf3db",
+  "source_unchanged": true,
+  "actual_car_interface_init": false,
+  "actual_vehicle_tx": false,
+  "firmware_entries": 0,
+  "scope_ko": "같은 빈 fingerprint/FW와 요청 조건의 원형 생성자 비교. 실제 펌웨어·차량·설정 변경 검증은 아니다."
+}

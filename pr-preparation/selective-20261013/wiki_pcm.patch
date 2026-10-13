@@ -1,0 +1,26 @@
+diff --git a/EN-Speed-from-PCM(StockSCC).md b/EN-Speed-from-PCM(StockSCC).md
+index d35ec4ae3ac7d0e7438cc617a6bcbe195a2c0934..316134dc4d8938dd8add422522bd331e3bd4f5c5 100644
+--- a/EN-Speed-from-PCM(StockSCC).md
++++ b/EN-Speed-from-PCM(StockSCC).md
+@@ -38,6 +38,8 @@ The selected value changes behavior as follows.
+ - `2` — Curve/Camera Decel
+ - `3` — Honda/Toyota
+ For Toyota/Lexus, `3` uses stock SET/RES speed as the base control target and stock cluster set speed for display. Mode `1` also uses stock set speed; `0` and `2` retain existing Carrot speed selection. Honda mode `3` is unchanged. This setting does not switch the longitudinal controller or radar availability.
++
++Mode `0` has one exception: exact `TOYOTA_RAV4_TSS2_2022` with PCM, openpilot direct longitudinal control, and valid CAN applies observed stock speed changes or disabled-to-enabled transitions to the base target. An initially enabled sample only establishes a reference, local button or Bluetooth input takes priority in the same frame, lower lead/curve/map/camera targets remain effective, and no RES/SET CAN transmission is added.
+ <!-- CARROT:SECTION:END BEHAVIOR -->
+ 
+ <!-- CARROT:SECTION:BEGIN USAGE -->
+diff --git "a/KO-PCM\354\260\250\353\237\211\354\206\215\353\217\204\354\240\234\354\226\264.md" "b/KO-PCM\354\260\250\353\237\211\354\206\215\353\217\204\354\240\234\354\226\264.md"
+index bba73f9d91ffd500540c330371b0d4159ee72537..1d41be0430171da77a54d0d9a28a0845da765f78 100644
+--- "a/KO-PCM\354\260\250\353\237\211\354\206\215\353\217\204\354\240\234\354\226\264.md"
++++ "b/KO-PCM\354\260\250\353\237\211\354\206\215\353\217\204\354\240\234\354\226\264.md"
+@@ -38,6 +38,8 @@ PCM 차량의 속도 제어 방식 0:커브/카메라 감속+롱컨 1:순정 설
+ - `2` — 커브/카메라 감속
+ - `3` — Honda/Toyota
+ 토요타·렉서스의 `3`은 순정 SET/RES 설정속도를 기본 목표로 사용하고, 순정 계기판 설정속도를 표시합니다. `1`도 순정 설정속도를 사용하며 `0`과 `2`는 기존 카롯 속도 선택을 유지합니다. Honda의 `3` 동작은 바뀌지 않습니다. 이 설정 자체는 가감속 제어 주체나 레이더 사용 여부를 전환하지 않습니다.
++
++`0`의 예외는 정확한 `TOYOTA_RAV4_TSS2_2022`에서 PCM·openpilot 직접 가감속·유효 CAN을 함께 사용하는 경우이며, 관측한 순정 속도 변경이나 비활성→활성 전이를 기본 목표에 반영합니다. 처음부터 활성인 표본은 기준만 저장하고 같은 프레임의 로컬 버튼·블루투스가 우선하며, 앞차·커브·지도·카메라의 낮은 목표를 유지하고 RES/SET CAN 송신을 추가하지 않습니다.
+ <!-- CARROT:SECTION:END BEHAVIOR -->
+ 
+ <!-- CARROT:SECTION:BEGIN USAGE -->

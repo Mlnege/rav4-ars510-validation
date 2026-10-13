@@ -1,0 +1,2072 @@
+diff --git a/opendbc_repo/opendbc/car/toyota/ars510/LICENSE b/opendbc_repo/opendbc/car/toyota/ars510/LICENSE
+new file mode 100644
+index 0000000000000000000000000000000000000000..21c5fc21f8039e681b70d694488e7632bcca7384
+--- /dev/null
++++ b/opendbc_repo/opendbc/car/toyota/ars510/LICENSE
+@@ -0,0 +1,21 @@
++MIT License
++
++Copyright (c) 2026 ARS510 radar contributors
++
++Permission is hereby granted, free of charge, to any person obtaining a copy
++of this software and associated documentation files (the "Software"), to deal
++in the Software without restriction, including without limitation the rights
++to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++copies of the Software, and to permit persons to whom the Software is
++furnished to do so, subject to the following conditions:
++
++The above copyright notice and this permission notice shall be included in all
++copies or substantial portions of the Software.
++
++THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
++AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
++SOFTWARE.
+diff --git a/opendbc_repo/opendbc/car/toyota/ars510/__init__.py b/opendbc_repo/opendbc/car/toyota/ars510/__init__.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..54e2ad9ba227ebaef696b5fa90dd34e4e81bdde4
+--- /dev/null
++++ b/opendbc_repo/opendbc/car/toyota/ars510/__init__.py
+@@ -0,0 +1,26 @@
++"""Toyota / Continental ARS510 front radar: CAN decode for openpilot experiments.
++
++Status: transport, geometry, track IDs and the ACC target are decoded. The `fused` profile (all tracks, one Kalman
++speed filter per track) filters the object list's far-range speed excursions; the default install profile `acc`
++publishes the radar's ACC target alone (upstream/ars510_acc_target.py). Field confidence: README.md and docs/03.
++"""
++from .constants import ID80_ADDR, ID85_ADDR, RADAR_BUS, TOYOTA_SPEED_ADDR
++from .interface import (
++    COLORED_CONFIG,
++    FUSED_CONFIG,
++    BASE_CONFIG,
++    ALL_TRACKS_CONFIG,
++    Ars510NativeRadarInterface,
++    NativeInterfaceConfig,
++    parse_toyota_speed_mps,
++)
++from .objects import NativeObject, decode_native_slot
++from .record import id80_crc_ok, occupied_slots
++from .transport import Id80RecordAssembler, Id85RecordAssembler
++
++__all__ = [
++    "ID80_ADDR", "ID85_ADDR", "RADAR_BUS", "TOYOTA_SPEED_ADDR",
++    "COLORED_CONFIG", "FUSED_CONFIG", "BASE_CONFIG", "ALL_TRACKS_CONFIG", "Ars510NativeRadarInterface", "NativeInterfaceConfig",
++    "parse_toyota_speed_mps", "NativeObject", "decode_native_slot", "id80_crc_ok", "occupied_slots",
++    "Id80RecordAssembler", "Id85RecordAssembler",
++]
+diff --git a/opendbc_repo/opendbc/car/toyota/ars510/constants.py b/opendbc_repo/opendbc/car/toyota/ars510/constants.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..2fdf291ae96ef51db3d97f9a84d56d4634f09229
+--- /dev/null
++++ b/opendbc_repo/opendbc/car/toyota/ars510/constants.py
+@@ -0,0 +1,46 @@
++"""Bus-level constants for the Toyota / Continental ARS510 front radar.
++
++Everything here was observed on the radar CAN bus (comma harness bus 1, `src == 1` in openpilot logs).
++See docs/01_radar_bus.md and docs/02_object_list.md.
++"""
++from __future__ import annotations
++
++RADAR_BUS = 1
++CAR_BUS = 0
++
++# Object list: one 742-byte record, ISO-TP-style segmented over 106 frames on 0x80.
++ID80_ADDR = 0x80
++ID80_FIRST_FRAME = (0x12, 0xE4)  # first frame: type 1, length 0x2E4 = 740 (+ the length byte itself)
++ID80_RECORD_FRAMES = 106
++ID80_RECORD_LEN = 742  # bytes 1..7 of each of the 106 frames
++ID80_OBJECT_START = 17  # record bytes 0..16 are the record header
++ID80_OBJECT_LEN = 36
++ID80_OBJECT_COUNT = 20
++ID80_CRC_START, ID80_CRC_END = 1, 737  # zlib CRC32 over record[1:737] ...
++ID80_CRC_FIELD = (737, 741)  # ... stored little-endian in record[737:741]
++# An unoccupied slot carries exactly these 36 bytes.
++ID80_IDLE_SLOT = bytes.fromhex("FCE00000A0F07F00FFFDF71FFFA100F807000F0008000000000000000000000000000000")
++
++# Shell / metadata record: 147 bytes over 21 frames on 0x85.
++ID85_ADDR = 0x85
++ID85_FIRST_FRAME = (0x10, 0x90)  # length 0x090 = 144
++ID85_RECORD_FRAMES = 21
++ID85_RECORD_LEN = 147
++
++# Each record start is followed within ~20 ms by a fixed marker frame 30 00 00 00 00 00 00 00.
++ID80_MARKER_ADDR = 0x81
++ID85_MARKER_ADDR = 0x86
++RECORD_MARKER_PAYLOAD = bytes.fromhex("3000000000000000")
++
++# Car bus: Toyota SPEED message, big-endian 16 bit at bytes 5-6, 0.01 km/h.
++TOYOTA_SPEED_ADDR = 0xB4
++TOYOTA_KINEMATICS_ADDR = 0x24  # YAW_RATE, left positive (Toyota YAW_RATE on the car bus)
++
++# The OEM ACC target witness stream (radar bus, 50 Hz). 0x235 carries its closing speed, 0x237 its position. See
++# ars510/support.py and docs/05.
++ACC_TARGET_VREL_ADDR = 0x235
++ACC_TARGET_POS_ADDR = 0x237
++SUMMARY_ADDRS = (0x192, 0x194)  # the radar's selected-target range summaries (docs/05)
++
++# Radar cycle is ~60 ms (records arrive at ~16.7 Hz).
++RADAR_CYCLE_S = 0.06
+diff --git a/opendbc_repo/opendbc/car/toyota/ars510/interface.py b/opendbc_repo/opendbc/car/toyota/ars510/interface.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..f560d89accc01d2c836ab618e5f9dd4904e46d02
+--- /dev/null
++++ b/opendbc_repo/opendbc/car/toyota/ars510/interface.py
+@@ -0,0 +1,640 @@
++"""openpilot-shaped radar interface on the native 0x80 decode.
++
++Feed it raw CAN frames `(time_s, bus, address, data)`. It reassembles 0x80 records on the radar bus, checks
++the record CRC, decodes every occupied slot, and returns RadarData-shaped dicts:
++
++    {"time_s": t, "radarData": {"points": [...], "errors": {...}}}
++
++with points carrying dRel (m, forward), yRel (m, LEFT positive), vRel (m/s, over-ground velocity minus ego
++speed) and trackId (from the radar's own slot / age lifecycle).
++
++Ego speed comes from Toyota SPEED (0xB4) on the car bus, or from `set_ego_speed`. With a fresh ego speed vRel is
++over-ground speed minus ego speed; otherwise it is NaN, and BASE_CONFIG withholds such points (a NaN would stay in
++radard's per-track Kalman for good).
++
++Configs (docs/12 explains the filter, docs/11 compares the profiles with vision only). The default install profile
++`acc` (the radar's ACC target alone) lives in upstream/ars510_acc_target.py; the configs below are the all-tracks
++decode and its filtered variants:
++  FUSED_CONFIG       the `fused` install profile (openpilot/install.py --profile fused): one Kalman speed filter per
++                     track fusing the object list and the radar's ACC target, each weighted by its own uncertainty,
++                     plus a yaw-rate path gate
++  COLORED_CONFIG     experimental: fused with a colored-noise (bias) state for the object list
++  BASE_CONFIG        the unfiltered radar decode with only what radard needs (the 'raw' install profile)
++  ALL_TRACKS_CONFIG  every valid track from age 1 with the radar's own IDs: the decode-level view for analysis
++"""
++from __future__ import annotations
++
++from dataclasses import dataclass, replace
++from math import exp, isfinite, nan, pi
++from collections.abc import Iterable
++
++from .constants import (ACC_TARGET_POS_ADDR, ACC_TARGET_VREL_ADDR, CAR_BUS, ID80_ADDR, RADAR_BUS, SUMMARY_ADDRS,
++                        TOYOTA_KINEMATICS_ADDR, TOYOTA_SPEED_ADDR)
++from .objects import NativeObject, decode_native_slot
++from .record import id80_crc_ok, occupied_slots
++from .support import parse_0x192, parse_acc_target_position, parse_acc_target_vrel
++from .tracks import NativeTrackIdAssigner
++from .transport import Id80RecordAssembler
++
++EGO_ACCEL_TAU_S = 0.3  # smoothing of the ego-speed derivative used for aRel
++ACCEL_SCALE = 0.04  # m/s^2 per code of the filtered over-ground acceleration 84|10 (docs/03)
++GUARD_ID_STRIDE = 10_000_000  # added to a trackId after a guard episode, so radard restarts that track's filter
++RELINK_MIN_LOST_AGE = 30
++RELINK_MIN_PUBLISH_AGE = 6
++
++
++@dataclass(frozen=True)
++class NativeInterfaceConfig:
++    radar_bus: int = RADAR_BUS
++    ego_speed_bus: int = CAR_BUS
++    max_ego_speed_age_s: float = 0.5
++    include_metadata: bool = True
++    # Hold back tracks younger than this many cycles. Young tracks carry unconverged range and velocity
++    # (stopped cars read as moving; one lead read about 39 m while ~100 m away and walked out over about 5 s). 60 cycles ~ 3.6 s.
++    min_publish_age: int = 1
++    # When a new track is first published, give it the trackId of a settled track (age >= 30) lost within
++    # this many seconds if it starts where that track predicts and the match is one-to-one. 0 disables.
++    # Requires min_publish_age >= RELINK_MIN_PUBLISH_AGE so the lost ID has ended (IDs stay unique).
++    relink_max_gap_s: float = 0.0
++    # Multiplies the decoded over-ground velocity. Against Toyota 0xB4, steady following reads 0.149 m/s/code
++    # instead of nominal 0.150 in the original fit. This empirical 0.667% profile setting is
++    # separate from physical calibration and the ~1-1.5% discrepancy between ego references (docs/06).
++    # Use 1.0 with a carState.vEgo or GPS ego reference.
++    vground_scale: float = 1.0
++    # Withhold points whose vRel rests on a stale ego speed.
++    drop_unresolved_vrel: bool = False
++    # Velocity-aided range: predict dRel with vRel, correct toward measured dRel with this gain (0 disables).
++    range_fusion_gain: float = 0.0
++    # Saturation guard: withhold a mature track's point while its velocity code is the invalid 1023 (or 0), and after
++    # that until the velocity is back within sat_recover_mps of the last good value (the sentinel decays over ~6
++    # records) or guard_hold_s has passed. The track then continues under a new trackId (docs/12). The speed filter's
++    # robust update absorbs the sentinel on its own, so FUSED_CONFIG leaves this off.
++    drop_saturated_codes: bool = False
++    sat_recover_mps: float = 5.0
++    guard_hold_s: float = 1.0
++    guard_min_age: int = 60  # younger tracks converge on their own and stay unguarded
++    # The radar's own trackers, used as extra speed readings by the speed filter:
++    # ACC target (0x235 / 0x237): matched to an object-list track by position, cost = |dRel - x| / max(acc_match_range_m,
++    # acc_match_range_frac * x) + |yRel - y| / 0.5 < 1 with margin > 1 over the next track, for tracks of age >=
++    # acc_match_min_age (x is the ACC target's 0.025 m distance, y its 0.01 m lateral (the object list's lateral code is 0.015 m); the range scale grows with range
++    # because the object list reads far cars short of the ACC distance, by 15-20 m for some newly detected cars, docs/06,
++    # docs/12). The association is kept while the track
++    # and a continuous ACC target persist, even when the object-list position slides away with an excursion; it re-matches
++    # when the ACC target jumps (range > acc_sticky_jump_m or lateral > 1 m between updates), the track disappears, or its
++    # cost exceeds acc_sticky_max_cost. The associated track takes the ACC distance as the measurement of the range
++    # fusion (acc_range): the radar's own smooth range, which the vision lead agrees with.
++    acc_target_max_age_s: float = 0.1
++    acc_match_range_m: float = 12.0
++    acc_match_range_frac: float = 0.4
++    acc_range: bool = True
++    acc_match_min_age: int = 20
++    acc_sticky_jump_m: float = 8.0
++    acc_sticky_max_cost: float = 4.0
++    # Path gate (radard weights lateral position only through the camera's uncertainty and checks only distance and
++    # speed, so far out it can pair the vision lead with a car a lane over): beyond
++    # path_gate_min_range_m, a track other than the ACC target's that is more than path_gate_m from the ego path predicted
++    # from yaw rate and speed (constant curvature: y - yaw / v * d^2 / 2) is withheld: a car a lane over, also on a
++    # curve. Closer in, cars moving into the lane must stay visible.
++    path_gate_m: float = 0.0  # 0 = off (fused: 2.5)
++    path_gate_min_range_m: float = 15.0
++    # Far cars come from the camera (docs/12 "Far cars"): beyond far_acc_only_m only the ACC target's track is
++    # published, as Toyota's own ACC acts on its ACC target alone. Far non-ACC tracks carry the object list's false
++    # closings. 0 = off (fused: 60)
++    far_acc_only_m: float = 0.0
++    # Stationary tracks (|over-ground speed| < path_gate_stationary_mps) within path_gate_min_range_m are path-gated to
++    # path_gate_stationary_m of the path curved with max(v_ego, 2 m/s): parked cars and roadside objects close in stay out
++    # of the lane, where radard's low-speed rule would otherwise stop for them as the path curves away. 0 = off (fused: 0.5 m/s, 1.5 m)
++    path_gate_stationary_mps: float = 0.0
++    path_gate_stationary_m: float = 1.5
++    # Summaries (0x192 / 0x194): the positions of the radar's selected targets. Their range slope over summary_window_s
++    # gives a relative speed; a summary attaches to the track at its position (range within max(5 m, 15 %), lateral within
++    # summary_match_lat_m, unambiguous) and stays attached while the track stays within 25 % in range and twice that
++    # lateral limit. Used up to summary_max_range_m (the optical check favours the summary speed out to ~80 m, docs/05);
++    # the ACC-associated track is left to the ACC target. A fork option: off in FUSED_CONFIG, on in COLORED_CONFIG.
++    summary_max_range_m: float = 80.0  # summary_sigma_mps <= 0 below turns the summaries off
++    summary_window_s: float = 1.0
++    summary_match_lat_m: float = 1.0
++    summary_scales: tuple[tuple[float, float], ...] = ((0.0625, -10.0), (0.0625, -10.0))  # m per code, offset m (0x192, 0x194)
++    # Fused speed filter (docs/12 "The model"): one per-track Kalman filter on the over-ground speed. Each
++    # reading is weighted by
++    # its own standard deviation: the object-list speed by speed_sigma_per_code * 240|7 (the radar's velocity-error
++    # scale, calibrated against its ACC target), times young_sigma_scale for tracks younger than young_age (measured:
++    # young tracks err more than 240|7 says); the radar's ACC target speed for the associated track by acc_sigma_mps;
++    # the target-range summary speed (option, up to summary_max_range_m) by summary_sigma_mps. The lead's speed may change
++    # with lead_accel_std_mps2 (process noise); a reading beyond innovation_gate_sigma standard deviations is clamped
++    # to that bound (robust update). A track is first published once its speed std is below publish_speed_std_mps.
++    # Range stays outside the filter (the object list's range rate and speed disagree by 10-20 %, docs/12);
++    # range_fusion_gain smooths the published range separately.
++    fused_speed_filter: bool = False
++    speed_sigma_per_code: float = 0.045
++    young_sigma_scale: float = 1.8
++    young_age: int = 100
++    acc_sigma_mps: float = 0.5
++    summary_sigma_mps: float = 0.5
++    lead_accel_std_mps2: float = 1.5
++    innovation_gate_sigma: float = 3.0
++    publish_speed_std_mps: float = 0.75
++    # Colored measurement noise (state augmentation): the object-list speed error persists for ~1.2 s (lag-1
++    # autocorrelation 0.95 per 60 ms record), so the filter also estimates it as a slowly varying bias b
++    # (first-order Gauss-Markov, time constant speed_bias_tau_s, stationary sd speed_bias_sigma_per_code x scale);
++    # the object list measures v + b, the ACC target and summaries measure v. 0 = off (white noise only).
++    # The noise scale of a reading is 240|7 x (1 + speed_sigma_ego_gain x v_ego / 30 m/s)
++    #   x (1 + speed_sigma_accel_gain x |84|10| / 100): errors grow with ego speed and with the radar's acceleration.
++    speed_bias_tau_s: float = 0.0
++    speed_bias_sigma_per_code: float = 0.0
++    speed_sigma_ego_gain: float = 0.0
++    speed_sigma_accel_gain: float = 0.0
++    # Colored filter only: a new track's first reading gets this extra sd per 240|7 count (first readings are often
++    # far off, 240|7 near 160), and a tracker reading (ACC target, summary) beyond the innovation gate means the
++    # speed state has diverged: its variance is widened to the innovation before the update (covariance inflation).
++    speed_init_sigma_per_code: float = 0.0
++    speed_divergence_inflation: bool = False
++
++
++# Every valid track, radar's own IDs: the decode-level view.
++ALL_TRACKS_CONFIG = NativeInterfaceConfig(min_publish_age=1, relink_max_gap_s=0.0)
++# The unfiltered radar decode with only the validity rules radard needs: the "raw" install profile (docs/08).
++BASE_CONFIG = NativeInterfaceConfig(
++    min_publish_age=60, relink_max_gap_s=3.5, vground_scale=0.149 / 0.15, drop_unresolved_vrel=True,
++    drop_saturated_codes=True,
++)
++# The `fused` install profile (docs/12, docs/11; the default is `acc`): the base decode plus range fusion and one uncertainty-weighted speed
++# filter per track that fuses the object list and the radar's ACC target (matched by position, 0.4 x range scale; its
++# track takes the ACC distance as range; the ACC speed is weighted at 0.13 m/s, acc_sigma_mps). The track-ID relink and the saturation guard of the base decode are off:
++# with the filter on, the driving is the same with them on or off (docs/12). Beyond 15 m, tracks other than the ACC target's that sit
++# more than 2.5 m from the yaw-predicted path are withheld (docs/12 "Path gate"). The summaries are off. The openpilot
++# version (upstream/ars510_radar.py) is this profile in one file.
++FUSED_CONFIG = replace(BASE_CONFIG, range_fusion_gain=0.1, relink_max_gap_s=0.0, drop_saturated_codes=False,
++                       fused_speed_filter=True, path_gate_m=2.5, summary_sigma_mps=0.0, acc_sigma_mps=0.13, far_acc_only_m=60.0,
++                       path_gate_stationary_mps=0.5)
++
++# Experimental (fork only, docs/12 "Kalman variants tested"): fused with the object-list error as a 1.2 s Gauss-Markov
++# bias state, noise scaled by ego speed and the radar's acceleration reading (fitted on the hidden-ACC teacher). Offline
++# bench at the 0.125 m/s ACC unit: 6.8 % / 7.8 % false-closing cycles against 7.6 % / 8.0 % for fused on held-out / fresh
++# drives (kalman_variants.json); it holds a far excursion that recovers longer than fused does.
++COLORED_CONFIG = replace(FUSED_CONFIG, speed_sigma_per_code=0.001, speed_bias_tau_s=1.19, speed_bias_sigma_per_code=0.0096,
++                         speed_sigma_ego_gain=0.48, speed_sigma_accel_gain=0.51, young_sigma_scale=1.0,
++                         lead_accel_std_mps2=1.0, speed_init_sigma_per_code=0.045, speed_divergence_inflation=True,
++                         summary_sigma_mps=0.5, acc_sigma_mps=0.5)
++
++NATIVE_VREL_STATUS = "native_over_ground_minus_ego"
++UNRESOLVED_NAN = "unresolved_nan"
++
++
++def parse_toyota_yaw_rate(data: bytes) -> float | None:
++    """Toyota KINEMATICS (0x24) YAW_RATE, big-endian 1|10 at 0.244 deg/s, offset -125: rad/s, left positive."""
++    if len(data) < 2:
++        return None
++    raw = ((data[0] & 0x03) << 8) | data[1]
++    return (raw * 0.244 - 125.0) * pi / 180.0
++
++
++def parse_toyota_speed_mps(data: bytes) -> float | None:
++    """Toyota SPEED (0xB4): bytes 5-6 big-endian, 0.01 km/h."""
++    if len(data) < 7:
++        return None
++    return int.from_bytes(data[5:7], "big") * 0.01 / 3.6
++
++
++class Ars510NativeRadarInterface:
++    def __init__(self, config: NativeInterfaceConfig | None = None) -> None:
++        self.config = config or NativeInterfaceConfig()
++        self._assembler = Id80RecordAssembler()
++        self._tracks = NativeTrackIdAssigner()
++        self._v_ego: float | None = None
++        self._v_ego_time_s: float | None = None
++        self._a_ego: float | None = None  # smoothed derivative of ego speed
++        self._yaw: tuple[float, float] | None = None  # (time, yaw rate rad/s, left positive)
++        self.crc_failures = 0
++        self.records = 0
++        self.settling_suppressed = 0
++        self.relinks = 0
++        self.unresolved_suppressed = 0
++        self._first: dict[int, tuple[float, float, float]] = {}  # native id -> (t, x, y) at first age>=2 sample
++        self._last: dict[int, tuple[float, float, float, float, int]] = {}  # -> (t, x, y, vrel, age) latest
++        self._out_id: dict[int, int] = {}
++        self._claimed: set[int] = set()
++        self._range_est: dict[int, tuple[float, float, float]] = {}
++        self._fused: dict[int, tuple[float, float, float]] = {}  # tid -> (t, over-ground speed, variance)
++        self._acc_vrel: tuple[float, float] | None = None  # (time, closing speed)
++        self._acc_pos: tuple[float, float, float] | None = None  # (time, x, y)
++        self._acc_assoc: tuple[int, float, float] | None = None  # (tid, last x, last y)
++        self.path_gated = 0
++        self._summary_hist: dict[int, list[tuple[float, float]]] = {0x192: [], 0x194: []}  # (time, range m)
++        self._summary_assoc: dict[int, int | None] = {0x192: None, 0x194: None}
++        self._summary_y: dict[int, float] = {0x192: 0.0, 0x194: 0.0}  # latest summary lateral, m
++        self._guard_state: dict[int, list] = {}  # tid -> [t_last, ref_v, episode_start | None, saturated_in_episode]
++        self._guard_gen: dict[int, int] = {}
++        self.guard_rejected = 0
++
++    # ---- inputs -----------------------------------------------------------------------------------
++    def set_ego_speed(self, v_ego_mps: float, time_s: float) -> None:
++        if isfinite(v_ego_mps) and isfinite(time_s):
++            if self._v_ego is not None and self._v_ego_time_s is not None and 0.0 < time_s - self._v_ego_time_s < 0.5:
++                dt = time_s - self._v_ego_time_s
++                a = (v_ego_mps - self._v_ego) / dt
++                k = 1.0 - exp(-dt / EGO_ACCEL_TAU_S)
++                self._a_ego = a if self._a_ego is None else self._a_ego + k * (a - self._a_ego)
++            else:
++                self._a_ego = None
++            self._v_ego, self._v_ego_time_s = float(v_ego_mps), float(time_s)
++
++    def _fresh_ego_speed(self, time_s: float) -> float | None:
++        if self._v_ego is None or self._v_ego_time_s is None:
++            return None
++        if abs(time_s - self._v_ego_time_s) > self.config.max_ego_speed_age_s:
++            return None
++        return self._v_ego
++
++    def _fresh_yaw_rate(self, time_s: float) -> float | None:
++        if self._yaw is None or abs(time_s - self._yaw[0]) > self.config.max_ego_speed_age_s:
++            return None
++        return self._yaw[1]
++
++    def update_frame(self, time_s: float, bus: int, addr: int, data: bytes) -> dict | None:
++        if bus == self.config.ego_speed_bus and addr == TOYOTA_KINEMATICS_ADDR:
++            w = parse_toyota_yaw_rate(bytes(data))
++            if w is not None:
++                self._yaw = (float(time_s), w)
++            return None
++        if bus == self.config.ego_speed_bus and addr == TOYOTA_SPEED_ADDR:
++            v = parse_toyota_speed_mps(bytes(data))
++            if v is not None:
++                self.set_ego_speed(v, time_s)
++            return None
++        if bus == self.config.radar_bus and addr in SUMMARY_ADDRS:
++            if self.config.fused_speed_filter and self.config.summary_sigma_mps > 0:
++                self._summary_update(addr, float(time_s), bytes(data))
++            return None
++        if bus == self.config.radar_bus and addr in (ACC_TARGET_VREL_ADDR, ACC_TARGET_POS_ADDR):
++            data = bytes(data)
++            available = len(data) == 8 and (
++                bool(data[1] & 4) if addr == ACC_TARGET_VREL_ADDR
++                else data[2:] != bytes.fromhex("003E80000000")
++            )
++            if not available:
++                # Idle payloads decode numerically; target loss clears both cached halves.
++                self._acc_vrel = self._acc_pos = None
++                return None
++            if addr == ACC_TARGET_VREL_ADDR:
++                v = parse_acc_target_vrel(bytes(data))
++                self._acc_vrel = (time_s, v) if v is not None else self._acc_vrel
++            else:
++                p = parse_acc_target_position(bytes(data))
++                self._acc_pos = (time_s, p[0], p[1]) if p is not None else self._acc_pos
++            return None
++        if bus != self.config.radar_bus or addr != ID80_ADDR:
++            return None
++        complete = self._assembler.push(time_s, bytes(data))
++        if complete is None:
++            return None
++        if not id80_crc_ok(complete.payload):
++            self.crc_failures += 1
++            return None
++        self.records += 1
++        return self._payload(complete.time_s, complete.payload)
++
++    def update_many(self, frames: Iterable[tuple[float, int, int, bytes]]) -> list[dict]:
++        out = []
++        for time_s, bus, addr, data in frames:
++            p = self.update_frame(time_s, bus, addr, data)
++            if p is not None:
++                out.append(p)
++        return out
++
++    # ---- track re-link ----------------------------------------------------------------------------
++    def _relink(self, nid: int, time_s: float, seen: set[int]) -> int:
++        cfg = self.config
++        if cfg.relink_max_gap_s <= 0 or cfg.min_publish_age < RELINK_MIN_PUBLISH_AGE or nid not in self._first:
++            return nid
++
++        def matches(first: tuple[float, float, float], lid: int) -> bool:
++            t0, x0, y0 = first
++            tl, xl, yl, vl, al = self._last[lid]
++            gap = t0 - tl
++            if al < RELINK_MIN_LOST_AGE or not (0.0 < gap <= cfg.relink_max_gap_s):
++                return False
++            x_pred = xl + (vl if isfinite(vl) else 0.0) * gap
++            return abs(x0 - x_pred) <= max(3.0, 0.10 * xl) + 1.0 * gap and abs(y0 - yl) <= 1.2 + 0.5 * gap
++
++        lost = [lid for lid in self._last if lid not in seen and lid != nid and lid not in self._claimed
++                and time_s - self._last[lid][0] > self._tracks.max_gap_s]
++        cands = [lid for lid in lost if matches(self._first[nid], lid)]
++        if len(cands) != 1:
++            return nid
++        lid = cands[0]
++        # ambiguity: another unpublished new track also starts where the lost one predicts
++        if any(o != nid and o not in self._out_id and o in self._first and matches(self._first[o], lid)
++               for o in self._last if o in seen):
++            self._claimed.add(lid)  # nobody inherits an ambiguous ID
++            return nid
++        self._claimed.add(lid)
++        self.relinks += 1
++        return self._out_id.get(lid, lid)
++
++    # ---- the radar's own trackers -------------------------------------------------------------------
++    def _acc_target_match(self, time_s: float, decoded: list) -> tuple[int | None, float]:
++        """The track the radar's ACC target describes (see the config) and the target's relative speed."""
++        cfg = self.config
++        if not cfg.fused_speed_filter or self._acc_vrel is None or self._acc_pos is None:
++            self._acc_assoc = None
++            return None, nan
++        if abs(time_s - self._acc_vrel[0]) > cfg.acc_target_max_age_s or abs(time_s - self._acc_pos[0]) > cfg.acc_target_max_age_s:
++            self._acc_assoc = None
++            return None, nan
++        _, ax, ay = self._acc_pos
++        rs = max(cfg.acc_match_range_m, cfg.acc_match_range_frac * ax)
++        costs = sorted((abs(obj.d_rel - ax) / rs + abs(obj.y_rel - ay) / 0.5, tid, obj.age)
++                       for _, obj, tid in decoded if obj.geometry_valid and obj.lateral_valid)
++        if self._acc_assoc is not None:
++            tid0, ax0, ay0 = self._acc_assoc
++            own = next((c for c, tid, _ in costs if tid == tid0), None)
++            if own is not None and own < cfg.acc_sticky_max_cost and abs(ax - ax0) <= cfg.acc_sticky_jump_m \
++                    and abs(ay - ay0) <= 1.0:
++                self._acc_assoc = (tid0, ax, ay)
++                return tid0, self._acc_vrel[1]
++            self._acc_assoc = None
++        if not costs or costs[0][0] >= 1.0 or costs[0][2] < cfg.acc_match_min_age:
++            return None, nan
++        if len(costs) > 1 and costs[1][0] - costs[0][0] <= 1.0:
++            return None, nan
++        self._acc_assoc = (costs[0][1], ax, ay)
++        return costs[0][1], self._acc_vrel[1]
++
++    def _summary_update(self, addr: int, time_s: float, data: bytes) -> None:
++        hist = self._summary_hist[addr]
++        word = parse_0x192(data)
++        if word is None:
++            hist.clear(); self._summary_assoc[addr] = None
++            return
++        scale, offset = self.config.summary_scales[0 if addr == 0x192 else 1]
++        x = word.range_code13 * scale + offset
++        if hist and (time_s - hist[-1][0] > 0.3 or abs(x - hist[-1][1]) > 5.0):  # gap or a new target
++            hist.clear(); self._summary_assoc[addr] = None
++        hist.append((time_s, x))
++        self._summary_y[addr] = word.y_rel
++        while hist and hist[0][0] < time_s - self.config.summary_window_s:
++            hist.pop(0)
++
++    def _summary_speed(self, addr: int, time_s: float) -> tuple[float, float] | None:
++        """(range m, relative speed m/s) of a summary from a least-squares slope, or None while too short/stale."""
++        hist = self._summary_hist[addr]
++        w = self.config.summary_window_s
++        if len(hist) < 8 or hist[-1][0] - hist[0][0] < 0.7 * w or time_s - hist[-1][0] > 0.3:
++            return None
++        n = len(hist); mt = sum(t for t, _ in hist) / n; mx = sum(x for _, x in hist) / n
++        den = sum((t - mt) ** 2 for t, _ in hist)
++        return (hist[-1][1], sum((t - mt) * (x - mx) for t, x in hist) / den) if den > 0 else None
++
++    def _summary_match(self, time_s: float, decoded: list, v_ego: float | None, acc_tid: int | None) -> dict[int, float]:
++        """Tracks attached to a summary -> summary relative speed (see the config)."""
++        cfg = self.config
++        out: dict[int, float] = {}
++        if v_ego is None:
++            return out
++        tracks = {tid: obj for _, obj, tid in decoded if obj.geometry_valid and obj.lateral_valid and obj.age >= 20}
++        for addr in SUMMARY_ADDRS:
++            sv = self._summary_speed(addr, time_s)
++            if sv is None:
++                self._summary_assoc[addr] = None
++                continue
++            x, v = sv
++            y = self._summary_y[addr]
++            tid = self._summary_assoc[addr]
++            if tid is not None and (tid not in tracks or abs(tracks[tid].d_rel - x) > max(8.0, 0.25 * x)
++                                    or abs(tracks[tid].y_rel - y) > 2.0 * cfg.summary_match_lat_m):
++                tid = None
++            if tid is None:
++                cands = sorted((abs(o.d_rel - x), t) for t, o in tracks.items()
++                               if abs(o.y_rel - y) < cfg.summary_match_lat_m and abs(o.d_rel - x) < max(5.0, 0.15 * x))
++                if len(cands) == 1 or (len(cands) > 1 and cands[1][0] - cands[0][0] > 3.0):
++                    tid = cands[0][1]
++            self._summary_assoc[addr] = tid
++            if tid is not None and tid != acc_tid and tid not in out:
++                out[tid] = v
++        return out
++
++    def _fused_speed(self, tid: int, time_s: float, obj: NativeObject,
++                     extra: list[tuple[float, float]], v_ego: float = 0.0) -> tuple[float, float]:
++        """Fused over-ground speed and its standard deviation (see fused_speed_filter in the config)."""
++        cfg = self.config
++        young = 1.0
++        if obj.age < cfg.young_age:
++            w = min(max((cfg.young_age - obj.age) / max(cfg.young_age - 60, 1), 0.0), 1.0)
++            young = 1.0 + (cfg.young_sigma_scale - 1.0) * w
++        if cfg.speed_bias_tau_s > 0:
++            scale = max(obj.vel_unc_code, 1) * young * (1.0 + cfg.speed_sigma_ego_gain * v_ego / 30.0) \
++                * (1.0 + cfg.speed_sigma_accel_gain * abs(obj.accel_like_code) / 100.0)
++            return self._fused_speed_colored(tid, time_s, obj, extra, scale)
++        sig = cfg.speed_sigma_per_code * max(obj.vel_unc_code, 1)
++        if obj.age < cfg.young_age:
++            sig *= young
++        vg = obj.v_long_ground * cfg.vground_scale
++        st = self._fused.get(tid)
++        if st is None or len(st) != 3 or not 0.0 < time_s - st[0] <= 0.5:
++            self._fused[tid] = (time_s, vg, sig * sig)
++            return vg, sig
++        t0, v, p = st
++        p += (cfg.lead_accel_std_mps2 * (time_s - t0)) ** 2
++        for z, r in [(vg, sig * sig)] + [(z, s * s) for z, s in extra]:
++            s = p + r
++            innov = z - v
++            lim = cfg.innovation_gate_sigma * s ** 0.5
++            if cfg.innovation_gate_sigma > 0 and abs(innov) > lim:
++                innov = lim if innov > 0 else -lim
++            k = p / s
++            v += k * innov
++            p *= 1.0 - k
++        self._fused[tid] = (time_s, v, p)
++        return v, p ** 0.5
++
++    def _fused_speed_colored(self, tid: int, time_s: float, obj: NativeObject,
++                             extra: list[tuple[float, float]], scale: float) -> tuple[float, float]:
++        """Speed filter with the object-list error as a first-order Gauss-Markov bias state (state [v, b])."""
++        cfg = self.config
++        sw = cfg.speed_sigma_per_code * scale
++        sb = cfg.speed_bias_sigma_per_code * scale
++        vg = obj.v_long_ground * cfg.vground_scale
++        st = self._fused.get(tid)
++        if st is None or len(st) != 6 or not 0.0 < time_s - st[0] <= 0.5:
++            p00 = sw * sw + sb * sb + (cfg.speed_init_sigma_per_code * scale) ** 2
++            self._fused[tid] = (time_s, vg, 0.0, p00, 0.0, sb * sb)
++            return vg, p00 ** 0.5
++        t0, v, b, p00, p01, p11 = st
++        dt = time_s - t0
++        phi = exp(-dt / cfg.speed_bias_tau_s)
++        b *= phi
++        p00 += (cfg.lead_accel_std_mps2 * dt) ** 2
++        p01 *= phi
++        p11 = phi * phi * p11 + sb * sb * (1.0 - phi * phi)
++        for z, r, h1 in [(vg, sw * sw, 1.0)] + [(z, s * s, 0.0) for z, s in extra]:
++            ph0, ph1 = p00 + h1 * p01, p01 + h1 * p11  # P H^T, H = [1, h1]
++            s = ph0 + h1 * ph1 + r
++            innov = z - (v + h1 * b)
++            lim = cfg.innovation_gate_sigma * s ** 0.5
++            if cfg.speed_divergence_inflation and h1 == 0.0 and lim > 0 and abs(innov) > lim:
++                p00 += (abs(innov) / cfg.innovation_gate_sigma) ** 2 - s + r
++                ph0, s = p00, p00 + r
++                lim = cfg.innovation_gate_sigma * s ** 0.5
++            if cfg.innovation_gate_sigma > 0 and abs(innov) > lim:
++                innov = lim if innov > 0 else -lim
++            k0, k1 = ph0 / s, ph1 / s
++            v += k0 * innov
++            b += k1 * innov
++            p00, p01, p11 = p00 - k0 * ph0, p01 - k0 * ph1, p11 - k1 * ph1
++        self._fused[tid] = (time_s, v, b, p00, p01, p11)
++        return v, p00 ** 0.5
++
++    def _fused_range(self, tid: int, time_s: float, d_meas: float, vrel: float) -> float:
++        prev = self._range_est.get(tid)
++        if prev is None or not isfinite(vrel) or not isfinite(prev[2]) or not 0.0 < time_s - prev[0] <= 0.5:
++            d = d_meas
++        else:
++            d = prev[1] + 0.5 * (prev[2] + vrel) * (time_s - prev[0])
++            d += self.config.range_fusion_gain * (d_meas - d)
++        self._range_est[tid] = (time_s, d, vrel)
++        return d
++
++    # ---- output -----------------------------------------------------------------------------------
++    def _guard(self, tid: int, time_s: float, v: float, code: int, age: int) -> bool:
++        """True when this record of the track is rejected by the saturation guard."""
++        cfg = self.config
++        sat = cfg.drop_saturated_codes and (code >= 1023 or code == 0)
++        st = self._guard_state.get(tid)
++        if st is not None and time_s - st[0] > 0.5:
++            st = None  # the track was silent: restart the reference
++        if st is None:
++            if age < cfg.guard_min_age:
++                self._guard_state.pop(tid, None)
++                return False
++            self._guard_state[tid] = [time_s, nan, time_s, True] if sat else [time_s, v, None, False]
++            self.guard_rejected += sat
++            return sat
++        st[0] = time_s
++        ref = st[1]
++        bad = sat
++        if not sat and isfinite(ref):
++            dv = abs(v - ref)
++            bad = st[3] and dv > cfg.sat_recover_mps
++        if not bad:
++            if st[2] is not None:  # episode over: continue under a new trackId
++                self._guard_gen[tid] = self._guard_gen.get(tid, 0) + 1
++                st[2], st[3] = None, False
++            st[1] = v
++            return False
++        if st[2] is None:
++            st[2] = time_s
++        if sat:
++            st[3] = True
++        elif time_s - st[2] > cfg.guard_hold_s:  # a persistent new level is a real step
++            self._guard_gen[tid] = self._guard_gen.get(tid, 0) + 1
++            st[1], st[2], st[3] = v, None, False
++            return False
++        self.guard_rejected += 1
++        return True
++
++    def _yv_rel(self, obj: NativeObject, time_s: float) -> float:
++        """Lateral velocity in the ego frame: the radar's over-ground vy minus the rotation term yaw rate x range."""
++        w = self._fresh_yaw_rate(time_s)
++        if w is None or obj.v_lat_code in (0, 1023):
++            return nan
++        return float(obj.v_lat_ground - w * obj.d_rel)
++
++    def _a_rel(self, obj: NativeObject, v_ego: float | None) -> float:
++        """The radar's filtered over-ground acceleration minus ego acceleration (lags vRel by about 0.5 s)."""
++        if v_ego is None or self._a_ego is None or obj.accel_like_code in (-511, 512):
++            return nan
++        return float(obj.accel_like_code * ACCEL_SCALE - self._a_ego)
++
++    def _payload(self, time_s: float, record: bytes) -> dict:
++        cfg = self.config
++        v_ego = self._fresh_ego_speed(time_s)
++        decoded = []
++        for slot, seg in occupied_slots(record):
++            obj = decode_native_slot(slot, seg)
++            # every occupied slot updates the lifecycle, including age 0, so every restart is seen
++            decoded.append((slot, obj, self._tracks.update(time_s, slot, obj.age)))
++        seen = {tid for _, _, tid in decoded}
++        acc_tid, acc_vrel = self._acc_target_match(time_s, decoded)
++        use_summaries = cfg.fused_speed_filter and cfg.summary_sigma_mps > 0
++        sum_speed = self._summary_match(time_s, decoded, v_ego, acc_tid) if use_summaries else {}
++        points = []
++        for slot, obj, tid in decoded:
++            if not obj.geometry_valid or not obj.lateral_valid:
++                continue
++            if cfg.drop_saturated_codes and self._guard(tid, time_s, obj.v_long_ground, obj.vel_code, obj.age):
++                continue
++            speed_std = 0.0
++            if cfg.fused_speed_filter and v_ego is not None:
++                extra = []
++                if tid == acc_tid and acc_vrel is not None:
++                    extra.append((acc_vrel + v_ego, cfg.acc_sigma_mps))
++                if tid in sum_speed and (cfg.summary_max_range_m <= 0 or obj.d_rel <= cfg.summary_max_range_m):
++                    extra.append((sum_speed[tid] + v_ego, cfg.summary_sigma_mps))
++                v_ground, speed_std = self._fused_speed(tid, time_s, obj, extra, v_ego)
++                vrel = float(v_ground - v_ego)
++            else:
++                v_ground = obj.v_long_ground * cfg.vground_scale
++                vrel = float(v_ground - v_ego) if v_ego is not None else nan
++            d_meas = self._acc_pos[1] if cfg.acc_range and acc_tid is not None and tid == acc_tid and self._acc_pos is not None else obj.d_rel
++            d_rel = self._fused_range(tid, time_s, d_meas, vrel) if cfg.range_fusion_gain > 0 else d_meas
++            if obj.age >= 2:
++                self._first.setdefault(tid, (time_s, obj.d_rel, obj.y_rel))
++                self._last[tid] = (time_s, obj.d_rel, obj.y_rel, vrel, obj.age)
++            if obj.age < cfg.min_publish_age:
++                self.settling_suppressed += 1
++                continue
++            if cfg.far_acc_only_m > 0 and tid != acc_tid and d_rel > cfg.far_acc_only_m:
++                self.path_gated += 1
++                continue
++            still = cfg.path_gate_stationary_mps > 0 and abs(v_ground) < cfg.path_gate_stationary_mps and d_rel <= cfg.path_gate_min_range_m
++            if cfg.path_gate_m > 0 and tid != acc_tid and (d_rel > cfg.path_gate_min_range_m or still) and v_ego is not None:
++                yaw = self._fresh_yaw_rate(time_s)
++                width, v_curve = (cfg.path_gate_stationary_m, max(v_ego, 2.0)) if still else (cfg.path_gate_m, max(v_ego, 5.0))
++                if yaw is not None and abs(obj.y_rel - yaw / v_curve * d_rel * d_rel / 2) > width:
++                    self.path_gated += 1
++                    continue
++            if tid not in self._out_id and speed_std > cfg.publish_speed_std_mps and cfg.fused_speed_filter:
++                self.settling_suppressed += 1
++                continue
++            if cfg.drop_unresolved_vrel and not isfinite(vrel):
++                self.unresolved_suppressed += 1
++                continue
++            if tid not in self._out_id:
++                self._out_id[tid] = self._relink(tid, time_s, seen)
++            point = {
++                "trackId": int(self._out_id[tid]) + GUARD_ID_STRIDE * self._guard_gen.get(tid, 0),
++                "dRel": float(d_rel),
++                "yRel": float(obj.y_rel),
++                "vRel": vrel,
++                "aRel": self._a_rel(obj, v_ego),
++                "yvRel": self._yv_rel(obj, time_s),
++                "measured": not obj.predicted,  # 107|1, like Tesla's Meas; older radard versions store it with the track
++            }
++            if cfg.include_metadata:
++                point.update(slot=slot, age=obj.age, v_long_ground=float(v_ground), native_id=tid, existence_pct=obj.existence_pct,
++                             move_state=obj.move_state, oncoming_flag=obj.oncoming_flag,
++                             vrel_status=NATIVE_VREL_STATUS if v_ego is not None else UNRESOLVED_NAN)
++            points.append(point)
++        self._prune(time_s)
++        errors = {"canError": False, "radarFault": False, "wrongConfig": False, "radarUnavailableTemporary": False}
++        return {"time_s": float(time_s), "radarData": {"points": points, "errors": errors}}
++
++    def _prune(self, time_s: float) -> None:
++        if len(self._last) > 400:  # forget tracks lost long ago
++            horizon = time_s - max(self.config.relink_max_gap_s, 1.0) - 60.0
++            for k in [k for k, v in self._last.items() if v[0] < horizon]:
++                self._last.pop(k, None)
++                self._first.pop(k, None)
++        for store in (self._range_est, self._fused, self._guard_state):
++            if len(store) > 400:
++                for k in [k for k, v in store.items() if v[0] < time_s - 5.0]:
++                    store.pop(k, None)
++        # Published IDs and guard generations may outlive position updates during a guard.
++        # Keep every native slot lifecycle ID, as well as every retained relink candidate.
++        if max(len(self._out_id), len(self._claimed), len(self._guard_gen)) > 400:
++            retained = set(self._last) | {state[0] for state in self._tracks._state.values()}
++            for store in (self._out_id, self._guard_gen):
++                for k in store.keys() - retained:
++                    store.pop(k)
++            self._claimed.intersection_update(retained)
+diff --git a/opendbc_repo/opendbc/car/toyota/ars510/objects.py b/opendbc_repo/opendbc/car/toyota/ars510/objects.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..26ad6b3319036fd2f6f0643d3eb22eeb63aaf920
+--- /dev/null
++++ b/opendbc_repo/opendbc/car/toyota/ars510/objects.py
+@@ -0,0 +1,232 @@
++"""Native decode of one 36-byte 0x80 object slot.
++
++Each slot is read as ONE little-endian bit field: bit 0 is the LSB of slot byte 0, bit 8 the LSB of byte 1,
++and so on. `start|length` below uses that numbering (it is also DBC `@1+` Intel numbering on the slot bytes).
++
++Field boundaries come from carry chains between consecutive cycles of the same slot (a higher bit flips
++only together with the bit below it, in nearly every case). Nominal scales and zero points use vehicle-motion consistency,
++host-standstill object-code peaks and camera/vision references; exact physical calibration is bounded in docs/06.
++docs/03_slot_fields.md describes every field; docs/06_accuracy.md the measured accuracy.
++
++Output convention matches openpilot's RadarPoint: dRel forward (m), yRel LEFT positive (m).
++"""
++from __future__ import annotations
++
++from dataclasses import dataclass
++
++SLOT_BYTES = 36
++
++
++@dataclass(frozen=True)
++class NativeField:
++    name: str
++    bit_start: int
++    bit_len: int
++    zero_code: float
++    scale: float
++    unit: str
++    status: str  # how well the field is established; see docs
++
++
++# Longitudinal distance, forward. Nominal code/16 - 10 m; code 160 decodes to zero.
++# Scale 1/16 m; zero code 160 fitted against vision, consistent with camera ground contact within about 0.2 m (docs/06).
++LONG_DIST = NativeField("long_dist", 32, 12, 160.0, 1.0 / 16.0, "m", "validated")
++# Lateral distance, LEFT positive. 12-bit offset binary around 2048, 0.015 m per code: 1.5 codes (1.499-1.502) of the radar's
++# ACC-target lateral (cm), ten codes per lateral-velocity code-second, 69 codes/m [65, 74.5] under ego rotation (docs/06).
++LATERAL_M_PER_CODE = 0.015
++LAT_DIST = NativeField("lat_dist_left", 44, 12, 2048.0, LATERAL_M_PER_CODE, "m", "validated_sign_likely_scale")
++# Longitudinal velocity OVER GROUND. Nominal 0.15 m/s/code and zero 510.5; the driving profiles read 0.149 against
++# Toyota 0xB4 ego speed (docs/06).
++# vRel = this - ego speed.
++LONG_VEL_GROUND = NativeField("long_vel_over_ground", 64, 10, 510.5, 0.15, "m/s", "validated_with_caveats")
++# Lateral velocity over ground, left positive. With the rotating-frame correction (vy = dy/dt + yaw_rate * x) it fits
++# 0.142-0.155 m/s per code (0.142-0.145 on three drive groups, 0.147-0.155 against the gyro in turns); 0.15 is used
++# here (docs/03). Published as yvRel (minus yaw rate x range) to forks that
++# still carry that RadarPoint field (docs/08).
++LAT_VEL = NativeField("lat_vel_over_ground", 74, 10, 510.5, 0.15, "m/s", "likely")
++# Longitudinal acceleration over ground, filtered: zero code 511, about 0.04 m/s^2 per code, follows the velocity by about
++# 0.5 s. Kept in centred codes (docs/03).
++ACCEL_LIKE = NativeField("accel_like_84", 84, 10, 511.0, 1.0, "code", "likely")
++# Track age in radar cycles (~60 ms): 1 at birth, saturates at 126, 0 = slot being retired.
++AGE = NativeField("age_cycles", 24, 7, 0.0, 1.0, "cycles", "structure")
++# Motion code 109|3: 0 moving forward, 1 slow or standing, 2 oncoming, 3 moving right, 4 moving left, 5 initializing,
++# 7 stopped after moving (docs/03). move_state is the historical two-bit view, kept for compatibility.
++MOVE_STATE = NativeField("move_state", 109, 2, 0.0, 1.0, "enum", "legacy_two_bit_view")
++MOVEMENT_CODE = NativeField("movement_code", 109, 3, 0.0, 1.0, "code", "likely")
++# Startup code 8|5: min(30, floor(31 * (2/3)**max(age - 4, 0))) while the motion code is 5 (initializing).
++# Bit 13 is a separate raw flag (docs/03).
++RAW8_LOW5 = NativeField("raw8_low5", 8, 5, 0.0, 1.0, "code", "confirmed")
++RAW13_BIT = NativeField("raw13_bit", 13, 1, 0.0, 1.0, "bit", "raw")
++# Lane state 128|3: 3 ego lane, 2 right lane, 4 left lane; 1 / 5 / 7 = all-zero lane weights (docs/03).
++RAW_WEIGHT_STATE128 = NativeField("raw_weight_state128", 128, 3, 0.0, 1.0, "code", "confirmed_structure")
++# Lane weights in 1/15 steps: 148|4 right lane, 152|4 left lane, 156|4 ego lane; nonzero triplets sum to 15 or 16
++# (docs/03). Raw wire values are kept as they are.
++RAW_WEIGHT_148 = NativeField("raw_weight148", 148, 4, 0.0, 1.0, "code", "likely")
++RAW_WEIGHT_152 = NativeField("raw_weight152", 152, 4, 0.0, 1.0, "code", "likely")
++RAW_WEIGHT_156 = NativeField("raw_weight156", 156, 4, 0.0, 1.0, "code", "likely")
++# Oncoming-like motion state (passed the original motion test). It can persist after slowing and reset before
++# the native allocation ends (docs/03).
++ONCOMING_FLAG = NativeField("oncoming_flag", 14, 1, 0.0, 1.0, "flag", "tested_semantics")
++
++# Existence probability in percent (10-100); 20|3 is its bits 4-6, score // 16 (docs/03). Reaches 100 % at about age 21.
++EXISTENCE = NativeField("existence_pct", 16, 8, 0.0, 1.0, "%", "likely")
++# Predicted record, the Continental "Meas = 0" state: common in a track's last records (docs/03).
++PREDICTED = NativeField("predicted", 107, 1, 0.0, 1.0, "flag", "likely")
++
++# Camera-association state 112|3: 0 radar only, 1 (rarely 2-4) while the camera has the vehicle. By day it is set inside
++# about 45 m, at night (camera light-source mode) also far out (docs/03).
++CAMERA_ASSOC = NativeField("camera_assoc", 112, 3, 0.0, 1.0, "state", "likely")
++# Confidence of the assigned class in 1/20 steps (mostly 0 while unclassified, 20 = 100 %); steps by one per cycle on
++# 95-96 % of its changes, and a large
++# vehicle is re-classified as a car when it has fallen to 5 (docs/03).
++CLASS_CONFIDENCE = NativeField("class_confidence", 115, 5, 0.0, 5.0, "%", "likely")
++
++# Velocity standard deviation (sigma vx): grows with range and during velocity excursions below 40 m, higher when the velocity
++# disagrees with the camera by > 2 m/s; about 0.043-0.045 m/s per count against the radar's ACC target (docs/03).
++VEL_UNC_240 = NativeField("vel_uncertainty_candidate", 240, 7, 0.0, 1.0, "code", "likely")
++
++# Historical labels only; full code 3 is rightward-like while full code 7 is stopped-like.
++MOVE_STATE_NAMES = {0: "moving_away", 1: "not_clearly_moving", 2: "moving_toward", 3: "not_clearly_moving_3"}
++
++# Object length and width (docs/03). Both read 0 only in the age-1 initialization template, whose position
++# codes are placeholders (range code 160 = 0 m, lateral code 2047).
++LENGTH = NativeField("length", 56, 7, 0.0, 0.1, "m", "likely")
++WIDTH = NativeField("width_minus_one", 216, 6, 0.0, 0.1, "m", "likely")
++
++# Remaining uncertainty, class, size and score codes, passed through raw (docs/03). UNCERTAINTY_PER_COUNT: scales against the radar's own
++# ACC target (docs/03, uncertainty section), relative to that reference.
++UNC_RANGE_224 = NativeField("range_uncertainty_code", 224, 7, 0.0, 1.0, "code", "candidate")
++UNC_LATERAL_232 = NativeField("lateral_uncertainty_code", 232, 7, 0.0, 1.0, "code", "likely")
++UNC_VLAT_248 = NativeField("lateral_speed_uncertainty_code", 248, 7, 0.0, 1.0, "code", "candidate")
++UNC_AX_256 = NativeField("accel_uncertainty_code", 256, 8, 0.0, 1.0, "code", "candidate")
++UNC_AY_264 = NativeField("lateral_accel_uncertainty_code", 264, 8, 0.0, 1.0, "code", "candidate")
++UNC_ORIENT_200 = NativeField("orientation_uncertainty_code", 200, 7, 0.0, 1.0, "code", "likely")
++SECONDARY_SCORE_184 = NativeField("secondary_score_pct", 184, 8, 0.0, 1.0, "%", "obstacle_probability_candidate")
++OBJECT_CLASS = NativeField("object_class", 163, 3, 0.0, 1.0, "code", "likely")
++HEIGHT_LIKE_272 = NativeField("height_like_code", 272, 5, 0.0, 1.0, "code", "candidate")
++# m or m/s per count; range_uncertainty_code is the overall 0.23 (0.24 below 40 m).
++UNCERTAINTY_PER_COUNT = {"vel_uncertainty_candidate": 0.043, "lateral_uncertainty_code": 0.10, "range_uncertainty_code": 0.23,
++                         "lateral_speed_uncertainty_code": 0.37}
++
++AGE_SATURATION = 126
++# |lateral code - 2048| >= this is a sentinel.
++LAT_INVALID_ABS_CODE = 2000
++
++NAMED_FIELDS = (AGE, LONG_DIST, LAT_DIST, LONG_VEL_GROUND, LAT_VEL, ACCEL_LIKE, MOVE_STATE, MOVEMENT_CODE, RAW8_LOW5, RAW13_BIT, ONCOMING_FLAG, VEL_UNC_240, EXISTENCE, PREDICTED, RAW_WEIGHT_STATE128, RAW_WEIGHT_148, RAW_WEIGHT_152, RAW_WEIGHT_156,
++                CAMERA_ASSOC, CLASS_CONFIDENCE, LENGTH, WIDTH, UNC_RANGE_224, UNC_LATERAL_232, UNC_VLAT_248, UNC_AX_256, UNC_AY_264, UNC_ORIENT_200,
++                SECONDARY_SCORE_184, OBJECT_CLASS, HEIGHT_LIKE_272)
++
++
++def slot_bits(slot: bytes, start: int, length: int) -> int:
++    return (int.from_bytes(slot, "little") >> start) & ((1 << length) - 1)
++
++
++def field_code(slot: bytes, field: NativeField) -> int:
++    return slot_bits(slot, field.bit_start, field.bit_len)
++
++
++def field_value(slot: bytes, field: NativeField) -> float:
++    return (field_code(slot, field) - field.zero_code) * field.scale
++
++
++def encode_slot(**codes: int) -> bytes:
++    """Build a synthetic slot from raw codes, e.g. encode_slot(long_dist=640, age=40). Unset bits are 0."""
++    if "move_state" in codes and "movement_code" in codes:
++        if (int(codes["move_state"]) & 3) != (int(codes["movement_code"]) & 3):
++            raise ValueError("move_state must equal the low two bits of movement_code")
++    by_name = {f.name: f for f in NAMED_FIELDS}
++    value = 0
++    for name, code in codes.items():
++        f = by_name[name]
++        value |= (int(code) & ((1 << f.bit_len) - 1)) << f.bit_start
++    return value.to_bytes(SLOT_BYTES, "little")
++
++
++@dataclass(frozen=True)
++class NativeObject:
++    slot: int
++    age: int
++    d_rel: float  # m, forward of the radar
++    y_rel: float  # m, left positive
++    v_long_ground: float  # m/s over ground (minus ego speed = vRel)
++    v_lat_ground: float  # m/s, provisional
++    accel_like_code: int  # centred code, unscaled
++    move_state: int  # legacy low two bits; see movement_code for distinct full states
++    oncoming_flag: bool  # raw oncoming-like state; can reset within the allocation
++    vel_unc_code: int  # velocity-uncertainty code (240|7), about 0.045 m/s per count
++    geometry_valid: bool  # age >= 1 (age 0 carries stale geometry) and past the age-1 initialization template
++    lateral_valid: bool  # lateral code differs from the sentinel
++    movement_code: int | None = None  # full 109|3; None for legacy manually constructed objects
++    raw8_low5: int | None = None  # 8|5 startup countdown while the motion code is 5
++    raw13_bit: int | None = None  # 13|1 raw flag next to the startup code
++    raw_weights148: tuple[int, int, int] | None = None  # 148/152/156|4 lane weights (right, left, ego) in 1/15 steps
++    raw_weight_state128: int | None = None  # 128|3 lane state: 3 ego, 2 right, 4 left lane; 1/5/7 all-zero lane weights
++    vel_code: int = -1  # raw 64|10 code; 1023 is a saturated (invalid) reading
++    v_lat_code: int = -1  # raw 74|10 code; 0 and 1023 are sentinels
++    existence_pct: int | None = None  # 16|8 existence probability, percent
++    predicted: bool = False  # 107|1: the record is the radar's prediction
++    camera_assoc: int | None = None  # 112|3: 0 radar only, non-zero while the camera has the vehicle
++    class_confidence_pct: int | None = None  # 115|5 x 5: confidence of the assigned class, percent
++    object_class: int | None = None  # 163|3: 1 unclassified, 2 car, 3 large vehicle, 4 pedestrian, 5 provisional, 6 two-wheeler
++    length_m: float | None = None  # 56|7 x 0.1 m (0 only in the age-1 template)
++    width_m: float | None = None  # (216|6 + 1) x 0.1 m
++    height_code: int | None = None  # 272|5, height-like size code (raw)
++    range_unc_code: int | None = None  # 224|7 (about 0.23 m per count overall, 0.24 below 40 m)
++    lateral_unc_code: int | None = None  # 232|7 (about 0.10 m per count)
++    vlat_unc_code: int | None = None  # 248|7 (about 0.37 m/s per count, unstable between cars)
++    accel_unc_code: int | None = None  # 256|8, follows the frame scatter of 84|10 (0.0062 m/s^2 per count)
++    lateral_accel_unc_code: int | None = None  # 264|8, follows the lateral speed scatter
++    orientation_unc_code: int | None = None  # 200|7, 63 for stopped objects, 127 sentinel
++    secondary_score_pct: int | None = None  # 184|8, percent-like, 100 on 98 % of rows (obstacle-probability candidate)
++
++
++def is_init_template(age: int, slot: bytes) -> bool:
++    """Age-1 first output with zero size codes: its range / lateral codes are placeholders."""
++    return age == 1 and field_code(slot, LENGTH) == 0 and field_code(slot, WIDTH) == 0
++
++
++def decode_native_slot(slot_index: int, slot: bytes) -> NativeObject:
++    if len(slot) != SLOT_BYTES:
++        raise ValueError(f"0x80 slot must be {SLOT_BYTES} bytes, got {len(slot)}")
++    age = field_code(slot, AGE)
++    lat_code = field_code(slot, LAT_DIST) - LAT_DIST.zero_code
++    return NativeObject(
++        slot=int(slot_index),
++        age=int(age),
++        d_rel=field_value(slot, LONG_DIST),
++        y_rel=lat_code * LAT_DIST.scale,
++        v_long_ground=field_value(slot, LONG_VEL_GROUND),
++        v_lat_ground=field_value(slot, LAT_VEL),
++        accel_like_code=int(field_code(slot, ACCEL_LIKE) - ACCEL_LIKE.zero_code),
++        move_state=int(field_code(slot, MOVE_STATE)),
++        movement_code=int(field_code(slot, MOVEMENT_CODE)),
++        raw8_low5=int(field_code(slot, RAW8_LOW5)),
++        raw13_bit=int(field_code(slot, RAW13_BIT)),
++        raw_weights148=tuple(field_code(slot, f) for f in (RAW_WEIGHT_148, RAW_WEIGHT_152, RAW_WEIGHT_156)),
++        raw_weight_state128=int(field_code(slot, RAW_WEIGHT_STATE128)),
++        oncoming_flag=bool(field_code(slot, ONCOMING_FLAG)),
++        vel_unc_code=int(field_code(slot, VEL_UNC_240)),
++        geometry_valid=age >= 1 and not is_init_template(age, slot),
++        lateral_valid=abs(lat_code) < LAT_INVALID_ABS_CODE,
++        vel_code=int(field_code(slot, LONG_VEL_GROUND)),
++        v_lat_code=int(field_code(slot, LAT_VEL)),
++        existence_pct=int(field_code(slot, EXISTENCE)),
++        predicted=bool(field_code(slot, PREDICTED)),
++        camera_assoc=int(field_code(slot, CAMERA_ASSOC)),
++        class_confidence_pct=int(field_code(slot, CLASS_CONFIDENCE)) * 5,
++        object_class=int(field_code(slot, OBJECT_CLASS)),
++        length_m=field_value(slot, LENGTH),
++        width_m=(field_code(slot, WIDTH) + 1) * WIDTH.scale,
++        height_code=int(field_code(slot, HEIGHT_LIKE_272)),
++        range_unc_code=int(field_code(slot, UNC_RANGE_224)),
++        lateral_unc_code=int(field_code(slot, UNC_LATERAL_232)),
++        vlat_unc_code=int(field_code(slot, UNC_VLAT_248)),
++        accel_unc_code=int(field_code(slot, UNC_AX_256)),
++        lateral_accel_unc_code=int(field_code(slot, UNC_AY_264)),
++        orientation_unc_code=int(field_code(slot, UNC_ORIENT_200)),
++        secondary_score_pct=int(field_code(slot, SECONDARY_SCORE_184)),
++    )
++
++
++def relative_velocity(obj: NativeObject, v_ego: float) -> float:
++    return obj.v_long_ground - float(v_ego)
+diff --git a/opendbc_repo/opendbc/car/toyota/ars510/record.py b/opendbc_repo/opendbc/car/toyota/ars510/record.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..370cc84cbbad6197568362b5c4b4abf26e53f437
+--- /dev/null
++++ b/opendbc_repo/opendbc/car/toyota/ars510/record.py
+@@ -0,0 +1,51 @@
++"""0x80 object record: CRC check and slot extraction."""
++from __future__ import annotations
++
++import zlib
++from collections.abc import Iterator
++
++from .constants import (
++    ID80_CRC_END,
++    ID80_CRC_FIELD,
++    ID80_CRC_START,
++    ID80_IDLE_SLOT,
++    ID80_OBJECT_COUNT,
++    ID80_OBJECT_LEN,
++    ID80_OBJECT_START,
++    ID80_RECORD_LEN,
++)
++
++
++def id80_crc_ok(record: bytes) -> bool:
++    """zlib CRC32 over record[1:737], stored little-endian at record[737:741]."""
++    if len(record) != ID80_RECORD_LEN:
++        return False
++    observed = int.from_bytes(record[ID80_CRC_FIELD[0]:ID80_CRC_FIELD[1]], "little")
++    return observed == (zlib.crc32(record[ID80_CRC_START:ID80_CRC_END]) & 0xFFFFFFFF)
++
++
++def id80_crc(record_body: bytes) -> int:
++    """CRC value for record[1:737] (useful for building synthetic records)."""
++    return zlib.crc32(record_body) & 0xFFFFFFFF
++
++
++def slot_bytes(record: bytes, slot: int) -> bytes:
++    start = ID80_OBJECT_START + slot * ID80_OBJECT_LEN
++    return record[start:start + ID80_OBJECT_LEN]
++
++
++def occupied_slots(record: bytes) -> Iterator[tuple[int, bytes]]:
++    """(slot index, 36 slot bytes) for every slot that differs from the idle template."""
++    for slot in range(ID80_OBJECT_COUNT):
++        b = slot_bytes(record, slot)
++        if b != ID80_IDLE_SLOT:
++            yield slot, b
++
++
++def live_object_count(record: bytes) -> int:
++    """Header field (record bits 115..119, little-endian): number of allocated slots: slots whose index field equals
++    their position, which are the slots with age >= 1.
++
++    Exact on every record of the bundled samples (header_allocation_count.json); an integrity cross-check (docs/02).
++    """
++    return (int.from_bytes(record[14:16], "little") >> 3) & 0x1F
+diff --git a/opendbc_repo/opendbc/car/toyota/ars510/shell85.py b/opendbc_repo/opendbc/car/toyota/ars510/shell85.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..827327a10bb8bd9183591de99fb23758f0fa8b99
+--- /dev/null
++++ b/opendbc_repo/opendbc/car/toyota/ars510/shell85.py
+@@ -0,0 +1,117 @@
++"""CRC-checked ID85 record: prefix, ten 12-byte cells, CRC.
++
++The checksum boundary is verified. A populated cell is one lane / road-boundary curve (offset, heading, curvature; docs/04).
++The CRC and trailer follow the ten cells.
++"""
++from __future__ import annotations
++
++from dataclasses import dataclass
++import zlib
++
++from .constants import ID85_RECORD_LEN
++
++HEADER_LEN = 21
++CELL_COUNT = 10
++CELL_LEN = 12
++CRC_START, CRC_END = 141, 145
++
++# Lane / road-curve polynomial carried by a populated cell: y(x) = c0 + c1 x + c2 x^2 / 2 + c3 x^3 / 6, left positive.
++# Nominal conversions; heading 1.6-2.2e-5 rad and curvature 2.0-2.7e-6 1/m per code bound the units (docs/04).
++CURVE_OFFSET_ZERO, CURVE_OFFSET_M = 2000, 0.01
++CURVE_HEADING_ZERO, CURVE_HEADING_RAD = 31200, -1.8e-5      # code up = lane pointing right
++CURVE_CURVATURE_ZERO, CURVE_CURVATURE_PER_M = 16020, 2.5e-6  # code up = lane curving left
++CURVE_RATE_ZERO, CURVE_RATE_PER_M2 = 500, 4e-6               # c3, d(curvature)/ds; nominal unit (docs/04)
++
++# Bits of prefix bytes 17-19 that copy a cell's "empty" flag (1 when bit 30 of that cell is 0). Cells 0-5 carry the copies.
++PREFIX_UNPOPULATED_COPIES = {
++    0: ((19, 4), (19, 5), (19, 6), (19, 7)), 1: ((19, 1), (19, 2), (19, 3)), 2: ((18, 4), (18, 6), (18, 7)),
++    3: ((17, 2), (17, 3)), 4: ((17, 4), (17, 5), (17, 7)), 5: ((18, 1), (18, 3)),
++}
++
++
++@dataclass(frozen=True)
++class ShellCell:
++    index: int
++    payload: bytes
++
++    @property
++    def parameters_present(self) -> bool:
++        """Cell bit 30: 1 when the cell holds curve parameters instead of the default block 84 03 F4 01 (docs/04)."""
++        if len(self.payload) != CELL_LEN:
++            raise ValueError(f"0x85 cell must be {CELL_LEN} bytes")
++        return bool(self.payload[3] & 0x40)
++
++    def _field(self, start: int, length: int) -> int:
++        if len(self.payload) != CELL_LEN:
++            raise ValueError(f"0x85 cell must be {CELL_LEN} bytes")
++        return (int.from_bytes(self.payload, "little") >> start) & ((1 << length) - 1)
++
++    @property
++    def offset_code(self) -> int:
++        """c0: raw `32|12` lateral offset of the curve at the radar, (code - 2000) * 0.01 m, left positive."""
++        return self._field(32, 12)
++
++    @property
++    def heading_code(self) -> int:
++        """c1: raw `48|16` curve heading (unpopulated cells hold the default 900)."""
++        return self._field(48, 16)
++
++    @property
++    def curvature_code(self) -> int:
++        """c2: raw `64|15` curve curvature (unpopulated cells hold the default 500)."""
++        return self._field(64, 15)
++
++    @property
++    def curve_flag(self) -> int:
++        """Raw `79|1` flag next to the curvature: the same in cells 2 and 3 on 99 % of rows; set on 79-80 % of cells 2/3 (docs/04)."""
++        return self._field(79, 1)
++
++    @property
++    def rate_code(self) -> int:
++        """c3: raw `10|10` curvature rate (offset binary, zero about 500; the unpopulated default is 1023)."""
++        return self._field(10, 10)
++
++    @property
++    def lane_offset_m(self) -> float | None:
++        """Nominal c0 in metres (left positive), None for an empty cell."""
++        return (self.offset_code - CURVE_OFFSET_ZERO) * CURVE_OFFSET_M if self.parameters_present else None
++
++    @property
++    def heading_rad(self) -> float | None:
++        """Nominal c1: left-positive tangent dy/dx at the radar. Unit bounded to about 1.6-2.2e-5 rad/code; None when unpopulated."""
++        return (self.heading_code - CURVE_HEADING_ZERO) * CURVE_HEADING_RAD if self.parameters_present else None
++
++    @property
++    def curvature_per_m(self) -> float | None:
++        """Nominal c2: left-positive d2y/dx2. Unit bounded to about 2.0-2.7e-6 1/m per code; None when unpopulated."""
++        return (self.curvature_code - CURVE_CURVATURE_ZERO) * CURVE_CURVATURE_PER_M if self.parameters_present else None
++
++    @property
++    def curvature_rate_per_m2(self) -> float | None:
++        """Nominal c3 in 1/m^2 (about 4e-6 per code, sign and zero replicated); None when unpopulated."""
++        return (self.rate_code - CURVE_RATE_ZERO) * CURVE_RATE_PER_M2 if self.parameters_present else None
++
++
++def prefix_flags_consistent(prefix_or_record: bytes, cells: list["ShellCell"]) -> bool:
++    """True when prefix bytes 17-19 hold the inverted parameters-present flag of cells 0-5 (about 99.96 % of records)."""
++    return all(((prefix_or_record[by] >> bi) & 1) == (0 if cells[k].parameters_present else 1)
++               for k, bits in PREFIX_UNPOPULATED_COPIES.items() for by, bi in bits)
++
++
++def id85_crc_ok(record: bytes) -> bool:
++    if len(record) != ID85_RECORD_LEN:
++        return False
++    return int.from_bytes(record[CRC_START:CRC_END], "little") == zlib.crc32(record[1:CRC_START])
++
++
++def parse_shell(record: bytes) -> tuple[bytes, list[ShellCell]]:
++    """Return the proposed 21-byte prefix and ten raw cells; reject bad CRC."""
++    if len(record) != ID85_RECORD_LEN:
++        raise ValueError(f"0x85 record must be {ID85_RECORD_LEN} bytes, got {len(record)}")
++    if not id85_crc_ok(record):
++        raise ValueError("0x85 CRC mismatch")
++    cells = []
++    for k in range(CELL_COUNT):
++        o = HEADER_LEN + CELL_LEN * k
++        cells.append(ShellCell(k, record[o:o + CELL_LEN]))
++    return record[:HEADER_LEN], cells
+diff --git a/opendbc_repo/opendbc/car/toyota/ars510/support.py b/opendbc_repo/opendbc/car/toyota/ars510/support.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..95141b6ceb29e22e3a2b41f0349f4de6d7927f1b
+--- /dev/null
++++ b/opendbc_repo/opendbc/car/toyota/ars510/support.py
+@@ -0,0 +1,288 @@
++"""Support messages: the radar's ACC target (0x235 / 0x237 / 0x239 / 0x23B), the cycle header (0x190), the
++selected-target summaries (0x191-0x194), the single-object stream (0x680), and car-bus target 0x366; docs/05 and 13.
++
++0x192 / 0x194 (4 bytes, ~radar cycle) each carry the position of one target of the radar's internal tracker in the
++object list's encoding: word 0 distance (code - 160) / 16 m, word 1 lateral (code - 2048) * LATERAL_M_PER_CODE m, left
++positive. The whole-frame sentinel is 00 FF 00 FF. Use a parsed position together with the ACC target's availability
++and association (docs/05).
++"""
++from __future__ import annotations
++
++from dataclasses import dataclass
++
++from .objects import LATERAL_M_PER_CODE
++
++A192_SENTINEL = bytes.fromhex("00FF00FF")
++A680_IDLE = bytes.fromhex("000008008000800A")
++
++
++@dataclass(frozen=True)
++class Target192:
++    range_code13: int
++    field1_code13: int
++
++    @property
++    def d_rel(self) -> float:
++        """Distance in m: the object list's encoding, (code - 160) / 16."""
++        return (self.range_code13 - 160) / 16
++
++    @property
++    def y_rel(self) -> float:
++        """Lateral position in m, left positive: (code - 2048) * 0.015, the object list's encoding."""
++        return (self.field1_code13 - 2048) * LATERAL_M_PER_CODE
++
++
++def parse_0x192(data: bytes) -> Target192 | None:
++    """Raw 13-bit summary words; Target192.d_rel / .y_rel give metres in the object list's encoding."""
++    if len(data) < 4 or bytes(data[:4]) == A192_SENTINEL:
++        return None
++    return Target192(int.from_bytes(data[0:2], "big") & 0x1FFF,
++                     int.from_bytes(data[2:4], "big") & 0x1FFF)
++
++
++A191_SENTINEL = bytes.fromhex("FEFEFEFCFCFFFEFF")
++
++
++@dataclass(frozen=True)
++class CycleHeader:
++    active_summaries: int  # 0-2: how many of the 0x191/0x192 and 0x193/0x194 pairs carry a target (0x191 fills first)
++    timestamp_us: int      # radar cycle clock, microseconds (32 bits)
++    counter: int           # mod-16 counter, +3 per cycle
++
++
++def parse_0x190(data: bytes) -> CycleHeader | None:
++    """0x190 (7 bytes, once per radar cycle): summary count, microsecond timestamp, cycle counter (docs/05).
++
++    Byte 0 = count << 2 | 2; the count equals the number of populated 0x191 / 0x193 frames in every logged cycle after start-up
++    (681,864 of 681,879; the rest are startup frames).
++    Returns None for a short frame or the all-ones start-up frame."""
++    if len(data) < 7 or data[0] == 0xFF:
++        return None
++    return CycleHeader(data[0] >> 2, int.from_bytes(data[2:6], "big"), data[6] >> 4)
++
++
++@dataclass(frozen=True)
++class Target191:
++    score: int       # 91-100 while a target is present
++    age: int         # radar cycles, saturates at 126
++    track_code: int  # pair-local target code 0-63
++    width_m: float   # class template: 1.8 car, 2.2 truck
++    height_m: float  # class template: 1.5 car, 2.3 truck
++    length_m: float  # class template: 4.5 car, 12.0 truck
++    quality: int     # counter that grows with age and saturates at 30
++
++
++def parse_0x191(data: bytes) -> Target191 | None:
++    """0x191 / 0x193 (8 bytes): companion of the 0x192 / 0x194 target summary, or None for the sentinel (docs/05).
++
++    The three size fields are a class template in 0.1 m (18:15:45 for cars, 22:23:120 for trucks on 99.97 % of
++    active frames, 607,999 of 608,186), the same class the ACC target reports on 0x239 when it is this target."""
++    if len(data) != 8 or bytes(data) == A191_SENTINEL or data[0] >> 1 == 127:
++        return None
++    return Target191(data[0] >> 1, data[1] >> 1, data[3] >> 2, (data[4] >> 2) * 0.1, (data[6] >> 1) * 0.1, data[7] * 0.1,
++                     data[5] >> 3)
++
++
++@dataclass(frozen=True)
++class Object680:
++    selector: int        # byte 0: 0 / 1 mostly stationary objects, 3 mostly same-direction vehicles
++    d_rel: float         # m, longitudinal distance, 1/32 m per code
++    y_rel: float         # m, left positive, 0.015 m per code (the object list's lateral unit)
++    v_ground: float      # m/s over ground, nominal 0.15 m/s per code (0 for a stationary object)
++    flags: int           # motion flags: bit 0 stationary, bit 1 oncoming, bit 3 seen moving; bits 2, 4, 5 raw
++    lat_speed_code: int  # centred lateral speed over ground, about 0.13-0.18 m/s per code (0 on stationary objects)
++
++    @property
++    def stationary(self) -> bool:
++        """Flag bit 0: set on 99.2 % of objects slower than 0.5 m/s over ground and on 0.7 % of moving ones."""
++        return bool(self.flags & 0x01)
++
++    @property
++    def oncoming(self) -> bool:
++        """Flag bit 1: set on 98.5 % of objects faster than 3 m/s toward ego and on 0.7 % of the others."""
++        return bool(self.flags & 0x02)
++
++    @property
++    def seen_moving(self) -> bool:
++        """Flag bit 3: a vehicle that moves or has moved (86 % of moving objects; with bit 0 a stopped vehicle)."""
++        return bool(self.flags & 0x08)
++
++
++def parse_0x680(data: bytes) -> Object680 | None:
++    """0x680 (8 bytes, 2 Hz): one object from the radar's function-level tracker, or None when idle (docs/05).
++
++    Mostly a stationary roadside object, which the 0x80 object list mostly drops while driving; sometimes a vehicle.
++    Distance scale is fixed by stationary objects closing at ego speed; the speed unit agrees with the ACC target
++    (0.09 m/s median absolute difference on shared targets). An analysis helper; the driving interface reads 0x235 / 0x237."""
++    if len(data) != 8:
++        return None
++    rng, lat = _be_field(data, 43, 13), _be_field(data, 32, 11)
++    if rng <= 1 and lat == 0:
++        return None
++    return Object680(data[0], rng / 32, (lat - 2048 if lat >= 1024 else lat) * LATERAL_M_PER_CODE,
++                     (_be_field(data, 22, 10) - 512) * 0.15, _be_field(data, 16, 6), _be_field(data, 8, 8) - 128)
++
++
++def _be_field(data: bytes, start: int, length: int) -> int:
++    """Bit field of an 8-byte frame read as one big-endian integer (bit 0 = LSB of the last byte)."""
++    return (int.from_bytes(bytes(data[:8]).ljust(8, b"\x00"), "big") >> start) & ((1 << length) - 1)
++
++
++def parse_acc_target_vrel(data: bytes) -> float | None:
++    """0x235: closing speed of the radar's ACC target, m/s (negative = closing).
++
++    Bits 29..39, offset 1024, 0.125 m/s per code. The unit is fixed by stopped lead vehicles (true closing speed =
++    ego speed) and by the slope of the target's own range code: speed / range rate = 0.99 on 1,862 windows (docs/05).
++    """
++    if len(data) < 8:
++        return None
++    return (_be_field(data, 29, 11) - 1024) * 0.125
++
++
++def parse_acc_target_arel(data: bytes) -> float | None:
++    """0x235 byte 2: relative acceleration of the radar's ACC target, m/s^2 (positive = opening).
++
++    (byte 2 - 100) * 0.125; the idle payload's 0x64 decodes to 0. The unit follows from the frame's own closing
++    speed: over 2 s windows the speed code changes by 1.00 times the integral of this code (0.997 on 222,050 windows,
++    1.002 on other drives), so one code is one speed code (0.125 m/s) per second. Meaningful only while the target
++    is active (docs/05).
++    """
++    if len(data) < 8:
++        return None
++    return (data[2] - 100) * 0.125
++
++
++def parse_acc_target_position(data: bytes) -> tuple[float, float] | None:
++    """0x237: (distance m, lateral m left positive) of the radar's ACC target, as the track association uses them.
++
++    Distance: bits 39..51 (13 bits), code * 0.025 m (parse_acc_target_range_code returns the raw code).
++    Lateral: bits 27..38 (12 bits), (code - 2000) * 0.01 m; one object-list lateral code is 1.5 of these codes (1.499-1.502).
++    """
++    if len(data) < 8:
++        return None
++    return _be_field(data, 39, 13) * 0.025, (_be_field(data, 27, 12) - 2000) * 0.01
++
++
++def parse_acc_target_range_code(data: bytes) -> int | None:
++    """0x237 BE39|13 distance code of the radar's ACC target: distance = 0.025 m x code, zero offset.
++
++    Against the 0x680 object range the fit is 0.02500 m per code, +0.01 m, 0.02 m median residual (docs/05). Read it
++    after checking target availability (0x235 state 5); `parse_acc_target` returns the full target.
++    """
++    if len(data) < 8:
++        return None
++    return _be_field(data, 39, 13)
++
++
++@dataclass(frozen=True)
++class AccTarget:
++    target_id: int        # 0x235 bits 0-4: constant while the radar follows one target
++    d_rel: float          # m, 0.025 m per code
++    y_rel: float          # m, left positive, 12-bit (code - 2000) * 0.01
++    v_rel: float          # m/s, negative = closing
++    a_rel: float          # m/s^2, positive = opening
++    v_lat: float          # m/s, left positive, about 0.0125 m/s per code
++    a_lat: float          # m/s^2, relative lateral acceleration, (code - 100) * 0.125: mostly minus ego's own
++    in_path: bool         # in-path confirmed (93.6 % of target frames)
++    in_path_level: int    # 5 confirmed, then 4, 3, 2 as the target moves off the path
++    tracker_codes: tuple[int, int]  # two raw tracker bytes that rise while the target accelerates or brakes
++
++
++def parse_acc_target(data235: bytes, data237: bytes) -> AccTarget | None:
++    """Every field of the radar's ACC target from one 0x235 / 0x237 pair, or None while the target is idle (docs/05).
++
++    Field boundaries come from the carry structure of 2 M frames; while the target is idle every numeric field sits at its zero
++    code. The driving interface keeps using the single-field helpers below."""
++    if len(data235) != 8 or len(data237) != 8 or data235[1] & 0x0F != 5 or not _be_field(data237, 10, 1):
++        return None
++    return AccTarget(target_id=_be_field(data235, 0, 5), d_rel=_be_field(data237, 39, 13) * 0.025,
++                     y_rel=(_be_field(data237, 27, 12) - 2000) * 0.01, v_rel=(_be_field(data235, 29, 11) - 1024) * 0.125,
++                     a_rel=(data235[2] - 100) * 0.125, v_lat=(_be_field(data235, 8, 11) - 1024) * 0.0125,
++                     a_lat=(_be_field(data235, 19, 8) - 100) * 0.125, in_path=bool(_be_field(data237, 8, 1)),
++                     in_path_level=_be_field(data237, 4, 3), tracker_codes=(_be_field(data237, 19, 8), _be_field(data237, 11, 8)))
++
++
++@dataclass(frozen=True)
++class AccTargetInfo:
++    target_class: int     # 1 car, 2 truck (the 0x191 template class); 0, 4, 5, 6 other; 7 idle
++    present: bool
++    in_object_list: bool  # the target also has an object in the 0x80 list
++    timestamp_us: int     # radar cycle clock of this target update, same clock as 0x190
++
++
++def parse_0x239(data: bytes) -> AccTargetInfo | None:
++    """0x239 (8 bytes, 50 Hz): class, object-list flag and cycle timestamp of the radar's ACC target (docs/05).
++
++    The timestamp is 32 bits starting 3 bits into byte 3 and equals the 0x190 timestamp of the cycle the 0x235 / 0x237
++    content belongs to. Returns None for a short frame or the all-ones start-up frame."""
++    if len(data) != 8 or data[1] & 0x0F == 0x0F:
++        return None
++    return AccTargetInfo(data[1] & 0x0F, bool(data[3] & 0x08), bool(data[3] & 0x80), _be_field(data, 3, 32))
++
++
++# ---------------------------------------------------------------- 0x23B: target width, counter, CRC-8
++A23B_CRC_XOROUT = 0x59
++
++
++def crc8_0x1d_bits(bits) -> int:
++    """CRC-8, polynomial 0x1D (x^8+x^4+x^3+x^2+1), MSB first, init 0, direct bit order in and out, over an iterable of bits."""
++    crc = 0
++    for bit in bits:
++        crc = ((crc << 1) & 0xFF) ^ ((((crc >> 7) & 1) ^ bit) * 0x1D)
++    return crc
++
++
++def crc_0x23b(value: int, counter_and_low: int) -> int:
++    """Check byte of 0x23B: CRC-8/0x1D over [counter 4 bits][0000][low nibble of byte 1][value byte 2 8 bits], xor 0x59."""
++    bits = [(counter_and_low >> (7 - i)) & 1 for i in range(4)] + [0] * 4 + [(counter_and_low >> (3 - i)) & 1 for i in range(4)] \
++        + [(value >> (7 - i)) & 1 for i in range(8)]
++    return crc8_0x1d_bits(bits) ^ A23B_CRC_XOROUT
++
++
++def parse_0x23b(data: bytes) -> tuple[int, int, bool] | None:
++    """0x23B (3 bytes, 50 Hz), in frame order as received: (ACC target width in cm, rolling counter 0-15, check byte valid).
++
++    Byte 0 = CRC-8, byte 1 = counter << 4 | width high nibble, byte 2 = width low byte. The width is 0 exactly while
++    the target is idle, 140-220 for the car class (median 171) and 200-280 for the truck class (docs/05). The startup
++    frame 00 0f ff is the one frame with a mismatching check byte; every other frame carries a valid one."""
++    if len(data) != 3:
++        return None
++    return (data[1] & 0x0F) << 8 | data[2], data[1] >> 4, crc_0x23b(data[2], data[1]) == data[0]
++
++
++@dataclass(frozen=True)
++class Target366:
++    """Car-bus target report: matches ACC in some regimes and also reports other states (docs/13)."""
++    speed_code: int
++    distance_code: int
++    header_raw: int
++    tail_raw: int
++    lateral_code: int = 15  # signed five bits at MSB-first 40|5; 15 is the no-target value
++
++    @property
++    def y_rel(self) -> float | None:
++        """Lateral offset in metres, left positive, -0.34 m per code; None for 15 (idle) and -16 (invalid, mostly beyond +-5 m)."""
++        return None if self.lateral_code in (15, -16) else -0.34 * self.lateral_code
++
++    @property
++    def v_rel(self) -> float | None:
++        """Nominal relative speed for codes below 256 (0.5 km/h per code, zero 155); None from 256 (docs/13)."""
++        return (self.speed_code - 155) * 5 / 36 if self.speed_code < 256 else None
++
++    @property
++    def d_rel(self) -> float:
++        """Approximate range in metres at the fitted 0.8 m per code (fit 0.79, docs/13)."""
++        return self.distance_code * .8
++
++
++def parse_0x366(data: bytes) -> Target366 | None:
++    """Decode a seven-byte car-bus report, or None for the 7FFF idle word.
++
++    0x366 arrives about 90 ms after 0x365. It agrees with the ACC target in matched mature-target comparisons and
++    also reports while the ACC target is idle (docs/13). An analysis helper; the profiles read the ACC target frames.
++    """
++    if len(data) != 7 or data[2:4] == b"\x7f\xff":
++        return None
++    lateral = data[5] >> 3
++    return Target366(data[2] * 2 + (data[3] >> 7), data[3] & 127,
++                     int.from_bytes(data[:2], "big"), int.from_bytes(data[4:], "big"), lateral - 32 if lateral >= 16 else lateral)
+diff --git a/opendbc_repo/opendbc/car/toyota/ars510/tracks.py b/opendbc_repo/opendbc/car/toyota/ars510/tracks.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..aa0ede69e78d1e9f630f51d9a811a98f2c8be962
+--- /dev/null
++++ b/opendbc_repo/opendbc/car/toyota/ars510/tracks.py
+@@ -0,0 +1,46 @@
++"""Track IDs from the radar's own slot / age lifecycle.
++
++An object keeps its slot while the radar tracks it and its age counts up by one per cycle (saturating at 126).
++A new ID starts whenever a slot's age stays level or drops (restart, age 0) or the slot goes quiet for longer than
++`max_gap_s`. Every ID lives in one slot only; within 60 m the track keeps one camera identity for at least 95% of its
++life on 77 of 87 camera-checked tracks (docs/06_accuracy.md).
++"""
++from __future__ import annotations
++
++from math import isfinite
++
++from .objects import AGE_SATURATION
++
++
++class NativeTrackIdAssigner:
++    def __init__(self, max_gap_s: float = 0.3) -> None:
++        self.max_gap_s = max_gap_s
++        self._state: dict[int, tuple[int, int, float]] = {}  # slot -> (track id, age, time)
++        self._next_id = 1
++        self._last_time_s: float | None = None
++
++    def update(self, time_s: float, slot: int, age: int) -> int:
++        """Updates must be chronological; an exact repeat of the same (slot, time) is idempotent."""
++        if not isfinite(time_s):
++            raise ValueError("time_s must be finite")
++        if self._last_time_s is not None and time_s < self._last_time_s:
++            raise ValueError("track updates must be chronological; reset per route or segment")
++        prev = self._state.get(slot)
++        if prev is not None and time_s == prev[2]:
++            if age != prev[1]:
++                raise ValueError("conflicting ages for the same slot and timestamp")
++            return prev[0]
++        continues = (
++            prev is not None
++            and (time_s - prev[2]) <= self.max_gap_s
++            and (age > prev[1] or age == prev[1] == AGE_SATURATION)
++        )
++        track_id = prev[0] if continues else self._new_id()
++        self._state[slot] = (track_id, age, time_s)
++        self._last_time_s = time_s
++        return track_id
++
++    def _new_id(self) -> int:
++        tid = self._next_id
++        self._next_id += 1
++        return tid
+diff --git a/opendbc_repo/opendbc/car/toyota/ars510/transport.py b/opendbc_repo/opendbc/car/toyota/ars510/transport.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..0722b5311c079c715f3927bff3ff2881bc9eeb99
+--- /dev/null
++++ b/opendbc_repo/opendbc/car/toyota/ars510/transport.py
+@@ -0,0 +1,78 @@
++"""Reassembly of the segmented 0x80 / 0x85 records.
++
++Each record starts with a first frame whose bytes 0-1 are a fixed marker (0x12 0xE4 for 0x80, 0x10 0x90 for
++0x85). Consecutive frames follow; bytes 1..7 of every frame, first frame included, are appended. The
++consecutive-frame sequence nibble wraps every 16 frames, so each record is reassembled in code, which tracks which part
++of the record a frame carries.
++"""
++from __future__ import annotations
++
++from dataclasses import dataclass
++from math import isfinite
++
++from .constants import (
++    ID80_FIRST_FRAME,
++    ID80_RECORD_FRAMES,
++    ID80_RECORD_LEN,
++    ID85_FIRST_FRAME,
++    ID85_RECORD_FRAMES,
++    ID85_RECORD_LEN,
++)
++
++
++@dataclass(frozen=True)
++class CompletedRecord:
++    time_s: float  # timestamp of the first frame
++    payload: bytes
++    frame_count: int
++
++
++class SegmentedRecordAssembler:
++    def __init__(self, first_frame: tuple[int, int], frames_per_record: int, record_len: int) -> None:
++        self.first_frame = first_frame
++        self.frames_per_record = frames_per_record
++        self.record_len = record_len
++        self.reset()
++
++    def reset(self) -> None:
++        self._chunks: list[bytes] = []
++        self._start_time_s: float | None = None
++        self._last_time_s: float | None = None
++
++    def _is_start(self, data: bytes) -> bool:
++        return data[0] == self.first_frame[0] and data[1] == self.first_frame[1]
++
++    def push(self, time_s: float, data: bytes) -> CompletedRecord | None:
++        """Feed one 8-byte frame; returns a record when its last frame arrives."""
++        if len(data) != 8 or not isfinite(time_s):
++            self.reset()
++            return None
++        if self._chunks and self._last_time_s is not None and time_s < self._last_time_s:
++            self.reset()
++        if self._is_start(data):
++            self._chunks = [bytes(data[1:8])]
++            self._start_time_s = time_s
++        elif self._chunks:
++            self._chunks.append(bytes(data[1:8]))
++        else:
++            return None
++        self._last_time_s = time_s
++        if len(self._chunks) != self.frames_per_record:
++            return None
++        record = b"".join(self._chunks)
++        start = self._start_time_s if self._start_time_s is not None else time_s
++        n = len(self._chunks)
++        self.reset()
++        if len(record) != self.record_len:
++            return None
++        return CompletedRecord(float(start), record, n)
++
++
++class Id80RecordAssembler(SegmentedRecordAssembler):
++    def __init__(self) -> None:
++        super().__init__(ID80_FIRST_FRAME, ID80_RECORD_FRAMES, ID80_RECORD_LEN)
++
++
++class Id85RecordAssembler(SegmentedRecordAssembler):
++    def __init__(self) -> None:
++        super().__init__(ID85_FIRST_FRAME, ID85_RECORD_FRAMES, ID85_RECORD_LEN)
+diff --git a/opendbc_repo/opendbc/car/toyota/ars510_carrot.py b/opendbc_repo/opendbc/car/toyota/ars510_carrot.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..f77459b44f0d68b4733baddbfbf517d9c46a5ca2
+--- /dev/null
++++ b/opendbc_repo/opendbc/car/toyota/ars510_carrot.py
+@@ -0,0 +1,405 @@
++"""RAV4 2022 RADAR_ACC의 ARS510 fused 수신을 Carrot MyTrack에 연결한다.
++
++디코더 9개 파일은 ds-sebastian/ars510-radar의 fb5b29c2 커밋을 그대로
++포함하며 라이선스는 ars510/LICENSE다. 이 파일만 Carrot 수신 계약을 추가한다.
++CP·필터 계수·Panda·PCS를 변경하지 않으며 CAN 송신/ECU 초기화 API가 없다.
++"""
++
++from collections import Counter
++from math import isfinite
++
++from opendbc.car import structs
++from opendbc.car.carlog import carlog
++from opendbc.car.interfaces import RadarInterfaceBase
++from opendbc.car.toyota.ars510.constants import (
++  ACC_TARGET_POS_ADDR, ACC_TARGET_VREL_ADDR, ID80_ADDR, RADAR_CYCLE_S, SUMMARY_ADDRS, TOYOTA_KINEMATICS_ADDR, TOYOTA_SPEED_ADDR,
++)
++from opendbc.car.toyota.ars510.interface import Ars510NativeRadarInterface, FUSED_CONFIG
++from opendbc.car.toyota.ars510.transport import Id80RecordAssembler
++from opendbc.car.toyota.toyotacan import toyota_checksum
++from opendbc.car.toyota.values import CAR, ToyotaFlags
++
++
++# 기존 레코드 조립 검증 한계를 유지한다. 모델 시각 차이 문턱과는 별개다.
++RECORD_ASSEMBLY_TIMEOUT_S = 0.15
++RADAR_TIMEOUT_S = 0.5
++NO_RECORD_WARN_S = 15.0
++EMPTY_PERIOD = 5
++ARS510_RECEIVER_API = 1
++TRACK_ID_LIMIT = 2**31
++
++
++def _finite(value):
++  try:
++    return isfinite(value)
++  except (TypeError, OverflowError):
++    return False
++
++
++def _packet_time(timestamp_ns):
++  try:
++    return timestamp_ns * 1e-9
++  except (TypeError, OverflowError):
++    return float("nan")
++
++
++def is_supported_ars510(CP):
++  """모델/기능만 지원 판정에 사용한다. CP.radarUnavailable은 변경하지 않는다."""
++  return (getattr(CP, "brand", None) == "toyota"
++          and str(CP.carFingerprint) == str(CAR.TOYOTA_RAV4_TSS2_2022)
++          and bool(int(CP.flags) & ToyotaFlags.RADAR_ACC.value))
++
++
++class StrictId80RecordAssembler(Id80RecordAssembler):
++  """0x80의 프레임 길이·순서·시각을 확인한 뒤 원형 조립기를 호출한다."""
++
++  def __init__(self):
++    self.counters = Counter()
++    self.rejections = 0
++    self._input_time_s = None
++    super().__init__()
++
++  def _reject(self, reason):
++    self.counters[reason] += 1
++    self.rejections += 1
++    self.reset()
++
++  def push(self, time_s, data):
++    if not _finite(time_s):
++      self._reject("nonfinite_time")
++      return None
++    if self._input_time_s is not None and time_s < self._input_time_s:
++      self._reject("reversed_time")
++      self._input_time_s = time_s
++      return None
++    self._input_time_s = time_s
++    if len(data) != 8:
++      self._reject("bad_frame_length")
++      return None
++
++    if self._is_start(data):
++      if self._chunks:
++        self.counters["interrupted_records"] += 1
++      self.counters["starts"] += 1
++      return super().push(time_s, data)
++
++    if data[0] >> 4 != 2:
++      self._reject("bad_frame_type")
++      return None
++    if not self._chunks:
++      self.counters["orphan_continuations"] += 1
++      return None
++    if time_s - self._start_time_s > RECORD_ASSEMBLY_TIMEOUT_S:
++      self._reject("assembly_timeout")
++      return None
++    # 실로그의 시작 직후는 0x21이며, 0x2f 다음은 0x20이다.
++    if (data[0] & 0xf) != (len(self._chunks) & 0xf):
++      self._reject("sequence_errors")
++      return None
++    complete = super().push(time_s, data)
++    if complete is not None:
++      self.counters["completed_records"] += 1
++    return complete
++
++
++class Ars510RadarInterface(RadarInterfaceBase):
++  """원형 fused 결과를 실제 Carrot RadarData와 MyTrack 처리에 연결한다."""
++
++  def __init__(self, CP):
++    if not is_supported_ars510(CP):
++      raise ValueError("ARS510 수신기는 Toyota RAV4 TSS2 2022 RADAR_ACC만 지원합니다")
++    super().__init__(CP)
++    # 원본 CP의 radarTimeStep을 수정하지 않고 검증한 record 주기를 사용한다.
++    self.dt = RADAR_CYCLE_S
++    self.init_done = True
++    self.decoder = self._new_decoder()
++    self._counters = Counter()
++    self._decoder_counters = Counter()
++    self._assembler_counters = Counter()
++    self._record_time_s = None
++    self._packet_time_s = None
++    self._receive_time_s = None
++    self._completion_time_s = None
++    self._blocked_packet_time_s = None
++    # MyTrack의 코너 슬롯 예약 범위와 겹치지 않는 전방 객체 번호를 사용한다.
++    self._namespace_offset = 1000
++    self._max_track_id = 999
++    self._unavailable = True
++    self._seen_record = False
++    self._fault_latched = False
++    self._start_time_s = None
++    self._warned = False
++    self._outer_frame = 0
++    self._inside_carrot_update = False
++
++  @staticmethod
++  def _new_decoder():
++    # v_long_ground가 필요하므로 원형 FUSED_CONFIG의 metadata=True를 보존한다.
++    decoder = Ars510NativeRadarInterface(FUSED_CONFIG)
++    decoder._assembler = StrictId80RecordAssembler()
++    return decoder
++
++  @property
++  def diagnostics(self):
++    """재초기화 전후를 합친 관측 수치이며 실차 안전 검증 결과는 아니다."""
++    values = self._counters.copy()
++    for key in ("records", "crc_failures", "settling_suppressed", "unresolved_suppressed", "path_gated"):
++      values[key] = self._decoder_counters[key] + getattr(self.decoder, key)
++    for key, value in self.decoder._assembler.counters.items():
++      values[key] = self._assembler_counters[key] + value
++    for key, value in self._assembler_counters.items():
++      if key not in self.decoder._assembler.counters:
++        values[key] = value
++    values["namespace_offset"] = self._namespace_offset
++    values["active_points"] = len(self.pts)
++    for key in ("starts", "completed_records", "sequence_errors", "bad_frame_length", "bad_frame_type",
++                "assembly_timeout", "nonfinite_time", "reversed_time", "interrupted_records",
++                "orphan_continuations", "no_record_updates", "timeouts", "history_resets",
++                "published_records", "published_points", "invalid_points", "received_id80_frames",
++                "invalid_native_record", "invalid_packet_time", "nonfinite_input", "reversed_receive_time",
++                "support_frame_length", "support_checksum_errors", "invalid_frame_data", "ambiguous_batch_time", "invalid_track_id",
++                "cold_start_publications", "cold_start_warnings"):
++      values.setdefault(key, 0)
++    return dict(values)
++
++  def _reset_history(self):
++    for key in ("records", "crc_failures", "settling_suppressed", "unresolved_suppressed", "path_gated"):
++      self._decoder_counters[key] += getattr(self.decoder, key)
++    self._assembler_counters.update(self.decoder._assembler.counters)
++    self.decoder = self._new_decoder()
++    self.pts.clear()
++    self.tracks.clear()
++    self._namespace_offset = self._max_track_id + 1
++    self._record_time_s = None
++    self._completion_time_s = None
++    self._unavailable = True
++    self._counters["history_resets"] += 1
++
++  def _input_error(self):
++    self._fault_latched = True
++    self._reset_history()
++    return self._unavailable_result(can_error=True)
++
++  def _waiting_result(self, now_s):
++    """빈 초기상태/손실은 외부 호출 100Hz 기준 20Hz로만 발행한다."""
++    if not self._unavailable or now_s is None:
++      return None
++    if self._start_time_s is None:
++      self._start_time_s = now_s
++    if not self._seen_record and not self._fault_latched and not self._warned and now_s - self._start_time_s > NO_RECORD_WARN_S:
++      carlog.warning("ARS510: 첫 CRC 정상 객체 레코드의 수신을 기다리고 있습니다")
++      self._warned = True
++      self._counters["cold_start_warnings"] += 1
++    if self._outer_frame % EMPTY_PERIOD:
++      return None
++    if self._seen_record or self._fault_latched:
++      return self._unavailable_result(can_error=self._fault_latched)
++    # 새 레코드/객체를 만들지 않는다. 원형 upstream의 cold-start 빈 상태다.
++    self._counters["cold_start_publications"] += 1
++    return structs.RadarData()
++
++  @staticmethod
++  def _unavailable_result(*, can_error=False):
++    ret = structs.RadarData()
++    ret.errors.canError = can_error
++    ret.errors.radarUnavailableTemporary = True
++    return ret
++
++  def _convert(self, decoded):
++    points = {}
++    for value in decoded["radarData"]["points"]:
++      required = (value["dRel"], value["yRel"], value["vRel"], value["v_long_ground"])
++      if not all(isfinite(v) for v in required) or value["dRel"] <= 0:
++        self._counters["invalid_points"] += 1
++        continue
++      native_id = value["trackId"]
++      if not isinstance(native_id, int) or isinstance(native_id, bool):
++        self._counters["invalid_points"] += 1
++        self._counters["invalid_track_id"] += 1
++        return self._input_error()
++      track_id = native_id + self._namespace_offset
++      # RadarPoint는 UInt64지만 downstream RadarState의 객체 번호는 Int32다.
++      if native_id < 0 or track_id >= TRACK_ID_LIMIT or track_id in points:
++        self._counters["invalid_points"] += 1
++        self._counters["invalid_track_id"] += 1
++        return self._input_error()
++      self._max_track_id = max(self._max_track_id, track_id)
++      yv_rel = value.get("yvRel", 0.0)
++      # 기존 Toyota 경로의 횡속도 기본값과 같이, 미해결 횡속도는 0으로 표시한다.
++      point = structs.RadarData.RadarPoint(
++        trackId=track_id,
++        dRel=float(value["dRel"]),
++        yRel=float(value["yRel"]),
++        vRel=float(value["vRel"]),
++        vLead=float(value["v_long_ground"]),
++        aRel=float(value.get("aRel", float("nan"))),
++        yvRel=float(yv_rel) if isfinite(yv_rel) else 0.0,
++        measured=bool(value["measured"]),
++        radarSource="frontRadar",
++        trackState=0,
++      )
++      points[track_id] = point
++    # ret.points만 만들면 부모 클래스가 MyTrack을 갱신하지 못한다.
++    # 각 정상 record의 전체 집합으로 바꿔 누락된 객체는 즉시 제거한다.
++    self.pts = points
++    self._counters["published_records"] += 1
++    self._counters["published_points"] += len(points)
++    ret = structs.RadarData()
++    ret.points = list(points.values())
++    return ret
++
++  def update_carrot(self, v_ego, a_ego, rcv_time, can_packets):
++    """각 record를 실제 수신 시각으로 부모 필터에 순서대로 전달한다."""
++    if not all(_finite(value) for value in (v_ego, a_ego, rcv_time)):
++      self._counters["nonfinite_input"] += 1
++      return self._input_error()
++    if self._receive_time_s is not None and rcv_time < self._receive_time_s:
++      self._counters["reversed_receive_time"] += 1
++      self._input_error()
++      self._packet_time_s = None
++      self._receive_time_s = rcv_time
++      return self._unavailable_result(can_error=True)
++    result = None
++    self._outer_frame += 1
++    if self._start_time_s is None:
++      self._start_time_s = rcv_time
++    ego_history = self.v_ego_hist.copy()
++    accel_history = self.a_ego_hist.copy()
++
++    def parent_step(time_s, packets):
++      # 외부 상태는 한 샘플이다. 내부 프레임 분할로 지연 보상 이력을 늘리지 않는다.
++      self.v_ego_hist = ego_history.copy()
++      self.a_ego_hist = accel_history.copy()
++      return super(Ars510RadarInterface, self).update_carrot(v_ego, a_ego, time_s, packets)
++
++    def retain(value):
++      nonlocal result
++      if value is not None:
++        if result is not None and result.errors.canError and value.errors.radarUnavailableTemporary:
++          # 오류 뒤의 부분 프레임이나 무입력 검사만으로 정상 복구를 선언하지 않는다.
++          value.errors.canError = True
++        result = value
++
++    self._inside_carrot_update = True
++    try:
++      for timestamp_ns, frames in can_packets:
++        packet_time_s = _packet_time(timestamp_ns)
++        step_time_s = packet_time_s if _finite(packet_time_s) else rcv_time
++        # 앞선 레코드를 미래 batch 수신 시각으로 미리 만료시키지 않는다.
++        self._receive_time_s = step_time_s
++        if not frames:
++          retain(parent_step(step_time_s, [(timestamp_ns, [])]))
++        for frame in frames:
++          retain(parent_step(step_time_s, [(timestamp_ns, [frame])]))
++      self._receive_time_s = rcv_time
++      retain(parent_step(rcv_time, []))
++    finally:
++      self._inside_carrot_update = False
++    return result if result is not None else self._waiting_result(rcv_time)
++
++  def update(self, can_packets):
++    """(수신 나노초, CAN 프레임 목록) 입력만 읽고 CAN 송신은 하지 않는다."""
++    result = None
++    direct = not self._inside_carrot_update
++    if direct:
++      self._outer_frame += 1
++    now_s = self._receive_time_s
++    for timestamp_ns, frames in can_packets:
++      time_s = _packet_time(timestamp_ns)
++      if not _finite(time_s) or (self._packet_time_s is not None and time_s < self._packet_time_s):
++        self._counters["invalid_packet_time"] += 1
++        self._input_error()
++        self._packet_time_s = time_s if _finite(time_s) else None
++        result = self._unavailable_result(can_error=True)
++        continue
++      self._packet_time_s = time_s
++      now_s = time_s if now_s is None else max(now_s, time_s)
++      if time_s == self._blocked_packet_time_s:
++        result = self._unavailable_result(can_error=True)
++        continue
++      self._blocked_packet_time_s = None
++      if self._record_time_s is not None and time_s - self._record_time_s > RADAR_TIMEOUT_S:
++        self._counters["timeouts"] += 1
++        self._reset_history()
++        result = self._unavailable_result()
++      for address, data, src in frames:
++        if self._blocked_packet_time_s == time_s:
++          break
++        support_frame = (
++          src == FUSED_CONFIG.ego_speed_bus and address in (TOYOTA_SPEED_ADDR, TOYOTA_KINEMATICS_ADDR)
++        ) or (
++          src == FUSED_CONFIG.radar_bus and address in (ACC_TARGET_POS_ADDR, ACC_TARGET_VREL_ADDR, *SUMMARY_ADDRS)
++        )
++        object_frame = src == FUSED_CONFIG.radar_bus and address == ID80_ADDR
++        if not support_frame and not object_frame:
++          continue
++        if not isinstance(data, (bytes, bytearray, memoryview)):
++          self._counters["invalid_frame_data"] += 1
++          result = self._input_error()
++          continue
++        # 범위 요약은 원형 디코더가 4바이트 이상을 받는다. 실제 로그도 DLC4다.
++        summary_frame = src == FUSED_CONFIG.radar_bus and address in SUMMARY_ADDRS
++        invalid_support_length = not 4 <= len(data) <= 8 if summary_frame else len(data) != 8
++        if support_frame and invalid_support_length:
++          self._counters["support_frame_length"] += 1
++          result = self._input_error()
++          continue
++        if src == FUSED_CONFIG.ego_speed_bus and address == TOYOTA_SPEED_ADDR:
++          # SPEED의 원형 DBC에 정의된 Toyota CHECKSUM만 검증한다.
++          speed_data = bytes(data)
++          if len(speed_data) != 8:
++            self._counters["support_frame_length"] += 1
++            result = self._input_error()
++            continue
++          if toyota_checksum(address, None, bytearray(speed_data)) != speed_data[-1]:
++            self._counters["support_checksum_errors"] += 1
++            result = self._input_error()
++            continue
++        if object_frame:
++          self._counters["received_id80_frames"] += 1
++        assembler = self.decoder._assembler
++        rejected_before = assembler.rejections
++        crc_before = self.decoder.crc_failures
++        complete_before = assembler.counters["completed_records"]
++        try:
++          decoded = self.decoder.update_frame(time_s, src, address, bytes(data))
++        except ValueError:
++          # 동일 시각의 상충하는 객체 나이 등은 원형 lifecycle의 거절을 유지한다.
++          ambiguous = assembler.counters["completed_records"] > complete_before and time_s == self._completion_time_s
++          self._counters["ambiguous_batch_time" if ambiguous else "invalid_native_record"] += 1
++          self._input_error()
++          if ambiguous:
++            self._blocked_packet_time_s = time_s
++          result = self._unavailable_result(can_error=True)
++          continue
++        if assembler.rejections > rejected_before or self.decoder.crc_failures > crc_before:
++          result = self._input_error()
++          continue
++        if decoded is not None:
++          record_time_s = decoded["time_s"]
++          if (time_s == self._completion_time_s
++              or (self._record_time_s is not None and record_time_s == self._record_time_s)):
++            # 시작 또는 완료 시각이 같은 복수 record에 임의 측정 주기를 만들지 않는다.
++            self._counters["ambiguous_batch_time"] += 1
++            self._input_error()
++            self._blocked_packet_time_s = time_s
++            result = self._unavailable_result(can_error=True)
++            continue
++          if not _finite(record_time_s) or (self._record_time_s is not None and record_time_s < self._record_time_s):
++            self._counters["invalid_native_record"] += 1
++            result = self._input_error()
++            continue
++          self._completion_time_s = time_s
++          self._record_time_s = record_time_s
++          self._seen_record = True
++          self._fault_latched = False
++          self._unavailable = False
++          result = self._convert(decoded)
++
++    if self._record_time_s is not None and now_s is not None and now_s - self._record_time_s > RADAR_TIMEOUT_S:
++      self._counters["timeouts"] += 1
++      self._reset_history()
++      result = self._unavailable_result()
++    if self._unavailable and result is None:
++      self._counters["no_record_updates"] += 1
++    return result if result is not None or not direct else self._waiting_result(now_s)
+diff --git a/opendbc_repo/opendbc/car/toyota/interface.py b/opendbc_repo/opendbc/car/toyota/interface.py
+index bf6f046034aadcd4b790db1a3209a16f4332cc2d..1951201db0b0c65d85ffcb491be106d658c77e54 100644
+--- a/opendbc_repo/opendbc/car/toyota/interface.py
++++ b/opendbc_repo/opendbc/car/toyota/interface.py
+@@ -2,6 +2,7 @@ from opendbc.car import Bus, structs, get_safety_config, uds
+ from opendbc.car.toyota.carstate import CarState
+ from opendbc.car.toyota.carcontroller import CarController
+ from opendbc.car.toyota.radar_interface import RadarInterface
++from opendbc.car.toyota.ars510_carrot import is_supported_ars510
+ from opendbc.car.toyota.values import Ecu, CAR, DBC, ToyotaFlags, CarControllerParams, TSS2_CAR, RADAR_ACC_CAR, NO_DSU_CAR, \
+                                                   MIN_ACC_SPEED, EPS_SCALE, UNSUPPORTED_DSU_CAR, NO_STOP_TIMER_CAR, ANGLE_CONTROL_CAR, \
+                                                   ToyotaSafetyFlags
+@@ -150,6 +151,13 @@ class CarInterface(CarInterfaceBase):
+       if ret.flags & ToyotaFlags.HYBRID.value:
+         ret.longitudinalActuatorDelay = 0.05
+ 
++    if is_supported_ars510(ret):
++      # 지원 모델과 실제 로그로 확인된 수신 프로토콜의 능력만 선언한다.
++      # 종방향 활성화·ECU 비활성화·안전 설정은 기존 결정을 유지한다.
++      ret.radarUnavailable = False
++      ret.radarTimeStep = 0.06
++      ret.radarDelay = 0.0
++
+     return ret
+ 
+   @staticmethod
+diff --git a/opendbc_repo/opendbc/car/toyota/radar_interface.py b/opendbc_repo/opendbc/car/toyota/radar_interface.py
+index 76dbbc44b4bad0d5cdbffc15674d71afb4cf75eb..1bf914de1c8b097d983a65ca9aafb1596bece449 100755
+--- a/opendbc_repo/opendbc/car/toyota/radar_interface.py
++++ b/opendbc_repo/opendbc/car/toyota/radar_interface.py
+@@ -4,6 +4,7 @@ from opendbc.car import Bus
+ from opendbc.car.structs import RadarData
+ from opendbc.car.toyota.values import DBC, TSS2_CAR
+ from opendbc.car.interfaces import RadarInterfaceBase
++from opendbc.car.toyota.ars510_carrot import is_supported_ars510
+ 
+ 
+ def _create_radar_can_parser(car_fingerprint):
+@@ -21,6 +22,17 @@ def _create_radar_can_parser(car_fingerprint):
+   return CANParser(DBC[car_fingerprint][Bus.radar], messages, 1)
+ 
+ class RadarInterface(RadarInterfaceBase):
++  ARS510_CARROT_API = 1
++  ARS510_CARROT_PROFILE = "fused"
++  supports_ars510 = staticmethod(is_supported_ars510)
++
++  def __new__(cls, CP):
++    from opendbc.car.toyota.ars510_carrot import Ars510RadarInterface
++    if cls is RadarInterface and cls.supports_ars510(CP):
++      # 다른 Toyota는 기존 파서와 객체 생성을 그대로 사용한다.
++      return Ars510RadarInterface(CP)
++    return super().__new__(cls)
++
+   def __init__(self, CP):
+     super().__init__(CP)
+     self.track_id = 0
