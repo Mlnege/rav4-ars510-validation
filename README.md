@@ -1,10 +1,12 @@
 # RAV4 2022 레이더·종방향 제어 오프라인 검증
 
-## 최신 공식 소스에 선택 파일 패치
+## 최신 공식 소스에 선택 파일 패치 — 코드 검토 후 r2
 
-공식 `carrot-wip`을 실행 시점 최신으로 새 개발 폴더에 받은 뒤 레이더·PCM·종방향 보완만 골라 덧붙이는 방식을 준비했습니다. 기존 실행 파일6개와 필요한 추가12개만 대상이며, 다른 차량·Bosch·신호·성능·UI 기반과 운영 설치는 유지합니다.
+공식 `carrot-wip`을 실행 시점 최신으로 새 개발 폴더에 받은 뒤 필요한 레이더·PCM·종방향 변경만 선택합니다. 기존 실행 파일7개와 추가12개, 총19개가 대상입니다. 레이더 입력 오류 뒤 재구성해도 정상 레코드까지 오류를 유지하도록 보완했습니다. 다른 차량·Bosch·신호·성능·UI 기반과 운영 설치는 유지합니다.
 
-[선택 패치·최신 소스 다운로드 안내](pr-preparation/selective-20261013/README.md)를 사용하세요. 핵심 지문이나 문맥이 달라지면 강제 적용하지 않고 보류합니다. [최신 Carrot PR 후보](https://github.com/ajouatom/openpilot/compare/carrot-wip...Mlnege:codex/rav4-ars510-carrot-latest?expand=1)는626 기준의 검증된 변경이며, 실제 최신0611 clone에도 선택18개가 적용·확인됐습니다. 기존2ec/417자료는 아래에 당시 스냅샷으로 보존했습니다. 실제 PR는 제출하지 않았습니다.
+[선택 패치·최신 소스 다운로드 안내](pr-preparation/selective-20261013-r2/README.md), [코드 검토5건과 수정 결과](pr-preparation/selective-20261013-r2/코드검토.md), [직접 검증 결과](pr-preparation/selective-20261013-r2/검증결과.md)를 확인하세요. 핵심 지문이나 문맥이 달라지면 강제 적용하지 않습니다. 후보 `94ecc00c`는 [최신 Carrot PR 비교](https://github.com/ajouatom/openpilot/compare/carrot-wip...Mlnege:codex/rav4-ars510-carrot-latest?expand=1)에 있으며 실제 PR는 제출하지 않았습니다.
+
+최신 공식0611 clone의 선택19 적용을 직접 확인했습니다. 원격 스크립트 전체 재현은 r2 폴더의 `원격준비_검증.json`이 있을 때 완료 근거로 사용합니다. 실제 로그는 제어OFF이며 ECU/펌웨어·PCS/AEB·회생·Konik 전체 빌드·실차 제동은 미검증입니다. 이전18파일 배포와2ec/417 자료는 당시 스냅샷으로 보존했습니다.
 
 ## 최신 PR 준비 — 2026-10-13
 

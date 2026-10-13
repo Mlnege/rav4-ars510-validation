@@ -1,0 +1,37 @@
+{
+  "scope_ko": "실제 기록의 CAN/CarState 배치 수신·decoder·MyTrack 결과 비교. 원본 제어 OFF, 실차 ECU/안전/물리 제동 검증 아님.",
+  "source_unchanged": true,
+  "physical_tx": false,
+  "files": [
+    {
+      "alias": "log_a",
+      "normal_records": 479,
+      "delivered_points": 246,
+      "float32_mismatches": 0,
+      "point_set_mismatched_records": 0,
+      "B4_checksum_errors": 0,
+      "cp_unchanged": true,
+      "recorded_long_active_samples": 0
+    },
+    {
+      "alias": "log_b",
+      "normal_records": 990,
+      "delivered_points": 115,
+      "float32_mismatches": 0,
+      "point_set_mismatched_records": 0,
+      "B4_checksum_errors": 0,
+      "cp_unchanged": true,
+      "recorded_long_active_samples": 0
+    },
+    {
+      "alias": "log_d",
+      "normal_records": 930,
+      "delivered_points": 6,
+      "float32_mismatches": 0,
+      "point_set_mismatched_records": 0,
+      "B4_checksum_errors": 0,
+      "cp_unchanged": true,
+      "recorded_long_active_samples": 0
+    }
+  ]
+}

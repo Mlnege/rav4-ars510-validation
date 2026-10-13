@@ -1,0 +1,6 @@
+{
+  "text_files": 17,
+  "patterns": 4,
+  "findings": [],
+  "scope_ko": "지정 패턴 검사이며 모든 개인정보/시크릿 검출의 보장은 아니다."
+}

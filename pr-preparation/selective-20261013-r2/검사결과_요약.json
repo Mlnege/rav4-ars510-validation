@@ -1,0 +1,35 @@
+{
+  "receiver_native_pcm": {
+    "tests": "178",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "8.481"
+  },
+  "stopping": {
+    "tests": "24",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "5.332"
+  },
+  "radar_recovery_helpers": {
+    "tests": "71",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "2",
+    "time": "0.815"
+  },
+  "original_signal_fixture": {
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "2.808"
+  },
+  "cli_v2_root_linux": {
+    "passed": 40,
+    "scope_ko": "독립 root 직접 실행. Windows 40은 별도 담당자 직접 결과이며 합산하지 않음."
+  },
+  "scope_ko": "서로 겹치는 시험 그룹을 총합으로 합산하지 않는다. radar worker 실제 IPC2는 생략했으며 helper AST만 그대로 실행했다."
+}

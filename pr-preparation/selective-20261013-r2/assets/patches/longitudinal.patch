@@ -1,0 +1,175 @@
+diff --git a/opendbc_repo/opendbc/car/toyota/carcontroller.py b/opendbc_repo/opendbc/car/toyota/carcontroller.py
+index aee8e1315e7c921378b79c4b0fe76fbdc61acc2b..47f47aea7cd0c5a733df40f0bdd57486ba12b1d8 100644
+--- a/opendbc_repo/opendbc/car/toyota/carcontroller.py
++++ b/opendbc_repo/opendbc/car/toyota/carcontroller.py
+@@ -200,6 +200,12 @@ class CarController(CarControllerBase):
+ 
+         # internal PCM gas command can get stuck unwinding from negative accel so we apply a generous rate limit
+         pcm_accel_cmd = actuators.accel
++        stopping_nonpositive = (self.CP.carFingerprint == CAR.TOYOTA_RAV4_TSS2_2022 and CC.longActive
++                                and stopping and actuators.accel <= 0.0)
++        if stopping_nonpositive:
++          # 명시한 정지 요청에서 이전 양수 가속·적분이 새 가속 명령으로 남지 않게 한다.
++          self.prev_accel = min(self.prev_accel, 0.0)
++          self.long_pid.i = min(self.long_pid.i, 0.0)
+         if CC.longActive:
+           pcm_accel_cmd = rate_limit(pcm_accel_cmd, self.prev_accel, ACCEL_WINDDOWN_LIMIT, ACCEL_WINDUP_LIMIT)
+         self.prev_accel = pcm_accel_cmd
+@@ -227,12 +233,19 @@ class CarController(CarControllerBase):
+         if CC.longActive:
+           # constantly slowly unwind integral to recover from large temporary errors
+           self.long_pid.i -= ACCEL_PID_UNWIND * float(np.sign(self.long_pid.i))
++          if stopping_nonpositive:
++            # 작은 음수 적분을 풀다가 0 위로 넘기는 경우도 정지 중에는 막는다.
++            self.long_pid.i = min(self.long_pid.i, 0.0)
+ 
+           error_future = pcm_accel_cmd - a_ego_future
+           pcm_accel_cmd = self.long_pid.update(error_future,
+                                                speed=CS.out.vEgo,
+                                                feedforward=pcm_accel_cmd,
+                                                freeze_integrator=actuators.longControlState != LongCtrlState.pid)
++          if stopping_nonpositive:
++            # P/D 보정도 정지 중 양수 CAN을 만들 수 있으므로 실제 명령값과 동기화한다.
++            pcm_accel_cmd = min(pcm_accel_cmd, 0.0)
++            self.long_pid.control = pcm_accel_cmd
+         else:
+           self.long_pid.reset()
+ 
+diff --git a/openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py b/openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py
+index 783bbec16d4112bbc156c491b703da5ee24abf2d..9c90a821e342be79e0f3e27e6a732639e98216c3 100644
+--- a/openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py
++++ b/openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py
+@@ -5,7 +5,7 @@ import math
+ import struct
+ import numpy as np
+ from openpilot.cereal import log
+-from opendbc.car.interfaces import ACCEL_MIN
++from opendbc.car.interfaces import ACCEL_MIN, ACCEL_MAX
+ from openpilot.common.realtime import DT_MDL
+ from openpilot.common.swaglog import cloudlog
+ # WARNING: imports outside of constants will not trigger a rebuild
+@@ -247,7 +247,9 @@ def gen_long_ocp():
+ 
+ 
+ class LongitudinalMpc:
+-  def __init__(self, mode='acc', dt=DT_MDL):
++  def __init__(self, mode='acc', dt=DT_MDL, *, actuator_accel_limits=None):
++    self.actuator_accel_limits = self.validate_actuator_accel_limits(actuator_accel_limits)
++    self.minimum_accel = ACCEL_MIN if self.actuator_accel_limits is None else self.actuator_accel_limits[0]
+     self.mode = mode
+     self.dt = dt
+     self.solver = AcadosOcpSolverCython(MODEL_NAME, ACADOS_SOLVER_TYPE, N)
+@@ -267,6 +269,21 @@ class LongitudinalMpc:
+     self.predicted_danger_margin = 1e3
+ 
+ 
++  @staticmethod
++  def validate_actuator_accel_limits(limits):
++    """실측 마찰 보장이 아닌 송신 명령 한계이며 잘못된 값은 추정하지 않고 거절한다."""
++    if limits is None:
++      return None
++    try:
++      if len(limits) != 2 or any(isinstance(value, (bool, np.bool_)) for value in limits):
++        raise ValueError
++      minimum, maximum = (float(value) for value in limits)
++    except (TypeError, ValueError, OverflowError) as exc:
++      raise ValueError("가속도 명령 한계는 유효한 최소·최대 한 쌍이어야 합니다") from exc
++    if not (np.isfinite(minimum) and np.isfinite(maximum) and ACCEL_MIN <= minimum < 0.0 < maximum <= ACCEL_MAX):
++      raise ValueError("가속도 명령 한계의 부호·유한성·기존 허용 범위를 확인할 수 없습니다")
++    return minimum, maximum
++
+   def reset(self):
+     self._cost_key = None
+     self._cost_solver = None
+@@ -394,7 +411,7 @@ class LongitudinalMpc:
+ 
+     # MPC will not converge if immediate crash is expected
+     # Clip lead distance to what is still possible to brake for
+-    min_x_lead = ((v_ego + v_lead)/2) * (v_ego - v_lead) / (-ACCEL_MIN * 2)
++    min_x_lead = ((v_ego + v_lead)/2) * (v_ego - v_lead) / (-self.minimum_accel * 2)
+     x_lead = np.clip(x_lead, min_x_lead, 1e8)
+     v_lead = np.clip(v_lead, 0.0, 1e8)
+     a_lead = np.clip(a_lead, -10., 5.)
+@@ -406,7 +423,7 @@ class LongitudinalMpc:
+     # TODO this sets a max accel limit, but the minimum limit is only for cruise decel
+     # needs refactor
+     self.cruise_min_a = min_a
+-    self.max_a = max_a
++    self.max_a = max_a if self.actuator_accel_limits is None else min(max_a, self.actuator_accel_limits[1])
+ 
+   def update(self, carrot, reset_state, radarstate, v_cruise, x, v, a, j,
+              personality=log.LongitudinalPersonality.standard,
+@@ -417,7 +434,8 @@ class LongitudinalMpc:
+              lead_gap_enabled=False,
+              lead_track_frames=(0, 0),
+              measured_a_ego=0.0,
+-             cutout_relief_enabled=False):
++             cutout_relief_enabled=False,
++             force_slow_decel=False):
+     v_ego = self.x0[1]
+     a_ego = self.x0[2]
+     self.status = radarstate.leadOne.status or radarstate.leadTwo.status
+@@ -440,13 +458,17 @@ class LongitudinalMpc:
+     else:
+       v_cruise, stop_x, mode = carrot.v_cruise, carrot.stop_dist, carrot.mode
+ 
++    if force_slow_decel:
++      # 호스트 감속 요청은 당근 목표 속도를 읽은 뒤에도 유지한다.
++      v_cruise = 0.0
++
+     # To estimate a safe distance from a moving lead, we calculate how much stopping
+     # distance that lead needs as a minimum. We can add that to the current distance
+     # and then treat that as a stopped car/obstacle at this new distance.
+     lead_0_obstacle = lead_xv_0[:,0] + get_stopped_equivalence_factor(lead_xv_0[:,1])
+     lead_1_obstacle = lead_xv_1[:,0] + get_stopped_equivalence_factor(lead_xv_1[:,1])
+ 
+-    self.params[:,0] = ACCEL_MIN if not reset_state else a_ego
++    self.params[:,0] = self.minimum_accel if not reset_state else a_ego
+     # negative accel constraint causes problems because negative speed is not allowed
+     self.params[:,1] = max(0.0, self.max_a if not reset_state else a_ego)
+ 
+diff --git a/openpilot/selfdrive/controls/lib/longitudinal_planner.py b/openpilot/selfdrive/controls/lib/longitudinal_planner.py
+index 6f3bbe9b481ee26cc01c3532551c10f46727638a..6b3ec8f2bb32a5e3f583c01f69d011b5bb6b93e1 100644
+--- a/openpilot/selfdrive/controls/lib/longitudinal_planner.py
++++ b/openpilot/selfdrive/controls/lib/longitudinal_planner.py
+@@ -52,7 +52,19 @@ def get_coast_accel(pitch):
+ class LongitudinalPlanner:
+   def __init__(self, CP, init_v=0.0, init_a=0.0, dt=DT_MDL):
+     self.CP = CP
+-    self.mpc = LongitudinalMpc(dt=dt)
++    self.actuator_accel_limits = None
++    if (getattr(CP, 'brand', '') == 'toyota' and
++        getattr(CP, 'carFingerprint', '') == 'TOYOTA_RAV4_TSS2_2022' and
++        getattr(CP, 'openpilotLongitudinalControl', False)):
++      from opendbc.car.toyota.interface import CarInterface
++      # 수신·진단이나 차량 설정 변경 없이 기존 인터페이스의 송신 명령 한계를 읽는다.
++      limits = CarInterface.get_pid_accel_limits(CP, init_v, 0.0)
++      self.actuator_accel_limits = LongitudinalMpc.validate_actuator_accel_limits(limits)
++      if self.actuator_accel_limits is None:
++        raise ValueError("RAV4 직접 가감속의 송신 명령 한계를 읽지 못했습니다")
++      self.mpc = LongitudinalMpc(dt=dt, actuator_accel_limits=self.actuator_accel_limits)
++    else:
++      self.mpc = LongitudinalMpc(dt=dt)
+     self.fcw = False
+     # VW MEB(ID.4/ID.5)에서만 True. 가속 오버라이드 중 출발 FCW 오탐을 끄기 위한 게이트.
+     self.is_vw_meb = is_volkswagen_meb(CP)
+@@ -259,6 +271,8 @@ class LongitudinalPlanner:
+       ),
+       lead_track_frames=lead_track_frames,
+       measured_a_ego=sm['carState'].aEgo,
++      # 검증 범위는 정확한 RAV4 2022의 직접 종방향 제어로 제한한다.
++      force_slow_decel=force_slow_decel and self.actuator_accel_limits is not None,
+     )
+ 
+     self.v_desired_trajectory = np.interp(CONTROL_N_T_IDX, T_IDXS_MPC, self.mpc.v_solution)
+@@ -372,6 +386,10 @@ class LongitudinalPlanner:
+                          force_slow_decel, coasting_turn_blocked, cutin_predecel_limit)
+     self.apply_signal_stop_prepare(sm, carrot, reset_state)
+     self.apply_signal_start_guard(carrot)
++    actuator_accel_limits = getattr(self, 'actuator_accel_limits', None)
++    if actuator_accel_limits is not None:
++      # preview·신호 보조 후에도 최종 목표는 실제 송신 가능한 명령 범위에 둔다.
++      self.output_a_target = float(np.clip(self.output_a_target, *actuator_accel_limits))
+ 
+   def apply_signal_stop_prepare(self, sm, carrot, reset_state, now=None):
+     now = time.monotonic() if now is None else now

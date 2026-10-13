@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "source": {
+    "upstream_url": "https://github.com/ajouatom/openpilot",
+    "branch": "carrot-wip",
+    "baseline": "626b887d527ff3c619e885ff65c303255e2933c6",
+    "reference_commit": "94ecc00c4ba586d16d700e7c75693ed21ac52cd9",
+    "ars_commit": "fb5b29c2b5999f34afeb6f7ac494a73949d66c67"
+  },
+  "groups": {
+    "radar": {
+      "patch": "patches/radar.patch",
+      "files": [
+        "opendbc_repo/opendbc/car/toyota/interface.py",
+        "opendbc_repo/opendbc/car/toyota/radar_interface.py",
+        "opendbc_repo/opendbc/car/toyota/ars510_carrot.py",
+        "openpilot/selfdrive/carrot/radar/radarcan.py",
+        "opendbc_repo/opendbc/car/toyota/ars510/__init__.py",
+        "opendbc_repo/opendbc/car/toyota/ars510/constants.py",
+        "opendbc_repo/opendbc/car/toyota/ars510/interface.py",
+        "opendbc_repo/opendbc/car/toyota/ars510/objects.py",
+        "opendbc_repo/opendbc/car/toyota/ars510/record.py",
+        "opendbc_repo/opendbc/car/toyota/ars510/shell85.py",
+        "opendbc_repo/opendbc/car/toyota/ars510/support.py",
+        "opendbc_repo/opendbc/car/toyota/ars510/tracks.py",
+        "opendbc_repo/opendbc/car/toyota/ars510/transport.py",
+        "opendbc_repo/opendbc/car/toyota/ars510/LICENSE"
+      ],
+      "preimage_sha256_lf": {
+        "opendbc_repo/opendbc/car/toyota/interface.py": "0b84ccad62804f970f67149d0bcc33c9032e07f2637bfa77d27ccd1e3031a500",
+        "opendbc_repo/opendbc/car/toyota/radar_interface.py": "75e616ebd70498dc7aff160b9a08a76abb6c04603bccced552b60b53a6c966c6",
+        "opendbc_repo/opendbc/car/toyota/ars510_carrot.py": null,
+        "openpilot/selfdrive/carrot/radar/radarcan.py": "3815c9c10db0c8b12bdfc1bbdf037d5791d185a4ea53ae4890e146a22b8db228",
+        "opendbc_repo/opendbc/car/toyota/ars510/__init__.py": null,
+        "opendbc_repo/opendbc/car/toyota/ars510/constants.py": null,
+        "opendbc_repo/opendbc/car/toyota/ars510/interface.py": null,
+        "opendbc_repo/opendbc/car/toyota/ars510/objects.py": null,
+        "opendbc_repo/opendbc/car/toyota/ars510/record.py": null,
+        "opendbc_repo/opendbc/car/toyota/ars510/shell85.py": null,
+        "opendbc_repo/opendbc/car/toyota/ars510/support.py": null,
+        "opendbc_repo/opendbc/car/toyota/ars510/tracks.py": null,
+        "opendbc_repo/opendbc/car/toyota/ars510/transport.py": null,
+        "opendbc_repo/opendbc/car/toyota/ars510/LICENSE": null
+      },
+      "postimage_sha256_lf": {
+        "opendbc_repo/opendbc/car/toyota/interface.py": "a761e2d6b914a504f86965073bbe599605b5a17833e5e5fe4333b97fc5daf3db",
+        "opendbc_repo/opendbc/car/toyota/radar_interface.py": "36625edeeb9cbf7813efda8ffcbf423669da1fff033c18ef521863e560540e20",
+        "opendbc_repo/opendbc/car/toyota/ars510_carrot.py": "27fafc37b62af7d2afcf39fc0087fc3360b20e34c3b7bbf0653d9a6f79c2be82",
+        "openpilot/selfdrive/carrot/radar/radarcan.py": "8d85973c986021cdbbbb6eddcf8aece67daa38fb83d52535d0aa524bc6d5f386",
+        "opendbc_repo/opendbc/car/toyota/ars510/__init__.py": "2b90c995ed9915b3bb83a399524387d3863f4f7db23c6a2c2daeb3be23f8a62c",
+        "opendbc_repo/opendbc/car/toyota/ars510/constants.py": "4c130c12107d895b361663716e7eeea2729458cc0dce4c20284f4f1b575df63a",
+        "opendbc_repo/opendbc/car/toyota/ars510/interface.py": "fb04d359df44df0bea7c49ed8a8caa93de15d6efa8c1351b786e6fdc465cb6be",
+        "opendbc_repo/opendbc/car/toyota/ars510/objects.py": "026ee8ddd038430f4b3e8a4987fd8d94622746b236ea20d24e368988500e0973",
+        "opendbc_repo/opendbc/car/toyota/ars510/record.py": "6f893898eda96d442b70c3b248b943f1c56adc255c0d4768c4c0efdf4945c19b",
+        "opendbc_repo/opendbc/car/toyota/ars510/shell85.py": "726af1543211830e1eda3d609b4962cdc07d54ea3022a6c46a1b5280520137b5",
+        "opendbc_repo/opendbc/car/toyota/ars510/support.py": "8c0a1677612d0c18da272f08f3ec5a61af00f6cf1a13343335ef5311ed59153d",
+        "opendbc_repo/opendbc/car/toyota/ars510/tracks.py": "0c59bd460d9191a030e65b6267d3ed98cc14f0b0e3ac04ea006a6d21da5e4561",
+        "opendbc_repo/opendbc/car/toyota/ars510/transport.py": "33dd639634a956759a06f36b3c3d826df8e9af3d9985e014ad129a452430704d",
+        "opendbc_repo/opendbc/car/toyota/ars510/LICENSE": "56b07f3b4fd5f231ee865512b6345985d83f61cff58da92dcdedfe665b903a0e"
+      },
+      "compatibility_sha256_lf": {
+        "opendbc_repo/opendbc/car/interfaces.py": "c6ac888f2c2a85413f98413e5f603cbf4daf3749ed6e3d9c122328656952ca10",
+        "opendbc_repo/opendbc/car/radar_tracks.py": "26778cfae38be1966712dd7ce5df75731f626bfa08a95a12ec659058b014a028",
+        "opendbc_repo/opendbc/can/parser.py": "d0dab221126bd2635ec4382121dc519fe4585b969b21c6338efec471cf383650",
+        "opendbc_repo/opendbc/car/toyota/values.py": "dbe9030ee5509f202989d7749d77cc62fdcd20ab07a55391b0a516d154145070",
+        "opendbc_repo/opendbc/car/toyota/toyotacan.py": "b35d2da892a041f39327771cb61c80eeded753fc8b83bd249975f67d71502627",
+        "opendbc_repo/opendbc/car/toyota/carstate.py": "a8493c193663328a6095f21b657fe17e1166fbaa8bc85744dac0b95e55d51468",
+        "openpilot/selfdrive/carrot/radar/can_batch.py": "ea6aa66434381489aff0bcec592b803d2016fb76e7c4b00df9ba63fca1d1fe66",
+        "openpilot/selfdrive/carrot/radar/radard_dpath.py": "71126b3815422863b972173ccd9de2519f52da22040e3e2c3ce43ae21d8cbbe3",
+        "opendbc_repo/opendbc/car/car.capnp": "3042bfa92e6b42532145815a6a23fc5d9b775f2762b136384d1d2191cc7f1465",
+        "openpilot/cereal/log.capnp": "48fe892e247d907844dbc973fdb3bc5a4cb4127a0e9bd5b86a6bdbbae979fb74"
+      }
+    },
+    "pcm": {
+      "patch": "patches/pcm.patch",
+      "files": [
+        "openpilot/selfdrive/car/cruise.py",
+        "openpilot/selfdrive/car/toyota_pcm_speed.py"
+      ],
+      "preimage_sha256_lf": {
+        "openpilot/selfdrive/car/cruise.py": "6cf4b9eba4a11ef0321d6ed6953266c32cebc9762553c7397f57f5e370a6c451",
+        "openpilot/selfdrive/car/toyota_pcm_speed.py": null
+      },
+      "postimage_sha256_lf": {
+        "openpilot/selfdrive/car/cruise.py": "7130a2a597689730e31ac7cb99f62632f33b04230610dd7a0367e8740b9263f9",
+        "openpilot/selfdrive/car/toyota_pcm_speed.py": "af70ee4f1c5bb2eb9dfde021c70491af6d1d13a644afe2fbad66ca6871fb2683"
+      },
+      "compatibility_sha256_lf": {
+        "opendbc_repo/opendbc/car/car.capnp": "3042bfa92e6b42532145815a6a23fc5d9b775f2762b136384d1d2191cc7f1465",
+        "openpilot/cereal/log.capnp": "48fe892e247d907844dbc973fdb3bc5a4cb4127a0e9bd5b86a6bdbbae979fb74",
+        "openpilot/selfdrive/carrot/carrot_functions.py": "8b1dcd462a9834744b8fb88478df90d86c0e829999ba25b9368a0a26fe92cc34",
+        "openpilot/selfdrive/carrot/carrot_man_input.py": "1f6293341440882089334e50c65eec3cd3620352c5e40608e288eeb9cfc1aee0"
+      }
+    },
+    "longitudinal": {
+      "patch": "patches/longitudinal.patch",
+      "files": [
+        "opendbc_repo/opendbc/car/toyota/carcontroller.py",
+        "openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py",
+        "openpilot/selfdrive/controls/lib/longitudinal_planner.py"
+      ],
+      "preimage_sha256_lf": {
+        "opendbc_repo/opendbc/car/toyota/carcontroller.py": "49f1ace9dc46fb509f2d1d982f740fd52cda006078cc9faa405efb7cb30026d8",
+        "openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py": "9d0ff1004cd6445aa17092749cb41d8114f8f11337881e95bf14012d8e308efd",
+        "openpilot/selfdrive/controls/lib/longitudinal_planner.py": "dd07d6e8adb8eb7bbfefbd205bedc293f2ff24bc347e25b9ab95ac32e9c4e8ec"
+      },
+      "postimage_sha256_lf": {
+        "opendbc_repo/opendbc/car/toyota/carcontroller.py": "074bc65aabcc13471a907e6bfd9421972c8061c9c3ff17e694dc3f168d2dec29",
+        "openpilot/selfdrive/controls/lib/longitudinal_mpc_lib/long_mpc.py": "f2907120e752540d38349c6544a2d0882f3c3a64c54527f0ad5bb893c1aaa2ee",
+        "openpilot/selfdrive/controls/lib/longitudinal_planner.py": "1f5ee2e223e438f61b00f514a00c8f6add3b3f8bcd9a07512160ebe50e4aee9e"
+      },
+      "compatibility_sha256_lf": {
+        "opendbc_repo/opendbc/car/interfaces.py": "c6ac888f2c2a85413f98413e5f603cbf4daf3749ed6e3d9c122328656952ca10",
+        "opendbc_repo/opendbc/car/toyota/values.py": "dbe9030ee5509f202989d7749d77cc62fdcd20ab07a55391b0a516d154145070",
+        "opendbc_repo/opendbc/car/toyota/toyotacan.py": "b35d2da892a041f39327771cb61c80eeded753fc8b83bd249975f67d71502627",
+        "opendbc_repo/opendbc/car/car.capnp": "3042bfa92e6b42532145815a6a23fc5d9b775f2762b136384d1d2191cc7f1465",
+        "openpilot/cereal/log.capnp": "48fe892e247d907844dbc973fdb3bc5a4cb4127a0e9bd5b86a6bdbbae979fb74",
+        "openpilot/selfdrive/controls/lib/longcontrol.py": "15c6aa56c299aecdfab7be13487e723c423fcb7604941b5f64cf89037c77a10b",
+        "openpilot/selfdrive/carrot/carrot_functions.py": "8b1dcd462a9834744b8fb88478df90d86c0e829999ba25b9368a0a26fe92cc34",
+        "openpilot/selfdrive/carrot/signal_start_guard.py": "0b622f363fcea9571d366c77a745c81d36a4adbb2cd5eba6d15bab0a70a4cf90",
+        "openpilot/selfdrive/carrot/signal_stop_prepare.py": "b39e64cd36d629e7a2271c30d28b44a0dcf118ae42ae24c97d6ab7eff1720255"
+      }
+    }
+  },
+  "artifacts_sha256": {
+    "patches/radar.patch": "8e0d1a16c3adff726e32ed7cdcfacba4b6ef364fb6dacf804e9331451dd1f66b",
+    "patches/pcm.patch": "c6fb111771d23da16dcaa5f283aa63d9ec2daf32e1a59b62d0c6d3fe233b4304",
+    "patches/longitudinal.patch": "5339d13a2751e4bf215bb57565bb0660ef0a4cd084fc685494b58d943b2b382b"
+  },
+  "vehicle_deployment_allowed": false
+}
